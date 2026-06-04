@@ -28,7 +28,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready -U trainer -d trainer_platform
+          --health-cmd pg_isready
           --health-interval 5s
           --health-timeout 5s
           --health-retries 5
@@ -110,7 +110,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready -U trainer -d trainer_platform
+          --health-cmd pg_isready
           --health-interval 5s
           --health-timeout 5s
           --health-retries 5
@@ -226,4 +226,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Export OpenAPI schema
-        run: python scripts/export_openapi.py
+        run: |
+          cp ../.env.example .env
+          python scripts/export_openapi.py
