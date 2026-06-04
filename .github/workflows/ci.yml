@@ -63,7 +63,7 @@ jobs:
           python -c "from passlib.hash import bcrypt as bcrypt_hash; print('passlib bcrypt backend:', bcrypt_hash.get_backend())"
 
       - name: Run tests (SQLite)
-        run: python -m pytest tests/ -v --tb=short -x
+        run: python -m pytest tests/ -v --tb=long -x --timeout=120
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           SECRET_KEY: ci-secret-key-not-for-production
