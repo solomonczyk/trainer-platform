@@ -1,0 +1,83 @@
+{
+  "scenario_id": "qa_self_presentation_v1",
+  "version": "1.0.0",
+  "type": "interview_question",
+  "difficulty": "junior_basic",
+  "difficulty_order": 1,
+  "estimated_duration_minutes": 5,
+  "title": "Tell Me About Yourself as a QA Candidate",
+  "title_ru": "Расскажите о себе как о кандидате QA",
+  "goal": "Evaluate the candidate's ability to present themselves professionally, structure their background, and articulate their motivation for pursuing a QA role.",
+  "goal_ru": "Оценить способность кандидата профессионально себя представить, структурировать свой опыт и сформулировать мотивацию к работе в QA.",
+  "context": {
+    "interview_type": "hr_screening",
+    "interviewer_role": "HR Manager",
+    "interviewer_role_ru": "HR-менеджер",
+    "company_profile": "Mid-size product company looking for a Junior QA Engineer to join a mobile and web application team.",
+    "company_profile_ru": "Продуктовая компания среднего размера ищет Junior QA Engineer в команду мобильных и веб-приложений."
+  },
+  "steps": [
+    {
+      "step_id": "self_presentation_step_1",
+      "order": 1,
+      "type": "user_response",
+      "title": "Introduce Yourself",
+      "title_ru": "Представьтесь",
+      "prompt": "Please introduce yourself. Tell us about your background, your journey into QA, your key skills, and why you are interested in this Junior QA Engineer position. Structure your answer clearly.",
+      "prompt_ru": "Пожалуйста, представьтесь. Расскажите о своем опыте, пути в QA, ключевых навыках и почему вас заинтересовала эта позиция Junior QA Engineer. Структурируйте ответ.",
+      "max_response_length": 3000,
+      "expects_bullet_points": false
+    }
+  ],
+  "target_skills": [
+    {
+      "skill_id": "interview_structure",
+      "weight": 60
+    },
+    {
+      "skill_id": "communication_clarity",
+      "weight": 40
+    }
+  ],
+  "scoring_guidelines": {
+    "general_hints": [
+      "Candidates should follow a clear structure: past experience, transition to QA, current skills, future goals.",
+      "Look for professional tone and relevant technical background.",
+      "Watch for overly generic answers that don't connect to the QA role.",
+      "A strong answer includes specific technologies, tools, or methodologies the candidate has worked with."
+    ],
+    "general_hints_ru": [
+      "Кандидат должен следовать четкой структуре: прошлый опыт, переход в QA, текущие навыки, будущие цели.",
+      "Обратите внимание на профессиональный тон и релевантный технический бэкграунд.",
+      "Обращайте внимание на слишком общие ответы, не связанные с ролью QA.",
+      "Сильный ответ включает конкретные технологии, инструменты или методологии, с которыми работал кандидат."
+    ],
+    "common_mistakes": [
+      "Reading a memorized script without natural delivery.",
+      "Focusing only on personal qualities without technical substance.",
+      "Being too vague about QA motivation (e.g., 'I like testing' without depth).",
+      "Listing skills without demonstrating how they were applied."
+    ],
+    "common_mistakes_ru": [
+      "Чтение заученного текста без естественной подачи.",
+      "Фокус только на личных качествах без технического содержания.",
+      "Слишком расплывчатая мотивация к QA (например, 'люблю тестировать' без глубины).",
+      "Перечисление навыков без демонстрации их применения."
+    ],
+    "critical_errors_to_watch": ["qa_crit_no_evidence", "qa_crit_ignore_rubric"],
+    "max_allowed_critical_errors": 1,
+    "max_allowed_critical_errors_before_fail": 1
+  },
+  "evaluation_focus": [
+    "Structure of the self-introduction",
+    "Relevance of background to QA",
+    "Clarity of career goals and motivation",
+    "Professional communication skills"
+  ],
+  "evaluation_focus_ru": [
+    "Структура самопрезентации",
+    "Релевантность опыта для QA",
+    "Четкость карьерных целей и мотивации",
+    "Навыки профессиональной коммуникации"
+  ]
+}

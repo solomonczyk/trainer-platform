@@ -1,0 +1,309 @@
+{
+  "skill_map_id": "qa_interview_skill_map_v1",
+  "name": "Junior QA Interview Skills",
+  "name_ru": "Навыки собеседования Junior QA",
+  "description": "Core skills assessed during a Junior QA Engineer interview simulation.",
+  "description_ru": "Ключевые навыки, оцениваемые в ходе симуляции собеседования на Junior QA.",
+  "skills": [
+    {
+      "skill_id": "interview_structure",
+      "category": "communication",
+      "name": "Structure of Answers",
+      "name_ru": "Структура ответов",
+      "description": "Ability to structure answers logically using frameworks like STAR, problem-solution, or clear sectioning.",
+      "description_ru": "Способность логически структурировать ответы, используя STAR, проблема-решение или четкое разделение на части.",
+      "levels": [
+        {
+          "level_id": "not_observed",
+          "score": 0,
+          "name": "Not Observed",
+          "name_ru": "Не проявлено",
+          "description": "Answer is chaotic, jumps between topics, no logical flow. Impossible to follow the candidate's reasoning.",
+          "description_ru": "Ответ хаотичен, скачет между темами, нет логической последовательности. Невозможно проследить ход мыслей."
+        },
+        {
+          "level_id": "basic",
+          "score": 25,
+          "name": "Basic",
+          "name_ru": "Базовый",
+          "description": "Some attempt at structure but incomplete. Ideas are partially organized but lack clear transitions or conclusion.",
+          "description_ru": "Попытка структурировать, но неполная. Идеи частично организованы, но не хватает четких переходов или выводов."
+        },
+        {
+          "level_id": "developing",
+          "score": 50,
+          "name": "Developing",
+          "name_ru": "Развивающийся",
+          "description": "Clear structure with introduction, body, and conclusion. Transitions are present but could be smoother.",
+          "description_ru": "Четкая структура: введение, основная часть, заключение. Переходы присутствуют, но могут быть более плавными."
+        },
+        {
+          "level_id": "ready",
+          "score": 75,
+          "name": "Ready",
+          "name_ru": "Готов",
+          "description": "Well-structured answer with clear sections, smooth transitions, and a concise summary. Easy to follow.",
+          "description_ru": "Хорошо структурированный ответ с четкими разделами, плавными переходами и кратким итогом. Легко воспринимается."
+        },
+        {
+          "level_id": "strong",
+          "score": 100,
+          "name": "Strong",
+          "name_ru": "Уверенный",
+          "description": "Exemplary structure. Answer is perfectly organized, uses a framework naturally, anticipates follow-ups, and ends with a powerful summary.",
+          "description_ru": "Образцовая структура. Ответ идеально организован, естественно использует фреймворк, предвосхищает дополнительные вопросы и завершается сильным резюме."
+        }
+      ]
+    },
+    {
+      "skill_id": "bug_reporting",
+      "category": "qa_core",
+      "name": "Bug Reporting Knowledge",
+      "name_ru": "Знание баг-репортинга",
+      "description": "Knowledge of bug report structure, severity/priority classification, and reproduction steps.",
+      "description_ru": "Знание структуры баг-репорта, классификации severity/priority и шагов воспроизведения.",
+      "levels": [
+        {
+          "level_id": "not_observed",
+          "score": 0,
+          "name": "Not Observed",
+          "name_ru": "Не проявлено",
+          "description": "No understanding of bug report components. Cannot name a single required field or principle.",
+          "description_ru": "Нет понимания компонентов баг-репорта. Не может назвать ни одного обязательного поля или принципа."
+        },
+        {
+          "level_id": "basic",
+          "score": 25,
+          "name": "Basic",
+          "name_ru": "Базовый",
+          "description": "Knows 1-2 fields of a bug report (title, steps). Limited understanding of severity vs priority.",
+          "description_ru": "Знает 1-2 поля баг-репорта (заголовок, шаги). Ограниченное понимание severity vs priority."
+        },
+        {
+          "level_id": "developing",
+          "score": 50,
+          "name": "Developing",
+          "name_ru": "Развивающийся",
+          "description": "Can list most bug report fields. Understands severity and priority basics. Steps to reproduce are mentioned but may lack detail.",
+          "description_ru": "Может перечислить большинство полей баг-репорта. Понимает основы severity и priority. Шаги воспроизведения упомянуты, но могут быть недетальными."
+        },
+        {
+          "level_id": "ready",
+          "score": 75,
+          "name": "Ready",
+          "name_ru": "Готов",
+          "description": "Can describe complete bug report structure. Understands severity vs priority with examples. Provides structured reproduction steps.",
+          "description_ru": "Может описать полную структуру баг-репорта. Понимает severity vs priority с примерами. Предоставляет структурированные шаги воспроизведения."
+        },
+        {
+          "level_id": "strong",
+          "score": 100,
+          "name": "Strong",
+          "name_ru": "Уверенный",
+          "description": "Comprehensive knowledge of bug reporting. Includes environmental details, attachments, logs. Can discuss edge cases in bug reports and best practices.",
+          "description_ru": "Всестороннее знание баг-репортинга. Включает детали окружения, вложения, логи. Может обсуждать краевые случаи в баг-репортах и лучшие практики."
+        }
+      ]
+    },
+    {
+      "skill_id": "test_design",
+      "category": "qa_core",
+      "name": "Test Design Techniques",
+      "name_ru": "Техники тест-дизайна",
+      "description": "Knowledge of test design techniques: equivalence partitioning, boundary values, pairwise testing, etc.",
+      "description_ru": "Знание техник тест-дизайна: эквивалентное разделение, граничные значения, попарное тестирование и т.д.",
+      "levels": [
+        {
+          "level_id": "not_observed",
+          "score": 0,
+          "name": "Not Observed",
+          "name_ru": "Не проявлено",
+          "description": "No knowledge of test design techniques. Cannot name or apply any testing approach.",
+          "description_ru": "Нет знаний техник тест-дизайна. Не может назвать или применить ни одного подхода к тестированию."
+        },
+        {
+          "level_id": "basic",
+          "score": 25,
+          "name": "Basic",
+          "name_ru": "Базовый",
+          "description": "Can name 1 technique (e.g., equivalence partitioning). Basic understanding but cannot apply to examples.",
+          "description_ru": "Может назвать 1 технику (напр., эквивалентное разделение). Базовое понимание без возможности применения на примерах."
+        },
+        {
+          "level_id": "developing",
+          "score": 50,
+          "name": "Developing",
+          "name_ru": "Развивающийся",
+          "description": "Can name 2-3 techniques and explain them briefly. Can apply to simple examples with guidance.",
+          "description_ru": "Может назвать 2-3 техники и кратко их объяснить. Может применить к простым примерам с подсказкой."
+        },
+        {
+          "level_id": "ready",
+          "score": 75,
+          "name": "Ready",
+          "name_ru": "Готов",
+          "description": "Knows multiple techniques and can apply them independently. Can explain why each technique is used and give relevant examples.",
+          "description_ru": "Знает несколько техник и может применять их самостоятельно. Может объяснить назначение каждой техники и привести примеры."
+        },
+        {
+          "level_id": "strong",
+          "score": 100,
+          "name": "Strong",
+          "name_ru": "Уверенный",
+          "description": "Mastery of test design. Chooses optimal techniques for different contexts. Discusses trade-offs and combinations of techniques effectively.",
+          "description_ru": "Мастерское владение тест-дизайном. Выбирает оптимальные техники для разных контекстов. Эффективно обсуждает компромиссы и комбинации техник."
+        }
+      ]
+    },
+    {
+      "skill_id": "communication_clarity",
+      "category": "communication",
+      "name": "Clarity of Communication",
+      "name_ru": "Четкость коммуникации",
+      "description": "Ability to communicate ideas clearly, use precise terminology, and avoid ambiguity.",
+      "description_ru": "Способность четко излагать мысли, использовать точную терминологию и избегать двусмысленности.",
+      "levels": [
+        {
+          "level_id": "not_observed",
+          "score": 0,
+          "name": "Not Observed",
+          "name_ru": "Не проявлено",
+          "description": "Communication is unclear, uses incorrect terminology, or answer is incomprehensible.",
+          "description_ru": "Коммуникация неясна, используется некорректная терминология, или ответ невозможно понять."
+        },
+        {
+          "level_id": "basic",
+          "score": 25,
+          "name": "Basic",
+          "name_ru": "Базовый",
+          "description": "Some relevant points but language is imprecise. Uses some QA terms but with occasional mistakes.",
+          "description_ru": "Некоторые релевантные моменты, но язык неточен. Использует некоторые термины QA, но с occasional ошибками."
+        },
+        {
+          "level_id": "developing",
+          "score": 50,
+          "name": "Developing",
+          "name_ru": "Развивающийся",
+          "description": "Mostly clear communication. Uses correct QA terminology. Ideas are understandable with minor ambiguity.",
+          "description_ru": "В основном четкая коммуникация. Использует корректную терминологию QA. Идеи понятны с незначительной двусмысленностью."
+        },
+        {
+          "level_id": "ready",
+          "score": 75,
+          "name": "Ready",
+          "name_ru": "Готов",
+          "description": "Clear and precise communication. Uses terminology correctly. Explanations are easy to understand with no ambiguity.",
+          "description_ru": "Четкая и точная коммуникация. Корректно использует терминологию. Объяснения легко понять, без двусмысленности."
+        },
+        {
+          "level_id": "strong",
+          "score": 100,
+          "name": "Strong",
+          "name_ru": "Уверенный",
+          "description": "Exceptional communication. Uses precise QA terminology naturally. Explains complex concepts simply. Demonstrates active listening and adapts language to audience.",
+          "description_ru": "Исключительная коммуникация. Естественно использует точную терминологию QA. Объясняет сложные концепции просто. Демонстрирует активное слушание и адаптирует язык под аудиторию."
+        }
+      ]
+    },
+    {
+      "skill_id": "technical_accuracy",
+      "category": "qa_core",
+      "name": "Technical Accuracy",
+      "name_ru": "Техническая точность",
+      "description": "Accuracy of technical statements, understanding of QA concepts, and correctness of testing principles.",
+      "description_ru": "Точность технических утверждений, понимание концепций QA и корректность принципов тестирования.",
+      "levels": [
+        {
+          "level_id": "not_observed",
+          "score": 0,
+          "name": "Not Observed",
+          "name_ru": "Не проявлено",
+          "description": "Statements contain major factual errors. Fundamental misunderstanding of QA principles.",
+          "description_ru": "Утверждения содержат серьезные фактические ошибки. Фундаментальное непонимание принципов QA."
+        },
+        {
+          "level_id": "basic",
+          "score": 25,
+          "name": "Basic",
+          "name_ru": "Базовый",
+          "description": "Some correct statements but mixed with inaccuracies. Partial understanding of core QA concepts.",
+          "description_ru": "Некоторые корректные утверждения, но с неточностями. Частичное понимание основных концепций QA."
+        },
+        {
+          "level_id": "developing",
+          "score": 50,
+          "name": "Developing",
+          "name_ru": "Развивающийся",
+          "description": "Mostly accurate statements. Understands core concepts but may struggle with nuanced or advanced topics.",
+          "description_ru": "В основном точные утверждения. Понимает основные концепции, но может испытывать трудности с нюансами."
+        },
+        {
+          "level_id": "ready",
+          "score": 75,
+          "name": "Ready",
+          "name_ru": "Готов",
+          "description": "Accurate technical statements. Solid understanding of QA concepts. Can discuss nuances and best practices.",
+          "description_ru": "Точные технические утверждения. Хорошее понимание концепций QA. Может обсуждать нюансы и лучшие практики."
+        },
+        {
+          "level_id": "strong",
+          "score": 100,
+          "name": "Strong",
+          "name_ru": "Уверенный",
+          "description": "Flawless technical accuracy. Demonstrates deep understanding of QA principles. Can identify and correct misconceptions, and explain complex scenarios precisely.",
+          "description_ru": "Безупречная техническая точность. Демонстрирует глубокое понимание принципов QA. Может выявлять и исправлять заблуждения, точно объяснять сложные сценарии."
+        }
+      ]
+    },
+    {
+      "skill_id": "qa_process_knowledge",
+      "category": "qa_core",
+      "name": "QA Process Understanding",
+      "name_ru": "Понимание QA-процесса",
+      "description": "Understanding of the software testing lifecycle, QA role in development, testing types, and release processes.",
+      "description_ru": "Понимание жизненного цикла тестирования ПО, роли QA в разработке, видов тестирования и процессов релиза.",
+      "levels": [
+        {
+          "level_id": "not_observed",
+          "score": 0,
+          "name": "Not Observed",
+          "name_ru": "Не проявлено",
+          "description": "No understanding of the QA process. Cannot describe what QA does in a software team.",
+          "description_ru": "Нет понимания QA-процесса. Не может описать, чем занимается QA в команде разработки."
+        },
+        {
+          "level_id": "basic",
+          "score": 25,
+          "name": "Basic",
+          "name_ru": "Базовый",
+          "description": "Basic awareness of QA role. Can name testing types like manual and automated but cannot explain the full process.",
+          "description_ru": "Базовое понимание роли QA. Может назвать виды тестирования (ручное, автоматизированное), но не может объяснить полный процесс."
+        },
+        {
+          "level_id": "developing",
+          "score": 50,
+          "name": "Developing",
+          "name_ru": "Развивающийся",
+          "description": "Understands the testing lifecycle: requirement analysis, test planning, execution, reporting. Can describe QA's role in the team.",
+          "description_ru": "Понимает жизненный цикл тестирования: анализ требований, планирование, выполнение, отчетность. Может описать роль QA в команде."
+        },
+        {
+          "level_id": "ready",
+          "score": 75,
+          "name": "Ready",
+          "name_ru": "Готов",
+          "description": "Solid understanding of QA process. Can discuss different testing types, when they apply, and how QA integrates with development and product.",
+          "description_ru": "Хорошее понимание QA-процесса. Может обсуждать различные виды тестирования, когда они применяются, и как QA интегрируется с разработкой и продуктом."
+        },
+        {
+          "level_id": "strong",
+          "score": 100,
+          "name": "Strong",
+          "name_ru": "Уверенный",
+          "description": "Comprehensive understanding of QA process. Can discuss CI/CD integration, shift-left testing, risk-based testing, and process improvement. Demonstrates strategic thinking about quality.",
+          "description_ru": "Всестороннее понимание QA-процесса. Может обсуждать интеграцию с CI/CD, shift-left тестирование, риск-ориентированное тестирование и улучшение процессов. Демонстрирует стратегическое мышление о качестве."
+        }
+      ]
+    }
+  ]
+}

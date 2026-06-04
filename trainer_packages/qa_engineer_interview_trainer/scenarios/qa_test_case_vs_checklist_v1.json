@@ -1,0 +1,83 @@
+{
+  "scenario_id": "qa_test_case_vs_checklist_v1",
+  "version": "1.0.0",
+  "type": "interview_question",
+  "difficulty": "junior_basic",
+  "difficulty_order": 2,
+  "estimated_duration_minutes": 8,
+  "title": "Test Case vs Checklist: Differences and Use Cases",
+  "title_ru": "Тест-кейс vs Чеклист: различия и применение",
+  "goal": "Evaluate the candidate's understanding of test documentation: the difference between test cases and checklists, their structure, when to use each, and the trade-offs involved.",
+  "goal_ru": "Оценить понимание кандидатом тестовой документации: разница между тест-кейсами и чеклистами, их структура, когда использовать каждый из них и связанные компромиссы.",
+  "context": {
+    "interview_type": "technical_interview",
+    "interviewer_role": "QA Lead",
+    "interviewer_role_ru": "QA Lead",
+    "company_profile": "A product company transitioning from startup processes to more structured QA. The team currently uses only checklists and wants to introduce test cases.",
+    "company_profile_ru": "Продуктовая компания переходит от стартап-процессов к более структурированному QA. Команда сейчас использует только чеклисты и хочет внедрить тест-кейсы."
+  },
+  "steps": [
+    {
+      "step_id": "tcc_step_1",
+      "order": 1,
+      "type": "user_response",
+      "title": "Explain the Difference",
+      "title_ru": "Объясните разницу",
+      "prompt": "Explain the difference between a test case and a checklist in software testing. Compare their structure, when you would use each, their advantages and disadvantages, and give specific examples of each.",
+      "prompt_ru": "Объясните разницу между тест-кейсом и чеклистом в тестировании ПО. Сравните их структуру, когда вы используете каждый, преимущества и недостатки, приведите конкретные примеры.",
+      "max_response_length": 3000,
+      "expects_bullet_points": false
+    }
+  ],
+  "target_skills": [
+    {
+      "skill_id": "test_design",
+      "weight": 50
+    },
+    {
+      "skill_id": "qa_process_knowledge",
+      "weight": 50
+    }
+  ],
+  "scoring_guidelines": {
+    "general_hints": [
+      "Test cases are detailed with preconditions, steps, expected results, and are better for regression and new feature testing.",
+      "Checklists are lightweight lists of items to verify, good for smoke tests and quick checks.",
+      "Candidates should discuss trade-offs: detail vs speed, maintenance effort, reusability.",
+      "Strong answers include examples from real testing scenarios."
+    ],
+    "general_hints_ru": [
+      "Тест-кейсы детальны: предварительные условия, шаги, ожидаемые результаты. Лучше подходят для регрессии и тестирования новых функций.",
+      "Чеклисты — легковесные списки для проверки, хороши для smoke-тестов и быстрых проверок.",
+      "Кандидаты должны обсудить компромиссы: детализация vs скорость, затраты на поддержку, переиспользуемость.",
+      "Сильные ответы содержат примеры из реальных сценариев тестирования."
+    ],
+    "common_mistakes": [
+      "Confusing test cases with test plans or test suites.",
+      "Claiming that checklists are always better than test cases (or vice versa) without discussing context.",
+      "Providing only theoretical definitions without practical examples.",
+      "Ignoring maintenance aspects of test documentation."
+    ],
+    "common_mistakes_ru": [
+      "Путаница тест-кейсов с тест-планами или тест-сьютами.",
+      "Утверждение, что чеклисты всегда лучше тест-кейсов (или наоборот) без обсуждения контекста.",
+      "Только теоретические определения без практических примеров.",
+      "Игнорирование аспектов поддержки тестовой документации."
+    ],
+    "critical_errors_to_watch": ["qa_crit_no_evidence", "qa_crit_no_testing_needed"],
+    "max_allowed_critical_errors": 1,
+    "max_allowed_critical_errors_before_fail": 1
+  },
+  "evaluation_focus": [
+    "Understanding of test case structure",
+    "Understanding of checklist structure",
+    "Ability to compare and contrast both approaches",
+    "Practical examples demonstrating knowledge"
+  ],
+  "evaluation_focus_ru": [
+    "Понимание структуры тест-кейса",
+    "Понимание структуры чеклиста",
+    "Способность сравнивать оба подхода",
+    "Практические примеры, демонстрирующие знания"
+  ]
+}

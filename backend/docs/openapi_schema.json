@@ -1,0 +1,2286 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TrainerPlatform",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "summary": "Ready",
+        "operationId": "ready_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register",
+        "description": "Register a new user account and return a JWT token.",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "description": "Authenticate with email/password and return a JWT token.",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout",
+        "description": "Logout placeholder — invalidates the current session.",
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Logout Api V1 Auth Logout Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Me",
+        "description": "Return the current authenticated user's profile.",
+        "operationId": "get_me_api_v1_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update Me",
+        "description": "Update the current user's profile (display_name, preferred_locale).",
+        "operationId": "update_me_api_v1_me_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/domains": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "List Domains",
+        "description": "Return all active domains with their trainer counts.",
+        "operationId": "list_domains_api_v1_domains_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DomainResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Domains Api V1 Domains Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/domains/{domain_slug}": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Get Domain",
+        "description": "Return a domain detail including its published trainers.",
+        "operationId": "get_domain_api_v1_domains__domain_slug__get",
+        "parameters": [
+          {
+            "name": "domain_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Domain Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trainers/{trainer_slug}": {
+      "get": {
+        "tags": [
+          "Trainers"
+        ],
+        "summary": "Get Trainer",
+        "description": "Return full trainer detail, scenario count, and enrollment status.",
+        "operationId": "get_trainer_api_v1_trainers__trainer_slug__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainerDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trainers/{trainer_slug}/enroll": {
+      "post": {
+        "tags": [
+          "Trainers"
+        ],
+        "summary": "Enroll In Trainer",
+        "description": "Enroll the current user in a trainer. Idempotent.",
+        "operationId": "enroll_in_trainer_api_v1_trainers__trainer_slug__enroll_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrollResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trainers/{trainer_slug}/scenarios": {
+      "get": {
+        "tags": [
+          "Scenarios"
+        ],
+        "summary": "List scenarios for a trainer product",
+        "description": "Return all scenarios published under a trainer product identified by its slug.",
+        "operationId": "list_scenarios_for_trainer_api_v1_trainers__trainer_slug__scenarios_get",
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScenarioSummaryResponse"
+                  },
+                  "title": "Response List Scenarios For Trainer Api V1 Trainers  Trainer Slug  Scenarios Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/scenarios/{scenario_id}": {
+      "get": {
+        "tags": [
+          "Scenarios"
+        ],
+        "summary": "Get scenario detail by scenario_id",
+        "description": "Return full detail for a single scenario by its business scenario_id string.",
+        "operationId": "get_scenario_detail_api_v1_scenarios__scenario_id__get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/scenarios/{scenario_id}/start": {
+      "post": {
+        "tags": [
+          "Runtime"
+        ],
+        "summary": "Start a scenario (creates session + attempt)",
+        "description": "Start a scenario by its business scenario_id string.\n\nCreates a simulation session and an attempt.  Checks the feature flag\n``ff_scenario_runtime_enabled`` and verifies the user is enrolled in the\ntrainer product before allowing the operation.",
+        "operationId": "start_scenario_api_v1_scenarios__scenario_id__start_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartScenarioResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}/messages": {
+      "post": {
+        "tags": [
+          "Runtime"
+        ],
+        "summary": "Submit an answer message to an active session",
+        "description": "Save a user answer message for the given session.\n\nBlocks empty answers and verifies the session belongs to the current user\nand is still active.",
+        "operationId": "submit_message_api_v1_sessions__session_id__messages_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmitMessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/{session_id}/complete": {
+      "post": {
+        "tags": [
+          "Runtime"
+        ],
+        "summary": "Complete an attempt (before AI evaluation call)",
+        "description": "Mark an attempt as completed.\n\nThis endpoint is called *before* the AI evaluation request so the system\nknows the user has finished providing answers.",
+        "operationId": "complete_session_api_v1_sessions__session_id__complete_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteSessionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/attempts/{attempt_id}/evaluate": {
+      "post": {
+        "tags": [
+          "Evaluations"
+        ],
+        "summary": "Trigger AI evaluation for an attempt",
+        "description": "Triggers an AI-based evaluation of a user's attempt. The evaluation processes the user's answer against the scenario rubric and returns the evaluation result after completion.",
+        "operationId": "trigger_evaluation_api_v1_attempts__attempt_id__evaluate_post",
+        "parameters": [
+          {
+            "name": "attempt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Attempt Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateRequest",
+                "default": {
+                  "locale": "ru-RU"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/api/v1/attempts/{attempt_id}/evaluation": {
+      "get": {
+        "tags": [
+          "Evaluations"
+        ],
+        "summary": "Get evaluation result for an attempt",
+        "description": "Retrieves the stored evaluation result for a given attempt, including per-criterion scores, evidence, strengths, and weaknesses.",
+        "operationId": "get_evaluation_api_v1_attempts__attempt_id__evaluation_get",
+        "parameters": [
+          {
+            "name": "attempt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Attempt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me/progress": {
+      "get": {
+        "tags": [
+          "Progress",
+          "Progress"
+        ],
+        "summary": "List Progress",
+        "description": "List progress summaries for all trainers the current user has attempted.",
+        "operationId": "list_progress_api_v1_me_progress_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllProgressResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/progress/{trainer_slug}": {
+      "get": {
+        "tags": [
+          "Progress",
+          "Progress"
+        ],
+        "summary": "Get Progress For Trainer",
+        "description": "Return progress for a single trainer identified by its slug.",
+        "operationId": "get_progress_for_trainer_api_v1_me_progress__trainer_slug__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressSummaryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/events": {
+      "post": {
+        "tags": [
+          "Analytics",
+          "Analytics"
+        ],
+        "summary": "Record Event",
+        "description": "Record an analytics event.\n\nEvents are validated against an allowlist of safe event types.\nSensitive data (answers, passwords, tokens, API keys) is stripped\nfrom the ``properties`` payload before persistence.",
+        "operationId": "record_event_api_v1_analytics_events_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyticsEventRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsEventResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/seed-status": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Admin"
+        ],
+        "summary": "Seed Status",
+        "description": "Return row counts from all major seeded tables.",
+        "operationId": "seed_status_api_v1_admin_seed_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedStatusResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/system-health": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Admin"
+        ],
+        "summary": "System Health",
+        "description": "Return system health including database connectivity and module statuses.",
+        "operationId": "system_health_api_v1_admin_system_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemHealthResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/evaluations/failures": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Admin"
+        ],
+        "summary": "Evaluation Failures",
+        "description": "Return a list of failed evaluations (raw answer data excluded).\n\nControlled by the ``limit`` query parameter (max 200).",
+        "operationId": "evaluation_failures_api_v1_admin_evaluations_failures_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Evaluation Failures Api V1 Admin Evaluations Failures Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/analytics/sanity": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Admin"
+        ],
+        "summary": "Analytics Sanity",
+        "description": "Return total analytics event count and a breakdown by event type.",
+        "operationId": "analytics_sanity_api_v1_admin_analytics_sanity_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAnalyticsSanityResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdminAnalyticsSanityResponse": {
+        "properties": {
+          "total_events": {
+            "type": "integer",
+            "title": "Total Events"
+          },
+          "events_by_type": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Events By Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_events",
+          "events_by_type"
+        ],
+        "title": "AdminAnalyticsSanityResponse",
+        "description": "Analytics event sanity check."
+      },
+      "AllProgressResponse": {
+        "properties": {
+          "progress_list": {
+            "items": {
+              "$ref": "#/components/schemas/ProgressSummaryResponse"
+            },
+            "type": "array",
+            "title": "Progress List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "progress_list"
+        ],
+        "title": "AllProgressResponse",
+        "description": "Response wrapping a list of trainer progress summaries."
+      },
+      "AnalyticsEventRequest": {
+        "properties": {
+          "event_type": {
+            "type": "string",
+            "title": "Event Type"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "trainer_slug": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trainer Slug"
+          },
+          "scenario_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Id"
+          },
+          "properties": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Properties"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_type"
+        ],
+        "title": "AnalyticsEventRequest",
+        "description": "Payload for recording a single analytics event."
+      },
+      "AnalyticsEventResponse": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "title": "Event Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "recorded"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_id"
+        ],
+        "title": "AnalyticsEventResponse",
+        "description": "Confirmation response after recording an event."
+      },
+      "CompleteSessionResponse": {
+        "properties": {
+          "attempt_id": {
+            "type": "string",
+            "title": "Attempt Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "attempt_id",
+          "status",
+          "message"
+        ],
+        "title": "CompleteSessionResponse",
+        "description": "Response returned after an attempt is marked complete."
+      },
+      "CriterionResultResponse": {
+        "properties": {
+          "criterion_id": {
+            "type": "string",
+            "title": "Criterion Id"
+          },
+          "score": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Score"
+          },
+          "evidence": {
+            "type": "string",
+            "title": "Evidence"
+          },
+          "comment": {
+            "type": "string",
+            "title": "Comment",
+            "default": ""
+          },
+          "improvement": {
+            "type": "string",
+            "title": "Improvement",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "criterion_id",
+          "score",
+          "evidence"
+        ],
+        "title": "CriterionResultResponse",
+        "description": "Single criterion evaluation result."
+      },
+      "DomainDetailResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "icon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Icon"
+          },
+          "trainers": {
+            "items": {
+              "$ref": "#/components/schemas/TrainerSummaryResponse"
+            },
+            "type": "array",
+            "title": "Trainers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "description",
+          "icon",
+          "trainers"
+        ],
+        "title": "DomainDetailResponse",
+        "description": "Domain detail including its published trainers."
+      },
+      "DomainResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "icon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Icon"
+          },
+          "sort_order": {
+            "type": "integer",
+            "title": "Sort Order"
+          },
+          "trainer_count": {
+            "type": "integer",
+            "title": "Trainer Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "description",
+          "icon",
+          "sort_order",
+          "trainer_count"
+        ],
+        "title": "DomainResponse",
+        "description": "Domain listing item with trainer count."
+      },
+      "EnrollResponse": {
+        "properties": {
+          "enrollment_id": {
+            "type": "string",
+            "title": "Enrollment Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enrollment_id",
+          "status",
+          "message"
+        ],
+        "title": "EnrollResponse",
+        "description": "Response returned after enrolling in a trainer."
+      },
+      "EvaluateRequest": {
+        "properties": {
+          "locale": {
+            "type": "string",
+            "title": "Locale",
+            "description": "Evaluation locale (e.g. ru-RU, en-US)",
+            "default": "ru-RU"
+          }
+        },
+        "type": "object",
+        "title": "EvaluateRequest",
+        "description": "Payload for triggering evaluation of an attempt."
+      },
+      "EvaluationErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "attempt_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attempt Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error",
+          "detail"
+        ],
+        "title": "EvaluationErrorResponse",
+        "description": "Standard error response for evaluation endpoints."
+      },
+      "EvaluationResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "attempt_id": {
+            "type": "string",
+            "title": "Attempt Id"
+          },
+          "overall_score": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Overall Score"
+          },
+          "passed": {
+            "type": "boolean",
+            "title": "Passed"
+          },
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/CriterionResultResponse"
+            },
+            "type": "array",
+            "title": "Criteria",
+            "default": []
+          },
+          "strengths": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Strengths",
+            "default": []
+          },
+          "weak_points": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Weak Points",
+            "default": []
+          },
+          "critical_errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Critical Errors",
+            "default": []
+          },
+          "next_recommendation": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Recommendation"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "default": 0.0
+          },
+          "ai_model_used": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Model Used"
+          },
+          "ai_cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Cost Usd"
+          },
+          "ai_latency_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Latency Ms"
+          },
+          "validation_status": {
+            "type": "string",
+            "title": "Validation Status",
+            "default": "validated"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "attempt_id",
+          "overall_score",
+          "passed"
+        ],
+        "title": "EvaluationResponse",
+        "description": "Full evaluation result for an attempt."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LoginRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "description": "User password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginRequest",
+        "description": "Request body for user login."
+      },
+      "ProgressSummaryResponse": {
+        "properties": {
+          "trainer_slug": {
+            "type": "string",
+            "title": "Trainer Slug"
+          },
+          "trainer_name": {
+            "type": "string",
+            "title": "Trainer Name"
+          },
+          "average_score": {
+            "type": "number",
+            "title": "Average Score"
+          },
+          "completed_scenarios": {
+            "type": "integer",
+            "title": "Completed Scenarios"
+          },
+          "total_attempts": {
+            "type": "integer",
+            "title": "Total Attempts"
+          },
+          "readiness_status": {
+            "type": "string",
+            "title": "Readiness Status"
+          },
+          "skill_scores": {
+            "items": {
+              "$ref": "#/components/schemas/SkillScoreResponse"
+            },
+            "type": "array",
+            "title": "Skill Scores"
+          }
+        },
+        "type": "object",
+        "required": [
+          "trainer_slug",
+          "trainer_name",
+          "average_score",
+          "completed_scenarios",
+          "total_attempts",
+          "readiness_status",
+          "skill_scores"
+        ],
+        "title": "ProgressSummaryResponse",
+        "description": "Aggregated progress summary for a single trainer."
+      },
+      "RegisterRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Password",
+            "description": "User password (min 8 chars)"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name",
+            "description": "Display name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "RegisterRequest",
+        "description": "Request body for user registration."
+      },
+      "ScenarioDetailResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "goal_key": {
+            "type": "string",
+            "title": "Goal Key"
+          },
+          "trainer_product_id": {
+            "type": "string",
+            "title": "Trainer Product Id"
+          },
+          "difficulty": {
+            "type": "string",
+            "title": "Difficulty"
+          },
+          "estimated_duration_minutes": {
+            "type": "integer",
+            "title": "Estimated Duration Minutes"
+          },
+          "target_skills": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Skills"
+          },
+          "user_role": {
+            "type": "string",
+            "title": "User Role"
+          },
+          "ai_role": {
+            "type": "string",
+            "title": "Ai Role"
+          },
+          "steps": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Steps"
+          },
+          "hints": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hints"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "scenario_id",
+          "title_key",
+          "goal_key",
+          "trainer_product_id",
+          "difficulty",
+          "estimated_duration_minutes",
+          "user_role",
+          "ai_role",
+          "status"
+        ],
+        "title": "ScenarioDetailResponse",
+        "description": "Full scenario detail returned for a single scenario."
+      },
+      "ScenarioSummaryResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "goal_key": {
+            "type": "string",
+            "title": "Goal Key"
+          },
+          "difficulty": {
+            "type": "string",
+            "title": "Difficulty"
+          },
+          "estimated_duration_minutes": {
+            "type": "integer",
+            "title": "Estimated Duration Minutes"
+          },
+          "track": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Track"
+          },
+          "module": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "scenario_id",
+          "title_key",
+          "goal_key",
+          "difficulty",
+          "estimated_duration_minutes"
+        ],
+        "title": "ScenarioSummaryResponse",
+        "description": "Lightweight scenario summary returned in list endpoints."
+      },
+      "SeedStatusResponse": {
+        "properties": {
+          "domains": {
+            "type": "integer",
+            "title": "Domains"
+          },
+          "trainers": {
+            "type": "integer",
+            "title": "Trainers"
+          },
+          "scenarios": {
+            "type": "integer",
+            "title": "Scenarios"
+          },
+          "rubrics": {
+            "type": "integer",
+            "title": "Rubrics"
+          },
+          "locales": {
+            "type": "integer",
+            "title": "Locales"
+          },
+          "skills": {
+            "type": "integer",
+            "title": "Skills"
+          },
+          "enrollments": {
+            "type": "integer",
+            "title": "Enrollments"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domains",
+          "trainers",
+          "scenarios",
+          "rubrics",
+          "locales",
+          "skills",
+          "enrollments"
+        ],
+        "title": "SeedStatusResponse",
+        "description": "Counts of seeded entities across the platform."
+      },
+      "SkillScoreResponse": {
+        "properties": {
+          "skill_id": {
+            "type": "string",
+            "title": "Skill Id"
+          },
+          "skill_name": {
+            "type": "string",
+            "title": "Skill Name"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "attempts_count": {
+            "type": "integer",
+            "title": "Attempts Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "skill_id",
+          "skill_name",
+          "score",
+          "level",
+          "attempts_count"
+        ],
+        "title": "SkillScoreResponse",
+        "description": "Score for a single skill within a trainer's progress."
+      },
+      "StartScenarioResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "attempt_id": {
+            "type": "string",
+            "title": "Attempt Id"
+          },
+          "scenario": {
+            "type": "object",
+            "title": "Scenario"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "attempt_id",
+          "scenario",
+          "status"
+        ],
+        "title": "StartScenarioResponse",
+        "description": "Response returned when a user starts a scenario."
+      },
+      "SubmitMessageRequest": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "SubmitMessageRequest",
+        "description": "Request body for submitting a user answer message."
+      },
+      "SubmitMessageResponse": {
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "title": "Message Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message_id",
+          "status"
+        ],
+        "title": "SubmitMessageResponse",
+        "description": "Response returned after a message is saved."
+      },
+      "SystemHealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "database": {
+            "type": "string",
+            "title": "Database"
+          },
+          "modules": {
+            "type": "object",
+            "title": "Modules"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "database",
+          "modules"
+        ],
+        "title": "SystemHealthResponse",
+        "description": "System health summary."
+      },
+      "TokenResponse": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "user"
+        ],
+        "title": "TokenResponse",
+        "description": "JWT token response returned on successful auth."
+      },
+      "TrainerDetailResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "trainer_product_id": {
+            "type": "string",
+            "title": "Trainer Product Id"
+          },
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "product_type": {
+            "type": "string",
+            "title": "Product Type"
+          },
+          "target_audience": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Audience"
+          },
+          "supported_locales": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supported Locales"
+          },
+          "default_locale": {
+            "type": "string",
+            "title": "Default Locale"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "scenario_count": {
+            "type": "integer",
+            "title": "Scenario Count"
+          },
+          "is_enrolled": {
+            "type": "boolean",
+            "title": "Is Enrolled"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "trainer_product_id",
+          "slug",
+          "name",
+          "description",
+          "product_type",
+          "target_audience",
+          "supported_locales",
+          "default_locale",
+          "status",
+          "scenario_count",
+          "is_enrolled"
+        ],
+        "title": "TrainerDetailResponse",
+        "description": "Full trainer detail including scenario count and enrollment status."
+      },
+      "TrainerSummaryResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "trainer_product_id": {
+            "type": "string",
+            "title": "Trainer Product Id"
+          },
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "product_type": {
+            "type": "string",
+            "title": "Product Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "trainer_product_id",
+          "slug",
+          "name",
+          "description",
+          "product_type"
+        ],
+        "title": "TrainerSummaryResponse",
+        "description": "Minimal trainer representation used in domain detail responses."
+      },
+      "UpdateProfileRequest": {
+        "properties": {
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name",
+            "description": "Display name"
+          },
+          "preferred_locale": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred Locale",
+            "description": "Preferred locale (e.g. ru-RU, en-US)"
+          }
+        },
+        "type": "object",
+        "title": "UpdateProfileRequest",
+        "description": "Request body for updating user profile fields."
+      },
+      "UserProfileResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "preferred_locale": {
+            "type": "string",
+            "title": "Preferred Locale",
+            "default": "ru-RU"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "role",
+          "is_active"
+        ],
+        "title": "UserProfileResponse",
+        "description": "Full user profile returned to the client."
+      },
+      "UserResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "role",
+          "is_active"
+        ],
+        "title": "UserResponse",
+        "description": "Public user data returned in auth responses."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

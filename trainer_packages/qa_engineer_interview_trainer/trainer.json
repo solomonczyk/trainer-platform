@@ -1,0 +1,15 @@
+{
+  "trainer_product_id": "qa_engineer_interview_trainer",
+  "domain": "it",
+  "slug": "qa-engineer-interview-trainer",
+  "name": "QA Engineer Interview Trainer",
+  "name_en": "QA Engineer Interview Trainer",
+  "product_type": "interview_simulator",
+  "target_audience": ["junior_qa_candidate", "career_switcher", "trainee_qa"],
+  "default_locale": "ru-RU",
+  "supported_locales": ["ru-RU", "en-US"],
+  "status": "published_seed",
+  "owner": "platform",
+  "description": "Text-based interview trainer for Junior QA candidates. Practice answering common QA interview questions with structured AI evaluation.",
+  "description_ru": "Текстовый тренажёр для подготовки к собеседованию на Junior QA. Практикуйте ответы на типовые вопросы с структурированной AI-оценкой."
+}

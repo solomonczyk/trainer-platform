@@ -1,0 +1,234 @@
+{
+  "rubric_pack_id": "qa_interview_rubric_pack_v1",
+  "name": "Junior QA Interview Rubrics",
+  "name_ru": "Критерии оценки собеседования Junior QA",
+  "description": "Rubrics for evaluating Junior QA candidate answers across interview scenarios.",
+  "description_ru": "Критерии для оценки ответов кандидатов Junior QA в сценариях собеседования.",
+  "rubrics": [
+    {
+      "rubric_id": "qa_self_presentation_rubric_v1",
+      "scenario_id": "qa_self_presentation_v1",
+      "name": "Self-Presentation Rubric",
+      "name_ru": "Критерии самопрезентации",
+      "pass_score": 60,
+      "criteria": [
+        {
+          "criterion_id": "self_pres_structure",
+          "name": "Structure",
+          "name_ru": "Структура",
+          "description": "How well the answer is organized: introduction, body, conclusion. Logical flow of information.",
+          "description_ru": "Насколько хорошо организован ответ: введение, основная часть, заключение. Логическая последовательность.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "self_pres_relevance",
+          "name": "Relevance to QA",
+          "name_ru": "Релевантность QA",
+          "description": "Whether the presented experience and skills are relevant to the QA role being applied for.",
+          "description_ru": "Насколько представленный опыт и навыки релевантны должности QA, на которую идет собеседование.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "self_pres_clarity",
+          "name": "Clarity",
+          "name_ru": "Четкость",
+          "description": "Clarity of speech, use of professional terminology, and confidence in delivery.",
+          "description_ru": "Четкость изложения, использование профессиональной терминологии и уверенность подачи.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "self_pres_goals",
+          "name": "Goals and Motivation",
+          "name_ru": "Цели и мотивация",
+          "description": "Clear articulation of career goals, motivation for QA, and what the candidate seeks in the role.",
+          "description_ru": "Четкое изложение карьерных целей, мотивации к QA и того, что кандидат ищет в этой должности.",
+          "weight": 25,
+          "evidence_required": true
+        }
+      ]
+    },
+    {
+      "rubric_id": "qa_test_case_vs_checklist_rubric_v1",
+      "scenario_id": "qa_test_case_vs_checklist_v1",
+      "name": "Test Case vs Checklist Rubric",
+      "name_ru": "Критерии: тест-кейс vs чеклист",
+      "pass_score": 65,
+      "criteria": [
+        {
+          "criterion_id": "tcc_understanding",
+          "name": "Understanding of Concepts",
+          "name_ru": "Понимание концепций",
+          "description": "Depth of understanding of what test cases and checklists are, their purpose, and components.",
+          "description_ru": "Глубина понимания того, что такое тест-кейсы и чеклисты, их назначение и составные части.",
+          "weight": 30,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "tcc_examples",
+          "name": "Examples",
+          "name_ru": "Примеры",
+          "description": "Quality and relevance of examples provided to illustrate differences between test cases and checklists.",
+          "description_ru": "Качество и релевантность примеров, иллюстрирующих различия между тест-кейсами и чеклистами.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "tcc_reasoning",
+          "name": "Reasoning",
+          "name_ru": "Рассуждение",
+          "description": "Ability to reason about when to use each approach and explain the trade-offs between them.",
+          "description_ru": "Способность рассуждать о том, когда использовать каждый подход, и объяснять компромиссы между ними.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "tcc_completeness",
+          "name": "Completeness",
+          "name_ru": "Полнота",
+          "description": "Coverage of all relevant aspects: structure, use cases, maintenance, level of detail, automation suitability.",
+          "description_ru": "Охват всех relevant аспектов: структура, варианты использования, сопровождение, детализация, пригодность для автоматизации.",
+          "weight": 20,
+          "evidence_required": true
+        }
+      ]
+    },
+    {
+      "rubric_id": "qa_bug_report_rubric_v1",
+      "scenario_id": "qa_bug_report_structure_v1",
+      "name": "Bug Report Structure Rubric",
+      "name_ru": "Критерии структуры баг-репорта",
+      "pass_score": 70,
+      "criteria": [
+        {
+          "criterion_id": "bug_struct_structure",
+          "name": "Structure",
+          "name_ru": "Структура",
+          "description": "Knowledge of all required fields in a bug report: title, description, steps to reproduce, actual/expected result, environment, attachments.",
+          "description_ru": "Знание всех обязательных полей баг-репорта: заголовок, описание, шаги воспроизведения, фактический/ожидаемый результат, окружение, вложения.",
+          "weight": 20,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "bug_struct_technical_accuracy",
+          "name": "Technical Accuracy",
+          "name_ru": "Техническая точность",
+          "description": "Correct use of severity and priority classifications. Understanding of when and how to escalate bugs.",
+          "description_ru": "Корректное использование классификаций severity и priority. Понимание когда и как эскалировать баги.",
+          "weight": 30,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "bug_struct_completeness",
+          "name": "Completeness",
+          "name_ru": "Полнота",
+          "description": "Comprehensive coverage of bug report elements, including edge cases for environment details and auxiliary information.",
+          "description_ru": "Всесторонний охват элементов баг-репорта, включая краевые случаи для деталей окружения и вспомогательной информации.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "bug_struct_clarity",
+          "name": "Clarity",
+          "name_ru": "Четкость",
+          "description": "Clarity of reproduction steps, precision of expected vs actual results, and overall readability of the report.",
+          "description_ru": "Четкость шагов воспроизведения, точность ожидаемого и фактического результатов, общая читаемость отчета.",
+          "weight": 25,
+          "evidence_required": true
+        }
+      ]
+    },
+    {
+      "rubric_id": "qa_regression_vs_retest_rubric_v1",
+      "scenario_id": "qa_regression_vs_retest_v1",
+      "name": "Regression vs Retest Rubric",
+      "name_ru": "Критерии: регрессия vs ретест",
+      "pass_score": 65,
+      "criteria": [
+        {
+          "criterion_id": "rvr_understanding",
+          "name": "Understanding",
+          "name_ru": "Понимание",
+          "description": "Clear understanding of both regression testing and retesting as distinct concepts.",
+          "description_ru": "Четкое понимание регрессионного тестирования и ретеста как различных концепций.",
+          "weight": 30,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "rvr_differentiation",
+          "name": "Differentiation",
+          "name_ru": "Различие",
+          "description": "Ability to clearly differentiate between regression testing and retesting, including when each is performed.",
+          "description_ru": "Способность четко различать регрессионное тестирование и ретест, включая понимание когда каждый из них выполняется.",
+          "weight": 30,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "rvr_examples",
+          "name": "Examples",
+          "name_ru": "Примеры",
+          "description": "Relevant real-world examples demonstrating the application of both types of testing.",
+          "description_ru": "Релевантные примеры из реальной практики, демонстрирующие применение обоих видов тестирования.",
+          "weight": 20,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "rvr_context",
+          "name": "Context Awareness",
+          "name_ru": "Контекст",
+          "description": "Understanding of when to apply regression vs retest in different project contexts and development methodologies.",
+          "description_ru": "Понимание когда применять регрессию vs ретест в различных контекстах проектов и методологиях разработки.",
+          "weight": 20,
+          "evidence_required": true
+        }
+      ]
+    },
+    {
+      "rubric_id": "qa_login_form_rubric_v1",
+      "scenario_id": "qa_login_form_testing_v1",
+      "name": "Login Form Testing Rubric",
+      "name_ru": "Критерии тестирования формы логина",
+      "pass_score": 70,
+      "criteria": [
+        {
+          "criterion_id": "login_coverage",
+          "name": "Test Coverage",
+          "name_ru": "Покрытие тестами",
+          "description": "Breadth of test scenarios identified: valid login, invalid credentials, empty fields, password visibility, etc.",
+          "description_ru": "Широта выявленных тестовых сценариев: успешный вход, неверные учетные данные, пустые поля, видимость пароля и т.д.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "login_test_design",
+          "name": "Test Design Application",
+          "name_ru": "Применение тест-дизайна",
+          "description": "Use of test design techniques: equivalence partitioning, boundary value analysis applied to form fields.",
+          "description_ru": "Использование техник тест-дизайна: эквивалентное разделение, анализ граничных значений для полей формы.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "login_edge_cases",
+          "name": "Edge Cases",
+          "name_ru": "Краевые случаи",
+          "description": "Identification of edge cases: SQL injection, XSS, brute force protection, session management, CAPTCHA, remember me.",
+          "description_ru": "Выявление краевых случаев: SQL-инъекции, XSS, защита от брутфорса, управление сессиями, CAPTCHA, запомнить меня.",
+          "weight": 25,
+          "evidence_required": true
+        },
+        {
+          "criterion_id": "login_structure",
+          "name": "Structure",
+          "name_ru": "Структура",
+          "description": "Organization of test scenarios into logical groups: positive tests, negative tests, security tests, UI/UX tests.",
+          "description_ru": "Организация тестовых сценариев в логические группы: позитивные тесты, негативные тесты, тесты безопасности, UI/UX тесты.",
+          "weight": 25,
+          "evidence_required": true
+        }
+      ]
+    }
+  ]
+}

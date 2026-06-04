@@ -1,0 +1,123 @@
+"""FastAPI application entry point."""
+
+from __future__ import annotations
+
+import uuid
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+from app.core.config import settings
+from app.core.logging import configure_logging, get_logger
+from app.core.errors import global_error_handler
+from app.core.rate_limiter import RateLimitMiddleware
+from app.db.session import engine
+from app.db.base import Base
+
+logger = get_logger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan: startup/shutdown."""
+    configure_logging()
+    logger.info("Starting Trainer Platform API", version=settings.app_version)
+    # Create tables if not exist (for dev/test convenience)
+    if settings.app_env == "development":
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    yield
+    await engine.dispose()
+    logger.info("Trainer Platform API stopped")
+
+
+app = FastAPI(
+    title=settings.app_name,
+    version=settings.app_version,
+    lifespan=lifespan,
+    docs_url="/docs" if settings.debug else None,
+    redoc_url="/redoc" if settings.debug else None,
+)
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.frontend_url, "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Rate limiting (disabled by default in development)
+app.add_middleware(RateLimitMiddleware)
+
+# Global error handler
+app.exception_handler(Exception)(global_error_handler)
+
+
+# Middleware: request_id
+@app.middleware("http")
+async def add_request_id(request: Request, call_next):
+    request_id = request.headers.get(settings.request_id_header, str(uuid.uuid4()))
+    request.state.request_id = request_id
+    response = await call_next(request)
+    response.headers[settings.request_id_header] = request_id
+    return response
+
+
+# ---------------------------------------------------------------------------
+# Health / Ready
+# ---------------------------------------------------------------------------
+
+@app.get("/health")
+async def health():
+    return {"status": "ok", "app": settings.app_name, "version": settings.app_version}
+
+
+@app.get("/ready")
+async def ready():
+    try:
+        async with engine.begin() as conn:
+            await conn.execute(lambda s: s.text("SELECT 1"))
+        db_status = "ok"
+    except Exception as e:
+        db_status = f"error: {e}"
+    return {"status": "ok" if db_status == "ok" else "degraded", "database": db_status}
+
+
+# ---------------------------------------------------------------------------
+# Register Routers
+# ---------------------------------------------------------------------------
+
+from app.modules.auth import router as auth_router
+from app.modules.users import router as users_router
+from app.modules.domains import router as domains_router
+from app.modules.trainers import router as trainers_router
+from app.modules.scenarios import router as scenarios_router
+from app.modules.runtime import router as runtime_router
+from app.modules.evaluations import router as evaluations_router
+from app.modules.progress import router as progress_router
+from app.modules.analytics import router as analytics_router
+from app.modules.admin import router as admin_router
+
+app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
+app.include_router(users_router, prefix="/api/v1", tags=["Users"])
+app.include_router(domains_router, prefix="/api/v1", tags=["Domains"])
+app.include_router(trainers_router, prefix="/api/v1", tags=["Trainers"])
+app.include_router(scenarios_router, prefix="/api/v1", tags=["Scenarios"])
+app.include_router(runtime_router, prefix="/api/v1", tags=["Runtime"])
+app.include_router(evaluations_router, prefix="/api/v1", tags=["Evaluations"])
+app.include_router(progress_router, prefix="/api/v1", tags=["Progress"])
+app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["Analytics"])
+app.include_router(admin_router, prefix="/api/v1/admin", tags=["Admin"])
+
+
+# ---------------------------------------------------------------------------
+# OpenAPI export at runtime
+# ---------------------------------------------------------------------------
+
+@app.get("/openapi.json", include_in_schema=False)
+async def get_openapi():
+    return app.openapi()

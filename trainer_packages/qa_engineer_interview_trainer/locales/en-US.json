@@ -1,0 +1,201 @@
+{
+  "locale": "en-US",
+  "language_name": "English",
+  "trainer_product": {
+    "name": "QA Engineer Interview Trainer",
+    "description": "Text-based interview trainer for Junior QA candidates. Practice answering common QA interview questions with structured AI evaluation.",
+    "tagline": "Junior QA Interview Preparation with AI Evaluation",
+    "welcome_message": "Welcome to the Junior QA Interview Trainer! Practice answering common interview questions, receive structured feedback, and improve your skills.",
+    "start_button": "Start Training",
+    "continue_button": "Continue",
+    "reset_button": "Start Over"
+  },
+  "scenarios": {
+    "qa_self_presentation_v1": {
+      "title": "Tell Me About Yourself as a QA Candidate",
+      "goal": "Evaluate the candidate's ability to present themselves professionally, structure their background, and articulate their motivation for pursuing a QA role.",
+      "step_titles": {
+        "self_presentation_step_1": "Introduce Yourself"
+      },
+      "step_prompts": {
+        "self_presentation_step_1": "Please introduce yourself. Tell us about your background, your journey into QA, your key skills, and why you are interested in this Junior QA Engineer position. Structure your answer clearly."
+      },
+      "hints": [
+        "Follow a structure: past experience, transition to QA, current skills, future goals.",
+        "Use a professional tone and relevant technical background.",
+        "Avoid overly generic answers that don't connect to the QA role.",
+        "Mention specific technologies, tools, or methodologies you have worked with."
+      ],
+      "context": {
+        "interviewer": "HR Manager",
+        "company": "Mid-size product company looking for a Junior QA Engineer to join a mobile and web application team."
+      }
+    },
+    "qa_test_case_vs_checklist_v1": {
+      "title": "Test Case vs Checklist: Differences and Use Cases",
+      "goal": "Evaluate the candidate's understanding of test documentation: the difference between test cases and checklists, their structure, when to use each, and the trade-offs involved.",
+      "step_titles": {
+        "tcc_step_1": "Explain the Difference"
+      },
+      "step_prompts": {
+        "tcc_step_1": "Explain the difference between a test case and a checklist in software testing. Compare their structure, when you would use each, their advantages and disadvantages, and give specific examples of each."
+      },
+      "hints": [
+        "Test cases are detailed with preconditions, steps, expected results.",
+        "Checklists are lightweight lists of items to verify, good for smoke tests.",
+        "Discuss trade-offs: detail vs speed, maintenance effort, reusability.",
+        "Give examples from real testing scenarios."
+      ],
+      "context": {
+        "interviewer": "QA Lead",
+        "company": "A product company transitioning from startup processes to more structured QA."
+      }
+    },
+    "qa_bug_report_structure_v1": {
+      "title": "Bug Report Structure",
+      "goal": "Evaluate the candidate's knowledge of proper bug report structure, including all required fields, severity vs priority classification, and best practices for writing clear reproduction steps.",
+      "step_titles": {
+        "bug_report_step_1": "Describe Bug Report Structure"
+      },
+      "step_prompts": {
+        "bug_report_step_1": "Describe the ideal structure of a bug report. What fields should it contain? Explain the difference between severity and priority, and walk me through how you would write clear steps to reproduce. Give examples of good and bad bug report practices."
+      },
+      "hints": [
+        "A complete bug report includes: title, description, environment, steps to reproduce, actual/expected result, severity, priority, attachments.",
+        "Severity = impact on the system, Priority = urgency for the business.",
+        "Steps to reproduce should be clear, numbered, self-contained.",
+        "Include environment details: OS, browser, device, app version."
+      ],
+      "context": {
+        "interviewer": "QA Team Lead",
+        "company": "E-commerce platform using JIRA. Team works with distributed developers across time zones."
+      }
+    },
+    "qa_regression_vs_retest_v1": {
+      "title": "Regression Testing vs Retesting",
+      "goal": "Evaluate the candidate's ability to distinguish between regression testing and retesting, understand when each is applied, and explain their roles in the QA process with practical examples.",
+      "step_titles": {
+        "rvr_step_1": "Explain Regression vs Retest"
+      },
+      "step_prompts": {
+        "rvr_step_1": "Explain the difference between regression testing and retesting. When do you perform each? Why is it important to distinguish between them? Provide real-world examples from your experience or typical project scenarios."
+      },
+      "hints": [
+        "Retesting = testing a specific bug fix to confirm it's resolved. Focused and targeted.",
+        "Regression testing = checking that recent changes haven't broken existing functionality. Broader scope.",
+        "Retesting comes before regression testing in a typical workflow.",
+        "Regression often uses automated suites or risk-based approaches."
+      ],
+      "context": {
+        "interviewer": "Senior QA Engineer",
+        "company": "A fintech company with frequent releases. Team regularly deals with bug fixes and new features."
+      }
+    },
+    "qa_login_form_testing_v1": {
+      "title": "Login Form Testing Scenarios",
+      "goal": "Evaluate the candidate's ability to design comprehensive test scenarios for a login form, applying test design techniques, identifying edge cases, and structuring their test coverage logically.",
+      "step_titles": {
+        "login_step_1": "Design Login Form Test Scenarios"
+      },
+      "step_prompts": {
+        "login_step_1": "You are testing a login form with email, password, submit button, 'Remember Me' checkbox, and a 'Forgot Password' link. Design a comprehensive set of test scenarios. Use test design techniques (equivalence partitioning, boundary value analysis) and cover positive cases, negative cases, edge cases, and security aspects. Structure your answer into logical groups."
+      },
+      "hints": [
+        "Positive scenarios + negative: invalid email format, wrong password, empty fields.",
+        "Edge cases: long email, Unicode, SQL injection, XSS, brute force, session timeout.",
+        "Security: password masking, HTTPS, tokens, CAPTCHA.",
+        "Structure by groups: functional, negative, security, UX."
+      ],
+      "context": {
+        "interviewer": "QA Lead",
+        "company": "A SaaS platform with 2 million active users is redesigning its login page."
+      }
+    }
+  },
+  "ui": {
+    "labels": {
+      "score": "Score",
+      "total_score": "Total Score",
+      "passed": "Passed",
+      "failed": "Failed",
+      "pass_score": "Pass Score",
+      "strengths": "Strengths",
+      "weak_points": "Weak Points",
+      "critical_errors": "Critical Errors",
+      "critical_error_detected": "Critical Error Detected",
+      "critical_errors_count": "Critical Errors Count",
+      "next_recommendation": "Recommendation",
+      "retry": "Retry",
+      "next_step": "Next",
+      "previous_step": "Back",
+      "finish": "Finish",
+      "skip": "Skip",
+      "submit_answer": "Submit Answer",
+      "your_answer": "Your Answer",
+      "type_answer_here": "Type your answer here...",
+      "response_placeholder": "Write your answer to the interviewer's question...",
+      "scenario_progress": "Scenario {current} of {total}",
+      "overall_progress": "Overall Progress: {percent}%",
+      "time_remaining": "Time remaining: {minutes} min {seconds} sec",
+      "evaluation": "Answer Evaluation",
+      "score_breakdown": "Score Breakdown",
+      "skill_level": "Skill Level",
+      "criteria_scores": "Criteria Scores",
+      "feedback": "Feedback",
+      "no_critical_errors": "No critical errors detected",
+      "evaluation_loading": "Evaluating your answer...",
+      "evaluation_complete": "Evaluation complete",
+      "answer_saved": "Answer saved",
+      "confirm_restart": "Are you sure you want to start over? All progress will be lost.",
+      "confirm_exit": "Are you sure you want to exit? All progress will be lost.",
+      "session_expired": "Session expired. Please start over.",
+      "network_error": "Network error. Check your connection and try again.",
+      "general_error": "An error occurred. Please try again.",
+      "max_length_warning": "Answer is too long. Maximum length: {max} characters.",
+      "min_length_warning": "Answer is too short. Please write a detailed response.",
+      "required_field": "This field is required."
+    },
+    "progress": {
+      "readiness_status": {
+        "not_started": "Not Started",
+        "started": "Started",
+        "developing": "Developing",
+        "ready": "Ready",
+        "strong": "Strong"
+      },
+      "scenario_status": {
+        "pending": "Pending",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "overall_readiness": "Overall Readiness",
+      "skills_progress": "Skills Progress",
+      "scenarios_completed": "Scenarios completed: {completed} of {total}",
+      "average_score": "Average Score",
+      "best_score": "Best Score",
+      "improvement_since_last": "Improvement Since Last Attempt"
+    },
+    "results": {
+      "congratulations": "Congratulations on completing the training!",
+      "overall_result": "Overall Result",
+      "result_passed": "Training passed successfully",
+      "result_failed": "Training not passed",
+      "result_failed_critical": "Training not passed due to critical errors",
+      "score_summary": "Score Summary by Scenario",
+      "skill_breakdown": "Skill Breakdown",
+      "areas_for_improvement": "Areas for Improvement",
+      "recommended_next_steps": "Recommended Next Steps",
+      "share_results": "Share Results",
+      "retry_all": "Retry All Scenarios",
+      "review_answers": "Review Answers",
+      "download_report": "Download Report"
+    },
+    "interview_disclaimer": {
+      "title": "About the Interview Simulation",
+      "text": "This trainer simulates a Junior QA Engineer interview using AI for answer evaluation. Evaluation is based on predefined criteria and may not fully reflect a real human-led interview. Use the feedback to improve your skills, but keep in mind that real interviews may differ in format and requirements.",
+      "accept": "I understand, start training",
+      "decline": "Go back"
+    }
+  }
+}

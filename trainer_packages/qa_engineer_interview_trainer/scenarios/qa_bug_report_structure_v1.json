@@ -1,0 +1,83 @@
+{
+  "scenario_id": "qa_bug_report_structure_v1",
+  "version": "1.0.0",
+  "type": "interview_question",
+  "difficulty": "junior_basic",
+  "difficulty_order": 3,
+  "estimated_duration_minutes": 8,
+  "title": "Bug Report Structure",
+  "title_ru": "Структура баг-репорта",
+  "goal": "Evaluate the candidate's knowledge of proper bug report structure, including all required fields, severity vs priority classification, and best practices for writing clear reproduction steps.",
+  "goal_ru": "Оценить знание кандидатом правильной структуры баг-репорта, включая все обязательные поля, классификацию severity vs priority и лучшие практики написания четких шагов воспроизведения.",
+  "context": {
+    "interview_type": "technical_interview",
+    "interviewer_role": "QA Team Lead",
+    "interviewer_role_ru": "QA Team Lead",
+    "company_profile": "An established e-commerce platform using JIRA for bug tracking. The QA team values well-structured bug reports as they work with distributed development teams across time zones.",
+    "company_profile_ru": "Известная e-commerce платформа, использующая JIRA для отслеживания багов. Команда QA ценит хорошо структурированные баг-репорты, так как работает с распределенными командами разработки в разных часовых поясах."
+  },
+  "steps": [
+    {
+      "step_id": "bug_report_step_1",
+      "order": 1,
+      "type": "user_response",
+      "title": "Describe Bug Report Structure",
+      "title_ru": "Опишите структуру баг-репорта",
+      "prompt": "Describe the ideal structure of a bug report. What fields should it contain? Explain the difference between severity and priority, and walk me through how you would write clear steps to reproduce. Give examples of good and bad bug report practices.",
+      "prompt_ru": "Опишите идеальную структуру баг-репорта. Какие поля он должен содержать? Объясните разницу между severity и priority, и опишите, как вы пишете четкие шаги воспроизведения. Приведите примеры хороших и плохих практик баг-репортов.",
+      "max_response_length": 3000,
+      "expects_bullet_points": false
+    }
+  ],
+  "target_skills": [
+    {
+      "skill_id": "bug_reporting",
+      "weight": 60
+    },
+    {
+      "skill_id": "technical_accuracy",
+      "weight": 40
+    }
+  ],
+  "scoring_guidelines": {
+    "general_hints": [
+      "A complete bug report includes: title, description, environment, steps to reproduce, actual result, expected result, severity, priority, attachments.",
+      "Severity = impact on the system (how bad), Priority = urgency for the business (how soon to fix). Examples help clarify.",
+      "Steps to reproduce should be clear, numbered, self-contained, and start from a known state.",
+      "Good bug reports include environment details: OS, browser version, device, app version, network conditions."
+    ],
+    "general_hints_ru": [
+      "Полный баг-репорт включает: заголовок, описание, окружение, шаги воспроизведения, фактический результат, ожидаемый результат, severity, priority, вложения.",
+      "Severity = влияние на систему (насколько плохо), Priority = срочность для бизнеса (как быстро исправить). Примеры помогают прояснить.",
+      "Шаги воспроизведения должны быть четкими, нумерованными, самодостаточными и начинаться с известного состояния.",
+      "Хорошие баг-репорты содержат детали окружения: ОС, версия браузера, устройство, версия приложения, сетевое окружение."
+    ],
+    "common_mistakes": [
+      "Confusing severity and priority or treating them as the same thing.",
+      "Writing steps to reproduce that are too vague or skip critical actions.",
+      "Omitting environment details that are essential for reproducing the bug.",
+      "Writing subjective or ambiguous expected results."
+    ],
+    "common_mistakes_ru": [
+      "Путаница severity и priority или рассмотрение их как одного и того же.",
+      "Шаги воспроизведения слишком расплывчаты или пропускают критические действия.",
+      "Пропуск деталей окружения, необходимых для воспроизведения бага.",
+      "Субъективные или двусмысленные ожидаемые результаты."
+    ],
+    "critical_errors_to_watch": ["qa_crit_steps_not_needed", "qa_crit_no_evidence"],
+    "max_allowed_critical_errors": 0,
+    "max_allowed_critical_errors_before_fail": 1
+  },
+  "evaluation_focus": [
+    "Complete knowledge of bug report fields",
+    "Understanding of severity vs priority",
+    "Quality of steps to reproduce description",
+    "Awareness of best practices and common pitfalls"
+  ],
+  "evaluation_focus_ru": [
+    "Полное знание полей баг-репорта",
+    "Понимание severity vs priority",
+    "Качество описания шагов воспроизведения",
+    "Знание лучших практик и типичных ошибок"
+  ]
+}

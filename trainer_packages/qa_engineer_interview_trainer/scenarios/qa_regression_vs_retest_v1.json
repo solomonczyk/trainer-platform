@@ -1,0 +1,83 @@
+{
+  "scenario_id": "qa_regression_vs_retest_v1",
+  "version": "1.0.0",
+  "type": "interview_question",
+  "difficulty": "junior_basic",
+  "difficulty_order": 4,
+  "estimated_duration_minutes": 8,
+  "title": "Regression Testing vs Retesting",
+  "title_ru": "Регрессионное тестирование vs Ретест",
+  "goal": "Evaluate the candidate's ability to distinguish between regression testing and retesting, understand when each is applied, and explain their roles in the QA process with practical examples.",
+  "goal_ru": "Оценить способность кандидата различать регрессионное тестирование и ретест, понимать когда каждый применяется, и объяснять их роль в QA-процессе с практическими примерами.",
+  "context": {
+    "interview_type": "technical_interview",
+    "interviewer_role": "Senior QA Engineer",
+    "interviewer_role_ru": "Senior QA Engineer",
+    "company_profile": "A fintech company with frequent releases. The QA team regularly deals with bug fixes that need retesting and new features that may cause regressions across the system.",
+    "company_profile_ru": "Финтех-компания с частыми релизами. Команда QA регулярно работает с исправлениями багов, требующими ретеста, и новыми функциями, которые могут вызвать регрессии в системе."
+  },
+  "steps": [
+    {
+      "step_id": "rvr_step_1",
+      "order": 1,
+      "type": "user_response",
+      "title": "Explain Regression vs Retest",
+      "title_ru": "Объясните регрессию и ретест",
+      "prompt": "Explain the difference between regression testing and retesting. When do you perform each? Why is it important to distinguish between them? Provide real-world examples from your experience or typical project scenarios.",
+      "prompt_ru": "Объясните разницу между регрессионным тестированием и ретестом. Когда выполняется каждый из них? Почему важно их различать? Приведите примеры из реальной практики или типовых проектных сценариев.",
+      "max_response_length": 3000,
+      "expects_bullet_points": false
+    }
+  ],
+  "target_skills": [
+    {
+      "skill_id": "qa_process_knowledge",
+      "weight": 60
+    },
+    {
+      "skill_id": "technical_accuracy",
+      "weight": 40
+    }
+  ],
+  "scoring_guidelines": {
+    "general_hints": [
+      "Retesting = testing a specific bug fix to confirm it's resolved. Focused and targeted.",
+      "Regression testing = checking that recent changes haven't broken existing functionality. Broader scope.",
+      "Retesting is done with the same test data and steps as the original bug report.",
+      "Regression testing often uses automated suites, checklists, or risk-based approaches to cover impacted areas."
+    ],
+    "general_hints_ru": [
+      "Ретест = тестирование конкретного исправления бага для подтверждения его устранения. Целенаправленный и фокусированный.",
+      "Регрессионное тестирование = проверка, что изменения не сломали существующий функционал. Более широкий охват.",
+      "Ретест выполняется с теми же данными и шагами, что и в оригинальном баг-репорте.",
+      "Регрессионное тестирование часто использует автоматизированные наборы, чеклисты или риск-ориентированные подходы для проверки затронутых областей."
+    ],
+    "common_mistakes": [
+      "Treating retesting and regression testing as the same thing.",
+      "Not understanding that retesting comes before regression testing in a typical workflow.",
+      "Failing to explain the scope difference: retest is narrow, regression is broad.",
+      "Not mentioning risk-based approaches for selecting regression test scope."
+    ],
+    "common_mistakes_ru": [
+      "Рассмотрение ретеста и регрессионного тестирования как одного и того же.",
+      "Непонимание того, что ретест предшествует регрессионному тестированию в типовом workflow.",
+      "Неспособность объяснить разницу в охвате: ретест узкий, регрессия широкая.",
+      "Отсутствие упоминания риск-ориентированных подходов для выбора объема регрессии."
+    ],
+    "critical_errors_to_watch": ["qa_crit_no_evidence", "qa_crit_no_testing_needed"],
+    "max_allowed_critical_errors": 1,
+    "max_allowed_critical_errors_before_fail": 1
+  },
+  "evaluation_focus": [
+    "Clear differentiation between regression and retest",
+    "Understanding of when each type is performed",
+    "Practical examples demonstrating knowledge",
+    "Awareness of workflow and process integration"
+  ],
+  "evaluation_focus_ru": [
+    "Четкое различие между регрессией и ретестом",
+    "Понимание когда выполняется каждый тип",
+    "Практические примеры демонстрирующие знания",
+    "Понимание интеграции в workflow и процессы"
+  ]
+}

@@ -1,0 +1,622 @@
+{
+  "validation_set_id": "qa_package_validation_v1",
+  "version": "1.0.0",
+  "description": "Validation test cases for the QA Engineer Interview Trainer package. Tests package structure, schema compliance, data integrity, and correctness of references.",
+  "description_ru": "Валидационные тест-кейсы для пакета QA Engineer Interview Trainer. Проверяет структуру пакета, соответствие схеме, целостность данных и корректность ссылок.",
+  "tests": [
+    {
+      "test_id": "valid_package_required_files",
+      "category": "package_structure",
+      "type": "valid",
+      "name": "Validate Required Files Exist",
+      "description": "Checks that all required files exist in the trainer package directory.",
+      "expected_to_pass": true,
+      "checks": [
+        {
+          "check_id": "chk_trainer_json_exists",
+          "description": "trainer.json exists at package root",
+          "expected_file": "trainer.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_trainer_version_json_exists",
+          "description": "trainer_version.json exists at package root",
+          "expected_file": "trainer_version.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_skill_map_exists",
+          "description": "skill_map.json exists at package root",
+          "expected_file": "skill_map.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_rubric_pack_exists",
+          "description": "rubric_pack.json exists at package root",
+          "expected_file": "rubric_pack.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_critical_errors_exists",
+          "description": "critical_errors.json exists at package root",
+          "expected_file": "critical_errors.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_scenarios_folder_exists",
+          "description": "scenarios/ directory exists",
+          "expected_file": "scenarios/",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_locales_folder_exists",
+          "description": "locales/ directory exists",
+          "expected_file": "locales/",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_golden_answers_folder_exists",
+          "description": "golden_answers/ directory exists",
+          "expected_file": "golden_answers/",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_package_tests_folder_exists",
+          "description": "package_tests/ directory exists (self-referential check kicks in if present, but the file itself already exists)",
+          "expected_file": "package_tests/",
+          "expected_result": "present_or_optional"
+        }
+      ]
+    },
+    {
+      "test_id": "valid_package_all_scenario_files",
+      "category": "package_structure",
+      "type": "valid",
+      "name": "Validate All Referenced Scenario Files Exist",
+      "description": "Checks that every scenario referenced in trainer_version.json has a corresponding file in the scenarios/ directory.",
+      "expected_to_pass": true,
+      "checks": [
+        {
+          "check_id": "chk_scenario_self_presentation",
+          "description": "qa_self_presentation_v1 scenario file exists",
+          "expected_file": "scenarios/qa_self_presentation_v1.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_scenario_test_case_vs_checklist",
+          "description": "qa_test_case_vs_checklist_v1 scenario file exists",
+          "expected_file": "scenarios/qa_test_case_vs_checklist_v1.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_scenario_bug_report",
+          "description": "qa_bug_report_structure_v1 scenario file exists",
+          "expected_file": "scenarios/qa_bug_report_structure_v1.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_scenario_regression_vs_retest",
+          "description": "qa_regression_vs_retest_v1 scenario file exists",
+          "expected_file": "scenarios/qa_regression_vs_retest_v1.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_scenario_login_form",
+          "description": "qa_login_form_testing_v1 scenario file exists",
+          "expected_file": "scenarios/qa_login_form_testing_v1.json",
+          "expected_result": "present"
+        }
+      ]
+    },
+    {
+      "test_id": "valid_package_all_locale_files",
+      "category": "package_structure",
+      "type": "valid",
+      "name": "Validate All Referenced Locale Files Exist",
+      "description": "Checks that every locale referenced in trainer_version.json has a corresponding file in the locales/ directory.",
+      "expected_to_pass": true,
+      "checks": [
+        {
+          "check_id": "chk_locale_ru_RU",
+          "description": "ru-RU locale file exists",
+          "expected_file": "locales/ru-RU.json",
+          "expected_result": "present"
+        },
+        {
+          "check_id": "chk_locale_en_US",
+          "description": "en-US locale file exists",
+          "expected_file": "locales/en-US.json",
+          "expected_result": "present"
+        }
+      ]
+    },
+    {
+      "test_id": "valid_package_golden_answers_file",
+      "category": "package_structure",
+      "type": "valid",
+      "name": "Validate Golden Answers File Exists",
+      "description": "Checks that the golden answers file exists in the golden_answers/ directory.",
+      "expected_to_pass": true,
+      "checks": [
+        {
+          "check_id": "chk_golden_answers",
+          "description": "Golden answers file exists",
+          "expected_file": "golden_answers/qa_golden_set_v1.json",
+          "expected_result": "present"
+        }
+      ]
+    },
+    {
+      "test_id": "invalid_package_missing_trainer_json",
+      "category": "package_structure",
+      "type": "invalid",
+      "name": "Missing trainer.json Should Fail",
+      "description": "If trainer.json is missing, the package should be considered invalid.",
+      "expected_to_pass": false,
+      "simulated_condition": "trainer.json_removed",
+      "expected_errors": ["MISSING_REQUIRED_FILE: trainer.json"]
+    },
+    {
+      "test_id": "invalid_package_missing_scenario",
+      "category": "package_structure",
+      "type": "invalid",
+      "name": "Missing Scenario File Should Fail",
+      "description": "If a referenced scenario file is missing, the package should be considered invalid.",
+      "expected_to_pass": false,
+      "simulated_condition": "scenario_qa_bug_report_structure_v1_removed",
+      "expected_errors": ["MISSING_REFERENCED_SCENARIO: qa_bug_report_structure_v1"]
+    },
+    {
+      "test_id": "invalid_package_missing_locale",
+      "category": "package_structure",
+      "type": "invalid",
+      "name": "Missing Locale File Should Fail",
+      "description": "If a referenced locale file is missing, the package should be considered invalid.",
+      "expected_to_pass": false,
+      "simulated_condition": "locale_ru_RU_removed",
+      "expected_errors": ["MISSING_REFERENCED_LOCALE: ru-RU"]
+    },
+    {
+      "test_id": "schema_trainer_json_valid",
+      "category": "schema_validation",
+      "type": "valid",
+      "name": "trainer.json Schema Validation",
+      "description": "Validates that trainer.json conforms to the expected schema.",
+      "expected_to_pass": true,
+      "schema_checks": [
+        {
+          "field": "trainer_product_id",
+          "type": "string",
+          "required": true,
+          "expected_value_pattern": "^[a-z_]+$",
+          "actual_value_sample": "qa_engineer_interview_trainer"
+        },
+        {
+          "field": "domain",
+          "type": "string",
+          "required": true,
+          "expected_values": ["it"],
+          "actual_value": "it"
+        },
+        {
+          "field": "slug",
+          "type": "string",
+          "required": true,
+          "expected_value_pattern": "^[a-z0-9-]+$",
+          "actual_value": "qa-engineer-interview-trainer"
+        },
+        {
+          "field": "product_type",
+          "type": "string",
+          "required": true,
+          "expected_value": "interview_simulator",
+          "actual_value": "interview_simulator"
+        },
+        {
+          "field": "target_audience",
+          "type": "array",
+          "required": true,
+          "min_items": 1,
+          "items_are_strings": true,
+          "actual_count": 3
+        },
+        {
+          "field": "default_locale",
+          "type": "string",
+          "required": true,
+          "expected_value_pattern": "^[a-z]{2}-[A-Z]{2}$",
+          "actual_value": "ru-RU"
+        },
+        {
+          "field": "supported_locales",
+          "type": "array",
+          "required": true,
+          "min_items": 1,
+          "includes_default_locale": true,
+          "actual_count": 2
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "required": true,
+          "expected_values": ["draft", "published_seed", "published_release", "archived"],
+          "actual_value": "published_seed"
+        },
+        {
+          "field": "owner",
+          "type": "string",
+          "required": true,
+          "actual_value": "platform"
+        },
+        {
+          "field": "description",
+          "type": "string",
+          "required": true,
+          "min_length": 10
+        },
+        {
+          "field": "description_ru",
+          "type": "string",
+          "required": true,
+          "min_length": 10
+        }
+      ]
+    },
+    {
+      "test_id": "schema_trainer_version_json_valid",
+      "category": "schema_validation",
+      "type": "valid",
+      "name": "trainer_version.json Schema Validation",
+      "description": "Validates that trainer_version.json conforms to the expected schema.",
+      "expected_to_pass": true,
+      "schema_checks": [
+        {
+          "field": "trainer_product_id",
+          "type": "string",
+          "required": true,
+          "must_match_trainer_json": true,
+          "actual_value": "qa_engineer_interview_trainer"
+        },
+        {
+          "field": "version",
+          "type": "string",
+          "required": true,
+          "expected_value_pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "actual_value": "1.0.0"
+        },
+        {
+          "field": "release_status",
+          "type": "string",
+          "required": true,
+          "expected_values": ["mvp_seed", "alpha", "beta", "stable", "deprecated"],
+          "actual_value": "mvp_seed"
+        },
+        {
+          "field": "skill_map_id",
+          "type": "string",
+          "required": true,
+          "must_match_skill_map": "qa_interview_skill_map_v1"
+        },
+        {
+          "field": "rubric_pack_id",
+          "type": "string",
+          "required": true,
+          "must_match_rubric_pack": "qa_interview_rubric_pack_v1"
+        },
+        {
+          "field": "scenario_ids",
+          "type": "array",
+          "required": true,
+          "min_items": 1,
+          "actual_count": 5
+        },
+        {
+          "field": "locale_pack_ids",
+          "type": "array",
+          "required": true,
+          "min_items": 1,
+          "actual_count": 2
+        }
+      ]
+    },
+    {
+      "test_id": "schema_skill_map_valid",
+      "category": "schema_validation",
+      "type": "valid",
+      "name": "skill_map.json Schema Validation",
+      "description": "Validates that skill_map.json conforms to the expected schema.",
+      "expected_to_pass": true,
+      "schema_checks": [
+        {
+          "field": "skill_map_id",
+          "type": "string",
+          "required": true,
+          "actual_value": "qa_interview_skill_map_v1"
+        },
+        {
+          "field": "skills",
+          "type": "array",
+          "required": true,
+          "min_items": 1,
+          "actual_count": 6
+        },
+        {
+          "field": "skills[].skill_id",
+          "type": "string",
+          "required": true,
+          "unique": true,
+          "expected_values": ["interview_structure", "bug_reporting", "test_design", "communication_clarity", "technical_accuracy", "qa_process_knowledge"]
+        },
+        {
+          "field": "skills[].category",
+          "type": "string",
+          "required": true,
+          "expected_categories": ["communication", "qa_core"],
+          "category_distribution": "communication:2, qa_core:4"
+        },
+        {
+          "field": "skills[].levels",
+          "type": "array",
+          "required": true,
+          "min_items": 5,
+          "max_items": 5,
+          "expected_level_ids": ["not_observed", "basic", "developing", "ready", "strong"]
+        },
+        {
+          "field": "skills[].levels[].score",
+          "type": "integer",
+          "required": true,
+          "expected_scores_pattern": "[0, 25, 50, 75, 100]",
+          "monotonic_increasing": true
+        },
+        {
+          "field": "skills[].levels[].level_id",
+          "type": "string",
+          "required": true,
+          "unique_within_skill": true
+        },
+        {
+          "field": "skills[].name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "field": "skills[].name_ru",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "test_id": "schema_rubric_pack_valid",
+      "category": "schema_validation",
+      "type": "valid",
+      "name": "rubric_pack.json Schema Validation",
+      "description": "Validates that rubric_pack.json conforms to the expected schema.",
+      "expected_to_pass": true,
+      "schema_checks": [
+        {
+          "field": "rubric_pack_id",
+          "type": "string",
+          "required": true,
+          "actual_value": "qa_interview_rubric_pack_v1"
+        },
+        {
+          "field": "rubrics",
+          "type": "array",
+          "required": true,
+          "min_items": 1,
+          "actual_count": 5
+        },
+        {
+          "field": "rubrics[].rubric_id",
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        {
+          "field": "rubrics[].scenario_id",
+          "type": "string",
+          "required": true,
+          "all_must_reference_existing_scenarios": true
+        },
+        {
+          "field": "rubrics[].pass_score",
+          "type": "integer",
+          "required": true,
+          "min": 0,
+          "max": 100
+        },
+        {
+          "field": "rubrics[].criteria",
+          "type": "array",
+          "required": true,
+          "min_items": 2
+        }
+      ]
+    },
+    {
+      "test_id": "weight_sum_tests",
+      "category": "data_integrity",
+      "type": "valid",
+      "name": "Rubric Criteria Weights Sum to 100",
+      "description": "For each rubric, the sum of all criteria weights must equal exactly 100.",
+      "expected_to_pass": true,
+      "weight_checks": [
+        {
+          "rubric_id": "qa_self_presentation_rubric_v1",
+          "weights": [25, 25, 25, 25],
+          "expected_sum": 100,
+          "actual_sum": 100
+        },
+        {
+          "rubric_id": "qa_test_case_vs_checklist_rubric_v1",
+          "weights": [30, 25, 25, 20],
+          "expected_sum": 100,
+          "actual_sum": 100
+        },
+        {
+          "rubric_id": "qa_bug_report_rubric_v1",
+          "weights": [20, 30, 25, 25],
+          "expected_sum": 100,
+          "actual_sum": 100
+        },
+        {
+          "rubric_id": "qa_regression_vs_retest_rubric_v1",
+          "weights": [30, 30, 20, 20],
+          "expected_sum": 100,
+          "actual_sum": 100
+        },
+        {
+          "rubric_id": "qa_login_form_rubric_v1",
+          "weights": [25, 25, 25, 25],
+          "expected_sum": 100,
+          "actual_sum": 100
+        }
+      ]
+    },
+    {
+      "test_id": "skill_map_level_score_consistency",
+      "category": "data_integrity",
+      "type": "valid",
+      "name": "Skill Level Scores Are Consistent Across All Skills",
+      "description": "All skills should have the same level score progression: 0, 25, 50, 75, 100 for the five levels.",
+      "expected_to_pass": true,
+      "consistency_checks": [
+        {
+          "check": "Each skill has exactly 5 levels",
+          "skill_ids": ["interview_structure", "bug_reporting", "test_design", "communication_clarity", "technical_accuracy", "qa_process_knowledge"],
+          "level_count": 5,
+          "all_match": true
+        },
+        {
+          "check": "Level scores follow [0, 25, 50, 75, 100] progression",
+          "expected_scores": [0, 25, 50, 75, 100],
+          "all_skills_follow_pattern": true
+        },
+        {
+          "check": "Level IDs are consistent (not_observed, basic, developing, ready, strong)",
+          "expected_level_ids": ["not_observed", "basic", "developing", "ready", "strong"],
+          "all_skills_match": true
+        }
+      ]
+    },
+    {
+      "test_id": "scenario_reference_integrity",
+      "category": "data_integrity",
+      "type": "valid",
+      "name": "Scenario References Are Consistent",
+      "description": "Checks that scenario IDs referenced across files are consistent: trainer_version.json, rubric_pack.json, and golden_answers.json all reference the same scenario IDs.",
+      "expected_to_pass": true,
+      "reference_checks": [
+        {
+          "check": "All scenarios in trainer_version.json have matching rubrics",
+          "trainer_version_scenarios": ["qa_self_presentation_v1", "qa_test_case_vs_checklist_v1", "qa_bug_report_structure_v1", "qa_regression_vs_retest_v1", "qa_login_form_testing_v1"],
+          "rubric_scenario_ids": ["qa_self_presentation_v1", "qa_test_case_vs_checklist_v1", "qa_bug_report_structure_v1", "qa_regression_vs_retest_v1", "qa_login_form_testing_v1"],
+          "sets_are_equal": true
+        },
+        {
+          "check": "All golden answers reference valid scenario IDs",
+          "golden_answer_scenario_ids": ["qa_self_presentation_v1", "qa_test_case_vs_checklist_v1", "qa_bug_report_structure_v1", "qa_regression_vs_retest_v1", "qa_login_form_testing_v1"],
+          "valid_scenario_ids": ["qa_self_presentation_v1", "qa_test_case_vs_checklist_v1", "qa_bug_report_structure_v1", "qa_regression_vs_retest_v1", "qa_login_form_testing_v1"],
+          "references_are_valid": true
+        }
+      ]
+    },
+    {
+      "test_id": "critical_error_reference_integrity",
+      "category": "data_integrity",
+      "type": "valid",
+      "name": "Critical Error References Are Valid",
+      "description": "All critical errors referenced in scenario scoring_guidelines exist in the critical_errors.json file.",
+      "expected_to_pass": true,
+      "reference_checks": [
+        {
+          "defined_error_ids": ["qa_crit_steps_not_needed", "qa_crit_no_testing_needed", "qa_crit_ignore_rubric", "qa_crit_no_evidence"],
+          "referenced_in_scenarios": ["qa_crit_steps_not_needed", "qa_crit_no_testing_needed", "qa_crit_no_evidence", "qa_crit_ignore_rubric"],
+          "all_referenced_errors_are_defined": true
+        }
+      ]
+    },
+    {
+      "test_id": "invalid_package_bad_scenario_reference",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Invalid Scenario Reference in trainer_version Should Fail",
+      "description": "If trainer_version.json references a scenario that doesn't exist, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "trainer_version_contains_nonexistent_scenario",
+      "expected_errors": ["INVALID_SCENARIO_REFERENCE: nonexistent_scenario_v1"]
+    },
+    {
+      "test_id": "invalid_package_duplicate_skill_ids",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Duplicate Skill IDs Should Fail",
+      "description": "If skill_map.json contains duplicate skill IDs, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "skill_map_has_duplicate_ids",
+      "expected_errors": ["DUPLICATE_SKILL_ID"]
+    },
+    {
+      "test_id": "invalid_package_wrong_weight_sum",
+      "category": "data_integrity",
+      "type": "invalid",
+      "name": "Rubric Weight Sum Not Equal to 100 Should Fail",
+      "description": "If a rubric's criteria weights do not sum to 100, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "rubric_weights_sum_not_100",
+      "expected_errors": ["INVALID_WEIGHT_SUM: rubric X weights sum to Y, expected 100"]
+    },
+    {
+      "test_id": "invalid_package_missing_criteria_evidence_required",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Missing evidence_required on Criteria Should Fail",
+      "description": "If a rubric criterion is missing the evidence_required field, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "rubric_criterion_missing_evidence_required",
+      "expected_errors": ["MISSING_REQUIRED_FIELD: criteria[].evidence_required"]
+    },
+    {
+      "test_id": "invalid_package_scenario_missing_target_skills",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Scenario Missing target_skills Should Fail",
+      "description": "If a scenario is missing the target_skills array, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "scenario_missing_target_skills",
+      "expected_errors": ["MISSING_REQUIRED_FIELD: target_skills"]
+    },
+    {
+      "test_id": "invalid_package_golden_answer_bad_scenario",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Golden Answer with Bad Scenario Reference Should Fail",
+      "description": "If a golden answer references a non-existent scenario, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "golden_answer_references_nonexistent_scenario",
+      "expected_errors": ["INVALID_SCENARIO_REFERENCE_IN_GOLDEN_ANSWER"]
+    },
+    {
+      "test_id": "invalid_package_critical_error_no_keywords",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Critical Error Without triggers_on_keywords Should Fail",
+      "description": "If a critical error is missing the triggers_on_keywords array, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "critical_error_missing_keywords",
+      "expected_errors": ["MISSING_REQUIRED_FIELD: critical_errors[].triggers_on_keywords"]
+    },
+    {
+      "test_id": "invalid_package_golden_answer_score_range_reversed",
+      "category": "schema_validation",
+      "type": "invalid",
+      "name": "Golden Answer With Reversed Score Range Should Fail",
+      "description": "If a golden answer has expected_score_range where min > max, validation should fail.",
+      "expected_to_pass": false,
+      "simulated_condition": "golden_answer_score_range_min_greater_than_max",
+      "expected_errors": ["INVALID_SCORE_RANGE: min > max"]
+    }
+  ]
+}

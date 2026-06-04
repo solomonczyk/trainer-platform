@@ -1,0 +1,17 @@
+{
+  "trainer_product_id": "qa_engineer_interview_trainer",
+  "version": "1.0.0",
+  "release_status": "mvp_seed",
+  "skill_map_id": "qa_interview_skill_map_v1",
+  "rubric_pack_id": "qa_interview_rubric_pack_v1",
+  "scenario_ids": [
+    "qa_self_presentation_v1",
+    "qa_test_case_vs_checklist_v1",
+    "qa_bug_report_structure_v1",
+    "qa_regression_vs_retest_v1",
+    "qa_login_form_testing_v1"
+  ],
+  "locale_pack_ids": ["ru-RU", "en-US"],
+  "published_at": null,
+  "requires_expert_review": false
+}

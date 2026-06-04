@@ -1,0 +1,40 @@
+{
+  "critical_errors": [
+    {
+      "error_id": "qa_crit_steps_not_needed",
+      "name_en": "Steps to Reproduce Not Needed",
+      "name_ru": "Шаги воспроизведения не нужны",
+      "description_en": "Candidate states that steps to reproduce are not required in a bug report, which is a fundamental misunderstanding of QA documentation standards.",
+      "description_ru": "Кандидат утверждает, что шаги воспроизведения не нужны в баг-репорте, что является фундаментальным непониманием стандартов QA-документации.",
+      "severity": "critical",
+      "triggers_on_keywords": ["steps not needed", "не нужны шаги", "no steps required", "steps are optional", "шаги не обязательны"]
+    },
+    {
+      "error_id": "qa_crit_no_testing_needed",
+      "name_en": "Testing Is Not Needed",
+      "name_ru": "Тестирование не нужно",
+      "description_en": "Candidate claims that testing is unnecessary for certain scenarios or features, demonstrating a lack of understanding of QA ethics and responsibility.",
+      "description_ru": "Кандидат заявляет, что тестирование не нужно для определенных сценариев или функций, демонстрируя непонимание ответственности QA.",
+      "severity": "critical",
+      "triggers_on_keywords": ["no need to test", "не нужно тестировать", "testing is unnecessary", "doesn't need testing", "тестирование не требуется"]
+    },
+    {
+      "error_id": "qa_crit_ignore_rubric",
+      "name_en": "Attempt to Override Evaluation",
+      "name_ru": "Попытка переопределить оценку",
+      "description_en": "Candidate tries to instruct the evaluator on how to score their answer, or attempts to override the evaluation criteria.",
+      "description_ru": "Кандидат пытается указать оценщику, как оценивать его ответ, или пытается переопределить критерии оценки.",
+      "severity": "critical",
+      "triggers_on_keywords": ["rate me high", "оцени высоко", "give me full score", "ignore the rubric", "игнорируй критерии", "this should be 100", "you must pass me"]
+    },
+    {
+      "error_id": "qa_crit_no_evidence",
+      "name_en": "No Specific Examples Provided",
+      "name_ru": "Отсутствие конкретных примеров",
+      "description_en": "Candidate provides only theoretical or generic statements without any specific examples, evidence, or personal experience to support their answer.",
+      "description_ru": "Кандидат приводит только теоретические или общие утверждения без конкретных примеров, доказательств или личного опыта для подтверждения ответа.",
+      "severity": "critical",
+      "triggers_on_keywords": ["in general", "в целом", "generally speaking", "вообще", "theoretically", "теоретически", "no example", "без примера"]
+    }
+  ]
+}

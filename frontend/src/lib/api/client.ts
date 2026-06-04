@@ -1,0 +1,384 @@
+"use client";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+export interface ApiError {
+  error: {
+    code: string;
+    message: string;
+    details: Record<string, unknown>;
+    request_id: string;
+  };
+}
+
+export class ApiClientError extends Error {
+  public code: string;
+  public details: Record<string, unknown>;
+  public requestId: string;
+
+  constructor(err: ApiError["error"]) {
+    super(err.message);
+    this.name = "ApiClientError";
+    this.code = err.code;
+    this.details = err.details;
+    this.requestId = err.request_id;
+  }
+}
+
+function getToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("access_token");
+}
+
+export function setToken(token: string): void {
+  localStorage.setItem("access_token", token);
+}
+
+export function clearToken(): void {
+  localStorage.removeItem("access_token");
+}
+
+export function isAuthenticated(): boolean {
+  return !!getToken();
+}
+
+async function request<T>(
+  method: string,
+  path: string,
+  body?: unknown,
+  options?: { skipAuth?: boolean }
+): Promise<T> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (!options?.skipAuth) {
+    const token = getToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
+  const response = await fetch(`${API_BASE}${path}`, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      error: { code: "UNKNOWN", message: "Unknown error", details: {}, request_id: "" },
+    }));
+    throw new ApiClientError(errorData.error);
+  }
+
+  return response.json();
+}
+
+export const api = {
+  get: <T>(path: string) => request<T>("GET", path),
+  post: <T>(path: string, body?: unknown) => request<T>("POST", path, body),
+  patch: <T>(path: string, body?: unknown) => request<T>("PATCH", path, body),
+};
+
+// ---------------------------------------------------------------------------
+// Auth
+// ---------------------------------------------------------------------------
+
+export interface UserResponse {
+  id: string;
+  email: string;
+  role: string;
+  display_name?: string;
+  preferred_locale: string;
+  is_active: boolean;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  token_type: string;
+  user: UserResponse;
+}
+
+export async function register(email: string, password: string, displayName?: string) {
+  const res = await request<TokenResponse>(
+    "POST",
+    "/api/v1/auth/register",
+    { email, password, display_name: displayName },
+    { skipAuth: true }
+  );
+  setToken(res.access_token);
+  return res;
+}
+
+export async function login(email: string, password: string) {
+  const res = await request<TokenResponse>(
+    "POST",
+    "/api/v1/auth/login",
+    { email, password },
+    { skipAuth: true }
+  );
+  setToken(res.access_token);
+  return res;
+}
+
+export function logout() {
+  clearToken();
+  if (typeof window !== "undefined") {
+    window.location.href = "/login";
+  }
+}
+
+export async function getCurrentUser() {
+  return api.get<UserResponse>("/api/v1/me");
+}
+
+export async function updateProfile(data: { display_name?: string; preferred_locale?: string }) {
+  return api.patch<UserResponse>("/api/v1/me", data);
+}
+
+// ---------------------------------------------------------------------------
+// Domains
+// ---------------------------------------------------------------------------
+
+export interface DomainSummary {
+  id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  sort_order: number;
+  trainer_count: number;
+}
+
+export interface TrainerSummary {
+  id: string;
+  trainer_product_id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  product_type: string;
+}
+
+export interface DomainDetail {
+  id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  trainers: TrainerSummary[];
+}
+
+export async function getDomains() {
+  return api.get<DomainSummary[]>("/api/v1/domains");
+}
+
+export async function getDomain(slug: string) {
+  return api.get<DomainDetail>(`/api/v1/domains/${slug}`);
+}
+
+// ---------------------------------------------------------------------------
+// Trainers
+// ---------------------------------------------------------------------------
+
+export interface TrainerDetail {
+  id: string;
+  trainer_product_id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  product_type: string;
+  target_audience?: string[];
+  supported_locales?: string[];
+  default_locale?: string;
+  status: string;
+  scenario_count: number;
+  is_enrolled: boolean;
+}
+
+export interface EnrollResponse {
+  enrollment_id: string;
+  status: string;
+  message: string;
+}
+
+export async function getTrainer(slug: string) {
+  return api.get<TrainerDetail>(`/api/v1/trainers/${slug}`);
+}
+
+export async function enrollTrainer(slug: string) {
+  return api.post<EnrollResponse>(`/api/v1/trainers/${slug}/enroll`);
+}
+
+// ---------------------------------------------------------------------------
+// Scenarios
+// ---------------------------------------------------------------------------
+
+export interface ScenarioSummary {
+  id: string;
+  scenario_id: string;
+  title_key: string;
+  goal_key: string;
+  difficulty: string;
+  estimated_duration_minutes: number;
+  track?: string;
+  module?: string;
+}
+
+export interface ScenarioDetail {
+  id: string;
+  scenario_id: string;
+  title_key: string;
+  goal_key: string;
+  trainer_product_id: string;
+  difficulty: string;
+  estimated_duration_minutes: number;
+  target_skills?: string[];
+  user_role: string;
+  ai_role: string;
+  steps?: ScenarioStep[];
+  hints?: string[];
+  status: string;
+}
+
+export interface ScenarioStep {
+  step_id: string;
+  order: number;
+  prompt_key: string;
+  expected_actions?: string[];
+}
+
+export async function getTrainerScenarios(trainerSlug: string) {
+  return api.get<ScenarioSummary[]>(`/api/v1/trainers/${trainerSlug}/scenarios`);
+}
+
+export async function getScenario(scenarioId: string) {
+  return api.get<ScenarioDetail>(`/api/v1/scenarios/${scenarioId}`);
+}
+
+// ---------------------------------------------------------------------------
+// Runtime
+// ---------------------------------------------------------------------------
+
+export interface StartScenarioResponse {
+  session_id: string;
+  attempt_id: string;
+  scenario: ScenarioDetail;
+  status: string;
+}
+
+export interface SubmitMessageResponse {
+  message_id: string;
+  status: string;
+}
+
+export interface CompleteSessionResponse {
+  attempt_id: string;
+  status: string;
+  message: string;
+}
+
+export async function startScenario(scenarioId: string) {
+  return api.post<StartScenarioResponse>(`/api/v1/scenarios/${scenarioId}/start`);
+}
+
+export async function submitMessage(sessionId: string, content: string) {
+  return api.post<SubmitMessageResponse>(`/api/v1/sessions/${sessionId}/messages`, { content });
+}
+
+export async function completeSession(sessionId: string) {
+  return api.post<CompleteSessionResponse>(`/api/v1/sessions/${sessionId}/complete`);
+}
+
+// ---------------------------------------------------------------------------
+// Evaluations
+// ---------------------------------------------------------------------------
+
+export interface CriterionResult {
+  criterion_id: string;
+  score: number;
+  evidence: string;
+  comment: string;
+  improvement: string;
+}
+
+export interface EvaluationResult {
+  id: string;
+  attempt_id: string;
+  overall_score: number;
+  passed: boolean;
+  criteria: CriterionResult[];
+  strengths: string[];
+  weak_points: string[];
+  critical_errors: string[];
+  next_recommendation?: {
+    action: string;
+    description: string;
+  };
+  confidence: number;
+  ai_model_used?: string;
+  ai_cost_usd?: number;
+  ai_latency_ms?: number;
+  validation_status: string;
+}
+
+export async function evaluateAttempt(attemptId: string) {
+  return api.post<EvaluationResult>(`/api/v1/attempts/${attemptId}/evaluate`);
+}
+
+export async function getEvaluation(attemptId: string) {
+  return api.get<EvaluationResult>(`/api/v1/attempts/${attemptId}/evaluation`);
+}
+
+// ---------------------------------------------------------------------------
+// Progress
+// ---------------------------------------------------------------------------
+
+export interface SkillScore {
+  skill_id: string;
+  skill_name: string;
+  score: number;
+  level: string;
+  attempts_count: number;
+}
+
+export interface ProgressSummary {
+  trainer_slug: string;
+  trainer_name: string;
+  average_score: number;
+  completed_scenarios: number;
+  total_attempts: number;
+  readiness_status: string;
+  skill_scores: SkillScore[];
+}
+
+export async function getAllProgress() {
+  return api.get<{ progress_list: ProgressSummary[] }>("/api/v1/me/progress");
+}
+
+export async function getTrainerProgress(trainerSlug: string) {
+  return api.get<ProgressSummary>(`/api/v1/me/progress/${trainerSlug}`);
+}
+
+// ---------------------------------------------------------------------------
+// Analytics
+// ---------------------------------------------------------------------------
+
+export async function sendAnalyticsEvent(
+  eventType: string,
+  data?: {
+    session_id?: string;
+    trainer_slug?: string;
+    scenario_id?: string;
+    properties?: Record<string, unknown>;
+  }
+) {
+  try {
+    await api.post("/api/v1/analytics/events", {
+      event_type: eventType,
+      ...data,
+    });
+  } catch {
+    // Analytics failures should never break the UI
+  }
+}

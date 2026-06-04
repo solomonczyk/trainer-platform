@@ -1,0 +1,83 @@
+{
+  "scenario_id": "qa_login_form_testing_v1",
+  "version": "1.0.0",
+  "type": "interview_question",
+  "difficulty": "junior_basic",
+  "difficulty_order": 5,
+  "estimated_duration_minutes": 10,
+  "title": "Login Form Testing Scenarios",
+  "title_ru": "Тестирование формы логина",
+  "goal": "Evaluate the candidate's ability to design comprehensive test scenarios for a login form, applying test design techniques, identifying edge cases, and structuring their test coverage logically.",
+  "goal_ru": "Оценить способность кандидата разрабатывать комплексные тестовые сценарии для формы логина, применять техники тест-дизайна, выявлять краевые случаи и логически структурировать тестовое покрытие.",
+  "context": {
+    "interview_type": "technical_interview",
+    "interviewer_role": "QA Lead",
+    "interviewer_role_ru": "QA Lead",
+    "company_profile": "A SaaS platform is redesigning its login page. The feature includes email/password login, social login options, password reset, and 'Remember Me' functionality. The platform has 2 million active users.",
+    "company_profile_ru": "SaaS-платформа перерабатывает страницу логина. Функционал включает вход по email/паролю, вход через соцсети, сброс пароля и функцию 'Запомнить меня'. Платформа имеет 2 миллиона активных пользователей."
+  },
+  "steps": [
+    {
+      "step_id": "login_step_1",
+      "order": 1,
+      "type": "user_response",
+      "title": "Design Login Form Test Scenarios",
+      "title_ru": "Разработайте сценарии тестирования",
+      "prompt": "You are testing a login form with email, password, submit button, 'Remember Me' checkbox, and a 'Forgot Password' link. Design a comprehensive set of test scenarios. Use test design techniques (equivalence partitioning, boundary value analysis) and cover positive cases, negative cases, edge cases, and security aspects. Structure your answer into logical groups.",
+      "prompt_ru": "Вы тестируете форму входа с полями email, пароль, кнопкой входа, чекбоксом 'Запомнить меня' и ссылкой 'Забыли пароль?'. Разработайте полный набор тестовых сценариев. Используйте техники тест-дизайна (эквивалентное разделение, анализ граничных значений), покройте позитивные, негативные, краевые случаи и аспекты безопасности. Структурируйте ответ по логическим группам.",
+      "max_response_length": 4000,
+      "expects_bullet_points": true
+    }
+  ],
+  "target_skills": [
+    {
+      "skill_id": "test_design",
+      "weight": 60
+    },
+    {
+      "skill_id": "technical_accuracy",
+      "weight": 40
+    }
+  ],
+  "scoring_guidelines": {
+    "general_hints": [
+      "Positive scenarios: valid email and password, 'Remember Me' works, successful login redirects to dashboard.",
+      "Negative scenarios: invalid email format, wrong password, empty fields, account locked, expired password.",
+      "Edge cases: very long email, Unicode characters, SQL injection in fields, XSS in email, brute force protection, session timeout.",
+      "Security: password masking, HTTPS check, token handling, session expiry, CAPTCHA after failed attempts."
+    ],
+    "general_hints_ru": [
+      "Позитивные сценарии: валидный email и пароль, работает 'Запомнить меня', успешный вход перенаправляет на дашборд.",
+      "Негативные сценарии: неверный формат email, неправильный пароль, пустые поля, заблокированная учетная запись, истекший пароль.",
+      "Краевые случаи: очень длинный email, символы Unicode, SQL-инъекции в полях, XSS в email, защита от брутфорса, таймаут сессии.",
+      "Безопасность: маскировка пароля, проверка HTTPS, обработка токенов, истечение сессии, CAPTCHA после неудачных попыток."
+    ],
+    "common_mistakes": [
+      "Only covering positive login scenarios and ignoring negative cases.",
+      "Not considering security aspects like SQL injection or brute force protection.",
+      "Forgetting about UX aspects: error messages, loading states, keyboard navigation.",
+      "Not structuring test scenarios into logical groups."
+    ],
+    "common_mistakes_ru": [
+      "Покрытие только позитивных сценариев входа без негативных случаев.",
+      "Игнорирование аспектов безопасности: SQL-инъекции, защита от брутфорса.",
+      "Забывают про UX-аспекты: сообщения об ошибках, состояния загрузки, навигация с клавиатуры.",
+      "Отсутствие структурирования тестовых сценариев по логическим группам."
+    ],
+    "critical_errors_to_watch": ["qa_crit_no_testing_needed", "qa_crit_no_evidence"],
+    "max_allowed_critical_errors": 1,
+    "max_allowed_critical_errors_before_fail": 1
+  },
+  "evaluation_focus": [
+    "Comprehensive test scenario coverage",
+    "Application of test design techniques",
+    "Identification of security edge cases",
+    "Logical organization of test scenarios"
+  ],
+  "evaluation_focus_ru": [
+    "Всестороннее покрытие тестовыми сценариями",
+    "Применение техник тест-дизайна",
+    "Выявление краевых случаев безопасности",
+    "Логическая организация тестовых сценариев"
+  ]
+}
