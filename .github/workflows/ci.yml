@@ -60,10 +60,7 @@ jobs:
           pip show bcrypt passlib 2>/dev/null | grep -E '^(Name|Version):'
           echo "---"
           python -c "import bcrypt; print('bcrypt version:', bcrypt.__version__)"
-          python -c "
-from passlib.hash import bcrypt as bcrypt_hash
-print('passlib bcrypt backend:', bcrypt_hash.get_backend())
-"
+          python -c "from passlib.hash import bcrypt as bcrypt_hash; print('passlib bcrypt backend:', bcrypt_hash.get_backend())"
 
       - name: Run tests (SQLite)
         run: python -m pytest tests/ -v --tb=short -x
