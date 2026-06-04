@@ -52,10 +52,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Debug packages
+        run: pip list --format=columns 2>/dev/null | grep -iE 'bcrypt|passlib|aiosqlite|pydantic|pytest'
 
       - name: Run tests (SQLite)
-        run: python -m pytest tests/ -v --tb=short -x
+        run: python -m pytest tests/ -v --tb=long -x 2>&1 | tail -100
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           SECRET_KEY: ci-secret-key-not-for-production
@@ -88,7 +91,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir -r requirements.txt
 
       - name: Validate trainer package
         run: python scripts/validate_trainer_package.py ../trainer_packages/qa_engineer_interview_trainer
@@ -126,7 +129,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir -r requirements.txt
 
       - name: Run Alembic migrations
         run: |
@@ -223,10 +226,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir -r requirements.txt
 
       - name: Export OpenAPI schema
-        run: python scripts/export_openapi.py
+        run: python scripts/export_openapi.py 2>&1
         env:
           APP_ENV: testing
           DATABASE_URL: sqlite+aiosqlite:///test_openapi.db
