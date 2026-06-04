@@ -226,6 +226,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Export OpenAPI schema
-        run: |
-          cp ../.env.example .env
-          python scripts/export_openapi.py
+        run: python scripts/export_openapi.py
+        env:
+          APP_ENV: testing
+          DATABASE_URL: sqlite+aiosqlite:///test_openapi.db
+          SECRET_KEY: ci-secret-key-not-for-production
+          DEBUG: "false"
