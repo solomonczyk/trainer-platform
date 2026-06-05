@@ -153,7 +153,6 @@
   "known_issues": [
     "Frontend tests minimal (Vitest setup done, 1 component test file with 3 tests; comprehensive coverage deferred)",
     "Real OpenAI provider requires API key and production readiness review",
-    "CI pipeline defined in .github/workflows/ci.yml but not tested against live GitHub runner",
     "Rate limiting uses in-memory sliding window; production requires Redis-based replacement",
     "SQLite used for tests instead of PostgreSQL",
     "No email verification",
@@ -176,7 +175,7 @@
     "documentation_gate": "PASS"
   },
   "git": {
-    "commit": "37f516d0a262a6aaac351052741b8d9797a85a10",
+    "commit": "25a32277abb1e64e39f7340f89fddbf2af31c43e",
     "pushed": true,
     "clean": true,
     "remote": "git@github.com:solomonczyk/trainer-platform.git",
@@ -184,9 +183,12 @@
   },
   "ci": {
     "started": true,
-    "result": "pending",
-    "run_url": "https://github.com/solomonczyk/trainer-platform/actions",
-    "known_issue": "All prior 8 CI runs failed with exit code 4 because pytest-timeout was missing from requirements.txt. Fix committed at 37f516d. Awaiting CI re-run."
+    "result": "pass",
+    "run_url": "https://github.com/solomonczyk/trainer-platform/actions/runs/27009291990",
+    "fixes_applied": [
+      "Added pytest-timeout to requirements.txt (37f516d) for --timeout flag support",
+      "Added email-validator to requirements.txt (25a3227) to fix pydantic EmailStr core schema generation on Python 3.12.13"
+    ]
   },
   "production": {
     "production_accepted": false,
