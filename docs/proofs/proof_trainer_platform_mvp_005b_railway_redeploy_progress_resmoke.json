@@ -1,0 +1,94 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-005B-RAILWAY-REDEPLOY-AND-PROGRESS-RESMOKE",
+  "date": "2026-06-05",
+  "verdict": "ACCEPTED_WITH_BLOCKERS",
+  "base_state": {
+    "mvp_005": "ACCEPTED_WITH_BLOCKERS",
+    "external_staging": "Railway",
+    "frontend_url": "https://frontend-staging-4146.up.railway.app",
+    "backend_url": "https://backend-staging-0487.up.railway.app",
+    "expected_fix_commit": "0d4e6b5",
+    "real_openai_enabled": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "scope": {
+    "redeploy_verification": true,
+    "progress_resmoke": true,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "real_openai_enabled": false,
+    "prompt_engineer_trainer_added": false,
+    "voice_mode_added": false,
+    "marketplace_added": false,
+    "b2b_dashboard_added": false
+  },
+  "railway_deployment": {
+    "backend_deployed": true,
+    "frontend_deployed": true,
+    "redeploy_needed": true,
+    "redeploy_triggered": true,
+    "redeploy_completed": false,
+    "deployed_commit_verified": false,
+    "deployed_commit_or_deployment_id": "463d1ee (pushed to origin/master, auto-deploy status unknown)",
+    "mvp005_progress_fix_present": false
+  },
+  "external_checks": {
+    "frontend_reachable": true,
+    "backend_health_ok": true,
+    "backend_ready_ok": true,
+    "openapi_available": true
+  },
+  "progress_resmoke": {
+    "executed": true,
+    "passed": false,
+    "synthetic_user_only": true,
+    "mock_ai_used": true,
+    "evaluation_completed": true,
+    "score_returned": true,
+    "passed_result": true,
+    "progress_total_attempts_after_evaluation": 0,
+    "progress_completed_scenarios_after_evaluation": 0,
+    "progress_average_score_after_evaluation": 0,
+    "progress_verified_on_railway": false
+  },
+  "analytics_recheck": {
+    "executed": true,
+    "analytics_verified": true,
+    "classification_still_valid": true,
+    "evaluation_result_event_recorded_or_skip_documented": true,
+    "raw_answers_absent_from_analytics": true
+  },
+  "quality": {
+    "ci_passed": true,
+    "backend_tests_passed": true,
+    "backend_tests_count": "66 passed, 3 skipped",
+    "frontend_build_passed": true,
+    "frontend_tests_passed": true,
+    "frontend_tests_count": "10 passed",
+    "trainer_package_validation_passed": true,
+    "openapi_export_passed": true,
+    "openapi_endpoints": 24
+  },
+  "security": {
+    "no_secrets_committed": true,
+    "railway_token_exposed": false,
+    "database_url_exposed": false,
+    "real_openai_key_not_enabled": true,
+    "proof_contains_secrets": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "463d1ee",
+    "pushed": true,
+    "clean": false
+  },
+  "known_issues": [
+    "Progress update fix not deployed on Railway — Railway CLI auth unavailable, auto-deploy did not trigger",
+    "Railway redeploy requires operator action (railway login + railway up)",
+    "Admin endpoints return 500 on Railway staging",
+    "Railway GitHub auto-deploy not verified — empty commit pushed but no update observed"
+  ],
+  "next_allowed_action": "operator_railway_redeploy"
+}
