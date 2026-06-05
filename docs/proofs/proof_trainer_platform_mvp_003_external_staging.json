@@ -46,9 +46,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "f4f1346",
-    "pushed": false,
-    "clean": false
+    "commit": "564648b",
+    "pushed": true,
+    "clean": true
   },
   "known_issues": [
     "External staging NOT deployed — local Docker Compose staging profile remains the active staging environment",
