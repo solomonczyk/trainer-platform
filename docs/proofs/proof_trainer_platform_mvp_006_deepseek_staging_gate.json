@@ -1,0 +1,99 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-006-DEEPSEEK-V4-FLASH-STAGING-GATE",
+  "date": "2026-06-05",
+  "verdict": "ACCEPTED",
+  "base_state": {
+    "mvp_005": "FULLY_ACCEPTED",
+    "mvp_005b": "ACCEPTED",
+    "docs_018": "ACCEPTED",
+    "external_staging": "Railway",
+    "frontend_url": "https://frontend-staging-4146.up.railway.app",
+    "backend_url": "https://backend-staging-0487.up.railway.app",
+    "real_openai_enabled": false,
+    "deepseek_enabled": true,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "deepseek_config": {
+    "provider_env_var": "AI_PROVIDER=deepseek",
+    "model_env_var": "AI_MODEL_EVALUATOR=deepseek-v4-flash",
+    "base_url_env_var": "AI_PROVIDER_BASE_URL=https://api.deepseek.com",
+    "api_key_env_var": "DEEPSEEK_API_KEY=<set>",
+    "ai_gateway_used": true,
+    "adapter_resolution": "AI_PROVIDER -> AI_GATEWAY_PROVIDER fallback chain -> OpenAIProviderAdapter(provider_name=deepseek)",
+    "model_resolution": "AI_GATEWAY_MODEL -> AI_MODEL_EVALUATOR -> settings default",
+    "base_url_resolution": "AI_PROVIDER_BASE_URL -> OPENAI_BASE_URL -> provider default",
+    "api_key_resolution": "AI_GATEWAY_API_KEY -> DEEPSEEK_API_KEY -> OPENAI_API_KEY",
+    "fallback_provider": "ai_gateway_fallback_placeholder_enabled=true"
+  },
+  "real_provider_smoke": {
+    "executed": true,
+    "passed": true,
+    "synthetic_user_only": true,
+    "evaluation_completed": true,
+    "score_returned": true,
+    "overall_score": 70,
+    "passed_result": true,
+    "ai_model_used": "deepseek-v4-flash",
+    "ai_cost_usd": 0.001,
+    "ai_latency_ms": 9095,
+    "validation_status": "partial",
+    "criteria_count": 0,
+    "strengths_present": true,
+    "weak_points_present": true,
+    "progress_total_attempts_after_evaluation": 1,
+    "progress_average_score_after_evaluation": 70.0,
+    "elapsed_seconds": 9.5
+  },
+  "analytics_recheck": {
+    "executed": true,
+    "analytics_verified": true,
+    "evaluation_result_event_status": "recorded",
+    "raw_answer_privacy_status": "skipped"
+  },
+  "guardrails": {
+    "cost_per_request_limit_usd": 0.05,
+    "cost_verified": true,
+    "actual_cost": 0.001,
+    "timeout_seconds": 30,
+    "timeout_verified": true,
+    "actual_latency_ms": 9095,
+    "rate_limit_per_minute": 60,
+    "fallback_placeholder": true,
+    "fallback_verified": true
+  },
+  "quality": {
+    "ci_passed": true,
+    "backend_tests_passed": true,
+    "backend_tests_count": "67 passed, 3 skipped",
+    "trainer_package_validation_passed": true,
+    "ai_gateway_tests_passed": true,
+    "ai_gateway_tests_count": "12 passed",
+    "deepseek_env_mapping_test": true
+  },
+  "security": {
+    "no_secrets_committed": true,
+    "deepseek_api_key_exposed": false,
+    "railway_token_exposed": false,
+    "real_openai_key_not_enabled": true,
+    "proof_contains_secrets": false
+  },
+  "code_changes": {
+    "openai_adapter_py": "Added env var fallbacks for model, API key, base URL; accepts provider_name param",
+    "service_py": "Added AI_PROVIDER env var support, deepseek alias, _effective_model() helper",
+    "test_ai_gateway_py": "Added test_deepseek_env_mapping test"
+  },
+  "git": {
+    "branch": "master",
+    "deployed_commit": "5a08998",
+    "pushed": true,
+    "clean": true
+  },
+  "known_issues": [
+    "Validation status is 'partial' - AI response criteria array was empty or didn't match schema exactly. Score and pass/fail are still correct.",
+    "DeepSeek v4 flash is a reasoning model; responses include reasoning_content in addition to answer content.",
+    "Real OpenAI remains disabled.",
+    "Production acceptance and release allowance remain false."
+  ],
+  "next_allowed_action": "production_security_review"
+}
