@@ -43,13 +43,14 @@
     "raw_answers_absent_from_analytics": true
   },
   "quality": {
-    "ci_passed": false,
+    "ci_passed": true,
     "backend_tests_passed": true,
     "frontend_build_passed": true,
     "frontend_tests_passed": true,
     "trainer_package_validation_passed": true,
     "migration_check_passed": true,
-    "openapi_export_passed": true
+    "openapi_export_passed": true,
+    "ci_run_url": "https://github.com/solomonczyk/trainer-platform/actions/runs/27013682617"
   },
   "security": {
     "no_secrets_committed": true,
