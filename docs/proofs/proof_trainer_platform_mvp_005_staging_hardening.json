@@ -87,8 +87,8 @@
   },
   "git": {
     "branch": "master",
-    "commit": "f7fadce",
-    "pushed": false,
+    "commit": "d27b537",
+    "pushed": true,
     "clean": true
   },
   "known_issues": [
