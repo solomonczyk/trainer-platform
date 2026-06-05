@@ -1,0 +1,63 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-006B-FIX-DEEPSEEK-AI-GATEWAY-ENV-MAPPING-AND-RESMOKE",
+  "date": "2026-06-05",
+  "verdict": "PASSED",
+  "scope": {
+    "provider_validation_only": true,
+    "real_deepseek_smoke_only": true,
+    "backend_redeployed": true,
+    "frontend_provider_secrets_configured": false,
+    "openai_configured": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "runtime_mapping": {
+    "AI_PROVIDER": "deepseek",
+    "AI_MODEL_EVALUATOR": "deepseek-v4-flash",
+    "AI_PROVIDER_BASE_URL": "https://api.deepseek.com",
+    "DEEPSEEK_API_KEY": "configured_as_backend_staging_secret_only",
+    "OPENAI_API_KEY": false
+  },
+  "deployment": {
+    "railway_project_id": "800b800a-c306-4bcb-aa81-bad8db9e51fc",
+    "backend_service": "backend",
+    "environment": "staging",
+    "deployment_id": "0b4e1cb4-df6f-4f9e-add0-2823a2bb85de",
+    "deployment_status": "SUCCESS"
+  },
+  "smoke": {
+    "passed": true,
+    "synthetic_user": "mvp006b-deepseek-smoke-e3db55c80f@trainerplatform.com",
+    "attempt_id": "69bb7fe8-7f60-4fd5-90d4-52dede4a2632",
+    "ai_model_used": "deepseek-v4-flash",
+    "openai_fallback_absent": true,
+    "validation_status": "validated",
+    "overall_score": 88,
+    "passed_result": true,
+    "criteria_count": 3,
+    "progress_total_attempts": 1,
+    "progress_completed_scenarios": 1,
+    "progress_average_score": 88.0,
+    "analytics_status": "recorded"
+  },
+  "security": {
+    "deepseek_key_exposed": false,
+    "deepseek_key_committed": false,
+    "frontend_secrets_absent": true,
+    "proof_contains_secrets": false,
+    "raw_answer_absent_from_proof": true
+  },
+  "execution_state": {
+    "real_openai_enabled": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "current_next_engineering_action": "controlled beta readiness after DeepSeek staging gate evidence review"
+  },
+  "git": {
+    "branch": "master",
+    "code_commit": "5a08998",
+    "proof_commit": "PENDING_FINAL_COMMIT_HASH",
+    "pushed": false,
+    "clean": false
+  }
+}

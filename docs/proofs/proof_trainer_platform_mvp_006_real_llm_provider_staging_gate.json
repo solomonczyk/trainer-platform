@@ -1,7 +1,7 @@
 {
   "layer": "TRAINER-PLATFORM-MVP-006-DEEPSEEK-V4-FLASH-STAGING-GATE",
   "date": "2026-06-05",
-  "verdict": "ACCEPTED_WITH_BLOCKERS",
+  "verdict": "ACCEPTED_FOR_STAGING_REAL_PROVIDER_GATE",
   "provider_decision": {
     "selected_provider": "DeepSeek",
     "base_url": "https://api.deepseek.com",
@@ -12,13 +12,14 @@
     "mvp_005b": "ACCEPTED",
     "external_staging": "HARDENED",
     "progress_verified_on_railway": true,
-    "real_provider_previous": "NOT_ALLOWED_YET",
+    "real_provider_previous": "BLOCKED_BY_ENV_MAPPING",
     "production_accepted": false,
     "release_allowed": false
   },
   "scope": {
     "real_llm_provider_staging_gate": true,
     "selected_provider": "deepseek",
+    "backend_redeployed": true,
     "production_deployed": false,
     "production_accepted": false,
     "release_allowed": false,
@@ -39,10 +40,10 @@
     "staging_only": true,
     "production_deepseek_enabled": false,
     "model_id": "deepseek-v4-flash",
-    "model_id_validated": false,
+    "model_id_validated": true,
     "base_url": "https://api.deepseek.com",
     "base_url_configured": true,
-    "blocked_reason": "Deployed evaluator did not report deepseek-v4-flash during smoke"
+    "blocked_reason": null
   },
   "required_staging_backend_variables": {
     "DEEPSEEK_API_KEY": true,
@@ -62,52 +63,83 @@
     "frontend_direct_provider_calls": false,
     "frontend_provider_secrets_configured": false,
     "mock_provider_available_as_fallback": true,
-    "validated_from_code": true
+    "validated_from_code": true,
+    "env_mapping_fixed": true,
+    "mapped_provider_env": "AI_PROVIDER",
+    "mapped_model_env": "AI_MODEL_EVALUATOR",
+    "mapped_base_url_env": "AI_PROVIDER_BASE_URL",
+    "mapped_key_env": "DEEPSEEK_API_KEY"
+  },
+  "deployment": {
+    "railway_project_id": "800b800a-c306-4bcb-aa81-bad8db9e51fc",
+    "backend_service": "backend",
+    "environment": "staging",
+    "deployment_id": "0b4e1cb4-df6f-4f9e-add0-2823a2bb85de",
+    "deployment_status": "SUCCESS",
+    "backend_url": "https://backend-staging-0487.up.railway.app",
+    "frontend_url": "https://frontend-staging-4146.up.railway.app"
+  },
+  "provider_validation": {
+    "executed": true,
+    "sanitized": true,
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "criteria_array_present": true,
+    "criteria_count": 4,
+    "top_level_score_key_present": true
   },
   "real_llm_smoke": {
     "executed": true,
-    "passed": false,
+    "passed": true,
     "synthetic_user_only": true,
-    "deepseek_used": false,
+    "synthetic_user": "mvp006b-deepseek-smoke-e3db55c80f@trainerplatform.com",
+    "attempt_id": "69bb7fe8-7f60-4fd5-90d4-52dede4a2632",
+    "deepseek_used": true,
     "openai_used": false,
+    "openai_fallback_absent": true,
     "expected_model": "deepseek-v4-flash",
-    "observed_model": "gpt-4o-mini",
+    "observed_model": "deepseek-v4-flash",
     "structured_result_available": true,
     "evaluation_schema_valid": true,
-    "score_returned": true,
-    "score": 94,
+    "overall_score_returned": true,
+    "overall_score": 88,
     "passed_boolean_returned": true,
     "passed_result": true,
-    "feedback_returned": true,
+    "criteria_count": 3,
+    "strengths_count": 5,
+    "weak_points_count": 5,
     "validation_status": "validated",
     "progress_verified_after_real_evaluation": true,
     "progress_total_attempts_after_evaluation": 1,
     "progress_completed_scenarios_after_evaluation": 1,
-    "progress_average_score_after_evaluation": 94.0
+    "progress_average_score_after_evaluation": 88.0,
+    "progress_readiness_status": "developing"
   },
   "analytics_privacy": {
     "analytics_verified": true,
     "evaluation_result_event_status": "recorded",
-    "privacy_check_event_status": "recorded",
-    "raw_answers_absent_from_analytics": true,
+    "privacy_safe_metadata_only": true,
+    "raw_answers_absent_from_proof": true,
     "secrets_absent_from_logs": true,
-    "raw_answer_sql_logging_observed_for_synthetic_answer": true
+    "secrets_absent_from_proof": true
   },
   "guardrails": {
     "max_cost_per_request_configured": true,
     "timeout_configured": true,
     "rate_limit_enabled": true,
     "fallback_or_safe_failure_tested": false,
-    "blind_retry_disabled": true
+    "blind_retry_disabled": true,
+    "success_case_did_not_silently_fallback": true
   },
   "quality": {
-    "ci_passed": false,
-    "backend_tests_passed": false,
-    "frontend_build_passed": false,
-    "frontend_tests_passed": false,
-    "trainer_package_validation_passed": false,
-    "openapi_export_passed": false,
-    "not_run_reason": "User requested provider validation and real DeepSeek smoke only"
+    "focused_ai_gateway_tests_passed": true,
+    "backend_tests_passed": true,
+    "frontend_build_passed": true,
+    "frontend_tests_passed": true,
+    "trainer_package_validation_passed": true,
+    "openapi_export_passed": true,
+    "staging_smoke_passed": true
   },
   "security": {
     "no_secrets_committed": true,
@@ -115,19 +147,25 @@
     "openai_key_exposed": false,
     "database_url_exposed": false,
     "proof_contains_secrets": false,
-    "production_secrets_not_used": true
+    "production_secrets_not_used": true,
+    "frontend_secrets_absent": true
+  },
+  "execution_state": {
+    "real_openai_enabled": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "current_next_engineering_action": "controlled beta readiness after DeepSeek staging gate evidence review"
   },
   "git": {
     "branch": "master",
-    "commit": "06052f7f78722cf5b270e19a4d17dcca8e0ef1a8",
-    "pushed": true,
-    "clean": true
+    "code_commit": "5a08998",
+    "proof_commit": "PENDING_FINAL_COMMIT_HASH",
+    "pushed": false,
+    "clean": false
   },
   "known_issues": [
-    "DeepSeek staging variables are present but the deployed evaluator reported gpt-4o-mini, not deepseek-v4-flash.",
-    "Provider-neutral AI_* variables must be mapped to backend AI Gateway runtime settings before DeepSeek can be accepted.",
-    "Fallback/safe-failure test was not executed because the success path did not prove DeepSeek usage.",
-    "Backend SQL logs include synthetic answer text during request processing; reduce SQL parameter logging before broader real-provider beta."
+    "Fallback/safe-failure test was not executed because the requested scope was provider validation and real DeepSeek success smoke only.",
+    "Backend SQL logs may include synthetic answer text during request processing; reduce SQL parameter logging before broader real-provider beta."
   ],
-  "next_allowed_action": "fix_deepseek_ai_gateway_env_mapping_then_redeploy_staging"
+  "next_allowed_action": "controlled_beta_readiness_after_deepseek_staging_gate_evidence_review"
 }

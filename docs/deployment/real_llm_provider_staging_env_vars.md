@@ -35,7 +35,7 @@ Railway staging backend variable inspection showed `OPENAI_API_KEY` absent.
 
 ## Backend Compatibility Result
 
-The controlled smoke result reported `ai_model_used=gpt-4o-mini`, not `deepseek-v4-flash`. This indicates the deployed backend still needs compatibility mapping from the provider-neutral MVP-006 variables into the AI Gateway runtime settings before the DeepSeek gate can be accepted.
+The backend AI Gateway compatibility mapping is now active in Railway staging. The controlled smoke result reported `ai_model_used=deepseek-v4-flash`, with `validation_status=validated`, confirming that `AI_PROVIDER`, `AI_MODEL_EVALUATOR`, `AI_PROVIDER_BASE_URL`, `AI_TIMEOUT_SECONDS`, and `DEEPSEEK_API_KEY` are driving the deployed evaluator path.
 
 No provider secret value should ever be printed in terminal output, docs, proof JSON, screenshots, logs, or final reports.
 

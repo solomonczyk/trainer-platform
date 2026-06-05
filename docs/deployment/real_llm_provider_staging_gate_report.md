@@ -10,12 +10,12 @@ TRAINER-PLATFORM-MVP-006-DEEPSEEK-V4-FLASH-STAGING-GATE
 DeepSeek
 
 ## Verdict
-ACCEPTED_WITH_BLOCKERS
+ACCEPTED_FOR_STAGING_REAL_PROVIDER_GATE
 
 ## Summary
-Railway staging backend variables for DeepSeek are present, and `OPENAI_API_KEY` remains absent. A controlled synthetic staging smoke was executed.
+Railway staging backend variables for DeepSeek are present, and `OPENAI_API_KEY` remains absent. The backend AI Gateway now maps the provider-neutral MVP-006 variables into the OpenAI-compatible DeepSeek adapter.
 
-The smoke produced a structured evaluation and updated progress, but the evaluation result reported `ai_model_used=gpt-4o-mini` instead of `deepseek-v4-flash`. This means the deployed backend did not use the selected DeepSeek provider/model for the success case.
+A controlled synthetic staging smoke was executed after redeploy. The evaluation response reported `ai_model_used=deepseek-v4-flash`, returned `validation_status=validated`, produced a structured score, updated progress, and accepted a privacy-safe analytics event.
 
 No provider secret values were printed, copied, committed, or stored in documentation.
 
@@ -58,14 +58,34 @@ Values were redacted; only variable names were checked.
 | DeepSeek variables present | PASS |
 | Backend AI Gateway path used | PASS |
 | Frontend direct provider calls | PASS - none found |
-| Real DeepSeek model observed | FAIL - response reported `gpt-4o-mini` |
+| Real DeepSeek model observed | PASS - response reported `deepseek-v4-flash` |
 | Structured evaluation schema | PASS |
 | Progress after evaluation | PASS |
 | Analytics privacy event path | PASS |
 
-## Blocking Diagnosis
+## Runtime Mapping Result
 
-The deployed backend appears not to map the provider-neutral MVP-006 variables (`AI_PROVIDER`, `AI_MODEL_EVALUATOR`, `AI_PROVIDER_BASE_URL`, etc.) into the existing AI Gateway runtime settings. As a result, the smoke test succeeded structurally but did not prove real DeepSeek usage.
+The backend AI Gateway resolves `AI_PROVIDER=deepseek`, `AI_MODEL_EVALUATOR=deepseek-v4-flash`, `AI_PROVIDER_BASE_URL=https://api.deepseek.com`, `AI_TIMEOUT_SECONDS=30`, and `DEEPSEEK_API_KEY` from Railway staging backend environment. The adapter reported provider `deepseek`, model `deepseek-v4-flash`, and the DeepSeek base URL during sanitized validation.
+
+## Smoke Evidence
+
+```json
+{
+  "synthetic_user_only": true,
+  "ai_model_used": "deepseek-v4-flash",
+  "expected_model": "deepseek-v4-flash",
+  "deepseek_model_observed": true,
+  "openai_fallback_absent": true,
+  "overall_score": 88,
+  "passed": true,
+  "validation_status": "validated",
+  "criteria_count": 3,
+  "progress_total_attempts_after_evaluation": 1,
+  "progress_completed_scenarios_after_evaluation": 1,
+  "progress_average_score_after_evaluation": 88.0,
+  "analytics_status": "recorded"
+}
+```
 
 ## Forbidden Actions Check
 
@@ -85,5 +105,5 @@ The deployed backend appears not to map the provider-neutral MVP-006 variables (
 ## Next Allowed Action
 
 ```text
-fix_deepseek_ai_gateway_env_mapping_then_redeploy_staging
+controlled_beta_readiness_after_deepseek_staging_gate_evidence_review
 ```
