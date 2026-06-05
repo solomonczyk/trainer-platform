@@ -19,9 +19,13 @@ node_modules/
 *.swp
 *.swo
 
+# Railway
+.railway/
+
 # Environment
 .env
 .env.local
+.env.railway.local
 
 # OS
 .DS_Store

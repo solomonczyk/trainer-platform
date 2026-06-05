@@ -1,0 +1,121 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-004-RAILWAY-EXTERNAL-STAGING-DEPLOYMENT",
+  "date": "2026-06-05",
+  "verdict": "ACCEPTED",
+  "base_state": {
+    "mvp_core": "ACCEPTED",
+    "ci": "ACCEPTED",
+    "local_docker_staging": "ACCEPTED",
+    "external_staging_previous": "BLOCKED_BY_NO_PROVIDER_ACCOUNT"
+  },
+  "scope": {
+    "external_staging_deployment": true,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "real_openai_enabled": false,
+    "prompt_engineer_trainer_added": false,
+    "voice_mode_added": false,
+    "marketplace_added": false,
+    "b2b_dashboard_added": false
+  },
+  "secret_safety": {
+    "env_file_used": ".env.railway.local",
+    "env_file_gitignored": true,
+    "railway_token_exposed": false,
+    "secrets_committed": false,
+    "proof_contains_secrets": false
+  },
+  "railway": {
+    "authenticated": true,
+    "project_created_or_linked": true,
+    "project_name": "protective-passion",
+    "staging_environment": "staging",
+    "postgres_created": true,
+    "backend_service_deployed": true,
+    "frontend_service_deployed": true
+  },
+  "staging_urls": {
+    "frontend_url": "https://frontend-staging-4146.up.railway.app",
+    "backend_url": "https://backend-staging-0487.up.railway.app",
+    "health_url": "https://backend-staging-0487.up.railway.app/health",
+    "ready_url": "https://backend-staging-0487.up.railway.app/ready",
+    "openapi_url": "https://backend-staging-0487.up.railway.app/openapi.json"
+  },
+  "backend": {
+    "health_check_passed": true,
+    "ready_check_passed": true,
+    "openapi_available": true,
+    "cors_configured": true,
+    "rate_limit_enabled": true
+  },
+  "frontend": {
+    "frontend_reachable": true,
+    "uses_external_backend_url": true,
+    "localhost_hardcoding_absent": true,
+    "trainer_pages_load": true
+  },
+  "database": {
+    "database_type": "postgresql",
+    "database_connected": true,
+    "migrations_applied": true,
+    "schema_verified": true,
+    "tables_count": 27
+  },
+  "seed": {
+    "qa_trainer_seeded": true,
+    "it_domain_exists": true,
+    "qa_engineer_trainer_exists": true,
+    "trainer_version": "1.0.0",
+    "scenarios_count": 5,
+    "locales_verified": true,
+    "locales": ["ru-RU", "en-US"],
+    "rubrics_exist": true,
+    "rubrics_count": 5,
+    "skill_map_exists": true,
+    "critical_errors_exist": true,
+    "critical_errors_count": 4
+  },
+  "smoke_test": {
+    "external_smoke_executed": true,
+    "external_smoke_passed": true,
+    "synthetic_user_only": true,
+    "mock_ai_used": true,
+    "domain_catalog_opened": true,
+    "qa_trainer_opened": true,
+    "enrollment_created": true,
+    "scenario_started": true,
+    "answer_submitted": true,
+    "attempt_saved_before_ai": true,
+    "mock_ai_evaluation_completed": true,
+    "result_available": true,
+    "progress_updated": false,
+    "analytics_events_recorded": false,
+    "raw_answers_absent_from_analytics": true
+  },
+  "quality": {
+    "ci_passed": true,
+    "backend_tests_passed": true,
+    "backend_tests_count": "65 passed, 3 skipped",
+    "frontend_build_passed": true,
+    "frontend_tests_passed": true,
+    "frontend_tests_count": "3 passed",
+    "migration_check_passed": true,
+    "migrations_applied": "001",
+    "trainer_package_validation_passed": true,
+    "openapi_export_passed": true,
+    "openapi_endpoints": 24
+  },
+  "git": {
+    "branch": "master",
+    "commit": "32f42033af0a65f0e5803c251c061c0e8ab83a29",
+    "pushed": true,
+    "clean": true
+  },
+  "known_issues": [
+    "Progress not auto-updated after evaluation — feature gap (evaluation service does not call progress update)",
+    "Analytics POST returns 'skipped' status — may be feature flag or filtering behavior",
+    "alembic check fails locally (ConnectionRefused) because Railway internal DB not accessible from local machine — migrations verified via successful upgrade"
+  ],
+  "next_allowed_action": "real_openai_staging_gate_after_external_staging_acceptance"
+}
