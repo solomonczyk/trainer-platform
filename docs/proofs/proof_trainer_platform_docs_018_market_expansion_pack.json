@@ -59,9 +59,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "PENDING_DOCS_COMMIT",
-    "pushed": false,
-    "clean": false
+    "commit": "01f3c2a15bb5980200ed55552e7459e46c8d3145",
+    "pushed": true,
+    "clean": true
   },
   "known_issues": [
     "Country-specific legal requirements are not final legal advice and require legal review before paid launch.",
