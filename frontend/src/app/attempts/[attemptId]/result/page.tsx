@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { getEvaluation, evaluateAttempt } from "@/lib/api/client";
+import { getEvaluation, evaluateAttempt, sendAnalyticsEvent } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
@@ -94,6 +95,18 @@ export default function EvaluationResultPage() {
       refetch();
     },
   });
+
+  // Fire analytics event when evaluation result is viewed
+  useEffect(() => {
+    if (evaluation) {
+      sendAnalyticsEvent("evaluation_result_viewed", {
+        properties: {
+          overall_score: evaluation.overall_score,
+          passed: evaluation.passed,
+        },
+      });
+    }
+  }, [evaluation]);
 
   if (isLoading) {
     return (

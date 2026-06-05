@@ -1,6 +1,41 @@
 "use client";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+/**
+ * Resolve the API base URL with environment-aware fallback.
+ *
+ * - If NEXT_PUBLIC_API_URL is set → use it (always).
+ * - If unset and APP_ENV is "local" or "development" (or unset) → fall back to
+ *   http://localhost:8000 for convenient local development.
+ * - If unset and APP_ENV is anything else (e.g. "staging", "production") → log a
+ *   loud console error and return an empty string so every API call fails with a
+ *   clear network error rather than silently routing to localhost.
+ */
+function getApiBaseUrl(): string {
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  if (url) return url;
+
+  const env = process.env.NEXT_PUBLIC_APP_ENV || "development";
+
+  // Allow localhost fallback only in local / development environments
+  if (env === "local" || env === "development") {
+    return "http://localhost:8000";
+  }
+
+  // Staging / production — a missing API URL is a fatal configuration error.
+  // This makes the problem visible immediately rather than silently proxying
+  // to localhost.
+  console.error(
+    `[API Client] Fatal: NEXT_PUBLIC_API_URL is not set ` +
+      `(environment="${env}"). API calls will fail. ` +
+      `Set NEXT_PUBLIC_API_URL to a valid backend URL.`,
+  );
+  return "";
+}
+
+const API_BASE = getApiBaseUrl();
+
+// Export for testing
+export { getApiBaseUrl };
 
 export interface ApiError {
   error: {

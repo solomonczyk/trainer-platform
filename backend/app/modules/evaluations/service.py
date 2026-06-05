@@ -19,6 +19,7 @@ from app.core.errors import NotFoundError, ValidationError
 from app.core.logging import get_logger
 from app.modules.evaluations import repository as repo
 from app.modules.evaluations.schemas import EvaluationResponse
+from app.modules.progress.service import ProgressService
 
 logger = get_logger(__name__)
 
@@ -173,6 +174,28 @@ class EvaluationService:
         # 5. Update attempt status
         final_status = "evaluated" if gateway_result.success else "failed"
         await repo.update_attempt_status(db, attempt_id, final_status)
+
+        # 5b. Update progress after successful evaluation
+        if final_status == "evaluated":
+            try:
+                await ProgressService.update_progress_after_evaluation(
+                    db=db,
+                    user_id=attempt.user_id,
+                    trainer_id=attempt.trainer_product_id,
+                    evaluation=evaluation,
+                )
+                logger.info(
+                    "Progress updated after evaluation",
+                    attempt_id=attempt_id,
+                    user_id=attempt.user_id,
+                )
+            except Exception:
+                logger.exception(
+                    "Failed to update progress after evaluation",
+                    attempt_id=attempt_id,
+                    user_id=attempt.user_id,
+                )
+                # Do not fail the overall evaluation if progress update fails
 
         # 6. Build and return response
         return self._evaluation_to_response(evaluation)
