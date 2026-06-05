@@ -66,7 +66,7 @@ jobs:
           pip list 2>/dev/null | grep -i pytest
 
       - name: Run tests (SQLite)
-        run: python scripts/ci_diagnose.py > ci_diagnose_output.txt 2>&1; cat ci_diagnose_output.txt; exit 0
+        run: python scripts/ci_diagnose.py 2>&1
 
 
         env:
@@ -76,12 +76,11 @@ jobs:
           DEBUG: "false"
 
       - name: Upload test artifacts
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-output
-          path: |
-            backend/ci_diagnose_output.txt
+          path: backend/test_ci.db
           retention-days: 7
 
   trainer-package-validation:
