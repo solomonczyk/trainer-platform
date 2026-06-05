@@ -7,6 +7,7 @@ with OpenAI-compatible endpoints like Ollama, vLLM, etc.).
 from __future__ import annotations
 
 import json
+import os
 from typing import Any
 
 import httpx
@@ -40,11 +41,13 @@ class OpenAIProviderAdapter(BaseProviderAdapter):
 
     def __init__(self) -> None:
         self.api_key: str = self._resolve_api_key()
-        self.model: str = settings.ai_gateway_model
+        # Model: prefer settings, fallback to AI_MODEL_EVALUATOR env var (Railway naming)
+        self.model: str = settings.ai_gateway_model or os.environ.get("AI_MODEL_EVALUATOR", "gpt-4o-mini")
         self.timeout_seconds: int = settings.ai_gateway_timeout_seconds
         self.max_retries: int = max(settings.ai_gateway_max_retries, 1)
-        # Default endpoint; override via env OPENAI_BASE_URL if needed
-        self.base_url: str = settings.openai_base_url if hasattr(settings, "openai_base_url") and settings.openai_base_url else "https://api.openai.com/v1"
+        # Default endpoint; override via env OPENAI_BASE_URL or AI_PROVIDER_BASE_URL if needed
+        env_base = os.environ.get("OPENAI_BASE_URL") or os.environ.get("AI_PROVIDER_BASE_URL")
+        self.base_url: str = env_base or "https://api.openai.com/v1"
 
     # ------------------------------------------------------------------
     # Public API
@@ -113,10 +116,17 @@ class OpenAIProviderAdapter(BaseProviderAdapter):
     # ------------------------------------------------------------------
 
     def _resolve_api_key(self) -> str:
-        """Resolve the API key from settings, preferring the gateway-specific key."""
-        key = settings.ai_gateway_api_key or settings.openai_api_key
+        """Resolve the API key from settings, preferring the gateway-specific key.
+
+        Falls back to ``DEEPSEEK_API_KEY`` env var for Railway staging naming compatibility.
+        """
+        key = (
+            settings.ai_gateway_api_key
+            or settings.openai_api_key
+            or os.environ.get("DEEPSEEK_API_KEY")
+        )
         if not key:
-            logger.warning("No OpenAI API key configured; provider will fail at runtime")
+            logger.warning("No AI API key configured; provider will fail at runtime")
             return ""
         return key
 

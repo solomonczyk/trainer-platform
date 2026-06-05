@@ -8,6 +8,7 @@ schema.
 
 from __future__ import annotations
 
+import os
 import time
 from typing import Any
 
@@ -184,10 +185,11 @@ class AIGatewayService:
     def get_provider(self) -> BaseProviderAdapter:
         """Return the configured AI provider adapter (cached).
 
-        Provider selection is driven by ``settings.ai_gateway_provider``:
+        Provider selection is driven by ``settings.ai_gateway_provider``
+        (or the ``AI_PROVIDER`` env var as a fallback):
 
         * ``"mock"`` → :class:`MockProviderAdapter <app.ai_gateway.adapters.mock.MockProviderAdapter>`
-        * ``"openai"`` → :class:`OpenAIProviderAdapter <app.ai_gateway.adapters.openai_adapter.OpenAIProviderAdapter>`
+        * ``"openai"`` or ``"deepseek"`` → :class:`OpenAIProviderAdapter <app.ai_gateway.adapters.openai_adapter.OpenAIProviderAdapter>`
 
         Raises:
             ValueError: If the provider name is unknown.
@@ -196,19 +198,22 @@ class AIGatewayService:
             return self._provider
 
         provider_name = settings.ai_gateway_provider
+        # Fallback to AI_PROVIDER env var (Railway staging naming convention)
+        if provider_name == "mock" and os.environ.get("AI_PROVIDER"):
+            provider_name = os.environ["AI_PROVIDER"]
 
         if provider_name == "mock":
             from app.ai_gateway.adapters.mock import MockProviderAdapter
 
             self._provider = MockProviderAdapter()
-        elif provider_name == "openai":
+        elif provider_name in ("openai", "deepseek"):
             from app.ai_gateway.adapters.openai_adapter import OpenAIProviderAdapter
 
             self._provider = OpenAIProviderAdapter()
         else:
             raise ValueError(
                 f"Unknown AI gateway provider: '{provider_name}'. "
-                f"Valid options: mock, openai"
+                f"Valid options: mock, openai, deepseek"
             )
 
         logger.info(
