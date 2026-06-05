@@ -61,9 +61,12 @@ jobs:
           echo "---"
           python -c "import bcrypt; print('bcrypt version:', bcrypt.__version__)"
           python -c "from passlib.hash import bcrypt as bcrypt_hash; print('passlib bcrypt backend:', bcrypt_hash.get_backend())"
+          echo "--- pytest plugins ---"
+          python -m pytest --version
+          python -c "import pkg_resources; [print(p.key) for p in pkg_resources.iter_entry_points('pytest11')]" 2>/dev/null || pip list 2>/dev/null | grep -i pytest
 
       - name: Run tests (SQLite)
-        run: python -m pytest tests/ -v --tb=long -x --timeout=120
+        run: python -m pytest tests/ -v --tb=long -x
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           SECRET_KEY: ci-secret-key-not-for-production
