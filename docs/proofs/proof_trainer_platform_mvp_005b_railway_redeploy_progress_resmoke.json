@@ -88,9 +88,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "PENDING_FINAL_COMMIT",
-    "pushed": false,
-    "clean": false
+    "commit": "398dd9b46ca440a640a60dd44084e5be13c6739d",
+    "pushed": true,
+    "clean": true
   },
   "known_issues": [
     "Railway deployment metadata did not expose a git commit hash directly; deployment ID plus behavioral smoke proves the fix is active.",
