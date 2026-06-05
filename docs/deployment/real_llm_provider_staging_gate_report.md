@@ -1,7 +1,7 @@
 # Real LLM Provider Staging Gate Report - MVP-006
 
 ## Layer
-TRAINER-PLATFORM-MVP-006-REAL-LLM-PROVIDER-STAGING-GATE
+TRAINER-PLATFORM-MVP-006-DEEPSEEK-V4-FLASH-STAGING-GATE
 
 ## Date
 2026-06-05
@@ -10,17 +10,19 @@ TRAINER-PLATFORM-MVP-006-REAL-LLM-PROVIDER-STAGING-GATE
 DeepSeek
 
 ## Verdict
-NEEDS_OPERATOR_ACTION
+ACCEPTED_WITH_BLOCKERS
 
 ## Summary
-MVP-006 provider selection has changed from OpenAI to DeepSeek. OpenAI must not be configured for this gate.
+Railway staging backend variables for DeepSeek are present, and `OPENAI_API_KEY` remains absent. A controlled synthetic staging smoke was executed.
 
-Railway staging backend variable names were inspected with values redacted. The required DeepSeek secret and real-provider staging flags are not configured yet, so no real-provider enablement or smoke test was performed.
+The smoke produced a structured evaluation and updated progress, but the evaluation result reported `ai_model_used=gpt-4o-mini` instead of `deepseek-v4-flash`. This means the deployed backend did not use the selected DeepSeek provider/model for the success case.
+
+No provider secret values were printed, copied, committed, or stored in documentation.
 
 ## Required Railway Staging Backend Variables
 
 ```text
-DEEPSEEK_API_KEY=<secret only>
+DEEPSEEK_API_KEY: secret only
 AI_PROVIDER=deepseek
 AI_REAL_PROVIDER_ENABLED=true
 AI_MODEL_EVALUATOR=deepseek-v4-flash
@@ -33,23 +35,37 @@ AI_EVALUATION_JSON_SCHEMA_REQUIRED=true
 
 ## Variable Presence Check
 
+Values were redacted; only variable names were checked.
+
 | Variable | Present in Railway staging backend | Notes |
 |---|---:|---|
-| `DEEPSEEK_API_KEY` | false | Required operator secret |
-| `AI_PROVIDER` | false | Must be `deepseek` |
-| `AI_REAL_PROVIDER_ENABLED` | false | Must be `true` in staging only |
-| `AI_MODEL_EVALUATOR` | false | Must be `deepseek-v4-flash` |
-| `AI_PROVIDER_BASE_URL` | false | Must be `https://api.deepseek.com` |
-| `AI_MAX_COST_PER_REQUEST_USD` | false | Must be `0.05` |
-| `AI_TIMEOUT_SECONDS` | false | Must be `30` |
-| `AI_FALLBACK_PROVIDER` | false | Must be `mock` |
-| `AI_EVALUATION_JSON_SCHEMA_REQUIRED` | false | Must be `true` |
+| `DEEPSEEK_API_KEY` | true | Required operator secret present |
+| `AI_PROVIDER` | true | Expected `deepseek` |
+| `AI_REAL_PROVIDER_ENABLED` | true | Expected `true` in staging only |
+| `AI_MODEL_EVALUATOR` | true | Expected `deepseek-v4-flash` |
+| `AI_PROVIDER_BASE_URL` | true | Expected `https://api.deepseek.com` |
+| `AI_MAX_COST_PER_REQUEST_USD` | true | Expected `0.05` |
+| `AI_TIMEOUT_SECONDS` | true | Expected `30` |
+| `AI_FALLBACK_PROVIDER` | true | Expected `mock` |
+| `AI_EVALUATION_JSON_SCHEMA_REQUIRED` | true | Expected `true` |
 | `OPENAI_API_KEY` | false | Must remain absent for this gate |
 
-No secret values were printed, copied, committed, or stored in documentation.
+## Provider Validation
 
-## Implementation Note
-DeepSeek exposes an OpenAI-compatible API surface at `https://api.deepseek.com`. Before real-provider smoke, the backend must map the provider-neutral MVP-006 variables above into the existing AI Gateway/provider adapter path without exposing secrets and without enabling OpenAI.
+| Check | Result |
+|---|---|
+| OpenAI absent | PASS |
+| DeepSeek variables present | PASS |
+| Backend AI Gateway path used | PASS |
+| Frontend direct provider calls | PASS - none found |
+| Real DeepSeek model observed | FAIL - response reported `gpt-4o-mini` |
+| Structured evaluation schema | PASS |
+| Progress after evaluation | PASS |
+| Analytics privacy event path | PASS |
+
+## Blocking Diagnosis
+
+The deployed backend appears not to map the provider-neutral MVP-006 variables (`AI_PROVIDER`, `AI_MODEL_EVALUATOR`, `AI_PROVIDER_BASE_URL`, etc.) into the existing AI Gateway runtime settings. As a result, the smoke test succeeded structurally but did not prove real DeepSeek usage.
 
 ## Forbidden Actions Check
 
@@ -69,5 +85,5 @@ DeepSeek exposes an OpenAI-compatible API surface at `https://api.deepseek.com`.
 ## Next Allowed Action
 
 ```text
-operator_configure_deepseek_staging_secret
+fix_deepseek_ai_gateway_env_mapping_then_redeploy_staging
 ```

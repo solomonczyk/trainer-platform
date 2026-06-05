@@ -1,7 +1,7 @@
 {
-  "layer": "TRAINER-PLATFORM-MVP-006-REAL-LLM-PROVIDER-STAGING-GATE",
+  "layer": "TRAINER-PLATFORM-MVP-006-DEEPSEEK-V4-FLASH-STAGING-GATE",
   "date": "2026-06-05",
-  "verdict": "NEEDS_OPERATOR_ACTION",
+  "verdict": "ACCEPTED_WITH_BLOCKERS",
   "provider_decision": {
     "selected_provider": "DeepSeek",
     "base_url": "https://api.deepseek.com",
@@ -28,13 +28,12 @@
   },
   "preflight": {
     "branch": "master",
-    "git_clean_before_work": false,
+    "git_clean_before_work": true,
     "env_railway_local_gitignored": true,
-    "secrets_not_tracked": true,
-    "unrelated_local_changes_preserved": true
+    "secrets_not_tracked": true
   },
   "deepseek_config": {
-    "deepseek_key_configured_as_secret": false,
+    "deepseek_key_configured_as_secret": true,
     "deepseek_key_exposed": false,
     "deepseek_key_committed": false,
     "staging_only": true,
@@ -42,19 +41,19 @@
     "model_id": "deepseek-v4-flash",
     "model_id_validated": false,
     "base_url": "https://api.deepseek.com",
-    "base_url_configured": false,
-    "blocked_reason": "DEEPSEEK_API_KEY is not configured in Railway staging backend variables"
+    "base_url_configured": true,
+    "blocked_reason": "Deployed evaluator did not report deepseek-v4-flash during smoke"
   },
   "required_staging_backend_variables": {
-    "DEEPSEEK_API_KEY": false,
-    "AI_PROVIDER": false,
-    "AI_REAL_PROVIDER_ENABLED": false,
-    "AI_MODEL_EVALUATOR": false,
-    "AI_PROVIDER_BASE_URL": false,
-    "AI_MAX_COST_PER_REQUEST_USD": false,
-    "AI_TIMEOUT_SECONDS": false,
-    "AI_FALLBACK_PROVIDER": false,
-    "AI_EVALUATION_JSON_SCHEMA_REQUIRED": false,
+    "DEEPSEEK_API_KEY": true,
+    "AI_PROVIDER": true,
+    "AI_REAL_PROVIDER_ENABLED": true,
+    "AI_MODEL_EVALUATOR": true,
+    "AI_PROVIDER_BASE_URL": true,
+    "AI_MAX_COST_PER_REQUEST_USD": true,
+    "AI_TIMEOUT_SECONDS": true,
+    "AI_FALLBACK_PROVIDER": true,
+    "AI_EVALUATION_JSON_SCHEMA_REQUIRED": true,
     "OPENAI_API_KEY": false
   },
   "ai_gateway": {
@@ -66,29 +65,38 @@
     "validated_from_code": true
   },
   "real_llm_smoke": {
-    "executed": false,
+    "executed": true,
     "passed": false,
     "synthetic_user_only": true,
     "deepseek_used": false,
     "openai_used": false,
-    "structured_result_available": false,
-    "evaluation_schema_valid": false,
-    "score_returned": false,
-    "passed_boolean_returned": false,
-    "feedback_returned": false,
-    "progress_verified_after_real_evaluation": false,
-    "progress_total_attempts_after_evaluation": 0,
-    "progress_average_score_after_evaluation": 0
+    "expected_model": "deepseek-v4-flash",
+    "observed_model": "gpt-4o-mini",
+    "structured_result_available": true,
+    "evaluation_schema_valid": true,
+    "score_returned": true,
+    "score": 94,
+    "passed_boolean_returned": true,
+    "passed_result": true,
+    "feedback_returned": true,
+    "validation_status": "validated",
+    "progress_verified_after_real_evaluation": true,
+    "progress_total_attempts_after_evaluation": 1,
+    "progress_completed_scenarios_after_evaluation": 1,
+    "progress_average_score_after_evaluation": 94.0
   },
   "analytics_privacy": {
-    "analytics_verified": false,
-    "raw_answers_absent_from_analytics": false,
-    "secrets_absent_from_logs": true
+    "analytics_verified": true,
+    "evaluation_result_event_status": "recorded",
+    "privacy_check_event_status": "recorded",
+    "raw_answers_absent_from_analytics": true,
+    "secrets_absent_from_logs": true,
+    "raw_answer_sql_logging_observed_for_synthetic_answer": true
   },
   "guardrails": {
-    "max_cost_per_request_configured": false,
-    "timeout_configured": false,
-    "rate_limit_enabled": false,
+    "max_cost_per_request_configured": true,
+    "timeout_configured": true,
+    "rate_limit_enabled": true,
     "fallback_or_safe_failure_tested": false,
     "blind_retry_disabled": true
   },
@@ -99,7 +107,7 @@
     "frontend_tests_passed": false,
     "trainer_package_validation_passed": false,
     "openapi_export_passed": false,
-    "not_run_reason": "Stopped before provider validation because DeepSeek staging secret is unavailable"
+    "not_run_reason": "User requested provider validation and real DeepSeek smoke only"
   },
   "security": {
     "no_secrets_committed": true,
@@ -111,15 +119,15 @@
   },
   "git": {
     "branch": "master",
-    "commit": "4e8a74a05456ab70d7f7e6465a104176759a543d",
-    "pushed": true,
+    "commit": "PENDING_COMMIT",
+    "pushed": false,
     "clean": false
   },
   "known_issues": [
-    "Railway staging backend is missing DEEPSEEK_API_KEY.",
-    "MVP-006 required provider-neutral AI_* variables must be mapped to the backend AI Gateway settings before DeepSeek smoke.",
-    "Real DeepSeek smoke, fallback, and cost guardrail checks were not executed because the required secret is unavailable.",
-    "Unrelated local MVP-005B files were already modified before this provider-decision update and were preserved untouched."
+    "DeepSeek staging variables are present but the deployed evaluator reported gpt-4o-mini, not deepseek-v4-flash.",
+    "Provider-neutral AI_* variables must be mapped to backend AI Gateway runtime settings before DeepSeek can be accepted.",
+    "Fallback/safe-failure test was not executed because the success path did not prove DeepSeek usage.",
+    "Backend SQL logs include synthetic answer text during request processing; reduce SQL parameter logging before broader real-provider beta."
   ],
-  "next_allowed_action": "operator_configure_deepseek_staging_secret"
+  "next_allowed_action": "fix_deepseek_ai_gateway_env_mapping_then_redeploy_staging"
 }
