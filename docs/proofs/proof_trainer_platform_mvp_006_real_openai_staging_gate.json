@@ -86,9 +86,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "PENDING_COMMIT",
-    "pushed": false,
-    "clean": false
+    "commit": "1c6ad27ae6a4b5ff4424eda987c023361d039dfb",
+    "pushed": true,
+    "clean": true
   },
   "known_issues": [
     "Railway staging backend is missing OPENAI_API_KEY.",
