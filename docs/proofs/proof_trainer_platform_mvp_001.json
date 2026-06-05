@@ -176,13 +176,21 @@
     "documentation_gate": "PASS"
   },
   "git": {
-    "commit": "245aff9909a79042f014f20717da65f853ba3a3e",
-    "pushed": false,
-    "clean": true
+    "commit": "37f516d0a262a6aaac351052741b8d9797a85a10",
+    "pushed": true,
+    "clean": true,
+    "remote": "git@github.com:solomonczyk/trainer-platform.git",
+    "branch": "master"
+  },
+  "ci": {
+    "started": true,
+    "result": "pending",
+    "run_url": "https://github.com/solomonczyk/trainer-platform/actions",
+    "known_issue": "All prior 8 CI runs failed with exit code 4 because pytest-timeout was missing from requirements.txt. Fix committed at 37f516d. Awaiting CI re-run."
   },
   "production": {
     "production_accepted": false,
     "release_allowed": false
   },
-  "next_allowed_action": "Configure real OpenAI provider, deploy to staging, enable production monitoring"
+  "next_allowed_action": "staging_deploy_preparation_after_ci_pass"
 }
