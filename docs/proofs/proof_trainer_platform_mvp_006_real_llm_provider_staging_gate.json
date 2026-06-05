@@ -119,9 +119,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "PENDING_COMMIT",
-    "pushed": false,
-    "clean": false
+    "commit": "06052f7f78722cf5b270e19a4d17dcca8e0ef1a8",
+    "pushed": true,
+    "clean": true
   },
   "known_issues": [
     "DeepSeek staging variables are present but the deployed evaluator reported gpt-4o-mini, not deepseek-v4-flash.",
