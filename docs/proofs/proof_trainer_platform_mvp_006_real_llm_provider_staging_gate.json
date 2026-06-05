@@ -111,8 +111,8 @@
   },
   "git": {
     "branch": "master",
-    "commit": "PENDING_COMMIT",
-    "pushed": false,
+    "commit": "4e8a74a05456ab70d7f7e6465a104176759a543d",
+    "pushed": true,
     "clean": false
   },
   "known_issues": [
