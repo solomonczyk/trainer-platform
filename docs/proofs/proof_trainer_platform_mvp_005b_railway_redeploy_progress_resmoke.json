@@ -80,9 +80,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "463d1ee",
+    "commit": "52714cd",
     "pushed": true,
-    "clean": false
+    "clean": true
   },
   "known_issues": [
     "Progress update fix not deployed on Railway — Railway CLI auth unavailable, auto-deploy did not trigger",
