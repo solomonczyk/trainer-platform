@@ -63,10 +63,11 @@ jobs:
           python -c "from passlib.hash import bcrypt as bcrypt_hash; print('passlib bcrypt backend:', bcrypt_hash.get_backend())"
           echo "--- pytest plugins ---"
           python -m pytest --version
-          python -c "import pkg_resources; [print(p.key) for p in pkg_resources.iter_entry_points('pytest11')]" 2>/dev/null || pip list 2>/dev/null | grep -i pytest
+          pip list 2>/dev/null | grep -i pytest
 
       - name: Run tests (SQLite)
-        run: python -m pytest tests/ -v --tb=long -x
+        run: python -m pytest tests/ -v --tb=long -x > pytest_output.log 2>&1; rc=$?; cat pytest_output.log; exit $rc
+
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           SECRET_KEY: ci-secret-key-not-for-production
@@ -78,7 +79,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-output
-          path: backend/test_ci.db
+          path: |
+            backend/test_ci.db
+            backend/pytest_output.log
           retention-days: 7
 
   trainer-package-validation:
