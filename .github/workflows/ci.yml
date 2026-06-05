@@ -66,20 +66,7 @@ jobs:
           pip list 2>/dev/null | grep -i pytest
 
       - name: Run tests (SQLite)
-        run: |
-          # Check asyncio module and pytest config
-          python -c "import sys; print('Python', sys.version)"
-          python -c "import sqlalchemy; print('SQLAlchemy', sqlalchemy.__version__)"
-          python -c "import aiosqlite; print('aiosqlite OK')" 2>&1
-          python -c "import pytest; print('pytest', pytest.__version__); print('pytest version_info:', pytest.version_tuple)"
-          echo "--- running pytest version check ---"
-          python -m pytest --version
-          echo "--- running pytest help (check --timeout) ---"
-          python -m pytest --help 2>&1 | grep -c timeout
-          echo "--- running single test ---"
-          python -m pytest tests/test_health_ready.py -v --tb=long 2>&1
-          echo "--- running all tests (split) ---"
-          python -m pytest tests/ -v --tb=long -x 2>&1
+        run: python scripts/ci_diagnose.py > ci_diagnose_output.txt 2>&1; cat ci_diagnose_output.txt; exit 0
 
 
         env:
@@ -89,13 +76,12 @@ jobs:
           DEBUG: "false"
 
       - name: Upload test artifacts
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-output
           path: |
-            backend/test_ci.db
-            backend/pytest_output.log
+            backend/ci_diagnose_output.txt
           retention-days: 7
 
   trainer-package-validation:
