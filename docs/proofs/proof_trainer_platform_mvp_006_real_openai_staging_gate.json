@@ -1,0 +1,99 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-006-REAL-OPENAI-STAGING-GATE",
+  "date": "2026-06-05",
+  "verdict": "NEEDS_OPERATOR_ACTION",
+  "base_state": {
+    "mvp_005b": "ACCEPTED",
+    "external_staging": "HARDENED",
+    "progress_verified_on_railway": true,
+    "real_openai_previous": "NOT_ALLOWED_YET",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "scope": {
+    "real_openai_staging_gate": true,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "new_trainer_added": false,
+    "payments_added": false,
+    "market_launch": false
+  },
+  "preflight": {
+    "branch": "master",
+    "git_clean_before_work": true,
+    "env_railway_local_gitignored": true,
+    "secrets_not_tracked": true
+  },
+  "openai_config": {
+    "openai_key_configured_as_secret": false,
+    "openai_key_exposed": false,
+    "openai_key_committed": false,
+    "staging_only": true,
+    "production_openai_enabled": false,
+    "model_id": "",
+    "model_id_validated": false,
+    "blocked_reason": "OPENAI_API_KEY is not configured in Railway staging backend variables"
+  },
+  "ai_gateway": {
+    "ai_gateway_used": true,
+    "provider_adapter_used": true,
+    "frontend_direct_openai_calls": false,
+    "mock_provider_available_as_fallback": true,
+    "validated_from_code": true
+  },
+  "real_ai_smoke": {
+    "executed": false,
+    "passed": false,
+    "synthetic_user_only": true,
+    "real_openai_used": false,
+    "structured_result_available": false,
+    "evaluation_schema_valid": false,
+    "score_returned": false,
+    "passed_boolean_returned": false,
+    "feedback_returned": false,
+    "progress_verified_after_real_evaluation": false,
+    "progress_total_attempts_after_evaluation": 0,
+    "progress_average_score_after_evaluation": 0
+  },
+  "analytics_privacy": {
+    "analytics_verified": false,
+    "raw_answers_absent_from_analytics": false,
+    "secrets_absent_from_logs": true
+  },
+  "guardrails": {
+    "max_cost_per_request_configured": false,
+    "timeout_configured": false,
+    "rate_limit_enabled": false,
+    "fallback_or_safe_failure_tested": false,
+    "blind_retry_disabled": true
+  },
+  "quality": {
+    "ci_passed": false,
+    "backend_tests_passed": false,
+    "frontend_build_passed": false,
+    "frontend_tests_passed": false,
+    "trainer_package_validation_passed": false,
+    "openapi_export_passed": false,
+    "not_run_reason": "Stopped before provider validation because OpenAI staging secret is unavailable"
+  },
+  "security": {
+    "no_secrets_committed": true,
+    "openai_key_exposed": false,
+    "database_url_exposed": false,
+    "proof_contains_secrets": false,
+    "production_secrets_not_used": true
+  },
+  "git": {
+    "branch": "master",
+    "commit": "PENDING_COMMIT",
+    "pushed": false,
+    "clean": false
+  },
+  "known_issues": [
+    "Railway staging backend is missing OPENAI_API_KEY.",
+    "MVP-006 required AI_* variable names must be mapped to the backend AI Gateway settings before real-provider smoke.",
+    "Real OpenAI smoke, fallback, and cost guardrail checks were not executed because the required secret is unavailable."
+  ],
+  "next_allowed_action": "operator_configure_openai_staging_secret"
+}
