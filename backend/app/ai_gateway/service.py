@@ -63,6 +63,7 @@ class AIGatewayService:
             ``success`` is ``False`` and ``error_message`` contains details.
         """
         provider = self.get_provider()
+        model = self._effective_model()
         raw_output: dict[str, Any] | None = None
         validated_output: EvaluationOutput | None = None
         validation_status: str = "validated"
@@ -75,7 +76,7 @@ class AIGatewayService:
             attempt_id=request.attempt_id,
             scenario_id=request.scenario_id,
             provider=provider.provider_name,
-            model=settings.ai_gateway_model,
+            model=model,
             locale=request.locale,
             user_role=request.user_role,
         )
@@ -159,7 +160,7 @@ class AIGatewayService:
             validated_output=validated_output,
             raw_output=raw_output,
             provider=provider.provider_name,
-            model=settings.ai_gateway_model,
+            model=model,
             cost_usd=self._estimate_cost(raw_output, provider.provider_name),
             latency_ms=latency_ms,
             validation_status=validation_status,
@@ -185,8 +186,8 @@ class AIGatewayService:
     def get_provider(self) -> BaseProviderAdapter:
         """Return the configured AI provider adapter (cached).
 
-        Provider selection is driven by ``settings.ai_gateway_provider``
-        (or the ``AI_PROVIDER`` env var as a fallback):
+        Provider selection is driven by the Railway-compatible ``AI_PROVIDER``
+        env var first, then ``settings.ai_gateway_provider``:
 
         * ``"mock"`` → :class:`MockProviderAdapter <app.ai_gateway.adapters.mock.MockProviderAdapter>`
         * ``"openai"`` or ``"deepseek"`` → :class:`OpenAIProviderAdapter <app.ai_gateway.adapters.openai_adapter.OpenAIProviderAdapter>`
@@ -197,10 +198,11 @@ class AIGatewayService:
         if self._provider is not None:
             return self._provider
 
-        provider_name = settings.ai_gateway_provider
-        # Fallback to AI_PROVIDER env var (Railway staging naming convention)
-        if provider_name == "mock" and os.environ.get("AI_PROVIDER"):
-            provider_name = os.environ["AI_PROVIDER"]
+        provider_name = (
+            os.environ.get("AI_GATEWAY_PROVIDER")
+            or os.environ.get("AI_PROVIDER")
+            or settings.ai_gateway_provider
+        ).lower()
 
         if provider_name == "mock":
             from app.ai_gateway.adapters.mock import MockProviderAdapter
@@ -209,7 +211,7 @@ class AIGatewayService:
         elif provider_name in ("openai", "deepseek"):
             from app.ai_gateway.adapters.openai_adapter import OpenAIProviderAdapter
 
-            self._provider = OpenAIProviderAdapter()
+            self._provider = OpenAIProviderAdapter(provider_name=provider_name)
         else:
             raise ValueError(
                 f"Unknown AI gateway provider: '{provider_name}'. "
@@ -219,13 +221,22 @@ class AIGatewayService:
         logger.info(
             "AI provider initialized",
             provider=self._provider.provider_name,
-            model=settings.ai_gateway_model,
+            model=self._effective_model(),
         )
         return self._provider
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _effective_model() -> str:
+        """Return the model selected by staging env aliases or default settings."""
+        return (
+            os.environ.get("AI_GATEWAY_MODEL")
+            or os.environ.get("AI_MODEL_EVALUATOR")
+            or settings.ai_gateway_model
+        )
 
     def _build_fallback_output(
         self,

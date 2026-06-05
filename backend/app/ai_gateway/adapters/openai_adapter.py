@@ -39,15 +39,27 @@ class OpenAIProviderAdapter(BaseProviderAdapter):
 
     provider_name: str = "openai"
 
-    def __init__(self) -> None:
+    def __init__(self, provider_name: str = "openai") -> None:
+        self.provider_name = provider_name
         self.api_key: str = self._resolve_api_key()
-        # Model: prefer settings, fallback to AI_MODEL_EVALUATOR env var (Railway naming)
-        self.model: str = settings.ai_gateway_model or os.environ.get("AI_MODEL_EVALUATOR", "gpt-4o-mini")
-        self.timeout_seconds: int = settings.ai_gateway_timeout_seconds
+        self.model: str = (
+            os.environ.get("AI_GATEWAY_MODEL")
+            or os.environ.get("AI_MODEL_EVALUATOR")
+            or settings.ai_gateway_model
+        )
+        self.timeout_seconds: int = int(
+            os.environ.get("AI_GATEWAY_TIMEOUT_SECONDS")
+            or os.environ.get("AI_TIMEOUT_SECONDS")
+            or settings.ai_gateway_timeout_seconds
+        )
         self.max_retries: int = max(settings.ai_gateway_max_retries, 1)
-        # Default endpoint; override via env OPENAI_BASE_URL or AI_PROVIDER_BASE_URL if needed
-        env_base = os.environ.get("OPENAI_BASE_URL") or os.environ.get("AI_PROVIDER_BASE_URL")
-        self.base_url: str = env_base or "https://api.openai.com/v1"
+        env_base = os.environ.get("AI_PROVIDER_BASE_URL") or os.environ.get("OPENAI_BASE_URL")
+        if env_base:
+            self.base_url = env_base
+        elif self.provider_name == "deepseek":
+            self.base_url = "https://api.deepseek.com"
+        else:
+            self.base_url = "https://api.openai.com/v1"
 
     # ------------------------------------------------------------------
     # Public API
@@ -120,11 +132,10 @@ class OpenAIProviderAdapter(BaseProviderAdapter):
 
         Falls back to ``DEEPSEEK_API_KEY`` env var for Railway staging naming compatibility.
         """
-        key = (
-            settings.ai_gateway_api_key
-            or settings.openai_api_key
-            or os.environ.get("DEEPSEEK_API_KEY")
-        )
+        if self.provider_name == "deepseek":
+            key = settings.ai_gateway_api_key or os.environ.get("DEEPSEEK_API_KEY")
+        else:
+            key = settings.ai_gateway_api_key or settings.openai_api_key
         if not key:
             logger.warning("No AI API key configured; provider will fail at runtime")
             return ""
@@ -204,6 +215,7 @@ class OpenAIProviderAdapter(BaseProviderAdapter):
             "messages": messages,
             "temperature": 0.2,  # Low temperature for consistent evaluation
             "max_tokens": 4096,
+            "response_format": {"type": "json_object"},
         }
 
         async with httpx.AsyncClient(timeout=httpx.Timeout(self.timeout_seconds)) as client:

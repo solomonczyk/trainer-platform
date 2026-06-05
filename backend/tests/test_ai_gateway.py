@@ -213,3 +213,21 @@ class TestGatewayService:
         assert result.validated_output is not None
         assert result.validated_output.overall_score >= 0
         assert result.provider == "mock"
+
+    def test_deepseek_env_mapping(self, monkeypatch):
+        """Railway DeepSeek env aliases configure the OpenAI-compatible adapter."""
+        monkeypatch.setenv("AI_PROVIDER", "deepseek")
+        monkeypatch.setenv("AI_MODEL_EVALUATOR", "deepseek-v4-flash")
+        monkeypatch.setenv("AI_PROVIDER_BASE_URL", "https://api.deepseek.com")
+        monkeypatch.setenv("AI_TIMEOUT_SECONDS", "30")
+        monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key-not-real")
+
+        from app.ai_gateway.service import AIGatewayService
+
+        gateway = AIGatewayService()
+        provider = gateway.get_provider()
+
+        assert provider.provider_name == "deepseek"
+        assert provider.model == "deepseek-v4-flash"
+        assert provider.base_url == "https://api.deepseek.com"
+        assert provider.timeout_seconds == 30
