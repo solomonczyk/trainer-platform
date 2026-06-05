@@ -1,4 +1,4 @@
-# Railway Progress Resmoke Report — MVP-005B
+# Railway Progress Resmoke Report - MVP-005B
 
 ## Layer
 TRAINER-PLATFORM-MVP-005B-RAILWAY-REDEPLOY-AND-PROGRESS-RESMOKE
@@ -7,74 +7,94 @@ TRAINER-PLATFORM-MVP-005B-RAILWAY-REDEPLOY-AND-PROGRESS-RESMOKE
 2026-06-05
 
 ## Objective
-Verify that Railway external staging runs the MVP-005 progress-update-after-evaluation fix (commits `d27b537` or later).
+Verify that Railway external staging runs the MVP-005 progress-update-after-evaluation fix from commit `0d4e6b5` or later, and confirm that progress updates after an evaluated attempt.
 
-## Method
+## Railway Deployment Verification
 
-### 1. Local Code Verification
-- Commit `d27b537` adds `ProgressService.update_progress_after_evaluation()` call in `EvaluationService.evaluate_attempt()` (backend/app/modules/evaluations/service.py lines 178-198)
-- Local backend test `test_progress_updated_after_evaluation` passes (verifies total_attempts >= 1, average_score > 0)
-- Latest commit: `463d1ee` (empty trigger commit), parent: `0d4e6b5`
+| Item | Result |
+|---|---|
+| Backend URL | `https://backend-staging-0487.up.railway.app` |
+| Frontend URL | `https://frontend-staging-4146.up.railway.app` |
+| Expected fix commit | `0d4e6b5` |
+| Latest source commit before redeploy | `dcf424e` |
+| Initial backend deployment observed | `674bf09c-c687-4d3e-b1ce-0980ad0864e3` |
+| Initial frontend deployment observed | `602d1e51-2ced-44ea-9ca7-8b71cd7bd527` |
+| Root-level backend upload attempt | `f884ed4c-f6d7-41d6-bb7e-e5265616c48c` - failed because Railway tried Nixpacks against the repository root |
+| Corrected backend redeploy | `a8c4dd82-2764-43c9-adab-0de1cd71a5ef` |
+| Corrected backend redeploy status | SUCCESS |
+| Deployment method | `railway up . --path-as-root --service backend --environment staging` from `backend/` |
 
-### 2. Railway Deployment State
-- **Railway CLI**: Not authenticated — `railway login` requires interactive terminal
-- **Railway API**: Project token is available but has limited scope (deployment environment use only, not CLI auth)
-- **Push to GitHub**: Commit `463d1ee` pushed to `origin/master` to trigger Railway auto-deploy (if configured)
-- **Auto-deploy status**: Unknown — no webhook verification possible without GitHub API auth
+Railway deployment metadata did not expose a git commit hash directly. The accepted proof is therefore a combination of:
 
-### 3. Behavioral Verification
-Full smoke test run against Railway staging:
+- local source history containing the MVP-005 progress fix after `0d4e6b5`;
+- successful backend upload from the local `backend/` directory;
+- Railway deployment `a8c4dd82-2764-43c9-adab-0de1cd71a5ef` reaching SUCCESS;
+- behavioral smoke proof showing progress now updates on external staging.
+
+## External Checks
+
+| Check | Result |
+|---|---|
+| Frontend reachable | PASS - HTTP 200 |
+| Backend `/health` | PASS - `{"status":"ok","app":"TrainerPlatform","version":"0.1.0"}` |
+| Backend `/ready` | PASS - `{"status":"ok","database":"ok"}` |
+| Backend `/openapi.json` | PASS - HTTP 200, OpenAPI document available |
+
+## Progress Resmoke
+
+Fresh synthetic user:
+
+```text
+smoke-test-mvp005b-1780676751@trainerplatform.com
+```
+
+Smoke result:
 
 | Step | Result |
-|------|--------|
-| Frontend reachable | ✅ HTTP 200 |
-| Backend health | ✅ `{"status":"ok"}` |
-| Register synthetic user | ✅ 201 |
-| Login | ✅ 200, token received |
-| Enroll in QA Trainer | ✅ 201, enrolled |
-| Start Bug Report scenario | ✅ session + attempt created |
-| Submit answer | ✅ 200 |
-| Complete attempt | ✅ 200 |
-| Evaluate attempt | ✅ 200, mock AI evaluation complete |
-| Score returned | ✅ 43–91 (mock AI, varies by answer) |
-| Progress (total_attempts) | ❌ **0** (expected >= 1) |
-| Progress (average_score) | ❌ **0.0** (expected > 0) |
-| Progress (completed_scenarios) | ❌ **0** |
+|---|---|
+| Registration | PASS - 201, access token returned |
+| Login | PASS - 200, access token returned |
+| Domain catalog | PASS - 1 domain |
+| IT domain | PASS |
+| QA Engineer Interview Trainer | PASS - 5 scenarios |
+| Enrollment | PASS - enrolled |
+| Bug Report scenario start | PASS |
+| Answer submission | PASS |
+| Session completion | PASS |
+| Mock evaluation | PASS - score 89, passed true |
+| Evaluation result fetch | PASS |
+| Progress after evaluation | PASS - total_attempts 1, completed_scenarios 1, average_score 89.0 |
 
-### 4. Diagnosis
-**Root cause**: Railway external staging is still running the **pre-fix code**. The MVP-005 progress update fix was committed in `d27b537` but has NOT been deployed to Railway.
+## Analytics Recheck
 
-Evidence:
-1. Evaluation completes successfully (mock AI returns scores)
-2. Progress endpoint returns 0 attempts in all smoke test runs (3 independent runs)
-3. Code analysis confirms `update_progress_after_evaluation()` is wired but only activated on deployment
+| Check | Result |
+|---|---|
+| `evaluation_result_viewed` event | PASS - `status=recorded` |
+| Raw-answer privacy POST | PASS - `status=recorded`; raw answer keys are sanitized by server-side allowlist/blocklist rules |
+| MVP-005 analytics classification | Still valid |
 
-### 5. Deploy Attempt
-Action taken:
-- Empty commit `463d1ee` pushed to `origin master` to trigger Railway GitHub auto-deploy
-- Result: Railway endpoints remained healthy but progress fix still inactive after 10+ minutes
+## Quality Checks
 
-**Conclusion**: Either Railway auto-deploy is not configured, or the GitHub integration requires additional setup.
+| Check | Result |
+|---|---|
+| Backend tests | PASS - 66 passed, 3 skipped |
+| Frontend build | PASS |
+| Frontend tests | PASS - 10 passed |
+| Trainer package validation | PASS |
+| OpenAPI export | PASS - 24 paths |
 
-## Required Operator Action
-```
-NEEDS_OPERATOR_ACTION
+## Verdict
 
-To complete the deployment:
-1. Authenticate Railway CLI: railway login
-2. Redeploy backend: railway up --service backend -e staging --detach
-3. Verify deployment completes
-4. Re-run smoke test
-```
-
-## Current State Summary
-```
-railway_running_mvp005_fix: false
-progress_verified_on_railway: false
-external_smoke_test_passed: false (progress step fails)
-analytics_verified: true (classification from MVP-005 still valid)
-real_openai_enabled: false
-production_accepted: false
-release_allowed: false
-next_allowed_action: operator_railway_redeploy
+```json
+{
+  "TRAINER_PLATFORM_MVP_005B": "ACCEPTED",
+  "TRAINER_PLATFORM_MVP_005": "FULLY_ACCEPTED",
+  "external_staging": "HARDENED",
+  "progress_verified_on_railway": true,
+  "analytics_verified_or_classified": true,
+  "real_openai": "NOT_ALLOWED_YET",
+  "production_accepted": false,
+  "release_allowed": false,
+  "next_allowed_action": "real_openai_staging_gate"
+}
 ```

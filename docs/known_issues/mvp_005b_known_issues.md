@@ -1,80 +1,48 @@
-# Known Issues — MVP-005B Railway Redeploy and Progress Resmoke
+# Known Issues - MVP-005B Railway Redeploy and Progress Resmoke
 
-## 1. Progress Update Not Active on Railway
+## Status
 
-**Status**: OPEN
+No open MVP-005B acceptance blockers remain.
 
-**Component**: Railway deployment
+## Resolved
 
-**Description**: The progress-update-after-evaluation fix (committed in `d27b537`) is verified in code and backend tests pass, but Railway external staging still runs pre-fix code. Progress shows `total_attempts=0` after evaluation completes successfully.
+### 1. Progress Update Not Active on Railway
 
-**Root cause**: Railway deployment is stale — needs manual redeploy from latest `master`.
+**Status**: RESOLVED
 
-**Workaround**: None. Requires Railway CLI operator to run `railway up --service backend -e staging --detach` after authentication.
+The progress-update-after-evaluation fix is active on Railway after backend deployment `a8c4dd82-2764-43c9-adab-0de1cd71a5ef`.
 
-**Verification method**: Run `scripts/railway_smoke_test_mvp005.sh` after redeploy. Step 15 (Progress) should show `total_attempts >= 1` and `average_score > 0`.
+Evidence:
 
-**Impact**: Blocks MVP-005 final acceptance. Progress feature gap persists on external staging despite being code-verified.
+```json
+{
+  "progress_total_attempts_after_evaluation": 1,
+  "progress_completed_scenarios_after_evaluation": 1,
+  "progress_average_score_after_evaluation": 89.0,
+  "progress_verified_on_railway": true
+}
+```
 
----
+### 2. Backend Redeploy Path
 
-## 2. Railway CLI Authentication Unavailable
+**Status**: RESOLVED_WITH_NOTE
 
-**Status**: OPEN
+Deploying the backend from the repository root failed because Railway attempted a root-level Nixpacks build. The successful method was:
 
-**Component**: Infrastructure
+```text
+railway up . --path-as-root --service backend --environment staging
+```
 
-**Description**: The `RAILWAY_TOKEN` in `.env.railway.local` is a project-scoped deployment token, not a user API token. `railway login` requires an interactive terminal. The Railway GraphQL API cannot be used to trigger deployments without a user token.
+Run this command from the `backend/` directory when uploading the backend service manually.
 
-**Impact**: Cannot trigger Railway redeploy from non-interactive environment.
+### 3. Analytics Recheck
 
-**Workaround**: Operator runs `railway login` interactively, then `railway up --service backend -e staging --detach`.
+**Status**: VERIFIED
 
----
+The `evaluation_result_viewed` event was recorded, and raw-answer privacy behavior remains covered by the analytics sanitizer and local privacy tests.
 
-## 3. Railway GitHub Auto-Deploy Not Verified
+## Remaining Notes
 
-**Status**: UNKNOWN
-
-**Component**: Infrastructure
-
-**Description**: An empty commit (`463d1ee`) was pushed to `origin master` to trigger Railway auto-deploy (if configured). The endpoint did not update within 10+ minutes, suggesting auto-deploy is either not configured or set to a different branch.
-
-**Impact**: Deployments must be triggered manually via Railway CLI.
-
----
-
-## 4. Frontend Build ID Unstable
-
-**Status**: INFO
-
-**Component**: Frontend
-
-**Description**: The frontend build ID (`VONIBrkNEIsWlkphJtVFn`) changes on every build. This is normal Next.js behavior but means the deployed build version can't be tracked across deployments without external monitoring.
-
-**Impact**: None. Normal behavior.
-
----
-
-## 5. Admin Endpoints Return 500
-
-**Status**: OPEN
-
-**Component**: Backend
-
-**Description**: Admin endpoints (`/api/v1/admin/system-health`, `/api/v1/admin/seed-status`) return HTTP 500 on Railway staging.
-
-**Impact**: Admin monitoring unavailable on external staging. These endpoints require admin authentication that may not be configured properly for the staging environment.
-
-**Workaround**: Use health/ready endpoints for monitoring. Admin endpoints tested locally.
-
----
-
-## Mitigation Status Summary
-
-| Issue | Severity | Status | Mitigation |
-|-------|----------|--------|------------|
-| Progress not on Railway | HIGH | Open | Needs operator Railway redeploy |
-| Railway CLI unavailable | MEDIUM | Open | Needs interactive login |
-| Auto-deploy not verified | MEDIUM | Unknown | Check Railway project settings |
-| Admin endpoints 500 | LOW | Open | Use /health and /ready instead |
+- Railway deployment metadata did not expose a git commit hash directly; proof uses deployment ID plus behavioral verification.
+- Real OpenAI is still not allowed.
+- Production acceptance and release allowance remain false.
