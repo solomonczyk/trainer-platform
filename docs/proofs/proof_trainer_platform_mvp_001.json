@@ -175,7 +175,7 @@
     "documentation_gate": "PASS"
   },
   "git": {
-    "commit": "25a32277abb1e64e39f7340f89fddbf2af31c43e",
+    "commit": "0f3f6e558e83d49407d94261a55f9092ef288390",
     "pushed": true,
     "clean": true,
     "remote": "git@github.com:solomonczyk/trainer-platform.git",
@@ -184,7 +184,7 @@
   "ci": {
     "started": true,
     "result": "pass",
-    "run_url": "https://github.com/solomonczyk/trainer-platform/actions/runs/27009291990",
+    "run_url": "https://github.com/solomonczyk/trainer-platform/actions/runs/27010747011",
     "fixes_applied": [
       "Added pytest-timeout to requirements.txt (37f516d) for --timeout flag support",
       "Added email-validator to requirements.txt (25a3227) to fix pydantic EmailStr core schema generation on Python 3.12.13"
