@@ -118,6 +118,9 @@ authorized in a future layer.
 | `FRONTEND_URL` | `http://localhost:3000` | Frontend origin for CORS |
 | `CORS_ALLOWED_ORIGINS` | `` (empty) | Additional comma-separated origins |
 
+External staging: set `FRONTEND_URL` to the frontend's external URL after deployment.
+Use: `railway variable set FRONTEND_URL=https://<frontend-url>`
+
 ### Admin
 
 | Variable | Staging Value | Notes |
@@ -129,6 +132,9 @@ authorized in a future layer.
 | Variable | Staging Value | Notes |
 |----------|---------------|-------|
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | Backend API URL (client-side) |
+
+External staging: set `NEXT_PUBLIC_API_URL` to the backend's external URL before building.
+Use: `railway variable set NEXT_PUBLIC_API_URL=https://<backend-url>`
 
 ## Security Rules
 

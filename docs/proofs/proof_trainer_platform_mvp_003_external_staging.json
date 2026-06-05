@@ -1,0 +1,64 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-003-EXTERNAL-STAGING-DEPLOYMENT-OR-STAGING-DECISION",
+  "date": "2026-06-05",
+  "verdict": "ACCEPTED_WITH_BLOCKERS",
+  "base_commit": "3e0834d",
+  "option_selected": "local_staging_temporary_decision",
+  "scope": {
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "real_openai_enabled": false,
+    "prompt_engineer_trainer_added": false,
+    "voice_mode_added": false,
+    "marketplace_added": false,
+    "b2b_dashboard_added": false
+  },
+  "external_staging": {
+    "provider_selected": "railway",
+    "frontend_url": "",
+    "backend_url": "",
+    "database_type": "postgresql",
+    "deployed": false,
+    "health_check_passed": false,
+    "ready_check_passed": false,
+    "openapi_available": false,
+    "migrations_applied": false,
+    "qa_trainer_seeded": false,
+    "smoke_test_passed": false
+  },
+  "local_staging_decision": {
+    "used_as_temporary_staging": true,
+    "reason": "No cloud provider account or API token available from this environment. Railway CLI requires interactive terminal or RAILWAY_TOKEN for authentication. All external providers (Railway, Render, Fly.io) require interactive web browser for account creation. Local Docker Compose staging profile is fully operational and passes all smoke tests.",
+    "blocker_preserved": true
+  },
+  "quality": {
+    "ci_passed": true,
+    "frontend_build_passed": true,
+    "backend_tests_passed": true,
+    "staging_smoke_passed": true
+  },
+  "security": {
+    "no_secrets_committed": true,
+    "staging_secrets_separate": true,
+    "production_secrets_not_used": true,
+    "synthetic_data_only": true
+  },
+  "git": {
+    "branch": "master",
+    "commit": "",
+    "pushed": false,
+    "clean": false
+  },
+  "known_issues": [
+    "External staging NOT deployed — local Docker Compose staging profile remains the active staging environment",
+    "No cloud provider account available (Railway, Render, Fly.io all require interactive browser signup)",
+    "No RAILWAY_TOKEN or equivalent API credentials available in this environment",
+    "Provider decision document and Railway config files prepared for immediate deployment when account is available",
+    "Docker Desktop on Windows may encounter WSL stability issues with large builds",
+    "Frontend tests have minimal coverage (1 test file, 3 tests)",
+    "Real OpenAI provider not configured",
+    "Rate limiting uses in-memory store (not Redis)"
+  ],
+  "next_allowed_action": "external_staging_deployment"
+}

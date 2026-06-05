@@ -123,8 +123,19 @@ See [staging_env_vars.md](staging_env_vars.md) for the full list.
 
 ## Future: External Staging
 
-When an external staging provider becomes available (Render, Railway, Fly.io, etc.),
-the `docker-compose.staging.yml` configuration serves as the reference for:
+An external staging provider evaluation has been completed. See:
+
+- [staging_provider_decision.md](staging_provider_decision.md) — Provider comparison and Railway recommendation
+- [staging_decision_record.md](staging_decision_record.md) — Formal decision record and blockier documentation
+
+When an external staging provider becomes available (Railway recommended), the following configurations are ready:
+
+- [`railway.json`](../../railway.json) — Railway project definition
+- [`backend/nixpacks.toml`](../../backend/nixpacks.toml) — Backend build hints
+- [`frontend/nixpacks.toml`](../../frontend/nixpacks.toml) — Frontend build hints
+
+The `docker-compose.staging.yml` configuration also serves as the reference for:
+
 - Environment variables (all secrets via platform secret manager)
 - Service architecture (PostgreSQL + Backend + Frontend)
 - Health check endpoints

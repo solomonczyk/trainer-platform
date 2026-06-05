@@ -1,0 +1,13 @@
+# Nixpacks configuration for Railway deployment
+# This file provides build hints for the Python/FastAPI backend.
+# Railway auto-detects Python projects, but this config ensures
+# correct behavior.
+
+[phases.setup]
+nixPkgs = ["python311", "gcc", "libpqxx", "pkg-config"]
+
+[phases.install]
+cmds = ["pip install --no-cache-dir -r requirements.txt"]
+
+[start]
+cmd = "uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips *"

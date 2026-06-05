@@ -1,0 +1,16 @@
+# Nixpacks configuration for Railway deployment
+# This file provides build hints for the Next.js frontend.
+# Note: For production builds, use the Dockerfile instead.
+# Nixpacks is a fallback for quick deployments.
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm ci --production"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "node server.js"
