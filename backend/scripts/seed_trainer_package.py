@@ -265,10 +265,10 @@ async def main():
         print(f"Provided: {package_dir}")
         sys.exit(1)
 
-    # Use sync database URL for seeding (simpler)
-    db_url = settings.database_sync_url
+    # Use the full async database URL (with asyncpg driver)
+    db_url = settings.database_url
     engine = create_async_engine(
-        settings.database_url.replace("+asyncpg", ""),
+        db_url,
         echo=False,
     )
     session_factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)

@@ -68,8 +68,9 @@ class Settings(BaseSettings):
     rate_limit_enabled: bool = False
     rate_limit_requests_per_minute: int = 60
 
-    # Frontend
+    # Frontend / CORS
     frontend_url: str = "http://localhost:3000"
+    cors_allowed_origins: str = ""  # comma-separated list, merged with frontend_url
 
     # Admin
     admin_api_key: str = "change-me-admin-key"

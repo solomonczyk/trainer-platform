@@ -1,0 +1,150 @@
+# Trainer Platform — Local Staging Profile
+#
+# This profile provides a full local staging environment using Docker Compose.
+# It runs PostgreSQL, the FastAPI backend, and the Next.js frontend.
+#
+# Usage:
+#   docker compose -f docker-compose.staging.yml up -d
+#   docker compose -f docker-compose.staging.yml logs -f
+#   docker compose -f docker-compose.staging.yml down
+#
+# URLs:
+#   Frontend: http://localhost:3000
+#   Backend API: http://localhost:8000
+#   API Docs (Swagger): http://localhost:8000/docs
+#   Health: http://localhost:8000/health
+#   Ready: http://localhost:8000/ready
+
+version: "3.8"
+
+services:
+  # =========================================================
+  # PostgreSQL Database
+  # =========================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: tp_staging_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trainer
+      POSTGRES_PASSWORD: trainer_staging_pass
+      POSTGRES_DB: trainer_platform_staging
+    ports:
+      - "5433:5432"  # Use non-default host port to avoid conflict with local dev DB
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trainer -d trainer_platform_staging"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # =========================================================
+  # Backend — FastAPI
+  # =========================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tp_staging_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # App
+      APP_NAME: TrainerPlatform
+      APP_VERSION: "0.1.0"
+      APP_ENV: staging
+      DEBUG: "false"
+      SECRET_KEY: ${STAGING_SECRET_KEY:-staging-change-me-to-a-random-secret}
+      REQUEST_ID_HEADER: X-Request-ID
+
+      # Database
+      DATABASE_URL: postgresql+asyncpg://trainer:trainer_staging_pass@postgres:5432/trainer_platform_staging
+      DATABASE_SYNC_URL: postgresql://trainer:trainer_staging_pass@postgres:5432/trainer_platform_staging
+
+      # Auth
+      ACCESS_TOKEN_EXPIRE_MINUTES: 1440
+      ALGORITHM: HS256
+
+      # AI Gateway (mock provider — real OpenAI disabled by default)
+      AI_GATEWAY_PROVIDER: mock
+      AI_GATEWAY_API_KEY: ""
+      AI_GATEWAY_MODEL: gpt-4o-mini
+      AI_GATEWAY_TIMEOUT_SECONDS: 30
+      AI_GATEWAY_MAX_RETRIES: 1
+      AI_GATEWAY_FALLBACK_PLACEHOLDER_ENABLED: "true"
+
+      # OpenAI (disabled in staging unless explicitly authorized)
+      OPENAI_API_KEY: ""
+
+      # Analytics
+      ANALYTICS_ENABLED: "true"
+
+      # Feature Flags
+      FF_TRAINER_QA_INTERVIEW_VISIBLE: "true"
+      FF_TRAINER_QA_INTERVIEW_ENROLLMENT_ENABLED: "true"
+      FF_SCENARIO_RUNTIME_ENABLED: "true"
+      FF_AI_EVALUATION_ENABLED: "true"
+      FF_AI_EVALUATION_REAL_PROVIDER_ENABLED: "false"
+      FF_ANALYTICS_ENABLED: "true"
+      FF_LOCALE_EN_US_ENABLED: "true"
+      FF_BETA_ACCESS_ENABLED: "false"
+
+      # Localization
+      DEFAULT_LOCALE: ru-RU
+      FALLBACK_LOCALE: en-US
+
+      # Logging
+      LOG_LEVEL: info
+      LOG_FORMAT: json
+
+      # Rate Limiting (enabled in staging)
+      RATE_LIMIT_ENABLED: "true"
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 120
+
+      # Frontend URL (for CORS)
+      FRONTEND_URL: http://localhost:3000
+
+      # Admin
+      ADMIN_API_KEY: ${STAGING_ADMIN_API_KEY:-staging-change-me-admin-key}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./trainer_packages:/trainer_packages:ro
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; exit(0) if urllib.request.urlopen('http://localhost:8000/health').status == 200 else exit(1)\""]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+
+  # =========================================================
+  # Frontend — Next.js
+  # =========================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    container_name: tp_staging_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 15s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+
+volumes:
+  postgres_staging_data:

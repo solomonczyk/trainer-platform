@@ -41,10 +41,18 @@ app = FastAPI(
     redoc_url="/redoc" if settings.debug else None,
 )
 
-# CORS
+# CORS — support comma-separated origins from env (e.g. "http://localhost:3000,http://localhost:8080")
+_cors_origins = [o.strip() for o in settings.cors_allowed_origins.split(",") if o.strip()]
+if settings.frontend_url not in _cors_origins:
+    _cors_origins.append(settings.frontend_url)
+# Always include localhost for dev/staging
+for local_dev in ("http://localhost:3000", "http://localhost:8000"):
+    if local_dev not in _cors_origins:
+        _cors_origins.append(local_dev)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:3000"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -80,7 +88,8 @@ async def health():
 async def ready():
     try:
         async with engine.begin() as conn:
-            await conn.execute(lambda s: s.text("SELECT 1"))
+            from sqlalchemy import text
+            await conn.execute(text("SELECT 1"))
         db_status = "ok"
     except Exception as e:
         db_status = f"error: {e}"

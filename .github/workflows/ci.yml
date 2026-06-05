@@ -209,7 +209,6 @@ jobs:
 
       - name: Run frontend tests
         run: npx vitest run --reporter=verbose
-        continue-on-error: true
 
   openapi-export:
     name: OpenAPI Export
@@ -232,7 +231,6 @@ jobs:
           pip install --no-cache-dir -r requirements.txt
 
       - name: Export OpenAPI schema
-        continue-on-error: true
         run: python scripts/export_openapi.py
         env:
           APP_ENV: testing

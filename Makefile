@@ -59,3 +59,34 @@ proof: ## Generate proof JSON
 
 all: db-up backend-setup backend-migrate backend-seed frontend-setup ## Full setup
 	@echo "Setup complete. Run 'make backend-run' and 'make frontend-run' in separate terminals."
+
+staging-up: ## Start local staging environment (Docker Compose)
+		docker compose -f docker-compose.staging.yml up -d
+		@echo "Staging started. URLs - Frontend: http://localhost:3000  Backend: http://localhost:8000"
+
+staging-down: ## Stop local staging environment
+		docker compose -f docker-compose.staging.yml down
+
+staging-logs: ## View staging logs
+		docker compose -f docker-compose.staging.yml logs -f
+
+staging-build: ## Build staging images without starting
+		docker compose -f docker-compose.staging.yml build
+
+staging-rebuild: staging-down staging-build staging-up ## Rebuild and restart staging
+
+staging-migrate: ## Run migrations on staging database
+		docker compose -f docker-compose.staging.yml exec backend alembic upgrade head
+
+staging-seed: ## Seed QA trainer package on staging database
+		docker compose -f docker-compose.staging.yml exec backend python scripts/seed_trainer_package.py ../trainer_packages/qa_engineer_interview_trainer
+
+staging-smoke: ## Run E2E smoke test against running staging backend
+		cd backend && python tests/e2e/test_smoke.py
+
+staging-health: ## Check staging health endpoints
+		@echo "=== Health ===" && curl -s http://localhost:8000/health | python -m json.tool
+		@echo "=== Ready ===" && curl -s http://localhost:8000/ready | python -m json.tool
+
+staging-clean: ## Stop and remove volumes
+		docker compose -f docker-compose.staging.yml down -v
