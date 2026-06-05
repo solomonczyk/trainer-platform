@@ -34,7 +34,27 @@ DeepSeek
 
 **Resolution**: Smoke returned `validation_status=validated`, `overall_score=88`, and progress updated to total_attempts 1.
 
-## 4. OpenAI Explicitly Forbidden For MVP-006
+## 4. DeepSeek Evaluation Schema Contract — validation_status partial
+
+**Status**: RESOLVED (MVP-006C)
+
+**Severity**: WAS BLOCKER
+
+**Description**: DeepSeek v4-flash (a reasoning model) returned evaluation responses with alternative field names (`id` instead of `criterion_id`), missing evidence/comment/improvement, or empty criteria arrays. This caused `validate_evaluation_output()` to set `validation_status="partial"`.
+
+**Resolution**: Added `_normalize_response()` to `OpenAIProviderAdapter` — a rubric-aware normalisation layer that maps DeepSeek-specific response shapes to the canonical `EvaluationOutput` schema. The normalizer:
+- Maps alternative criterion_id, evidence, and score field names
+- Fills missing rubric criteria from the rubric with score defaults
+- Filters out non-rubric criteria when a rubric is present
+- Provides safe evidence fallback text when evidence is missing
+- Strips `reasoning_content` from the output
+- Coerces scores to [0, 100] and confidence to [0.0, 1.0]
+- Ensures `passed` boolean is always present
+- Constructs a `feedback` field from available criterion details
+
+With this fix, DeepSeek responses now pass `validate_evaluation_output()` with zero errors, yielding `validation_status="validated"`.
+
+## 5. OpenAI Explicitly Forbidden For MVP-006
 
 **Status**: ACTIVE CONTROL
 
@@ -46,3 +66,5 @@ DeepSeek
 - OpenAI was not configured or enabled.
 - DeepSeek key presence was verified by name only; the key value was not exposed.
 - Production acceptance and release allowance remain false.
+- `reasoning_content` from DeepSeek is not exposed in the evaluation output or persisted schema.
+

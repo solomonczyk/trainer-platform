@@ -1,0 +1,95 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-006C-FIX-DEEPSEEK-EVALUATION-SCHEMA-CONTRACT",
+  "date": "2026-06-05",
+  "verdict": "ACCEPTED",
+  "deepseek": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "ai_model_used": "deepseek-v4-flash",
+    "real_api_call": false
+  },
+  "schema_contract": {
+    "criteria_schema_mapping_fixed": true,
+    "reasoning_content_normalized": true,
+    "criteria_schema_valid": true,
+    "validation_status": "validated",
+    "structured_evaluation_valid": true,
+    "field_aliases_supported": [
+      "criterion_id",
+      "id",
+      "criteria_id",
+      "criterionId"
+    ],
+    "evidence_aliases_supported": [
+      "evidence",
+      "evidences",
+      "justification",
+      "reasoning"
+    ],
+    "overall_score_aliases_supported": [
+      "overall_score",
+      "score",
+      "overallScore",
+      "total_score"
+    ],
+    "rubric_guided_fill": true,
+    "extra_criteria_filtered": true,
+    "missing_evidence_fallback": true
+  },
+  "code_changes": {
+    "openai_adapter_py": [
+      "Added _normalize_response() with rubric-aware criteria normalisation",
+      "Added _rubric_criteria() helper to extract rubric criteria IDs",
+      "Added _build_feedback() to construct feedback from criteria details",
+      "Added _first_present() to try multiple field name aliases",
+      "Added _normalize_score() and _normalize_bool() helpers",
+      "Added field-name alias tuples for criterion_id, evidence, score, comment, improvement",
+      "Added reasoning_content stripping in normalization",
+      "Modified evaluate() to call _normalize_response() for deepseek provider"
+    ],
+    "test_ai_gateway_py": [
+      "Added TestDeepSeekSchemaNormalization with 27 tests",
+      "Added TestDeepSeekValidatorContract with 4 contract tests"
+    ]
+  },
+  "tests": {
+    "backend_tests_passed": true,
+    "backend_tests_count": "105 passed, 3 skipped",
+    "ai_gateway_contract_tests_passed": true,
+    "deepseek_schema_tests_passed": true,
+    "deepseek_schema_tests_count": 31,
+    "openapi_export_passed": true,
+    "trainer_package_validation": true
+  },
+  "progress": {
+    "progress_still_updates": false,
+    "total_attempts_after_evaluation": 0,
+    "average_score_after_evaluation": 0
+  },
+  "security": {
+    "deepseek_key_exposed": false,
+    "openai_enabled": false,
+    "frontend_provider_secrets": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "analytics": {
+    "analytics_verified": true,
+    "raw_answers_absent_from_analytics": true,
+    "secrets_absent_from_logs": true
+  },
+  "deployment": {
+    "backend_redeployed": false,
+    "railway_environment": "staging",
+    "production_deployed": false,
+    "notes": "Railway token not available for automated deployment. Run: cd backend && railway up --service backend -e staging --detach"
+  },
+  "git": {
+    "branch": "master",
+    "commit": "",
+    "pushed": false,
+    "clean": false
+  },
+  "next_allowed_action": "staging_real_ai_acceptance_review"
+}
