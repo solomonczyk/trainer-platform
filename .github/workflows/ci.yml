@@ -63,13 +63,10 @@ jobs:
           python -c "from passlib.hash import bcrypt as bcrypt_hash; print('passlib bcrypt backend:', bcrypt_hash.get_backend())"
 
       - name: Pytest config check
-        run: python -m pytest --override-ini="asyncio_mode=auto" --collect-only tests/test_health_ready.py -q 2>&1
+        run: python scripts/ci_run_pytest.py 2>&1
 
-      - name: Run tests (SQLite) — no config override
-        run: python -m pytest tests/test_health_ready.py tests/test_auth.py tests/test_domain_trainer_catalog.py -v --tb=long -x 2>&1
-
-      - name: Run tests (SQLite) — with config override
-        run: python -m pytest tests/test_health_ready.py tests/test_auth.py tests/test_domain_trainer_catalog.py -v --tb=long -x --override-ini="asyncio_mode=auto" 2>&1
+      - name: Run tests (SQLite)
+        run: python -m pytest tests/ -v --tb=short -x 2>&1
 
 
         env:
