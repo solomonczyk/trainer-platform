@@ -158,10 +158,10 @@
   },
   "git": {
     "branch": "master",
-    "code_commit": "5a08998",
-    "proof_commit": "PENDING_FINAL_COMMIT_HASH",
-    "pushed": false,
-    "clean": false
+    "code_commit": "5a089986466d6c758a0e6e4fb7436fbb4bcc3da7",
+    "proof_commit": "f138ed1",
+    "pushed": true,
+    "clean": true
   },
   "known_issues": [
     "Fallback/safe-failure test was not executed because the requested scope was provider validation and real DeepSeek success smoke only.",
