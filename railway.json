@@ -10,10 +10,10 @@
   "services": [
     {
       "name": "backend",
-      "root": "backend",
+      "root": ".",
       "build": {
         "builder": "DOCKERFILE",
-        "dockerfilePath": "Dockerfile"
+        "dockerfilePath": "backend/Dockerfile"
       },
       "deploy": {
         "numReplicas": 1,
