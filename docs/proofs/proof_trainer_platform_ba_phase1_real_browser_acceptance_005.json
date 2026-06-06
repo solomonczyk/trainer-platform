@@ -71,10 +71,22 @@
     "refresh_persistence_verified": true,
     "relogin_persistence_verified": true,
     "backend_persistence_verified": true,
-    "progress_before_refresh": { "average_score": 50, "total_attempts": 10 },
-    "progress_after_refresh": { "average_score": 50, "total_attempts": 10 },
-    "progress_before_logout": { "average_score": 50, "total_attempts": 10 },
-    "progress_after_relogin": { "average_score": 50, "total_attempts": 10 }
+    "progress_before_refresh": {
+      "average_score": 50,
+      "total_attempts": 10
+    },
+    "progress_after_refresh": {
+      "average_score": 50,
+      "total_attempts": 10
+    },
+    "progress_before_logout": {
+      "average_score": 50,
+      "total_attempts": 10
+    },
+    "progress_after_relogin": {
+      "average_score": 50,
+      "total_attempts": 10
+    }
   },
   "user_isolation": {
     "user_a_created": true,
@@ -148,9 +160,9 @@
   },
   "git": {
     "branch": "master",
-    "commit": "TBD",
+    "commit": "77025a9f6835c4218ce550ae4c3a6d74feca14b7",
     "pushed": false,
-    "clean": false
+    "clean": true
   },
   "final_state": {
     "real_browser_acceptance": "ACCEPTED",
