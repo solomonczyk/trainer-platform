@@ -15,18 +15,41 @@ from app.db.models import (
 PACKAGE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / "trainer_packages" / "business_analyst_interview_trainer"
 
 
-async def seed_ba_trainer(db: AsyncSession) -> dict:
-    """Load the BA trainer package from JSON files into the database.
+async def seed_ba_trainer(db: AsyncSession, inline: object = None) -> dict:
+    """Load the BA trainer package from JSON files or inline data into the database.
 
-    Returns a dict with counts of created records.
+    Args:
+        db: Database session.
+        inline: Optional ``InlineSeedRequest`` with ``trainer_data``, ``modules_data``,
+            ``activities_data``, and ``locale_data``. When provided, these override
+            file-based loading — useful in environments like Railway Docker where
+            ``trainer_packages/`` is not deployed.
+
+    Returns:
+        A dict with counts of created records, or an error dict.
     """
     results = {"domain": 0, "trainer": 0, "version": 0, "localization": 0, "track": 0, "module": 0, "activities": 0}
 
-    # 1. Load package files
-    trainer_manifest = _load_json("trainer.json")
-    modules_data = _load_json("modules.json")
-    activities_data = _load_json("activities.json")
-    locale_data = _load_json("locales/ru-RU.json")
+    # 1. Load package files (or use inline data)
+    if inline and getattr(inline, "trainer_data", None):
+        trainer_manifest = inline.trainer_data
+    else:
+        trainer_manifest = _load_json("trainer.json")
+
+    if inline and getattr(inline, "modules_data", None):
+        modules_data = inline.modules_data
+    else:
+        modules_data = _load_json("modules.json")
+
+    if inline and getattr(inline, "activities_data", None):
+        activities_data = inline.activities_data
+    else:
+        activities_data = _load_json("activities.json")
+
+    if inline and getattr(inline, "locale_data", None):
+        locale_data = inline.locale_data
+    else:
+        locale_data = _load_json("locales/ru-RU.json")
 
     if not all([trainer_manifest, modules_data, activities_data, locale_data]):
         return {"error": "Failed to load one or more package files"}

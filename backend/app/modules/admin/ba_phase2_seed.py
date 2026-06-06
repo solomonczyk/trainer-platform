@@ -19,16 +19,29 @@ from app.db.models import (
 PACKAGE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / "trainer_packages" / "business_analyst_interview_trainer"
 
 
-async def seed_ba_phase2(db: AsyncSession) -> dict:
+async def seed_ba_phase2(db: AsyncSession, inline: object = None) -> dict:
     """Seed BA Phase 2 scenarios and rubrics.
 
-    Returns a dict with counts of created records.
+    Args:
+        db: Database session.
+        inline: Optional ``InlineSeedRequest`` with ``scenarios_data`` and
+            ``rubrics_data`` overriding file-based loading.
+
+    Returns:
+        A dict with counts of created records, or an error dict.
     """
     results = {"scenarios": 0, "rubrics": 0, "criteria": 0, "skills": 0, "skill_map": 0}
 
-    # 1. Load Phase 2 data files
-    scenarios_data = _load_json("phase2_scenarios.json")
-    rubrics_data = _load_json("phase2_rubrics.json")
+    # 1. Load Phase 2 data files (or use inline data)
+    if inline and getattr(inline, "scenarios_data", None):
+        scenarios_data = inline.scenarios_data
+    else:
+        scenarios_data = _load_json("phase2_scenarios.json")
+
+    if inline and getattr(inline, "rubrics_data", None):
+        rubrics_data = inline.rubrics_data
+    else:
+        rubrics_data = _load_json("phase2_rubrics.json")
 
     if not scenarios_data:
         return {"error": "Failed to load phase2_scenarios.json"}

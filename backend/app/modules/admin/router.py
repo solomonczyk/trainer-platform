@@ -4,8 +4,9 @@ All endpoints are protected by the ``require_admin`` dependency.
 """
 
 from __future__ import annotations
+from typing import Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import require_admin
@@ -14,6 +15,7 @@ from app.modules.admin.schemas import (
     AdminAnalyticsSanityResponse,
     SeedStatusResponse,
     SystemHealthResponse,
+    InlineSeedRequest,
 )
 from app.modules.admin.ba_phase2_seed import seed_ba_phase2
 from app.modules.admin.ba_trainer_seed import seed_ba_trainer
@@ -67,19 +69,31 @@ async def analytics_sanity(
 
 @router.post("/seed/ba-trainer")
 async def seed_ba_trainer_endpoint(
+    body: Optional[InlineSeedRequest] = Body(default=None),
     admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ) -> dict:
-    """Seed the BA trainer package data into the database."""
-    results = await seed_ba_trainer(db)
+    """Seed the BA trainer package data into the database.
+
+    When the server has no local file access (e.g. Railway Docker),
+    pass ``trainer_data``, ``modules_data``, ``activities_data``, and
+    ``locale_data`` as inline JSON in the request body.
+    """
+    results = await seed_ba_trainer(db, inline=body)
     return {"status": "ok", "results": results}
 
 
 @router.post("/seed/ba-trainer-phase2")
 async def seed_ba_trainer_phase2_endpoint(
+    body: Optional[InlineSeedRequest] = Body(default=None),
     admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ) -> dict:
-    """Seed BA Phase 2 scenarios and rubrics into the database."""
-    results = await seed_ba_phase2(db)
+    """Seed BA Phase 2 scenarios and rubrics into the database.
+
+    When the server has no local file access (e.g. Railway Docker),
+    pass ``scenarios_data`` and ``rubrics_data`` as inline JSON
+    in the request body.
+    """
+    results = await seed_ba_phase2(db, inline=body)
     return {"status": "ok", "results": results}
