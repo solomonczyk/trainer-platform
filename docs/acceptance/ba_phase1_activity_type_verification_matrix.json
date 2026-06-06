@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "layer": "TRAINER-PLATFORM-BA-PHASE1-REAL-BROWSER-ACCEPTANCE-005",
+    "date": "2026-06-06",
+    "tool": "Playwright Chromium"
+  },
+  "activity_types_expected": [
+    "single_choice",
+    "multiple_choice",
+    "fill_blanks",
+    "matching",
+    "numeric"
+  ],
+  "expected": 5,
+  "verified": 5,
+  "failed": 0,
+  "all_verified": true,
+  "correct_answer_paths_verified": 5,
+  "incorrect_answer_paths_verified": 5,
+  "hidden_answers_exposed": false,
+  "details": [
+    {
+      "activity_type": "single_choice",
+      "activity_id_used": "ba_hr_q1_single",
+      "activity_opened": true,
+      "instructions_visible": true,
+      "correct_answer_submitted": true,
+      "correct_answer_backend_result": "correct",
+      "incorrect_answer_submitted": true,
+      "incorrect_answer_backend_result": "incorrect",
+      "visible_feedback_verified": true,
+      "correct_answer_leaked_before_submit": false,
+      "critical_errors": 0
+    },
+    {
+      "activity_type": "multiple_choice",
+      "activity_id_used": "ba_hr_q15_multi",
+      "activity_opened": true,
+      "instructions_visible": true,
+      "correct_answer_submitted": true,
+      "correct_answer_backend_result": "correct",
+      "incorrect_answer_submitted": true,
+      "incorrect_answer_backend_result": "incorrect",
+      "visible_feedback_verified": true,
+      "correct_answer_leaked_before_submit": false,
+      "critical_errors": 0
+    },
+    {
+      "activity_type": "fill_blanks",
+      "activity_id_used": "ba_basics_q14_fill",
+      "activity_opened": true,
+      "instructions_visible": true,
+      "correct_answer_submitted": true,
+      "correct_answer_backend_result": "correct",
+      "incorrect_answer_submitted": true,
+      "incorrect_answer_backend_result": "incorrect",
+      "visible_feedback_verified": true,
+      "correct_answer_leaked_before_submit": false,
+      "critical_errors": 0
+    },
+    {
+      "activity_type": "matching",
+      "activity_id_used": "ba_basics_q16_match",
+      "activity_opened": true,
+      "instructions_visible": true,
+      "correct_answer_submitted": true,
+      "correct_answer_backend_result": "correct",
+      "incorrect_answer_submitted": true,
+      "incorrect_answer_backend_result": "incorrect",
+      "visible_feedback_verified": true,
+      "correct_answer_leaked_before_submit": false,
+      "critical_errors": 0
+    },
+    {
+      "activity_type": "numeric",
+      "activity_id_used": "ba_model_q14_number",
+      "activity_opened": true,
+      "instructions_visible": true,
+      "correct_answer_submitted": true,
+      "correct_answer_backend_result": "correct",
+      "incorrect_answer_submitted": true,
+      "incorrect_answer_backend_result": "incorrect",
+      "visible_feedback_verified": true,
+      "correct_answer_leaked_before_submit": false,
+      "critical_errors": 0
+    }
+  ]
+}

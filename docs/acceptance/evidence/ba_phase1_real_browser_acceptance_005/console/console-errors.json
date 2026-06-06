@@ -1,0 +1,90 @@
+[
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/modules/ba_technical_aspects/activities' from origin 'https://frontend-staging-4146.u",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/modules/ba_real_cases/activities' from origin 'https://frontend-staging-4146.up.railw",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer' from origin 'https://frontend-staging-4146.up.railway.app' has been blocked by CORS ",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer' from origin 'https://frontend-staging-4146.up.railway.app' has been blocked by CORS ",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/activities/submit' from origin 'https://frontend-staging-4146.up.railway.app' has bee",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/activities/ba_basics_q14_fill/start' from origin 'https://frontend-staging-4146.up.ra",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/activities/ba_basics_q14_fill/start' from origin 'https://frontend-staging-4146.up.ra",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/activities/ba_basics_q16_match/start' from origin 'https://frontend-staging-4146.up.r",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer' from origin 'https://frontend-staging-4146.up.railway.app' has been blocked by CORS ",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/me' from origin 'https://frontend-staging-4146.up.railway.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' ",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/me"
+  },
+  {
+    "text": "Access to fetch at 'https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-interview-trainer/activities/submit' from origin 'https://frontend-staging-4146.up.railway.app' has bee",
+    "url": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview"
+  },
+  {
+    "text": "Failed to load resource: net::ERR_FAILED",
+    "url": "https://backend-staging-0487.up.railway.app/api/v1/trainers/business-analyst-int"
+  }
+]
