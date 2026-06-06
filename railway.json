@@ -16,8 +16,7 @@
       "name": "backend",
       "root": "backend",
       "build": {
-        "builder": "DOCKERFILE",
-        "dockerfilePath": "Dockerfile"
+        "builder": "NIXPACKS"
       },
       "deploy": {
         "numReplicas": 1,
@@ -29,8 +28,7 @@
       "name": "frontend",
       "root": "frontend",
       "build": {
-        "builder": "DOCKERFILE",
-        "dockerfilePath": "Dockerfile",
+        "builder": "NIXPACKS",
         "buildArgs": {
           "NEXT_PUBLIC_API_BASE_URL": "https://backend-staging-0487.up.railway.app",
           "NEXT_PUBLIC_APP_ENV": "staging"
