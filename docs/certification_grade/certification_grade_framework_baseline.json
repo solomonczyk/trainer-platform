@@ -1,0 +1,23 @@
+{
+  "framework": "Certification-Grade Simulation Framework",
+  "version": "1.0",
+  "principles": {
+    "dynamic_versioned_item_bank": true,
+    "trusted_knowledge_registry": true,
+    "competency_blueprint_required": true,
+    "controlled_generation": true,
+    "expert_review_gate": true,
+    "pilot_and_calibration_required": true,
+    "exam_form_equivalence": true,
+    "exposure_rotation_control": true,
+    "ai_human_calibration": true,
+    "effectiveness_evidence": true
+  },
+  "current_state": {
+    "ba_phase_1": "REAL_STAGING_ACCEPTED",
+    "certification_grade_framework": "DOCUMENTED_NOT_IMPLEMENTED",
+    "production_accepted": false,
+    "release_allowed": false,
+    "next_allowed_action": "implement_certification_grade_core_contracts_vertical_layer"
+  }
+}
