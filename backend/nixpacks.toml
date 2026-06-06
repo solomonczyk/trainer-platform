@@ -4,7 +4,7 @@
 # correct behavior.
 
 [phases.setup]
-nixPkgs = ["python311", "gcc", "libpqxx", "pkg-config"]
+nixPkgs = ["python312", "gcc", "libpqxx", "pkg-config"]
 
 [phases.install]
 cmds = ["pip install --no-cache-dir -r requirements.txt"]
