@@ -893,6 +893,181 @@
         ]
       }
     },
+    "/api/v1/trainers/{trainer_slug}/modules/{module_id}/activities": {
+      "get": {
+        "tags": [
+          "Activities",
+          "Activities"
+        ],
+        "summary": "List activities in a module (no correct answers exposed)",
+        "description": "Return public activity list for a module. Correct answers are NOT included.",
+        "operationId": "list_module_activities_api_v1_trainers__trainer_slug__modules__module_id__activities_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          },
+          {
+            "name": "module_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Module Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModuleActivitiesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trainers/{trainer_slug}/activities/{activity_id}/start": {
+      "get": {
+        "tags": [
+          "Activities",
+          "Activities"
+        ],
+        "summary": "Start an activity — get prompt without correct answers",
+        "description": "Start a specific activity and receive its prompt (no correct answers).",
+        "operationId": "start_activity_api_v1_trainers__trainer_slug__activities__activity_id__start_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          },
+          {
+            "name": "activity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityStartResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/trainers/{trainer_slug}/activities/submit": {
+      "post": {
+        "tags": [
+          "Activities",
+          "Activities"
+        ],
+        "summary": "Submit an activity answer for deterministic validation",
+        "description": "Submit an answer for deterministic validation.\n\nThe submitted answer is validated server-side against the stored correct answer.\nFrontend cannot self-award a pass — the server determines the result.",
+        "operationId": "submit_activity_api_v1_trainers__trainer_slug__activities_submit_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trainer_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trainer Slug"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivitySubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivitySubmitResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/seed-status": {
       "get": {
         "tags": [
@@ -1032,10 +1207,242 @@
           }
         ]
       }
+    },
+    "/api/v1/admin/seed/ba-trainer": {
+      "post": {
+        "tags": [
+          "Admin",
+          "Admin"
+        ],
+        "summary": "Seed Ba Trainer Endpoint",
+        "description": "Seed the BA trainer package data into the database.",
+        "operationId": "seed_ba_trainer_endpoint_api_v1_admin_seed_ba_trainer_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Seed Ba Trainer Endpoint Api V1 Admin Seed Ba Trainer Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "ActivityResponse": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "title": "Activity Id"
+          },
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "activity_type": {
+            "type": "string",
+            "title": "Activity Type"
+          },
+          "evaluation_mode": {
+            "type": "string",
+            "title": "Evaluation Mode"
+          },
+          "difficulty": {
+            "type": "string",
+            "title": "Difficulty"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "description_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description Key"
+          },
+          "payload": {
+            "type": "object",
+            "title": "Payload"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "module_id",
+          "activity_type",
+          "evaluation_mode",
+          "difficulty",
+          "title_key",
+          "order",
+          "version"
+        ],
+        "title": "ActivityResponse",
+        "description": "Public activity response (no correct answers exposed)."
+      },
+      "ActivityStartResponse": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "title": "Activity Id"
+          },
+          "activity_type": {
+            "type": "string",
+            "title": "Activity Type"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "description_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description Key"
+          },
+          "difficulty": {
+            "type": "string",
+            "title": "Difficulty"
+          },
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "prompt": {
+            "type": "object",
+            "title": "Prompt"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "activity_type",
+          "title_key",
+          "difficulty",
+          "module_id",
+          "prompt"
+        ],
+        "title": "ActivityStartResponse",
+        "description": "Response when starting an activity (no correct answers)."
+      },
+      "ActivitySubmitRequest": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "title": "Activity Id"
+          },
+          "answer": {
+            "title": "Answer"
+          },
+          "idempotency_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idempotency Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "answer"
+        ],
+        "title": "ActivitySubmitRequest",
+        "description": "Request body for submitting an activity answer."
+      },
+      "ActivitySubmitResponse": {
+        "properties": {
+          "attempt_id": {
+            "type": "string",
+            "title": "Attempt Id"
+          },
+          "activity_id": {
+            "type": "string",
+            "title": "Activity Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "score": {
+            "type": "integer",
+            "title": "Score"
+          },
+          "passed": {
+            "type": "boolean",
+            "title": "Passed"
+          },
+          "feedback": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback"
+          },
+          "explanation_key": {
+            "type": "string",
+            "title": "Explanation Key"
+          },
+          "evaluation_mode": {
+            "type": "string",
+            "title": "Evaluation Mode"
+          },
+          "is_retry": {
+            "type": "boolean",
+            "title": "Is Retry",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "attempt_id",
+          "activity_id",
+          "status",
+          "score",
+          "passed",
+          "explanation_key",
+          "evaluation_mode"
+        ],
+        "title": "ActivitySubmitResponse",
+        "description": "Response after submitting and validating an activity answer."
+      },
       "AdminAnalyticsSanityResponse": {
         "properties": {
           "total_events": {
@@ -1570,6 +1977,33 @@
         ],
         "title": "LoginRequest",
         "description": "Request body for user login."
+      },
+      "ModuleActivitiesResponse": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "activities": {
+            "items": {
+              "$ref": "#/components/schemas/ActivityResponse"
+            },
+            "type": "array",
+            "title": "Activities"
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id",
+          "activities",
+          "total_count"
+        ],
+        "title": "ModuleActivitiesResponse",
+        "description": "List of activities in a module (public, no correct answers)."
       },
       "ProgressSummaryResponse": {
         "properties": {
