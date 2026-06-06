@@ -126,7 +126,11 @@ export default function ScenarioPage() {
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
         <Card padding="lg">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">{scenario.title_key}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {t(scenario.title_key) !== scenario.title_key
+                ? t(scenario.title_key)
+                : scenario.title_key}
+            </h1>
             {scenario.goal_key && (
               <p className="mt-2 text-gray-500">{scenario.goal_key}</p>
             )}
@@ -223,7 +227,11 @@ export default function ScenarioPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <Card padding="lg">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">{scenario.title_key}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {t(scenario.title_key) !== scenario.title_key
+              ? t(scenario.title_key)
+              : scenario.title_key}
+          </h1>
           <p className="mt-1 text-sm text-gray-500">{scenario.goal_key}</p>
         </div>
 

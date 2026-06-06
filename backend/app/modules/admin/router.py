@@ -15,6 +15,7 @@ from app.modules.admin.schemas import (
     SeedStatusResponse,
     SystemHealthResponse,
 )
+from app.modules.admin.ba_phase2_seed import seed_ba_phase2
 from app.modules.admin.ba_trainer_seed import seed_ba_trainer
 from app.modules.admin.service import AdminService
 
@@ -71,4 +72,14 @@ async def seed_ba_trainer_endpoint(
 ) -> dict:
     """Seed the BA trainer package data into the database."""
     results = await seed_ba_trainer(db)
+    return {"status": "ok", "results": results}
+
+
+@router.post("/seed/ba-trainer-phase2")
+async def seed_ba_trainer_phase2_endpoint(
+    admin_id: str = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Seed BA Phase 2 scenarios and rubrics into the database."""
+    results = await seed_ba_phase2(db)
     return {"status": "ok", "results": results}

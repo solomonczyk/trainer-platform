@@ -106,7 +106,9 @@ export default function ScenarioListPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <CardTitle className="text-base">
-                    {scenario.title_key}
+                    {t(scenario.title_key) !== scenario.title_key
+                      ? t(scenario.title_key)
+                      : scenario.title_key}
                   </CardTitle>
                   {scenario.goal_key && (
                     <CardDescription className="mt-1 line-clamp-2">

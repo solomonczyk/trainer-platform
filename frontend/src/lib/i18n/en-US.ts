@@ -236,6 +236,38 @@ const en = {
     phase_1_badge: "Phase 1",
     status_staging: "Staging",
   },
+
+  // Phase 2 scenario title translations
+  ba_phase2_stakeholder_requirements_title: "Stakeholder Requirements Elicitation in Fintech",
+  ba_phase2_process_analysis_title: "Process Analysis and Optimization for Claims Processing",
+  ba_phase2_documentation_artifacts_title: "Requirements Specification for Loyalty Program",
+  ba_phase2_conflict_resolution_title: "Conflict Resolution in WMS Implementation",
+  ba_phase2_traceability_impact_title: "Impact Analysis of API Integration Changes",
+  ba_phase2_real_case_analysis_title: "Corporate Learning Platform Architecture with AI",
+
+  // BA Phase 2
+  ba_phase2: {
+    title: "Business Analysis Scenarios (Phase 2)",
+    description: "Realistic BA assignments with AI-powered evaluation",
+    phase_2_badge: "Phase 2 — AI Evaluation",
+    start: "Start Scenario",
+    how_it_works_title: "How It Works",
+    how_it_works_desc: "Read the business context and task, write a detailed answer, receive structured AI evaluation with per-criterion feedback. Up to 3 attempts per scenario.",
+    back_to_scenarios: "Back to Scenarios",
+    business_context: "Business Context",
+    task: "Task",
+    your_answer: "Your Answer",
+    answer_placeholder: "Write your detailed answer here...",
+    complete: "Complete & Get Evaluation",
+    evaluating_title: "AI is evaluating your answer",
+    evaluating_desc: "DeepSeek is analyzing your answer against rubric criteria. This may take up to 30 seconds.",
+    evaluating_progress: "Evaluation in progress...",
+    evaluated_by: "Evaluated by",
+    retry: "Retry Scenario",
+    max_attempts_reached: "Maximum attempts reached",
+    max_attempts_desc: "You have used all 3 attempts for this scenario",
+    default_role: "Business Analyst",
+  },
 };
 
 export default en;

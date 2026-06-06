@@ -16,6 +16,8 @@ import {
   Users,
   ArrowRight,
   GraduationCap,
+  Zap,
+  ListChecks,
 } from "lucide-react";
 
 const BA_MODULES = [
@@ -156,11 +158,14 @@ export default function TrainerDetailPage() {
         )}
       </Card>
 
-      {/* BA Trainer Modules Section */}
+      {/* BA Trainer Phase 1 Modules Section */}
       {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
         <Card padding="lg" className="mb-8">
           <CardHeader>
-            <CardTitle>{t('ba_trainer.modules')}</CardTitle>
+            <div className="flex items-center gap-2">
+              <ListChecks className="h-5 w-5 text-gray-400" />
+              <CardTitle>{t('ba_trainer.modules')}</CardTitle>
+            </div>
             <CardDescription>
               {t('ba_trainer.module_activities')} — {t('ba_trainer.phase_1_badge')}
             </CardDescription>
@@ -189,6 +194,43 @@ export default function TrainerDetailPage() {
                 </Link>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* BA Trainer Phase 2 Scenarios Section */}
+      {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
+        <Card padding="lg" className="mb-8 border-primary-200">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary-600" />
+              <CardTitle>{t('ba_phase2.title')}</CardTitle>
+            </div>
+            <CardDescription>
+              {t('ba_phase2.description')}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg bg-primary-50 p-4 mb-4 border border-primary-100">
+              <div className="flex items-start gap-3">
+                <Zap className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-primary-800">
+                    {t('ba_phase2.how_it_works_title')}
+                  </p>
+                  <p className="mt-1 text-sm text-primary-700">
+                    {t('ba_phase2.how_it_works_desc')}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={() => router.push(`/trainers/${slug}/phase2`)}
+              className="w-full sm:w-auto"
+            >
+              {t('ba_phase2.start')}
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </CardContent>
         </Card>
       )}

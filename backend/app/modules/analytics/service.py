@@ -47,6 +47,15 @@ SAFE_EVENT_TYPES: frozenset[str] = frozenset(
         "ba_activity_started",
         "explanation_viewed",
         "module_progress_viewed",
+        # BA Phase 2 events
+        "ba_phase2_scenario_opened",
+        "ba_phase2_scenario_started",
+        "ba_phase2_submission_created",
+        "ba_phase2_evaluation_started",
+        "ba_phase2_evaluation_completed",
+        "ba_phase2_evaluation_failed",
+        "ba_phase2_result_viewed",
+        "ba_phase2_retry_requested",
     }
 )
 

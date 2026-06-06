@@ -1,0 +1,241 @@
+{
+  "rubric_pack_id": "ba_phase2_rubric_pack_v1",
+  "rubrics": [
+    {
+      "rubric_id": "ba_phase2_stakeholder_rubric_v1",
+      "pass_score": 70,
+      "critical_fail_enabled": true,
+      "criteria": [
+        {
+          "criterion_id": "stakeholder_identification",
+          "name": "Идентификация стейкхолдеров",
+          "description": "Полнота и точность определения стейкхолдеров, их ролей и интересов",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Стейкхолдеры не определены или определены неверно"},
+            {"score": 25, "label": "basic", "description": "Определены 1-2 стейкхолдера поверхностно"},
+            {"score": 50, "label": "developing", "description": "Определены основные стейкхолдеры, частично описаны интересы"},
+            {"score": 75, "label": "ready", "description": "Определены все ключевые стейкхолдеры с анализом их интересов и влияния"},
+            {"score": 100, "label": "strong", "description": "Исчерпывающий анализ стейкхолдеров с матрицей власть/интерес, учтены скрытые стейкхолдеры"}
+          ]
+        },
+        {
+          "criterion_id": "elicitation_methods",
+          "name": "Методы сбора требований",
+          "description": "Обоснованность выбора методов elicitation для различных стейкхолдеров",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Методы не предложены"},
+            {"score": 25, "label": "basic", "description": "Предложен 1 метод без обоснования"},
+            {"score": 50, "label": "developing", "description": "Предложены методы, но без привязки к стейкхолдерам"},
+            {"score": 75, "label": "ready", "description": "Методы обоснованно подобраны под каждого стейкхолдера с учётом контекста"},
+            {"score": 100, "label": "strong", "description": "Оптимальная комбинация методов, учтены ограничения бюджета и сроков, предложены альтернативы"}
+          ]
+        },
+        {
+          "criterion_id": "conflict_resolution",
+          "name": "Разрешение конфликтов требований",
+          "description": "Умение выявлять и разрешать конфликты между требованиями разных стейкхолдеров",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Конфликты не рассмотрены"},
+            {"score": 25, "label": "basic", "description": "Конфликты упомянуты, но не предложены решения"},
+            {"score": 50, "label": "developing", "description": "Предложены общие подходы к разрешению конфликтов"},
+            {"score": 75, "label": "ready", "description": "Конкретные методы разрешения конфликтов с приоритизацией требований"},
+            {"score": 100, "label": "strong", "description": "Структурированный подход (MoSCoW/Kano), учтены компромиссы и альтернативы"}
+          ]
+        },
+        {
+          "criterion_id": "document_structure",
+          "name": "Структура документа требований",
+          "description": "Логичность и полнота предложенной структуры документа требований",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Структура не предложена"},
+            {"score": 25, "label": "basic", "description": "Минимальная структура без деталей"},
+            {"score": 50, "label": "developing", "description": "Базовая структура с основными разделами"},
+            {"score": 75, "label": "ready", "description": "Полная структура с бизнес-контекстом, функциональными и нефункциональными требованиями"},
+            {"score": 100, "label": "strong", "description": "Профессиональная структура с трассировкой, приоритетами, критериями приёмки и глоссарием"}
+          ]
+        }
+      ]
+    },
+    {
+      "rubric_id": "ba_phase2_process_rubric_v1",
+      "pass_score": 70,
+      "critical_fail_enabled": true,
+      "criteria": [
+        {
+          "criterion_id": "asis_analysis",
+          "name": "Анализ AS-IS процесса",
+          "description": "Качество описания текущего процесса и выявления узких мест",
+          "weight": 30,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "AS-IS анализ не проведён"},
+            {"score": 25, "label": "basic", "description": "Поверхностное описание процесса"},
+            {"score": 50, "label": "developing", "description": "Описаны основные шаги, частично выявлены проблемы"},
+            {"score": 75, "label": "ready", "description": "Детальное описание с выявлением узких мест и их причин"},
+            {"score": 100, "label": "strong", "description": "Полный анализ с метриками, визуализацией, quantification потерь"}
+          ]
+        },
+        {
+          "criterion_id": "tobe_design",
+          "name": "Проектирование TO-BE процесса",
+          "description": "Качество предложения по улучшенному процессу и его обоснование",
+          "weight": 30,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "TO-BE процесс не предложен"},
+            {"score": 25, "label": "basic", "description": "Общее направление улучшений без деталей"},
+            {"score": 50, "label": "developing", "description": "Предложены улучшения, но не все аспекты проработаны"},
+            {"score": 75, "label": "ready", "description": "Детальный TO-BE процесс с обоснованием каждого изменения"},
+            {"score": 100, "label": "strong", "description": "Инновационный подход с учётом best practices, альтернативные варианты, roadmap внедрения"}
+          ]
+        },
+        {
+          "criterion_id": "impact_assessment",
+          "name": "Оценка влияния на стейкхолдеров",
+          "description": "Анализ того, как изменения повлияют на заинтересованные стороны",
+          "weight": 20,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Влияние не оценено"},
+            {"score": 25, "label": "basic", "description": "Минимальное упоминание изменений"},
+            {"score": 50, "label": "developing", "description": "Частичный анализ влияния на отдельные роли"},
+            {"score": 75, "label": "ready", "description": "Полный анализ с планом адаптации и обучения"},
+            {"score": 100, "label": "strong", "description": "Детальный анализ с оценкой сопротивления изменениям и стратегией управления изменениями"}
+          ]
+        },
+        {
+          "criterion_id": "metrics_kpi",
+          "name": "Метрики эффективности",
+          "description": "Предложение количественных метрик для оценки эффективности нового процесса",
+          "weight": 20,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Метрики не предложены"},
+            {"score": 25, "label": "basic", "description": "Общие метрики без численных значений"},
+            {"score": 50, "label": "developing", "description": "Метрики с целевыми значениями, но без метода измерения"},
+            {"score": 75, "label": "ready", "description": "SMART-метрики с базовыми и целевыми значениями и методом сбора"},
+            {"score": 100, "label": "strong", "description": "Сбалансированная система метрик (KPI), учтены опережающие и запаздывающие индикаторы"}
+          ]
+        }
+      ]
+    },
+    {
+      "rubric_id": "ba_phase2_documentation_rubric_v1",
+      "pass_score": 70,
+      "critical_fail_enabled": true,
+      "criteria": [
+        {
+          "criterion_id": "business_context",
+          "name": "Бизнес-контекст и цели",
+          "description": "Чёткость описания бизнес-контекста, целей и обоснования проекта",
+          "weight": 20,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Контекст не описан"},
+            {"score": 25, "label": "basic", "description": "Общее описание без конкретики"},
+            {"score": 50, "label": "developing", "description": "Описаны цели, но без привязки к бизнес-метрикам"},
+            {"score": 75, "label": "ready", "description": "Чёткий бизнес-контекст с целями и ожидаемыми результатами"},
+            {"score": 100, "label": "strong", "description": "Стратегическое обоснование с OKR, анализом ROI и альтернативами"}
+          ]
+        },
+        {
+          "criterion_id": "functional_requirements",
+          "name": "Функциональные требования и User Stories",
+          "description": "Качество описания функциональных требований с критериями приёмки",
+          "weight": 35,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Функциональные требования не описаны"},
+            {"score": 25, "label": "basic", "description": "Требования в произвольной форме без структуры"},
+            {"score": 50, "label": "developing", "description": "User stories без критериев приёмки или с неполными критериями"},
+            {"score": 75, "label": "ready", "description": "Чёткие user stories с критериями приёмки в формате Given-When-Then"},
+            {"score": 100, "label": "strong", "description": "Полный набор user stories с приоритетами, acceptance criteria и нефункциональными аспектами"}
+          ]
+        },
+        {
+          "criterion_id": "non_functional",
+          "name": "Нефункциональные требования",
+          "description": "Полнота и релевантность нефункциональных требований",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "NFR не описаны"},
+            {"score": 25, "label": "basic", "description": "Упомянуты 1-2 NFR поверхностно"},
+            {"score": 50, "label": "developing", "description": "Описаны некоторые NFR, но не все категории"},
+            {"score": 75, "label": "ready", "description": "NFR по категориям (производительность, безопасность, доступность) с численными значениями"},
+            {"score": 100, "label": "strong", "description": "Исчерпывающие NFR с приоритетами, обоснованием и методами верификации"}
+          ]
+        },
+        {
+          "criterion_id": "constraints_assumptions",
+          "name": "Ограничения и допущения",
+          "description": "Идентификация ограничений, допущений и рисков",
+          "weight": 20,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Ограничения не описаны"},
+            {"score": 25, "label": "basic", "description": "Упомянуты 1-2 ограничения"},
+            {"score": 50, "label": "developing", "description": "Описаны основные ограничения без анализа влияния"},
+            {"score": 75, "label": "ready", "description": "Чёткие ограничения и допущения с оценкой влияния на проект"},
+            {"score": 100, "label": "strong", "description": "Полный анализ ограничений, допущений и рисков с mitigation-стратегиями"}
+          ]
+        }
+      ]
+    },
+    {
+      "rubric_id": "ba_phase2_communication_rubric_v1",
+      "pass_score": 70,
+      "critical_fail_enabled": true,
+      "criteria": [
+        {
+          "criterion_id": "stakeholder_analysis",
+          "name": "Анализ интересов сторон",
+          "description": "Глубина понимания интересов, мотивации и приоритетов каждой стороны",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Интересы сторон не проанализированы"},
+            {"score": 25, "label": "basic", "description": "Поверхностный анализ без учёта контекста"},
+            {"score": 50, "label": "developing", "description": "Учтены явные интересы, но не учтены скрытые"},
+            {"score": 75, "label": "ready", "description": "Глубокий анализ с учётом явных и скрытых интересов"},
+            {"score": 100, "label": "strong", "description": "Полный анализ с матрицей интересов, приоритетов и взаимозависимостей"}
+          ]
+        },
+        {
+          "criterion_id": "alternative_solutions",
+          "name": "Варианты решений",
+          "description": "Способность генерировать и оценивать альтернативные решения",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Альтернативы не предложены"},
+            {"score": 25, "label": "basic", "description": "Предложен 1 вариант без альтернатив"},
+            {"score": 50, "label": "developing", "description": "2 варианта, но сравнение поверхностное"},
+            {"score": 75, "label": "ready", "description": "Несколько вариантов с объективным сравнением по критериям"},
+            {"score": 100, "label": "strong", "description": "Творческие альтернативы с оценкой cost-benefit, рисков и компромиссов"}
+          ]
+        },
+        {
+          "criterion_id": "recommendation_rationale",
+          "name": "Обоснование рекомендации",
+          "description": "Логичность и убедительность обоснования выбранного подхода",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "Рекомендация не обоснована"},
+            {"score": 25, "label": "basic", "description": "Обоснование есть, но слабое"},
+            {"score": 50, "label": "developing", "description": "Обоснование с учётом части факторов"},
+            {"score": 75, "label": "ready", "description": "Структурированное обоснование с учётом всех ограничений"},
+            {"score": 100, "label": "strong", "description": "Убедительное обоснование с data-driven подходом, анализом чувствительности и планом Б"}
+          ]
+        },
+        {
+          "criterion_id": "communication_plan",
+          "name": "План коммуникации",
+          "description": "Качество плана взаимодействия со стейкхолдерами",
+          "weight": 25,
+          "levels": [
+            {"score": 0, "label": "not_observed", "description": "План коммуникации не предложен"},
+            {"score": 25, "label": "basic", "description": "Общие слова про информирование"},
+            {"score": 50, "label": "developing", "description": "Базовая частота коммуникации без каналов"},
+            {"score": 75, "label": "ready", "description": "Детальный план с каналами, частотой и ответственными"},
+            {"score": 100, "label": "strong", "description": "Профессиональный план с escalation matrix, обратной связью и управлением ожиданиями"}
+          ]
+        }
+      ]
+    }
+  ]
+}

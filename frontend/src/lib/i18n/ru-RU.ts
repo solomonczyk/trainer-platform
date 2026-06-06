@@ -250,6 +250,38 @@ const ru = {
     phase_1_badge: "Фаза 1",
     status_staging: "Staging",
   },
+
+  // Phase 2 scenario title translations
+  ba_phase2_stakeholder_requirements_title: "Сбор требований от стейкхолдеров в финтех-проекте",
+  ba_phase2_process_analysis_title: "Анализ и оптимизация процесса обработки заявлений",
+  ba_phase2_documentation_artifacts_title: "Спецификация требований программы лояльности",
+  ba_phase2_conflict_resolution_title: "Разрешение конфликта при внедрении WMS",
+  ba_phase2_traceability_impact_title: "Анализ влияния изменений интеграционного API",
+  ba_phase2_real_case_analysis_title: "Архитектура платформы корпоративного обучения с AI",
+
+  // BA Phase 2
+  ba_phase2: {
+    title: "Сценарии бизнес-анализа (Фаза 2)",
+    description: "Реалистичные задания с AI-оценкой для практики навыков бизнес-анализа",
+    phase_2_badge: "Фаза 2 — AI-оценка",
+    start: "Начать сценарий",
+    how_it_works_title: "Как это работает",
+    how_it_works_desc: "Прочитайте бизнес-контекст и задание, напишите развёрнутый ответ, получите структурированную AI-оценку по критериям с обратной связью. До 3 попыток на сценарий.",
+    back_to_scenarios: "К списку сценариев",
+    business_context: "Бизнес-контекст",
+    task: "Задание",
+    your_answer: "Ваш ответ",
+    answer_placeholder: "Напишите развёрнутый ответ...",
+    complete: "Завершить и получить оценку",
+    evaluating_title: "AI оценивает ваш ответ",
+    evaluating_desc: "DeepSeek анализирует ваш ответ по критериям рубрики. Это может занять до 30 секунд.",
+    evaluating_progress: "Оценка выполняется...",
+    evaluated_by: "Оценено",
+    retry: "Повторить сценарий",
+    max_attempts_reached: "Достигнут лимит попыток",
+    max_attempts_desc: "Вы использовали все 3 попытки для этого сценария",
+    default_role: "Бизнес-аналитик",
+  },
 };
 
 export default ru;

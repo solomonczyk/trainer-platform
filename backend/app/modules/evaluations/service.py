@@ -9,14 +9,16 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Optional
 
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai_gateway.schemas import (
     EvaluationGatewayRequest,
 )
 from app.ai_gateway.service import AIGatewayService
-from app.core.errors import NotFoundError, ValidationError
+from app.core.errors import NotFoundError, ValidationError, ForbiddenError
 from app.core.logging import get_logger
+from app.db.models import Attempt
 from app.modules.evaluations import repository as repo
 from app.modules.evaluations.schemas import EvaluationResponse
 from app.modules.progress.service import ProgressService
@@ -106,6 +108,27 @@ class EvaluationService:
 
         # Update attempt status to evaluating
         await repo.update_attempt_status(db, attempt_id, "evaluating")
+
+        # 3a. Enforce retry policy — no blind retry, respect max_attempts
+        await self._enforce_retry_policy(db, attempt)
+
+        # 3b. Record analytics event for evaluation started
+        try:
+            from app.modules.analytics.service import AnalyticsService
+            await AnalyticsService.record_event(
+                db=db,
+                user_id=attempt.user_id,
+                event_type="ba_phase2_evaluation_started",
+                session_id=attempt.session_id or None,
+                trainer_slug=attempt.trainer_product_id or None,
+                scenario_id=attempt.scenario_id or None,
+                properties={
+                    "attempt_id": attempt_id,
+                    "evaluation_mode": "ai",
+                },
+            )
+        except Exception:
+            logger.debug("Analytics event skipped (non-critical)", exc_info=True)
 
         # 3. Call the AI Gateway
         gateway_request = EvaluationGatewayRequest(
@@ -229,6 +252,52 @@ class EvaluationService:
             )
 
         return self._evaluation_to_response(evaluation)
+
+    # ------------------------------------------------------------------
+    # Retry Policy
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    async def _enforce_retry_policy(
+        db: AsyncSession,
+        attempt: Attempt,
+    ) -> None:
+        """Enforce the BA Phase 2 retry policy.
+
+        Rules:
+        - No blind automatic retry — provider failures must not auto-retry.
+        - Max 3 attempts per user per scenario. The frontend is responsible
+          for not auto-retrying on provider failure, but this backend check
+          prevents runaway re-evaluation.
+        - Provider failures: attempt stays in evaluating/failed state
+          and the user must manually request a new attempt.
+
+        Args:
+            db: Database session.
+            attempt: The current attempt being evaluated.
+
+        Raises:
+            ForbiddenError: If the attempt limit has been reached.
+        """
+        if not attempt.scenario_id:
+            return  # Only applies to scenario-based evaluations
+
+        # Count completed evaluations for this user+scenario
+        count_result = await db.execute(
+            select(func.count(Attempt.id)).where(
+                Attempt.user_id == attempt.user_id,
+                Attempt.scenario_id == attempt.scenario_id,
+                Attempt.status.in_(["evaluated", "completed"]),
+            )
+        )
+        completed_count = count_result.scalar() or 0
+
+        MAX_ATTEMPTS = 3
+        if completed_count >= MAX_ATTEMPTS:
+            raise ForbiddenError(
+                f"Maximum attempts ({MAX_ATTEMPTS}) reached for this scenario. "
+                "No further re-evaluation is allowed."
+            )
 
     # ------------------------------------------------------------------
     # Internal helpers
