@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-06-06T13:50:00Z",
+  "task": "TRAINER-PLATFORM-BA-TRAINER-PHASE-1-STAGING-DEPLOYMENT-AND-REAL-BROWSER-ACCEPTANCE-002",
+  "activity_types_results": {
+    "single_choice": {
+      "activity_id": "ba_hr_q1_single",
+      "correct_submission": {"status": "correct", "score": 100, "passed": true},
+      "incorrect_submission": {"status": "incorrect", "score": 0, "passed": false},
+      "evaluation_mode": "deterministic",
+      "ai_model_used": null,
+      "validation_status": "validated"
+    },
+    "multiple_choice": {
+      "activity_id": "ba_basics_q10_multi",
+      "correct_submission": {"status": "correct", "score": 100, "passed": true},
+      "incorrect_submission": {"status": "incorrect", "score": 0, "passed": false},
+      "evaluation_mode": "deterministic",
+      "ai_model_used": null,
+      "validation_status": "validated"
+    },
+    "numeric": {
+      "activity_id": "ba_metric_q15_number",
+      "correct_submission": {"status": "correct", "score": 100, "passed": true},
+      "incorrect_submission": {"status": "incorrect", "score": 0, "passed": false},
+      "evaluation_mode": "deterministic",
+      "ai_model_used": null,
+      "validation_status": "validated"
+    },
+    "fill_blanks": {
+      "activity_id": "ba_basics_q14_fill",
+      "correct_submission": {"status": "correct", "score": 100, "passed": true},
+      "incorrect_submission": {"status": "incorrect", "score": 0, "passed": false},
+      "evaluation_mode": "deterministic",
+      "ai_model_used": null,
+      "validation_status": "validated"
+    },
+    "matching": {
+      "activity_id": "ba_basics_q16_match",
+      "correct_submission": {"status": "correct", "score": 100, "passed": true},
+      "incorrect_submission": {"status": "incorrect", "score": 0, "passed": false},
+      "evaluation_mode": "deterministic",
+      "ai_model_used": null,
+      "validation_status": "validated"
+    }
+  },
+  "summary": {
+    "total_types": 5,
+    "types_verified": 5,
+    "correct_and_incorrect_verified": true,
+    "all_validation_status": "validated",
+    "all_evaluation_mode": "deterministic",
+    "ai_model_used": null
+  }
+}

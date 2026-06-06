@@ -1,7 +1,13 @@
 # BA Trainer Phase 1 — Known Issues
 
 ## Critical
-None.
+
+1. **Railway Deployments Failing** ❗
+   - **Status**: Unresolved (Railway infrastructure issue)
+   - **Impact**: Backend cannot be deployed to Railway with latest code
+   - **Root cause**: Railway deployment infrastructure issue in the `protective-passion` project. All deployments (including `redeploy` of previously successful builds) have been failing since approximately 2026-06-06 13:08 UTC.
+   - **Workaround**: Backend runs locally connected to Railway Postgres database. Once Railway resolves the issue, `railway up --service backend` will deploy.
+   - **Evidence**: 9 consecutive failed deployments across Dockerfile and Nixpacks builders.
 
 ## High
 None.
