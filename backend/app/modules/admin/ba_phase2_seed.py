@@ -16,7 +16,12 @@ from app.db.models import (
     Skill, SkillMap, TrainerProduct,
 )
 
-PACKAGE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / "trainer_packages" / "business_analyst_interview_trainer"
+# Primary: embedded data directory (copied with app code in Docker build)
+# Fallback: repo-root trainer_packages for local development
+_script_dir = Path(__file__).resolve().parent
+PACKAGE_DIR = _script_dir / "ba_phase2_data"
+if not PACKAGE_DIR.exists():
+    PACKAGE_DIR = _script_dir.parent.parent.parent.parent.parent / "trainer_packages" / "business_analyst_interview_trainer"
 
 
 async def seed_ba_phase2(db: AsyncSession, inline: object = None) -> dict:

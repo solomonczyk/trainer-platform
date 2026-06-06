@@ -14,15 +14,14 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy and install Python dependencies FIRST (layer caching)
-COPY backend/requirements.txt .
+COPY requirements.txt .
 RUN python -m pip install --no-cache-dir --upgrade pip && \
     python -m pip install --no-cache-dir -r requirements.txt
 
-# Copy application code and data
-COPY backend/alembic.ini .
-COPY backend/app ./app
-COPY backend/scripts ./scripts
-COPY trainer_packages /trainer_packages
+# Copy application code
+COPY alembic.ini .
+COPY app ./app
+COPY scripts ./scripts
 
 # Expose port
 EXPOSE 8000

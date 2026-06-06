@@ -17,36 +17,54 @@ async function registerUser(page: Page) {
   await page.goto("/register");
   await page.waitForLoadState("networkidle");
 
-  // Check if register page is accessible
-  const heading = page.locator("h1, h2").first();
-  const text = await heading.textContent();
+  // Wait for the page to be fully rendered (CardTitle renders as h3)
+  await page.locator("h3, input[type='email'], form").first().waitFor({ state: "visible", timeout: 10000 });
 
-  // If we see the register form, fill it
-  const emailInput = page.locator('input[type="email"], input[name="email"]').first();
-  if (await emailInput.isVisible({ timeout: 3000 }).catch(() => false)) {
-    await emailInput.fill(TEST_USER.email);
-    const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill(TEST_USER.password);
-    const nameInput = page.locator('input[name="display_name"], input[name="displayName"]').first();
-    if (await nameInput.isVisible().catch(() => false)) {
-      await nameInput.fill(TEST_USER.name);
-    }
-    await page.locator('button[type="submit"], button:has-text("Register"), button:has-text("Зарегистрироваться")').first().click();
-    await page.waitForTimeout(2000);
+  // Fill the registration form
+  const emailInput = page.locator('#email');
+  await emailInput.waitFor({ state: "visible", timeout: 5000 });
+  await emailInput.fill(TEST_USER.email);
+
+  const passwordInput = page.locator('#password');
+  await passwordInput.fill(TEST_USER.password);
+
+  // Confirm password field
+  const confirmInput = page.locator('#confirmPassword');
+  if (await confirmInput.isVisible().catch(() => false)) {
+    await confirmInput.fill(TEST_USER.password);
   }
+
+  // Optional display name
+  const nameInput = page.locator('#displayName');
+  if (await nameInput.isVisible().catch(() => false)) {
+    await nameInput.fill(TEST_USER.name);
+  }
+
+  // Click submit and wait for navigation away from /register
+  await page.locator('button[type="submit"]').first().click();
+
+  // Wait for navigation — either redirect or error shown
+  await page.waitForURL((url) => !url.pathname.includes("/register"), { timeout: 15000 }).catch(() => {
+    // If still on /register, check for error message
+  });
 }
 
 async function loginUser(page: Page) {
   await page.goto("/login");
   await page.waitForLoadState("networkidle");
 
-  const emailInput = page.locator('input[type="email"]').first();
-  if (await emailInput.isVisible({ timeout: 5000 }).catch(() => false)) {
-    await emailInput.fill(TEST_USER.email);
-    await page.locator('input[type="password"]').first().fill(TEST_USER.password);
-    await page.locator('button[type="submit"]').first().click();
-    await page.waitForTimeout(2000);
-  }
+  // Wait for the form to be rendered
+  await page.locator("h3, input[type='email'], form").first().waitFor({ state: "visible", timeout: 10000 });
+
+  const emailInput = page.locator('#email');
+  await emailInput.waitFor({ state: "visible", timeout: 5000 });
+  await emailInput.fill(TEST_USER.email);
+
+  await page.locator('#password').fill(TEST_USER.password);
+  await page.locator('button[type="submit"]').first().click();
+
+  // Wait for navigation away from /login
+  await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 }).catch(() => {});
 }
 
 // =========================================================================
