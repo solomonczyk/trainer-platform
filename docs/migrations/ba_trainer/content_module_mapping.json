@@ -1,0 +1,238 @@
+[
+  {
+    "source_module_id": "module-1",
+    "source_title": "Скрининг-интервью (HR)",
+    "target_module_id": "ba_hr_screening",
+    "title": "HR Screening & Self-Presentation",
+    "title_ru": "Скрининг-интервью (HR)",
+    "description": "HR questions, self-presentation, motivation, salary expectations",
+    "description_ru": "HR-вопросы, самопрезентация, мотивация, ожидания по зарплате",
+    "question_count": 25,
+    "difficulty_distribution": { "junior": 14, "middle": 11, "senior": 0 },
+    "target_scenarios": [
+      { "scenario_id": "ba_hr_screening_v1", "activity_type": "interview_answer", "evaluation": "ai" },
+      { "scenario_id": "ba_self_presentation_v1", "activity_type": "interview_answer", "evaluation": "ai" },
+      { "scenario_id": "ba_hr_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 14 },
+      { "scenario_id": "ba_hr_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 6 },
+      { "scenario_id": "ba_hr_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 5 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-2",
+    "source_title": "Основы BA и стейкхолдеры",
+    "target_module_id": "ba_basics_stakeholders",
+    "title": "BA Basics & Stakeholders",
+    "title_ru": "Основы BA и стейкхолдеры",
+    "description": "Role of BA, BABOK, stakeholder types, RACI matrix",
+    "description_ru": "Роль BA, BABOK, типы стейкхолдеров, матрица RACI",
+    "question_count": 25,
+    "difficulty_distribution": { "junior": 11, "middle": 10, "senior": 4 },
+    "target_scenarios": [
+      { "scenario_id": "ba_basics_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 9 },
+      { "scenario_id": "ba_basics_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 4 },
+      { "scenario_id": "ba_basics_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 3 },
+      { "scenario_id": "ba_basics_flashcard_v1", "activity_type": "flashcard", "evaluation": "deterministic", "source_question_count": 3 },
+      { "scenario_id": "ba_basics_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 2 },
+      { "scenario_id": "ba_basics_matching_v1", "activity_type": "matching", "evaluation": "deterministic", "source_question_count": 4 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-3",
+    "source_title": "Сбор и анализ требований",
+    "target_module_id": "ba_requirements_elicitation",
+    "title": "Requirements Elicitation & Analysis",
+    "title_ru": "Сбор и анализ требований",
+    "description": "Elicitation techniques, requirements analysis, validation",
+    "description_ru": "Методы сбора требований, Elicitation, анализ и валидация",
+    "question_count": 25,
+    "difficulty_distribution": { "junior": 8, "middle": 11, "senior": 6 },
+    "target_scenarios": [
+      { "scenario_id": "ba_elicitation_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 12 },
+      { "scenario_id": "ba_elicitation_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 6 },
+      { "scenario_id": "ba_elicitation_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 5 },
+      { "scenario_id": "ba_elicitation_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 2 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-4",
+    "source_title": "Документирование и артефакты",
+    "target_module_id": "ba_documentation_artifacts",
+    "title": "Documentation & Artifacts",
+    "title_ru": "Документирование и артефакты",
+    "description": "User stories, Use cases, BRD, SRS, Acceptance criteria (Gherkin)",
+    "description_ru": "User stories, Use cases, BRD, SRS, Acceptance criteria (Gherkin)",
+    "question_count": 25,
+    "difficulty_distribution": { "junior": 10, "middle": 9, "senior": 6 },
+    "target_scenarios": [
+      { "scenario_id": "ba_docs_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 12 },
+      { "scenario_id": "ba_docs_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 5 },
+      { "scenario_id": "ba_docs_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 6 },
+      { "scenario_id": "ba_docs_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 2 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-5",
+    "source_title": "Моделирование процессов и данных",
+    "target_module_id": "ba_process_data_modeling",
+    "title": "Process & Data Modeling",
+    "title_ru": "Моделирование процессов и данных",
+    "description": "BPMN, UML, ERD, Data Flow Diagrams, Event Storming",
+    "description_ru": "BPMN, UML, ERD, Data Flow Diagrams, Event Storming",
+    "question_count": 20,
+    "difficulty_distribution": { "junior": 5, "middle": 10, "senior": 5 },
+    "target_scenarios": [
+      { "scenario_id": "ba_modeling_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 7 },
+      { "scenario_id": "ba_modeling_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 4 },
+      { "scenario_id": "ba_modeling_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 5 },
+      { "scenario_id": "ba_modeling_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 2 },
+      { "scenario_id": "ba_modeling_matching_v1", "activity_type": "matching", "evaluation": "deterministic", "source_question_count": 1 },
+      { "scenario_id": "ba_modeling_number_v1", "activity_type": "numeric", "evaluation": "deterministic", "source_question_count": 1 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-6",
+    "source_title": "Методологии (Agile, Waterfall, Hybrid)",
+    "target_module_id": "ba_methodologies",
+    "title": "Methodologies",
+    "title_ru": "Методологии (Agile, Waterfall, Hybrid)",
+    "description": "Scrum, Kanban, SAFe, Waterfall, methodology comparison",
+    "description_ru": "Scrum, Kanban, SAFe, Waterfall, сравнение методологий",
+    "question_count": 20,
+    "difficulty_distribution": { "junior": 7, "middle": 8, "senior": 5 },
+    "target_scenarios": [
+      { "scenario_id": "ba_method_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 9 },
+      { "scenario_id": "ba_method_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 4 },
+      { "scenario_id": "ba_method_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 4 },
+      { "scenario_id": "ba_method_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 3 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-7",
+    "source_title": "Метрики, оценка, приоритизация",
+    "target_module_id": "ba_metrics_prioritization",
+    "title": "Metrics, Estimation & Prioritization",
+    "title_ru": "Метрики, оценка, приоритизация",
+    "description": "MoSCoW, Kano, WSJF, Story Points, ROI, NPV",
+    "description_ru": "MoSCoW, Kano, WSJF, Story Points, ROI, NPV",
+    "question_count": 20,
+    "difficulty_distribution": { "junior": 6, "middle": 8, "senior": 6 },
+    "target_scenarios": [
+      { "scenario_id": "ba_metrics_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 10 },
+      { "scenario_id": "ba_metrics_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 4 },
+      { "scenario_id": "ba_metrics_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 4 },
+      { "scenario_id": "ba_metrics_number_v1", "activity_type": "numeric", "evaluation": "deterministic", "source_question_count": 2 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-8",
+    "source_title": "Коммуникация и конфликты",
+    "target_module_id": "ba_communication_conflict",
+    "title": "Communication & Conflict",
+    "title_ru": "Коммуникация и конфликты",
+    "description": "Facilitation, negotiation, expectation management, conflict resolution",
+    "description_ru": "Фасилитация, переговоры, управление ожиданиями, конфликты",
+    "question_count": 20,
+    "difficulty_distribution": { "junior": 8, "middle": 7, "senior": 5 },
+    "target_scenarios": [
+      { "scenario_id": "ba_comm_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 9 },
+      { "scenario_id": "ba_comm_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 7 },
+      { "scenario_id": "ba_comm_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 3 },
+      { "scenario_id": "ba_comm_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 1 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-9",
+    "source_title": "Технические аспекты (SQL, API, прототипы)",
+    "target_module_id": "ba_technical_aspects",
+    "title": "Technical Aspects (SQL, API, Prototypes)",
+    "title_ru": "Технические аспекты (SQL, API, прототипы)",
+    "description": "SQL queries, REST API, JSON, prototyping, architecture",
+    "description_ru": "SQL-запросы, REST API, JSON, прототипирование, архитектура",
+    "question_count": 25,
+    "difficulty_distribution": { "junior": 7, "middle": 9, "senior": 9 },
+    "target_scenarios": [
+      { "scenario_id": "ba_tech_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 14 },
+      { "scenario_id": "ba_tech_checkbox_v1", "activity_type": "multiple_choice", "evaluation": "deterministic", "source_question_count": 4 },
+      { "scenario_id": "ba_tech_textarea_v1", "activity_type": "free_text", "evaluation": "ai", "source_question_count": 6 },
+      { "scenario_id": "ba_tech_number_v1", "activity_type": "numeric", "evaluation": "deterministic", "source_question_count": 1 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": []
+  },
+  {
+    "source_module_id": "module-10",
+    "source_title": "Реальные кейсы",
+    "target_module_id": "ba_real_cases",
+    "title": "Real-World Case Studies",
+    "title_ru": "Реальные кейсы",
+    "description": "Complex J/M/S scenarios with full analysis cycle",
+    "description_ru": "Комплексные сценарии J/M/S с полным циклом анализа",
+    "question_count": 6,
+    "difficulty_distribution": { "junior": 1, "middle": 2, "senior": 3 },
+    "target_scenarios": [
+      { "scenario_id": "ba_cases_case_study_v1", "activity_type": "case_study", "evaluation": "ai", "source_question_count": 3 },
+      { "scenario_id": "ba_cases_radio_v1", "activity_type": "single_choice", "evaluation": "deterministic", "source_question_count": 2 },
+      { "scenario_id": "ba_cases_fill_blanks_v1", "activity_type": "fill_blanks", "evaluation": "deterministic", "source_question_count": 1 }
+    ],
+    "migration_status": "direct",
+    "content_quality_risks": [
+      "Low question count (6) — consider expanding after migration",
+      "Only 3 open-text questions for AI evaluation — relatively few case studies"
+    ]
+  },
+  {
+    "source_module_id": "module-0",
+    "source_title": "Входная диагностика",
+    "target_module_id": "ba_diagnostics",
+    "title": "Entry Diagnostics",
+    "title_ru": "Входная диагностика",
+    "description": "Initial level assessment and grade determination",
+    "description_ru": "Определение текущего уровня и грейда",
+    "question_count": 8,
+    "difficulty_distribution": { "junior": 3, "middle": 3, "senior": 2 },
+    "target_scenarios": [
+      { "scenario_id": "ba_diagnostics_assessment_v1", "activity_type": "diagnostic_assessment", "evaluation": "hybrid" }
+    ],
+    "migration_status": "required_review",
+    "content_quality_risks": [
+      "Hardcoded in DiagnosticsPage.tsx — must be extracted to JSON",
+      "Level calculation is simplistic (60% threshold per level)"
+    ]
+  },
+  {
+    "source_module_id": "module-11",
+    "source_title": "Финальный экзамен",
+    "target_module_id": "ba_final_exam",
+    "title": "Final Exam",
+    "title_ru": "Финальный экзамен",
+    "description": "Simulated interview with timer — 25 questions, 45 minutes",
+    "description_ru": "Симуляция собеседования с таймером",
+    "question_count": 25,
+    "difficulty_distribution": { "junior": 10, "middle": 10, "senior": 5 },
+    "target_scenarios": [
+      { "scenario_id": "ba_exam_session_v1", "activity_type": "exam", "evaluation": "hybrid" }
+    ],
+    "migration_status": "required_review",
+    "content_quality_risks": [
+      "Dynamic random selection — exam content is non-deterministic",
+      "Timer requires new platform capability",
+      "Scoring and pass thresholds need definition"
+    ]
+  }
+]

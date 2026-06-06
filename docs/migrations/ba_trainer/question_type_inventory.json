@@ -1,0 +1,166 @@
+{
+  "inventory_date": "2026-06-06",
+  "source_repository": "solomonczyk/bi-trainer-local",
+  "total_questions": 211,
+  "diagnostics_questions": 8,
+  "exam_questions_per_session": 25,
+  "question_types": [
+    {
+      "source_type": "radio",
+      "question_count": 98,
+      "example_question_ids": ["module-1-Q1", "module-2-Q1", "module-3-Q1", "module-4-Q1", "module-5-Q1"],
+      "data_payload": "{\"options\": string[], \"correct\": string}",
+      "target_support": "supported",
+      "target_component": "SingleChoiceActivity (to be created)",
+      "evaluation_mode": "deterministic",
+      "migration_complexity": "low",
+      "blocking_gap": false,
+      "notes": "Direct mapping to platform single-choice activity type. All 98 have data.correct."
+    },
+    {
+      "source_type": "checkbox",
+      "question_count": 44,
+      "example_question_ids": ["module-1-Q4", "module-2-Q12", "module-3-Q5", "module-8-Q3"],
+      "data_payload": "{\"options\": string[], \"correct\": string[]}",
+      "target_support": "supported",
+      "target_component": "MultipleChoiceActivity (to be created)",
+      "evaluation_mode": "deterministic",
+      "migration_complexity": "low",
+      "blocking_gap": false,
+      "notes": "Exact set match. All 44 have data.correct as arrays."
+    },
+    {
+      "source_type": "textarea",
+      "question_count": 44,
+      "example_question_ids": ["module-1-Q6", "module-3-Q10", "module-4-Q8", "module-9-Q12", "module-10-Q3"],
+      "data_payload": "{\"keywords\": string[], \"minMatch\": number}",
+      "target_support": "partial",
+      "target_component": "FreeTextActivity (existing) + keyword matcher",
+      "evaluation_mode": "hybrid",
+      "migration_complexity": "medium",
+      "blocking_gap": false,
+      "notes": "Current platform only supports AI evaluation for free text. Need to add optional keyword pre-check before AI. Keyword-based deterministic pass can reduce AI costs."
+    },
+    {
+      "source_type": "fill-blanks",
+      "question_count": 13,
+      "example_question_ids": ["module-2-Q4", "module-3-Q18", "module-4-Q5", "module-6-Q15", "module-10-Q5"],
+      "data_payload": "{\"template\": string, \"blanks\": [{placeholder, options?}], \"correct\": string[]}",
+      "target_support": "partial",
+      "target_component": "FillBlanksActivity (to be created)",
+      "evaluation_mode": "deterministic",
+      "migration_complexity": "medium",
+      "blocking_gap": false,
+      "notes": "Need a new FillBlanksActivity supporting both select-dropdown and free-input blanks."
+    },
+    {
+      "source_type": "matching",
+      "question_count": 5,
+      "example_question_ids": ["module-2-Q8", "module-2-Q11", "module-5-Q8"],
+      "data_payload": "{\"pairs\": [{left: string, right: string}]}",
+      "target_support": "missing",
+      "target_component": "MatchingActivity (to be created)",
+      "evaluation_mode": "deterministic",
+      "migration_complexity": "medium",
+      "blocking_gap": false,
+      "notes": "New component needed. No stored correct answer in source — match from pairs data."
+    },
+    {
+      "source_type": "number",
+      "question_count": 4,
+      "example_question_ids": ["module-5-Q14", "module-7-Q10", "module-9-Q20"],
+      "data_payload": "{\"correct\": number}",
+      "target_support": "supported",
+      "target_component": "NumericActivity (to be created)",
+      "evaluation_mode": "deterministic",
+      "migration_complexity": "low",
+      "blocking_gap": false,
+      "notes": "Simple numeric input with exact or tolerance-based match."
+    },
+    {
+      "source_type": "flashcard",
+      "question_count": 3,
+      "example_question_ids": ["module-2-Q2", "module-2-Q3"],
+      "data_payload": "{}",
+      "target_support": "missing",
+      "target_component": "FlashcardActivity (to be created)",
+      "evaluation_mode": "deterministic",
+      "migration_complexity": "low",
+      "blocking_gap": false,
+      "notes": "Self-assessed (known/unknown). No correct answer stored. Low priority."
+    }
+  ],
+  "unused_type_components": [
+    {
+      "source_type": "drag-sort",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Component using @dnd-kit exists but no questions use it"
+    },
+    {
+      "source_type": "drag-group",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Reuses DragAndDropQuestion component"
+    },
+    {
+      "source_type": "drag-swimlane",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Reuses DragAndDropQuestion component"
+    },
+    {
+      "source_type": "interactive-board",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "MoSCoW board interactive (uses zones)"
+    },
+    {
+      "source_type": "click-image",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Clickable zones on image"
+    },
+    {
+      "source_type": "branching-dialogue",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Multi-step decision tree"
+    },
+    {
+      "source_type": "table-input",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Structured table data entry"
+    },
+    {
+      "source_type": "audio",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "Audio recording via MediaRecorder API"
+    },
+    {
+      "source_type": "likert",
+      "component_exists": true,
+      "questions_exist": false,
+      "target_priority": "P2",
+      "notes": "5-point Likert scale"
+    }
+  ],
+  "summary": {
+    "supported_types": ["radio", "checkbox", "number"],
+    "partial_types": ["textarea", "fill-blanks"],
+    "missing_types": ["matching", "flashcard"],
+    "unused_types": ["drag-sort", "drag-group", "drag-swimlane", "interactive-board", "click-image", "branching-dialogue", "table-input", "audio", "likert"],
+    "types_with_questions": 7,
+    "types_with_components_only": 9
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "schema_proposal_id": "BA_SCHEMA_PROPOSAL_V1",
+  "date": "2026-06-06",
+  "status": "draft",
+  "target_platform_version": "1.0.0",
+  "activity_types": {
+    "interview_answer": {
+      "description": "Open-ended interview-style answer evaluated by AI",
+      "evaluation_modes": ["ai"],
+      "target_support": "exists_platform_scenario",
+      "schema_extension_required": false,
+      "notes": "Already supported by scenario runtime. Add BA-specific rubric."
+    },
+    "single_choice": {
+      "description": "Single-select radio button question",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "New activity type. Needs Activity model with type discriminator. Store options + correct answer in data JSON."
+    },
+    "multiple_choice": {
+      "description": "Multi-select checkbox question",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Same as single_choice but answer is an array. Deterministic set comparison."
+    },
+    "numeric": {
+      "description": "Numeric input question with exact/tolerance match",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Simple number input. Store correct value + optional tolerance."
+    },
+    "free_text": {
+      "description": "Free-text answer with optional keyword pre-check and AI evaluation",
+      "evaluation_modes": ["ai", "hybrid"],
+      "target_support": "partial_platform_support",
+      "schema_extension_required": false,
+      "notes": "Platform already supports textarea-based answers via scenario runtime. Add keyword configuration for hybrid evaluation."
+    },
+    "drag_sort": {
+      "description": "Drag-and-drop ordering of items",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "New activity type. Items array + correct order array. Frontend component uses @dnd-kit."
+    },
+    "drag_group": {
+      "description": "Drag items into groups/zones",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Items + group definitions + correct assignment mapping."
+    },
+    "matching": {
+      "description": "Match left column items to right column items",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Pairs of left/right. User matches via dropdown. Score by correct pair count."
+    },
+    "fill_blanks": {
+      "description": "Fill in blanks within a template text",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Template with {blankN} placeholders. Each blank has optional options dropdown. Correct answers array."
+    },
+    "click_image": {
+      "description": "Click on a zone within an image to answer",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Image URL + zone coordinates + correct zone ID. Unused in source but component exists."
+    },
+    "table_input": {
+      "description": "Fill in a structured table",
+      "evaluation_modes": ["deterministic", "ai"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Column definitions + row labels. User fills cells."
+    },
+    "branching_dialogue": {
+      "description": "Multi-step dialogue tree with choices",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Node-based dialogue graph. User picks options. Final evaluation by path taken."
+    },
+    "interactive_board": {
+      "description": "Interactive Kanban/MoSCoW-style board",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Zones with items that can be moved between them."
+    },
+    "flashcard": {
+      "description": "Self-assessed flashcard (known/unknown)",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Front text + back text. User self-assesses. Always recorded as attempted."
+    },
+    "likert": {
+      "description": "Likert scale (1-5) self-assessment",
+      "evaluation_modes": ["deterministic"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Scale values with labels. Collects user confidence/agreement."
+    },
+    "diagnostic_assessment": {
+      "description": "Multi-question diagnostic that determines user level",
+      "evaluation_modes": ["hybrid"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Bundled activity: sequence of sub-questions with level calculation algorithm."
+    },
+    "exam": {
+      "description": "Timed multi-question exam with scoring",
+      "evaluation_modes": ["hybrid"],
+      "target_support": "new_activity_type",
+      "schema_extension_required": true,
+      "notes": "Time-limited session with random question selection, sequential delivery, score aggregation, pass threshold."
+    }
+  },
+  "evaluation_modes": {
+    "deterministic": {
+      "description": "Rule-based exact/pattern matching validation",
+      "target_support": "new_service",
+      "schema_extension_required": true,
+      "notes": "New DeterministicValidator service. Stateless function. Can run server-side or client-side."
+    },
+    "ai": {
+      "description": "DeepSeek-powered semantic evaluation",
+      "target_support": "exists_platform_service",
+      "schema_extension_required": false,
+      "notes": "Already implemented via AIGatewayService. Add BA-specific prompts and rubrics."
+    },
+    "hybrid": {
+      "description": "Two-phase: keyword pre-check then AI quality evaluation",
+      "target_support": "needs_integration",
+      "schema_extension_required": false,
+      "notes": "New orchestration layer combining deterministic + AI in sequence."
+    }
+  },
+  "schema_extensions_required": [
+    {
+      "extension_id": "activity_type_enum",
+      "description": "Add activity_type field to Scenario or new Activity model",
+      "priority": "P0",
+      "impact": "Schema change required. New column or table.",
+      "compatibility_with_QA_trainer": true,
+      "notes": "Optional field with default null — existing QA scenarios unaffected."
+    },
+    {
+      "extension_id": "deterministic_evaluation_result",
+      "description": "Add optional deterministic result to Attempt model",
+      "priority": "P0",
+      "impact": "New column or new simple_evaluations table",
+      "compatibility_with_QA_trainer": true,
+      "notes": "Existing Attempt model untouched. New nullable FK or separate table."
+    },
+    {
+      "extension_id": "exam_session_model",
+      "description": "Exam-specific session model with timer and sequential delivery",
+      "priority": "P1",
+      "impact": "New model ExamSession",
+      "compatibility_with_QA_trainer": true,
+      "notes": "Does not affect existing simulation sessions."
+    },
+    {
+      "extension_id": "diagnostic_assessment_model",
+      "description": "Diagnostic assessment with level calculation",
+      "priority": "P1",
+      "impact": "New model DiagnosticAssessment",
+      "compatibility_with_QA_trainer": true,
+      "notes": "Separate from existing scenario/attempt models."
+    },
+    {
+      "extension_id": "xp_ledger_model",
+      "description": "Optional gamification XP ledger",
+      "priority": "P2",
+      "impact": "New model XPLedger",
+      "compatibility_with_QA_trainer": true,
+      "notes": "Fully optional. Can use existing metadata_json as alternative."
+    }
+  ],
+  "compatibility_with_existing_QA_trainer": {
+    "all_extensions_backward_compatible": true,
+    "existing_QA_trainer_unchanged": true,
+    "shared_models_extended": false,
+    "new_models_added": 5,
+    "notes": "All extensions are additive (new tables or nullable columns). Existing QA trainer scenarios, attempts, evaluations, and progress are not affected."
+  }
+}
