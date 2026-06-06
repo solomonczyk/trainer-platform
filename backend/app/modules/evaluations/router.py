@@ -14,6 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.errors import ForbiddenError
 from app.core.logging import get_logger
+from app.core.security import get_current_user_id_required
 from app.db.session import get_db
 from app.modules.evaluations.schemas import (
     EvaluationErrorResponse,
@@ -89,10 +90,11 @@ async def trigger_evaluation(
 )
 async def get_evaluation(
     attempt_id: str,
+    user_id: str = Depends(get_current_user_id_required),
     db: AsyncSession = Depends(get_db),
 ) -> EvaluationResponse:
     """Retrieve the evaluation result for an attempt."""
     _check_evaluation_feature_flag()
 
     service = EvaluationService()
-    return await service.get_evaluation(db=db, attempt_id=attempt_id)
+    return await service.get_evaluation(db=db, attempt_id=attempt_id, user_id=user_id)

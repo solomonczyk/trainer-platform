@@ -227,22 +227,31 @@ class EvaluationService:
         self,
         db: AsyncSession,
         attempt_id: str,
+        user_id: str | None = None,
     ) -> EvaluationResponse:
         """Retrieve the evaluation result for an attempt.
 
         Args:
             db: Database session.
             attempt_id: UUID of the attempt.
+            user_id: The requesting user's ID. If provided, ownership is verified.
 
         Returns:
             Fully populated :class:`EvaluationResponse`.
 
         Raises:
             NotFoundError: If the attempt or its evaluation is not found.
+            ForbiddenError: If the requesting user does not own the attempt.
         """
         attempt = await repo.get_attempt_by_id(db, attempt_id)
         if attempt is None:
             raise NotFoundError(entity="Attempt", entity_id=attempt_id)
+
+        # Ownership check — only the attempt owner may view the evaluation
+        if user_id is not None and str(attempt.user_id) != user_id:
+            raise ForbiddenError(
+                "You do not have access to this attempt's evaluation"
+            )
 
         evaluation = await repo.get_evaluation_by_attempt(db, attempt_id)
         if evaluation is None:
