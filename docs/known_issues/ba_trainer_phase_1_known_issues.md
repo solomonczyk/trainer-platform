@@ -1,13 +1,18 @@
 # BA Trainer Phase 1 — Known Issues
 
-## Critical
+## Critical — Resolved
 
-1. **Railway Deployments Failing** ❗
-   - **Status**: Unresolved (Railway infrastructure issue)
-   - **Impact**: Backend cannot be deployed to Railway with latest code
-   - **Root cause**: Railway deployment infrastructure issue in the `protective-passion` project. All deployments (including `redeploy` of previously successful builds) have been failing since approximately 2026-06-06 13:08 UTC.
-   - **Workaround**: Backend runs locally connected to Railway Postgres database. Once Railway resolves the issue, `railway up --service backend` will deploy.
-   - **Evidence**: 9 consecutive failed deployments across Dockerfile and Nixpacks builders.
+1. ~~**Railway Deployments Failing**~~ ✅ **RESOLVED** (2026-06-06)
+   - **Status**: **Resolved** — Fixed in TRAINER-PLATFORM-BA-PHASE1-RAILWAY-BACKEND-PYTHON-IMAGE-FIX-004
+   - **Root cause**: Two issues:
+     1. Global `build.builder: "NIXPACKS"` in `railway.json` caused root-level scanning instead of `backend/` directory.
+     2. Railway dashboard Build Command (`pip install -r requirements.txt`) ran in non-Python environment.
+   - **Fix**: 
+     - Removed global NIXPACKS builder from `railway.json`
+     - Rewrote `Dockerfile` to single-stage `python:3.12-slim` with `python -m pip`
+     - Removed `nixpacks.toml` to avoid conflicts
+     - Deployed from repo root with `railway up . --path-as-root --service backend --environment staging`
+   - **Evidence**: Deployment `3b91488b` SUCCESS — backend staging has 28 paths with BA activity routes.
 
 ## High
 None.
