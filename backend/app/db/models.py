@@ -344,7 +344,7 @@ class Attempt(Base, TimestampMixin):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
     user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), nullable=False)
-    scenario_id: Mapped[str] = mapped_column(String(36), ForeignKey("scenarios.id"), nullable=False)
+    scenario_id: Mapped[Optional[str]] = mapped_column(String(36), ForeignKey("scenarios.id"), nullable=True)
     session_id: Mapped[Optional[str]] = mapped_column(
         String(36), ForeignKey("simulation_sessions.id"), nullable=True
     )
@@ -361,6 +361,11 @@ class Attempt(Base, TimestampMixin):
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     is_retry: Mapped[bool] = mapped_column(Boolean, default=False)
     retry_of_attempt_id: Mapped[Optional[str]] = mapped_column(String(36), nullable=True)
+    activity_id: Mapped[Optional[str]] = mapped_column(String(36), ForeignKey("activities.id"), nullable=True)
+    activity_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    evaluation_mode: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    submitted_answer: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    idempotency_key: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, index=True)
 
     user = relationship("User", back_populates="attempts", lazy="selectin")
     scenario = relationship("Scenario", back_populates="attempts", lazy="selectin")
@@ -519,3 +524,48 @@ class FeatureFlag(Base, TimestampMixin):
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     owner: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     rollout_percentage: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+
+
+# ---------------------------------------------------------------------------
+# Activity / Deterministic Activity System
+# ---------------------------------------------------------------------------
+
+class Activity(Base, TimestampMixin):
+    __tablename__ = "activities"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    activity_id: Mapped[str] = mapped_column(String(100), unique=True, index=True, nullable=False)
+    trainer_product_id: Mapped[str] = mapped_column(String(36), ForeignKey("trainer_products.id"), nullable=False)
+    module_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    activity_type: Mapped[str] = mapped_column(String(50), nullable=False)  # single_choice, multiple_choice, numeric, fill_blanks, matching
+    evaluation_mode: Mapped[str] = mapped_column(String(50), default="deterministic")
+    difficulty: Mapped[str] = mapped_column(String(50), default="junior")
+    title_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    description_key: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    payload: Mapped[dict] = mapped_column(JSON, nullable=False)
+    explanation_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    order: Mapped[int] = mapped_column(Integer, default=0)
+    version: Mapped[str] = mapped_column(String(20), default="0.1.0")
+    migration_metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    trainer = relationship("TrainerProduct", backref="activities")
+
+
+class DeterministicEvaluation(Base, TimestampMixin):
+    __tablename__ = "deterministic_evaluations"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    attempt_id: Mapped[str] = mapped_column(String(36), ForeignKey("attempts.id"), unique=True, nullable=False)
+    status: Mapped[str] = mapped_column(String(50), nullable=False)  # correct, partial, incorrect
+    score: Mapped[int] = mapped_column(Integer, nullable=False)
+    passed: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    feedback: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    evaluation_mode: Mapped[str] = mapped_column(String(50), default="deterministic")
+    validation_status: Mapped[str] = mapped_column(String(50), default="validated")
+
+    attempt = relationship("Attempt", back_populates="deterministic_evaluation", uselist=False)
+
+# Add backref to Attempt
+Attempt.deterministic_evaluation = relationship(
+    "DeterministicEvaluation", back_populates="attempt", uselist=False, lazy="selectin"
+)

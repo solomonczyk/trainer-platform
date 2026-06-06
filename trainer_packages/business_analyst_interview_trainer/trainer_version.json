@@ -1,0 +1,10 @@
+{
+  "trainer_product_id": "business_analyst_interview_trainer",
+  "version": "0.1.0",
+  "release_status": "staging",
+  "locale_pack_ids": ["ru-RU"],
+  "published_at": null,
+  "requires_expert_review": false,
+  "activity_count": 164,
+  "phase": "phase_1_deterministic"
+}

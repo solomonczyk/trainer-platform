@@ -109,6 +109,7 @@ from app.modules.runtime import router as runtime_router
 from app.modules.evaluations import router as evaluations_router
 from app.modules.progress import router as progress_router
 from app.modules.analytics import router as analytics_router
+from app.modules.activities import router as activities_router
 from app.modules.admin import router as admin_router
 
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
@@ -120,6 +121,7 @@ app.include_router(runtime_router, prefix="/api/v1", tags=["Runtime"])
 app.include_router(evaluations_router, prefix="/api/v1", tags=["Evaluations"])
 app.include_router(progress_router, prefix="/api/v1", tags=["Progress"])
 app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["Analytics"])
+app.include_router(activities_router, prefix="/api/v1", tags=["Activities"])
 app.include_router(admin_router, prefix="/api/v1/admin", tags=["Admin"])
 
 

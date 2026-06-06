@@ -1,0 +1,102 @@
+[
+  {
+    "module_id": "ba_hr_screening",
+    "title": "HR Screening & Self-Presentation",
+    "title_ru": "Скрининг-интервью (HR)",
+    "description": "HR questions, self-presentation, motivation, salary expectations",
+    "description_ru": "HR-вопросы, самопрезентация, мотивация, ожидания по зарплате",
+    "sort_order": 1,
+    "activity_count": 20,
+    "difficulty_distribution": {"junior": 14, "middle": 6, "senior": 0}
+  },
+  {
+    "module_id": "ba_basics_stakeholders",
+    "title": "BA Basics & Stakeholders",
+    "title_ru": "Основы BA и стейкхолдеры",
+    "description": "Role of BA, BABOK, stakeholder types, RACI matrix",
+    "description_ru": "Роль BA, BABOK, типы стейкхолдеров, матрица RACI",
+    "sort_order": 2,
+    "activity_count": 15,
+    "difficulty_distribution": {"junior": 9, "middle": 6, "senior": 0}
+  },
+  {
+    "module_id": "ba_requirements_elicitation",
+    "title": "Requirements Elicitation & Analysis",
+    "title_ru": "Сбор и анализ требований",
+    "description": "Elicitation techniques, requirements analysis, validation",
+    "description_ru": "Методы сбора требований, Elicitation, анализ и валидация",
+    "sort_order": 3,
+    "activity_count": 20,
+    "difficulty_distribution": {"junior": 8, "middle": 10, "senior": 2}
+  },
+  {
+    "module_id": "ba_documentation_artifacts",
+    "title": "Documentation & Artifacts",
+    "title_ru": "Документирование и артефакты",
+    "description": "User stories, Use cases, BRD, SRS, Acceptance criteria (Gherkin)",
+    "description_ru": "User stories, Use cases, BRD, SRS, Acceptance criteria (Gherkin)",
+    "sort_order": 4,
+    "activity_count": 19,
+    "difficulty_distribution": {"junior": 10, "middle": 7, "senior": 2}
+  },
+  {
+    "module_id": "ba_process_data_modeling",
+    "title": "Process & Data Modeling",
+    "title_ru": "Моделирование процессов и данных",
+    "description": "BPMN, UML, ERD, Data Flow Diagrams, Event Storming",
+    "description_ru": "BPMN, UML, ERD, Data Flow Diagrams, Event Storming",
+    "sort_order": 5,
+    "activity_count": 15,
+    "difficulty_distribution": {"junior": 5, "middle": 8, "senior": 2}
+  },
+  {
+    "module_id": "ba_methodologies",
+    "title": "Methodologies",
+    "title_ru": "Методологии (Agile, Waterfall, Hybrid)",
+    "description": "Scrum, Kanban, SAFe, Waterfall, methodology comparison",
+    "description_ru": "Scrum, Kanban, SAFe, Waterfall, сравнение методологий",
+    "sort_order": 6,
+    "activity_count": 16,
+    "difficulty_distribution": {"junior": 7, "middle": 7, "senior": 2}
+  },
+  {
+    "module_id": "ba_metrics_prioritization",
+    "title": "Metrics, Estimation & Prioritization",
+    "title_ru": "Метрики, оценка, приоритизация",
+    "description": "MoSCoW, Kano, WSJF, Story Points, ROI, NPV",
+    "description_ru": "MoSCoW, Kano, WSJF, Story Points, ROI, NPV",
+    "sort_order": 7,
+    "activity_count": 16,
+    "difficulty_distribution": {"junior": 6, "middle": 8, "senior": 2}
+  },
+  {
+    "module_id": "ba_communication_conflict",
+    "title": "Communication & Conflict",
+    "title_ru": "Коммуникация и конфликты",
+    "description": "Facilitation, negotiation, expectation management, conflict resolution",
+    "description_ru": "Фасилитация, переговоры, управление ожиданиями, конфликты",
+    "sort_order": 8,
+    "activity_count": 17,
+    "difficulty_distribution": {"junior": 8, "middle": 7, "senior": 2}
+  },
+  {
+    "module_id": "ba_technical_aspects",
+    "title": "Technical Aspects (SQL, API, Prototypes)",
+    "title_ru": "Технические аспекты (SQL, API, прототипы)",
+    "description": "SQL queries, REST API, JSON, prototyping, architecture",
+    "description_ru": "SQL-запросы, REST API, JSON, прототипирование, архитектура",
+    "sort_order": 9,
+    "activity_count": 19,
+    "difficulty_distribution": {"junior": 7, "middle": 9, "senior": 3}
+  },
+  {
+    "module_id": "ba_real_cases",
+    "title": "Real-World Case Studies",
+    "title_ru": "Реальные кейсы",
+    "description": "Complex scenarios with full analysis cycle",
+    "description_ru": "Комплексные сценарии с полным циклом анализа",
+    "sort_order": 10,
+    "activity_count": 7,
+    "difficulty_distribution": {"junior": 1, "middle": 3, "senior": 3}
+  }
+]

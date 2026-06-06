@@ -1,0 +1,16 @@
+{
+  "trainer_product_id": "business_analyst_interview_trainer",
+  "domain": "it",
+  "slug": "business-analyst-interview-trainer",
+  "name": "Business Analyst Interview Trainer",
+  "name_ru": "Тренажёр собеседования бизнес-аналитика",
+  "product_type": "interview_simulator",
+  "target_audience": ["junior_ba_candidate", "middle_ba_candidate", "career_switcher"],
+  "default_locale": "ru-RU",
+  "supported_locales": ["ru-RU"],
+  "status": "staging",
+  "owner": "platform",
+  "version": "0.1.0",
+  "description": "Comprehensive interview simulator for Business Analyst candidates. Covers HR screening, BA fundamentals, requirements engineering, process modeling, methodologies, metrics, communication, technical aspects, and real case studies with deterministic evaluation.",
+  "description_ru": "Комплексный тренажёр собеседования для кандидатов на позицию бизнес-аналитика. Охватывает HR-скрининг, основы BA, работу с требованиями, моделирование, методологии, метрики, коммуникацию, технические аспекты и реальные кейсы с детерминированной оценкой."
+}

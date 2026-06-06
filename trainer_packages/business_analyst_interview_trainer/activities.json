@@ -1,0 +1,4838 @@
+[
+  {
+    "activity_id": "ba_basics_q1_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Сбор и документирование требований",
+        "Написание кода",
+        "Тестирование продукта",
+        "Управление командой"
+      ],
+      "correct": "Сбор и документирование требований"
+    },
+    "explanation_key": "ba_basics_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q2_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "BABOK (Business Analysis Body of Knowledge)",
+        "PMBOK (Project Management Body of Knowledge)",
+        "TOGAF",
+        "ITIL"
+      ],
+      "correct": "BABOK (Business Analysis Body of Knowledge)"
+    },
+    "explanation_key": "ba_basics_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q3_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Лицо, принимающее решение (ЛПР)",
+        "Разработчик",
+        "Тестировщик",
+        "Project Manager"
+      ],
+      "correct": "Лицо, принимающее решение (ЛПР)"
+    },
+    "explanation_key": "ba_basics_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q4_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Влияние и интерес к проекту",
+        "Должность и зарплата",
+        "Возраст и опыт",
+        "Технические навыки"
+      ],
+      "correct": "Влияние и интерес к проекту"
+    },
+    "explanation_key": "ba_basics_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q5_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "RACI (Responsible, Accountable, Consulted, Informed)",
+        "SWOT (Strengths, Weaknesses, Opportunities, Threats)",
+        "SMART (Specific, Measurable, Achievable, Relevant, Time-bound)",
+        "MoSCoW (Must, Should, Could, Won't)"
+      ],
+      "correct": "RACI (Responsible, Accountable, Consulted, Informed)"
+    },
+    "explanation_key": "ba_basics_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q6_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Responsible (Исполнитель)",
+        "Accountable (Ответственный)",
+        "Consulted (Консультируемый)",
+        "Informed (Информируемый)"
+      ],
+      "correct": "Accountable (Ответственный)"
+    },
+    "explanation_key": "ba_basics_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q7_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "IIBA (International Institute of Business Analysis)",
+        "PMI (Project Management Institute)",
+        "IEEE",
+        "ISO"
+      ],
+      "correct": "IIBA (International Institute of Business Analysis)"
+    },
+    "explanation_key": "ba_basics_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q8_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "6 областей знаний (Knowledge Areas)",
+        "5 областей знаний",
+        "10 областей знаний",
+        "3 области знаний"
+      ],
+      "correct": "6 областей знаний (Knowledge Areas)"
+    },
+    "explanation_key": "ba_basics_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q9_single",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Business Analysis Planning and Monitoring",
+        "Elicitation and Collaboration",
+        "Requirements Life Cycle Management",
+        "Strategy Analysis"
+      ],
+      "correct": "Business Analysis Planning and Monitoring"
+    },
+    "explanation_key": "ba_basics_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q10_multi",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Сбор требований (Elicitation)",
+        "Анализ требований (Analysis)",
+        "Спецификация (Specification)",
+        "Написание кода (Coding)"
+      ],
+      "correct": [
+        "Сбор требований (Elicitation)",
+        "Анализ требований (Analysis)",
+        "Спецификация (Specification)"
+      ]
+    },
+    "explanation_key": "ba_basics_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q11_multi",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Sponsor (Спонсор)",
+        "End User (Конечный пользователь)",
+        "Domain Subject Matter Expert (Эксперт)",
+        "Разработчик баз данных"
+      ],
+      "correct": [
+        "Sponsor (Спонсор)",
+        "End User (Конечный пользователь)",
+        "Domain Subject Matter Expert (Эксперт)"
+      ]
+    },
+    "explanation_key": "ba_basics_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q12_multi",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Управление конфликтами",
+        "Фасилитация встреч",
+        "Написание технической документации",
+        "Управление командой разработки"
+      ],
+      "correct": [
+        "Управление конфликтами",
+        "Фасилитация встреч",
+        "Написание технической документации"
+      ]
+    },
+    "explanation_key": "ba_basics_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q13_multi",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Business Need (Бизнес-потребность)",
+        "Solution Scope (Границы решения)",
+        "Business Case (Бизнес-кейс)",
+        "Код приложения"
+      ],
+      "correct": [
+        "Business Need (Бизнес-потребность)",
+        "Solution Scope (Границы решения)",
+        "Business Case (Бизнес-кейс)"
+      ]
+    },
+    "explanation_key": "ba_basics_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q14_fill",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q14_title",
+    "description_key": null,
+    "payload": {
+      "template": "Методика определения уровня вовлечённости и влияния стейкхолдеров называется ___ анализ.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "SWOT",
+            "RACI",
+            "Stakeholder",
+            "PESTLE"
+          ]
+        }
+      ],
+      "correct": [
+        "Stakeholder"
+      ]
+    },
+    "explanation_key": "ba_basics_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q15_fill",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q15_title",
+    "description_key": null,
+    "payload": {
+      "template": "Правильно сформулированная цель должна соответствовать критериям ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "SMART",
+            "RACI",
+            "SWOT",
+            "MoSCoW"
+          ]
+        }
+      ],
+      "correct": [
+        "SMART"
+      ]
+    },
+    "explanation_key": "ba_basics_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q16_match",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "matching",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q16_title",
+    "description_key": null,
+    "payload": {
+      "left_items": [
+        "R - Responsible",
+        "A - Accountable",
+        "C - Consulted",
+        "I - Informed"
+      ],
+      "right_items": [
+        "Исполнитель работы",
+        "Несёт ответственность за результат",
+        "Консультирует до принятия решения",
+        "Информируется после решения"
+      ],
+      "pairs": [
+        {
+          "left": "R - Responsible",
+          "right": "Исполнитель работы"
+        },
+        {
+          "left": "A - Accountable",
+          "right": "Несёт ответственность за результат"
+        },
+        {
+          "left": "C - Consulted",
+          "right": "Консультирует до принятия решения"
+        },
+        {
+          "left": "I - Informed",
+          "right": "Информируется после решения"
+        }
+      ]
+    },
+    "explanation_key": "ba_basics_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q17_match",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "matching",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q17_title",
+    "description_key": null,
+    "payload": {
+      "left_items": [
+        "Sponsor",
+        "Subject Matter Expert",
+        "End User",
+        "Project Manager"
+      ],
+      "right_items": [
+        "Финансирует проект",
+        "Предоставляет экспертные знания",
+        "Использует результат",
+        "Управляет реализацией"
+      ],
+      "pairs": [
+        {
+          "left": "Sponsor",
+          "right": "Финансирует проект"
+        },
+        {
+          "left": "Subject Matter Expert",
+          "right": "Предоставляет экспертные знания"
+        },
+        {
+          "left": "End User",
+          "right": "Использует результат"
+        },
+        {
+          "left": "Project Manager",
+          "right": "Управляет реализацией"
+        }
+      ]
+    },
+    "explanation_key": "ba_basics_q17_explanation",
+    "order": 17,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q17",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q18_match",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "matching",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_basics_q18_title",
+    "description_key": null,
+    "payload": {
+      "left_items": [
+        "Elicitation",
+        "Analysis",
+        "Specification",
+        "Validation"
+      ],
+      "right_items": [
+        "Сбор требований от стейкхолдеров",
+        "Анализ и моделирование требований",
+        "Документирование требований",
+        "Проверка требований"
+      ],
+      "pairs": [
+        {
+          "left": "Elicitation",
+          "right": "Сбор требований от стейкхолдеров"
+        },
+        {
+          "left": "Analysis",
+          "right": "Анализ и моделирование требований"
+        },
+        {
+          "left": "Specification",
+          "right": "Документирование требований"
+        },
+        {
+          "left": "Validation",
+          "right": "Проверка требований"
+        }
+      ]
+    },
+    "explanation_key": "ba_basics_q18_explanation",
+    "order": 18,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q18",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_basics_q19_match",
+    "module_id": "ba_basics_stakeholders",
+    "activity_type": "matching",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_basics_q19_title",
+    "description_key": null,
+    "payload": {
+      "left_items": [
+        "Must have",
+        "Should have",
+        "Could have",
+        "Won't have"
+      ],
+      "right_items": [
+        "Критически важно",
+        "Важно, но не критично",
+        "Желательно, но не обязательно",
+        "Не будет реализовано"
+      ],
+      "pairs": [
+        {
+          "left": "Must have",
+          "right": "Критически важно"
+        },
+        {
+          "left": "Should have",
+          "right": "Важно, но не критично"
+        },
+        {
+          "left": "Could have",
+          "right": "Желательно, но не обязательно"
+        },
+        {
+          "left": "Won't have",
+          "right": "Не будет реализовано"
+        }
+      ]
+    },
+    "explanation_key": "ba_basics_q19_explanation",
+    "order": 19,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-2-Q19",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q1_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Умение слушать и задавать вопросы",
+        "Умение программировать",
+        "Знание SQL",
+        "Навыки дизайна"
+      ],
+      "correct": "Умение слушать и задавать вопросы"
+    },
+    "explanation_key": "ba_comm_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q2_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Фасилитация (Facilitation)",
+        "Модерация",
+        "Презентация",
+        "Написание отчётов"
+      ],
+      "correct": "Фасилитация (Facilitation)"
+    },
+    "explanation_key": "ba_comm_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q3_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Подготовить повестку, цели и ожидаемые результаты",
+        "Прийти без подготовки для объективности",
+        "Пригласить только технических специалистов",
+        "Провести встречу без ограничения времени"
+      ],
+      "correct": "Подготовить повестку, цели и ожидаемые результаты"
+    },
+    "explanation_key": "ba_comm_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q4_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Ненасильственное общение (NVC)",
+        "Активное слушание",
+        "Парафраз",
+        "Я-сообщения"
+      ],
+      "correct": "Ненасильственное общение (NVC)"
+    },
+    "explanation_key": "ba_comm_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q5_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_comm_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Компромисс (Compromise)",
+        "Сотрудничество (Collaboration)",
+        "Избегание (Avoidance)",
+        "Конкуренция (Competition)"
+      ],
+      "correct": "Сотрудничество (Collaboration)"
+    },
+    "explanation_key": "ba_comm_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q6_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "RACI Matrix",
+        "Communication Plan",
+        "Stakeholder Register",
+        "Project Charter"
+      ],
+      "correct": "Communication Plan"
+    },
+    "explanation_key": "ba_comm_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q7_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_comm_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Переговоры (Negotiation)",
+        "Арбитраж (Arbitration)",
+        "Фасилитация (Facilitation)",
+        "Медиация (Mediation)"
+      ],
+      "correct": "Переговоры (Negotiation)"
+    },
+    "explanation_key": "ba_comm_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q8_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_comm_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Собрать факты, понять интересы сторон, найти взаимовыгодное решение",
+        "Принять сторону заказчика",
+        "Передать вопрос выше",
+        "Прекратить обсуждение"
+      ],
+      "correct": "Собрать факты, понять интересы сторон, найти взаимовыгодное решение"
+    },
+    "explanation_key": "ba_comm_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q9_single",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_comm_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Ожидания нужно документировать, согласовывать и регулярно обновлять",
+        "Ожидания достаточно обсудить устно",
+        "Ожидания определяются один раз в начале проекта",
+        "Ожидания не требуют управления"
+      ],
+      "correct": "Ожидания нужно документировать, согласовывать и регулярно обновлять"
+    },
+    "explanation_key": "ba_comm_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q10_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Вербальная коммуникация",
+        "Письменная коммуникация",
+        "Невербальная коммуникация",
+        "Телепатия"
+      ],
+      "correct": [
+        "Вербальная коммуникация",
+        "Письменная коммуникация",
+        "Невербальная коммуникация"
+      ]
+    },
+    "explanation_key": "ba_comm_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q11_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Встречи (Meetings)",
+        "Электронная почта (Email)",
+        "Мессенджеры (Chat)",
+        "Гадание на кофейной гуще"
+      ],
+      "correct": [
+        "Встречи (Meetings)",
+        "Электронная почта (Email)",
+        "Мессенджеры (Chat)"
+      ]
+    },
+    "explanation_key": "ba_comm_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q12_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Активное слушание",
+        "Уточнение и парафраз",
+        "Суммирование",
+        "Игнорирование собеседника"
+      ],
+      "correct": [
+        "Активное слушание",
+        "Уточнение и парафраз",
+        "Суммирование"
+      ]
+    },
+    "explanation_key": "ba_comm_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q13_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_comm_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Установление доверия",
+        "Прозрачная и честная коммуникация",
+        "Понимание мотивов стейкхолдеров",
+        "Сокрытие проблем"
+      ],
+      "correct": [
+        "Установление доверия",
+        "Прозрачная и честная коммуникация",
+        "Понимание мотивов стейкхолдеров"
+      ]
+    },
+    "explanation_key": "ba_comm_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q14_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_comm_q14_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Определение (Definition)",
+        "Измерение (Measurement)",
+        "Анализ (Analysis)",
+        "Улучшение (Improvement)"
+      ],
+      "correct": [
+        "Определение (Definition)",
+        "Измерение (Measurement)",
+        "Анализ (Analysis)",
+        "Улучшение (Improvement)"
+      ]
+    },
+    "explanation_key": "ba_comm_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q15_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_comm_q15_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Регулярная обратная связь (Feedback)",
+        "Прозрачность статуса задач",
+        "Участие в принятии решений",
+        "Микроменеджмент"
+      ],
+      "correct": [
+        "Регулярная обратная связь (Feedback)",
+        "Прозрачность статуса задач",
+        "Участие в принятии решений"
+      ]
+    },
+    "explanation_key": "ba_comm_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q16_multi",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_comm_q16_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Собрать все факты и данные",
+        "Выслушать все стороны",
+        "Сосредоточиться на интересах, а не на позициях",
+        "Принять сторону сильнейшего"
+      ],
+      "correct": [
+        "Собрать все факты и данные",
+        "Выслушать все стороны",
+        "Сосредоточиться на интересах, а не на позициях"
+      ]
+    },
+    "explanation_key": "ba_comm_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_comm_q17_fill",
+    "module_id": "ba_communication_conflict",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_comm_q17_title",
+    "description_key": null,
+    "payload": {
+      "template": "Документ, определяющий каналы, частоту и формат коммуникации между участниками проекта, называется ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "Communication Plan",
+            "Project Charter",
+            "RACI Matrix",
+            "Risk Register"
+          ]
+        }
+      ],
+      "correct": [
+        "Communication Plan"
+      ]
+    },
+    "explanation_key": "ba_comm_q17_explanation",
+    "order": 17,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-8-Q17",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q1_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "User Story",
+        "Use Case",
+        "BRD",
+        "SRS"
+      ],
+      "correct": "BRD"
+    },
+    "explanation_key": "ba_docs_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q2_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "User Story (пользовательская история)",
+        "Use Case (вариант использования)",
+        "BRD (Business Requirements Document)",
+        "SRS (Software Requirements Specification)"
+      ],
+      "correct": "User Story (пользовательская история)"
+    },
+    "explanation_key": "ba_docs_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q3_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "As a [пользователь], I want [действие], so that [ценность]",
+        "Given [контекст], When [действие], Then [результат]",
+        "Если [условие], то [результат]",
+        "Пользователь нажимает кнопку"
+      ],
+      "correct": "As a [пользователь], I want [действие], so that [ценность]"
+    },
+    "explanation_key": "ba_docs_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q4_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Acceptance Criteria (критерии приёмки)",
+        "Бизнес-правила",
+        "Макет интерфейса",
+        "Оценка трудозатрат"
+      ],
+      "correct": "Acceptance Criteria (критерии приёмки)"
+    },
+    "explanation_key": "ba_docs_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q5_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Given — When — Then (Gherkin)",
+        "As a — I want — So that",
+        "IF — THEN — ELSE",
+        "Do — Check — Adjust"
+      ],
+      "correct": "Given — When — Then (Gherkin)"
+    },
+    "explanation_key": "ba_docs_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q6_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "BRD описывает бизнес-потребности, SRS — технические требования",
+        "BRD и SRS — это одно и то же",
+        "SRS пишется до BRD",
+        "BRD — технический документ, SRS — бизнес-документ"
+      ],
+      "correct": "BRD описывает бизнес-потребности, SRS — технические требования"
+    },
+    "explanation_key": "ba_docs_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q7_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Use Case — описание взаимодействия пользователя с системой",
+        "Use Case — список всех требований к системе",
+        "Use Case — диаграмма базы данных",
+        "Use Case — прототип интерфейса"
+      ],
+      "correct": "Use Case — описание взаимодействия пользователя с системой"
+    },
+    "explanation_key": "ba_docs_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q8_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_docs_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Трассировка требований (Requirements Traceability)",
+        "Матрица компетенций",
+        "Сетевой график проекта",
+        "Бюджет проекта"
+      ],
+      "correct": "Трассировка требований (Requirements Traceability)"
+    },
+    "explanation_key": "ba_docs_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q9_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Глоссарий (Glossary)",
+        "Техническое задание",
+        "Устав проекта",
+        "План коммуникаций"
+      ],
+      "correct": "Глоссарий (Glossary)"
+    },
+    "explanation_key": "ba_docs_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q10_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_docs_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Прототип (Prototype/Mockup)",
+        "SRS (Software Requirements Specification)",
+        "RTM (Requirements Traceability Matrix)",
+        "User Story Mapping"
+      ],
+      "correct": "RTM (Requirements Traceability Matrix)"
+    },
+    "explanation_key": "ba_docs_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q11_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_docs_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Epic (большая пользовательская история)",
+        "Task (задача)",
+        "Bug (дефект)",
+        "Sub-task (подзадача)"
+      ],
+      "correct": "Epic (большая пользовательская история)"
+    },
+    "explanation_key": "ba_docs_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q12_single",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_docs_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "User Story Mapping",
+        "Диаграмма Ганта",
+        "PERT-диаграмма",
+        "WBS (Work Breakdown Structure)"
+      ],
+      "correct": "User Story Mapping"
+    },
+    "explanation_key": "ba_docs_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q13_multi",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "User Story",
+        "Acceptance Criteria",
+        "Use Case",
+        "Исходный код"
+      ],
+      "correct": [
+        "User Story",
+        "Acceptance Criteria",
+        "Use Case"
+      ]
+    },
+    "explanation_key": "ba_docs_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q14_multi",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q14_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Структура BRD",
+        "Формат описания Use Case",
+        "Правила написания User Story (INVEST)",
+        "Синтаксис SQL"
+      ],
+      "correct": [
+        "Структура BRD",
+        "Формат описания Use Case",
+        "Правила написания User Story (INVEST)"
+      ]
+    },
+    "explanation_key": "ba_docs_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q15_multi",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_docs_q15_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Основной сценарий (Main Flow)",
+        "Альтернативный сценарий (Alternative Flow)",
+        "Исключительный сценарий (Exception Flow)",
+        "График разработки"
+      ],
+      "correct": [
+        "Основной сценарий (Main Flow)",
+        "Альтернативный сценарий (Alternative Flow)",
+        "Исключительный сценарий (Exception Flow)"
+      ]
+    },
+    "explanation_key": "ba_docs_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q16_multi",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_docs_q16_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Independent (независимая)",
+        "Negotiable (обсуждаемая)",
+        "Valuable (ценная)",
+        "Executable (исполняемая)"
+      ],
+      "correct": [
+        "Independent (независимая)",
+        "Negotiable (обсуждаемая)",
+        "Valuable (ценная)"
+      ]
+    },
+    "explanation_key": "ba_docs_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q17_multi",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_docs_q17_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Каждое требование связано с бизнес-целью",
+        "Каждое требование ведёт к конкретной реализации",
+        "Изменения требований отслеживаются",
+        "Требования автоматически проверяются"
+      ],
+      "correct": [
+        "Каждое требование связано с бизнес-целью",
+        "Каждое требование ведёт к конкретной реализации",
+        "Изменения требований отслеживаются"
+      ]
+    },
+    "explanation_key": "ba_docs_q17_explanation",
+    "order": 17,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q17",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q18_fill",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q18_title",
+    "description_key": null,
+    "payload": {
+      "template": "Шаблон для описания критериев приёмки в BDD: ___ контекст, ___ действие, ___ результат.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "When",
+            "Given",
+            "Then",
+            "And"
+          ]
+        },
+        {
+          "id": "blank_1",
+          "options": [
+            "When",
+            "Given",
+            "Then",
+            "And"
+          ]
+        },
+        {
+          "id": "blank_2",
+          "options": [
+            "When",
+            "Given",
+            "Then",
+            "And"
+          ]
+        }
+      ],
+      "correct": [
+        "Given",
+        "When",
+        "Then"
+      ]
+    },
+    "explanation_key": "ba_docs_q18_explanation",
+    "order": 18,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q18",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_docs_q19_fill",
+    "module_id": "ba_documentation_artifacts",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_docs_q19_title",
+    "description_key": null,
+    "payload": {
+      "template": "User Story должна следовать шаблону: As a ___, I want ___, So that ___.",
+      "blanks": [
+        {
+          "id": "blank_0"
+        },
+        {
+          "id": "blank_1"
+        },
+        {
+          "id": "blank_2"
+        }
+      ],
+      "correct": [
+        "пользователь",
+        "действие",
+        "ценность"
+      ]
+    },
+    "explanation_key": "ba_docs_q19_explanation",
+    "order": 19,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-4-Q19",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q1_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Проверка навыков и опыта",
+        "Быстрый просмотр резюме на соответствие базовым требованиям",
+        "Телефонное интервью",
+        "Проверка рекомендаций"
+      ],
+      "correct": "Быстрый просмотр резюме на соответствие базовым требованиям"
+    },
+    "explanation_key": "ba_hr_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q2_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "HR-менеджер",
+        "Team Lead",
+        "Бизнес-аналитик",
+        "Project Manager"
+      ],
+      "correct": "Бизнес-аналитик"
+    },
+    "explanation_key": "ba_hr_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q3_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "HR-менеджер",
+        "Руководитель отдела",
+        "Бизнес-аналитик",
+        "Заказчик"
+      ],
+      "correct": "Бизнес-аналитик"
+    },
+    "explanation_key": "ba_hr_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q4_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Technical Interview",
+        "Screening (скрининг)",
+        "Case Interview",
+        "Stress Interview"
+      ],
+      "correct": "Screening (скрининг)"
+    },
+    "explanation_key": "ba_hr_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q5_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Мотивация, карьерные цели, ожидания по зарплате",
+        "Технические навыки работы с SQL",
+        "Опыт работы с BPMN",
+        "Знание BABOK"
+      ],
+      "correct": "Мотивация, карьерные цели, ожидания по зарплате"
+    },
+    "explanation_key": "ba_hr_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q6_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_hr_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "STAR (Situation, Task, Action, Result)",
+        "PARLA (Problem, Action, Result, Lesson, Application)",
+        "CAR (Context, Action, Result)",
+        "SOAR (Situation, Obstacle, Action, Result)"
+      ],
+      "correct": "STAR (Situation, Task, Action, Result)"
+    },
+    "explanation_key": "ba_hr_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q7_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Сильные стороны (Strengths)",
+        "Слабые стороны (Weaknesses)",
+        "Возможности (Opportunities)",
+        "Угрозы (Threats)"
+      ],
+      "correct": "Сильные стороны (Strengths)"
+    },
+    "explanation_key": "ba_hr_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q8_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Должностная инструкция",
+        "Резюме",
+        "Сопроводительное письмо",
+        "Профиль в LinkedIn"
+      ],
+      "correct": "Должностная инструкция"
+    },
+    "explanation_key": "ba_hr_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q9_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_hr_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Опыт работы с требованиями и стейкхолдерами",
+        "Знание языков программирования",
+        "Наличие сертификата PMP",
+        "Опыт разработки ПО"
+      ],
+      "correct": "Опыт работы с требованиями и стейкхолдерами"
+    },
+    "explanation_key": "ba_hr_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q10_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Собеседование с заказчиком",
+        "Анализ требований",
+        "Оценка затрат и сроков",
+        "Составление отчёта"
+      ],
+      "correct": "Оценка затрат и сроков"
+    },
+    "explanation_key": "ba_hr_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q11_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Чётко и структурированно, с примерами",
+        "Кратко, односложно",
+        "Техническими терминами",
+        "В виде резюме"
+      ],
+      "correct": "Чётко и структурированно, с примерами"
+    },
+    "explanation_key": "ba_hr_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q12_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_hr_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Проектная работа (Project Work)",
+        "Работа в найме (Employment)",
+        "Фриланс (Freelance)",
+        "Стажировка (Internship)"
+      ],
+      "correct": "Проектная работа (Project Work)"
+    },
+    "explanation_key": "ba_hr_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q13_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Управление требованиями и коммуникация",
+        "Написание кода",
+        "Дизайн интерфейсов",
+        "Тестирование продукта"
+      ],
+      "correct": "Управление требованиями и коммуникация"
+    },
+    "explanation_key": "ba_hr_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q14_single",
+    "module_id": "ba_hr_screening",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_hr_q14_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Сбор и анализ требований",
+        "Непосредственная разработка",
+        "Техническая поддержка",
+        "Маркетинг продукта"
+      ],
+      "correct": "Сбор и анализ требований"
+    },
+    "explanation_key": "ba_hr_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q15_multi",
+    "module_id": "ba_hr_screening",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q15_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Внимательность к деталям",
+        "Коммуникабельность",
+        "Владение языками программирования",
+        "Аналитическое мышление"
+      ],
+      "correct": [
+        "Внимательность к деталям",
+        "Коммуникабельность",
+        "Аналитическое мышление"
+      ]
+    },
+    "explanation_key": "ba_hr_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q16_multi",
+    "module_id": "ba_hr_screening",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q16_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Скрининг резюме",
+        "Телефонное интервью",
+        "Личное собеседование",
+        "Подписание оффера"
+      ],
+      "correct": [
+        "Скрининг резюме",
+        "Телефонное интервью",
+        "Личное собеседование"
+      ]
+    },
+    "explanation_key": "ba_hr_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q17_multi",
+    "module_id": "ba_hr_screening",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q17_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Умение слушать",
+        "Ясная и структурированная речь",
+        "Умение задавать уточняющие вопросы",
+        "Знание архитектуры микросервисов"
+      ],
+      "correct": [
+        "Умение слушать",
+        "Ясная и структурированная речь",
+        "Умение задавать уточняющие вопросы"
+      ]
+    },
+    "explanation_key": "ba_hr_q17_explanation",
+    "order": 17,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q17",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q18_multi",
+    "module_id": "ba_hr_screening",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_hr_q18_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Работа с разнородными стейкхолдерами",
+        "Анализ бизнес-процессов",
+        "Управление командой разработки",
+        "Формализация требований"
+      ],
+      "correct": [
+        "Работа с разнородными стейкхолдерами",
+        "Анализ бизнес-процессов",
+        "Формализация требований"
+      ]
+    },
+    "explanation_key": "ba_hr_q18_explanation",
+    "order": 18,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q18",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q19_multi",
+    "module_id": "ba_hr_screening",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_hr_q19_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Понимание предметной области",
+        "Навыки ведения переговоров",
+        "Знание методологий разработки",
+        "Умение писать код на Python"
+      ],
+      "correct": [
+        "Понимание предметной области",
+        "Навыки ведения переговоров",
+        "Знание методологий разработки"
+      ]
+    },
+    "explanation_key": "ba_hr_q19_explanation",
+    "order": 19,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q19",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_hr_q20_multi",
+    "module_id": "ba_hr_screening",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_hr_q20_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Пунктуальность",
+        "Ответственность за результат",
+        "Ориентация на качество",
+        "Владение Photoshop"
+      ],
+      "correct": [
+        "Пунктуальность",
+        "Ответственность за результат",
+        "Ориентация на качество"
+      ]
+    },
+    "explanation_key": "ba_hr_q20_explanation",
+    "order": 20,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-1-Q20",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q1_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Scrum",
+        "Waterfall",
+        "Kanban",
+        "SAFe"
+      ],
+      "correct": "Scrum"
+    },
+    "explanation_key": "ba_method_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q2_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Sprint Planning",
+        "Daily Stand-up",
+        "Sprint Review",
+        "Retrospective"
+      ],
+      "correct": "Sprint Planning"
+    },
+    "explanation_key": "ba_method_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q3_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "2-4 недели",
+        "1 день",
+        "6 месяцев",
+        "1 год"
+      ],
+      "correct": "2-4 недели"
+    },
+    "explanation_key": "ba_method_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q4_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Kanban",
+        "Waterfall",
+        "Scrum",
+        "XP (Extreme Programming)"
+      ],
+      "correct": "Kanban"
+    },
+    "explanation_key": "ba_method_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q5_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Lean (Бережливое производство)",
+        "Waterfall (Каскадная модель)",
+        "Scrum",
+        "RUP (Rational Unified Process)"
+      ],
+      "correct": "Lean (Бережливое производство)"
+    },
+    "explanation_key": "ba_method_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q6_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_method_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "SAFe (Scaled Agile Framework)",
+        "LeSS (Large Scale Scrum)",
+        "Scrum of Scrums",
+        "Nexus"
+      ],
+      "correct": "SAFe (Scaled Agile Framework)"
+    },
+    "explanation_key": "ba_method_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q7_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_method_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Product Owner",
+        "Scrum Master",
+        "Development Team",
+        "Project Manager"
+      ],
+      "correct": "Product Owner"
+    },
+    "explanation_key": "ba_method_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q8_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_method_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Sprint Backlog (бэклог спринта)",
+        "Product Backlog (бэклог продукта)",
+        "Increment (инкремент)",
+        "Definition of Done (DoD)"
+      ],
+      "correct": "Definition of Done (DoD)"
+    },
+    "explanation_key": "ba_method_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q9_single",
+    "module_id": "ba_methodologies",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_method_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Гибридная методология (Waterfall + Agile)",
+        "Scrum",
+        "Kanban",
+        "XP (Extreme Programming)"
+      ],
+      "correct": "Гибридная методология (Waterfall + Agile)"
+    },
+    "explanation_key": "ba_method_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q10_multi",
+    "module_id": "ba_methodologies",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Sprint Planning",
+        "Daily Scrum",
+        "Sprint Review",
+        "Annual Meeting"
+      ],
+      "correct": [
+        "Sprint Planning",
+        "Daily Scrum",
+        "Sprint Review"
+      ]
+    },
+    "explanation_key": "ba_method_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q11_multi",
+    "module_id": "ba_methodologies",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Люди и взаимодействие важнее процессов и инструментов",
+        "Работающий продукт важнее исчерпывающей документации",
+        "Сотрудничество с заказчиком важнее согласования контракта",
+        "Готовность к изменениям важнее следования первоначальному плану"
+      ],
+      "correct": [
+        "Люди и взаимодействие важнее процессов и инструментов",
+        "Работающий продукт важнее исчерпывающей документации",
+        "Сотрудничество с заказчиком важнее согласования контракта",
+        "Готовность к изменениям важнее следования первоначальному плану"
+      ]
+    },
+    "explanation_key": "ba_method_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q12_multi",
+    "module_id": "ba_methodologies",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_method_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Прозрачность (Transparency)",
+        "Инспекция (Inspection)",
+        "Адаптация (Adaptation)",
+        "Документирование (Documentation)"
+      ],
+      "correct": [
+        "Прозрачность (Transparency)",
+        "Инспекция (Inspection)",
+        "Адаптация (Adaptation)"
+      ]
+    },
+    "explanation_key": "ba_method_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q13_multi",
+    "module_id": "ba_methodologies",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_method_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Частая поставка работающего продукта",
+        "Приветствуется изменение требований",
+        "Тесное сотрудничество бизнеса и разработки",
+        "Полная спецификация в начале"
+      ],
+      "correct": [
+        "Частая поставка работающего продукта",
+        "Приветствуется изменение требований",
+        "Тесное сотрудничество бизнеса и разработки"
+      ]
+    },
+    "explanation_key": "ba_method_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q14_fill",
+    "module_id": "ba_methodologies",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q14_title",
+    "description_key": null,
+    "payload": {
+      "template": "Временной цикл в Scrum, длительностью обычно 2-4 недели, называется ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "релиз",
+            "спринт",
+            "итерация",
+            "фаза"
+          ]
+        }
+      ],
+      "correct": [
+        "спринт"
+      ]
+    },
+    "explanation_key": "ba_method_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q15_fill",
+    "module_id": "ba_methodologies",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_method_q15_title",
+    "description_key": null,
+    "payload": {
+      "template": "Методология, основанная на последовательных фазах (анализ, проектирование, реализация, тестирование, сопровождение), называется ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "Agile",
+            "Waterfall",
+            "Scrum",
+            "Kanban"
+          ]
+        }
+      ],
+      "correct": [
+        "Waterfall"
+      ]
+    },
+    "explanation_key": "ba_method_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_method_q16_fill",
+    "module_id": "ba_methodologies",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_method_q16_title",
+    "description_key": null,
+    "payload": {
+      "template": "В Kanban максимальное количество задач на каждом этапе процесса ограничивается с помощью ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "WIP limit",
+            "Timebox",
+            "Sprint goal",
+            "Buffer"
+          ]
+        }
+      ],
+      "correct": [
+        "WIP limit"
+      ]
+    },
+    "explanation_key": "ba_method_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-6-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q1_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "MoSCoW (Must, Should, Could, Won't)",
+        "Kano Model",
+        "WSJF (Weighted Shortest Job First)",
+        "RICE (Reach, Impact, Confidence, Effort)"
+      ],
+      "correct": "MoSCoW (Must, Should, Could, Won't)"
+    },
+    "explanation_key": "ba_metric_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q2_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Must have (критически важно)",
+        "Should have (важно, но не критично)",
+        "Could have (желательно)",
+        "Won't have (не будет реализовано)"
+      ],
+      "correct": "Must have (критически важно)"
+    },
+    "explanation_key": "ba_metric_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q3_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Kano Model",
+        "MoSCoW",
+        "WSJF",
+        "RICE"
+      ],
+      "correct": "Kano Model"
+    },
+    "explanation_key": "ba_metric_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q4_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Story Points",
+        "Hours (часы)",
+        "Days (дни)",
+        "Function Points"
+      ],
+      "correct": "Story Points"
+    },
+    "explanation_key": "ba_metric_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q5_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_metric_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "WSJF (Weighted Shortest Job First)",
+        "MoSCoW",
+        "Kano Model",
+        "Value vs Effort Matrix"
+      ],
+      "correct": "WSJF (Weighted Shortest Job First)"
+    },
+    "explanation_key": "ba_metric_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q6_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "ROI = (Прибыль - Инвестиции) / Инвестиции × 100%",
+        "ROI = Прибыль / Затраты",
+        "ROI = Доходы - Расходы",
+        "ROI = Прибыль × 100"
+      ],
+      "correct": "ROI = (Прибыль - Инвестиции) / Инвестиции × 100%"
+    },
+    "explanation_key": "ba_metric_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q7_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_metric_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "NPV (Net Present Value) — чистая приведённая стоимость",
+        "IRR (Internal Rate of Return)",
+        "TCO (Total Cost of Ownership)",
+        "Payback Period"
+      ],
+      "correct": "NPV (Net Present Value) — чистая приведённая стоимость"
+    },
+    "explanation_key": "ba_metric_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q8_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_metric_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Velocity (скорость команды)",
+        "Cycle Time (время цикла)",
+        "Lead Time (время выполнения)",
+        "Throughput (пропускная способность)"
+      ],
+      "correct": "Velocity (скорость команды)"
+    },
+    "explanation_key": "ba_metric_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q9_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_metric_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "One-dimensional (линейное качество)",
+        "Must-be (ожидаемое качество)",
+        "Attractive (привлекательное качество)",
+        "Indifferent (безразличное качество)"
+      ],
+      "correct": "One-dimensional (линейное качество)"
+    },
+    "explanation_key": "ba_metric_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q10_single",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_metric_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Value (ценность)",
+        "Time Criticality (срочность)",
+        "Risk Reduction (снижение рисков)",
+        "Opportunity Enablement (открытие возможностей)"
+      ],
+      "correct": "Value (ценность)"
+    },
+    "explanation_key": "ba_metric_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q11_multi",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Бизнес-ценность (Business Value)",
+        "Сложность реализации (Complexity)",
+        "Прибыль компании",
+        "Количество строк кода"
+      ],
+      "correct": [
+        "Бизнес-ценность (Business Value)",
+        "Сложность реализации (Complexity)"
+      ]
+    },
+    "explanation_key": "ba_metric_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q12_multi",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_metric_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Определение приоритетов функций",
+        "Планирование релизов",
+        "Управление ожиданиями стейкхолдеров",
+        "Написание кода"
+      ],
+      "correct": [
+        "Определение приоритетов функций",
+        "Планирование релизов",
+        "Управление ожиданиями стейкхолдеров"
+      ]
+    },
+    "explanation_key": "ba_metric_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q13_multi",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_metric_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Baseline (базовая оценка)",
+        "Relative estimation (относительная оценка)",
+        "Planning Poker (покер планирования)",
+        "Random guess (случайное предположение)"
+      ],
+      "correct": [
+        "Baseline (базовая оценка)",
+        "Relative estimation (относительная оценка)",
+        "Planning Poker (покер планирования)"
+      ]
+    },
+    "explanation_key": "ba_metric_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q14_multi",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_metric_q14_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "WSJF = Value / Time",
+        "Value = Business Value + Time Criticality + Risk Reduction + Opportunity Enablement",
+        "WSJF = Cost of Delay / Job Size",
+        "Cost of Delay = Value + Time Criticality + Risk Reduction + Opportunity Enablement"
+      ],
+      "correct": [
+        "Value = Business Value + Time Criticality + Risk Reduction + Opportunity Enablement",
+        "WSJF = Cost of Delay / Job Size",
+        "Cost of Delay = Value + Time Criticality + Risk Reduction + Opportunity Enablement"
+      ]
+    },
+    "explanation_key": "ba_metric_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q15_number",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "numeric",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_metric_q15_title",
+    "description_key": null,
+    "payload": {
+      "correct": 70,
+      "tolerance": 0
+    },
+    "explanation_key": "ba_metric_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_metric_q16_number",
+    "module_id": "ba_metrics_prioritization",
+    "activity_type": "numeric",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_metric_q16_title",
+    "description_key": null,
+    "payload": {
+      "correct": 48,
+      "tolerance": 0
+    },
+    "explanation_key": "ba_metric_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-7-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q1_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "BPMN",
+        "UML",
+        "ERD",
+        "DFD"
+      ],
+      "correct": "BPMN"
+    },
+    "explanation_key": "ba_model_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q2_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Start Event (Стартовое событие)",
+        "Task (Задача)",
+        "Gateway (Шлюз)",
+        "End Event (Конечное событие)"
+      ],
+      "correct": "Gateway (Шлюз)"
+    },
+    "explanation_key": "ba_model_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q3_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "ERD (Entity-Relationship Diagram)",
+        "BPMN (Business Process Model and Notation)",
+        "UML (Unified Modeling Language)",
+        "DFD (Data Flow Diagram)"
+      ],
+      "correct": "ERD (Entity-Relationship Diagram)"
+    },
+    "explanation_key": "ba_model_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q4_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_model_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Use Case Diagram",
+        "Class Diagram",
+        "Sequence Diagram",
+        "Activity Diagram"
+      ],
+      "correct": "Use Case Diagram"
+    },
+    "explanation_key": "ba_model_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q5_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_model_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Пул (Pool) — организация, Дорожка (Lane) — отдел/роль",
+        "Пул — это задача, Дорожка — это шлюз",
+        "Пул — это событие, Дорожка — это поток",
+        "Пул — это диаграмма, Дорожка — это процесс"
+      ],
+      "correct": "Пул (Pool) — организация, Дорожка (Lane) — отдел/роль"
+    },
+    "explanation_key": "ba_model_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q6_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_model_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Entity (Сущность)",
+        "Attribute (Атрибут)",
+        "Relationship (Связь)",
+        "Primary Key (Первичный ключ)"
+      ],
+      "correct": "Entity (Сущность)"
+    },
+    "explanation_key": "ba_model_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q7_single",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Data Flow Diagram (DFD)",
+        "BPMN Diagram",
+        "ERD Diagram",
+        "Use Case Diagram"
+      ],
+      "correct": "Data Flow Diagram (DFD)"
+    },
+    "explanation_key": "ba_model_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q8_multi",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "BPMN",
+        "UML",
+        "ERD",
+        "SQL"
+      ],
+      "correct": [
+        "BPMN",
+        "UML",
+        "ERD"
+      ]
+    },
+    "explanation_key": "ba_model_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q9_multi",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_model_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Events (События)",
+        "Activities (Действия)",
+        "Gateways (Шлюзы)",
+        "Tables (Таблицы)"
+      ],
+      "correct": [
+        "Events (События)",
+        "Activities (Действия)",
+        "Gateways (Шлюзы)"
+      ]
+    },
+    "explanation_key": "ba_model_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q10_multi",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_model_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Structural (структурные)",
+        "Behavioral (поведенческие)",
+        "Interaction (взаимодействия)",
+        "Database (базы данных)"
+      ],
+      "correct": [
+        "Structural (структурные)",
+        "Behavioral (поведенческие)",
+        "Interaction (взаимодействия)"
+      ]
+    },
+    "explanation_key": "ba_model_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q11_multi",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_model_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "Null-to-Null"
+      ],
+      "correct": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many"
+      ]
+    },
+    "explanation_key": "ba_model_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q12_fill",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q12_title",
+    "description_key": null,
+    "payload": {
+      "template": "В BPMN ромбовидный элемент используется для ветвления процесса и называется ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "Task",
+            "Gateway",
+            "Event",
+            "Pool"
+          ]
+        }
+      ],
+      "correct": [
+        "Gateway"
+      ]
+    },
+    "explanation_key": "ba_model_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q13_fill",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q13_title",
+    "description_key": null,
+    "payload": {
+      "template": "Связь между таблицами в ERD, где одной записи в таблице A соответствует много записей в таблице B, называется ___-to-___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "One",
+            "Many",
+            "Zero",
+            "Null"
+          ]
+        },
+        {
+          "id": "blank_1",
+          "options": [
+            "One",
+            "Many",
+            "Zero",
+            "Null"
+          ]
+        }
+      ],
+      "correct": [
+        "One",
+        "Many"
+      ]
+    },
+    "explanation_key": "ba_model_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q14_number",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "numeric",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_model_q14_title",
+    "description_key": null,
+    "payload": {
+      "correct": 4,
+      "tolerance": 0
+    },
+    "explanation_key": "ba_model_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_model_q15_match",
+    "module_id": "ba_process_data_modeling",
+    "activity_type": "matching",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_model_q15_title",
+    "description_key": null,
+    "payload": {
+      "left_items": [
+        "BPMN",
+        "UML",
+        "ERD",
+        "DFD"
+      ],
+      "right_items": [
+        "Моделирование бизнес-процессов",
+        "Объектно-ориентированное моделирование",
+        "Моделирование данных и связей",
+        "Моделирование потоков данных"
+      ],
+      "pairs": [
+        {
+          "left": "BPMN",
+          "right": "Моделирование бизнес-процессов"
+        },
+        {
+          "left": "UML",
+          "right": "Объектно-ориентированное моделирование"
+        },
+        {
+          "left": "ERD",
+          "right": "Моделирование данных и связей"
+        },
+        {
+          "left": "DFD",
+          "right": "Моделирование потоков данных"
+        }
+      ]
+    },
+    "explanation_key": "ba_model_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-5-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_cases_q1_single",
+    "module_id": "ba_real_cases",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_cases_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Изучить контекст, идентифицировать стейкхолдеров, собрать требования, смоделировать процессы",
+        "Сразу начать писать код",
+        "Нанять новую команду",
+        "Купить готовое решение"
+      ],
+      "correct": "Изучить контекст, идентифицировать стейкхолдеров, собрать требования, смоделировать процессы"
+    },
+    "explanation_key": "ba_cases_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-10-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_cases_q2_single",
+    "module_id": "ba_real_cases",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_cases_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Собрать данные, провести анализ причин, исследовать пользователей, предложить решения",
+        "Сразу изменить дизайн",
+        "Снизить цены",
+        "Уволить команду"
+      ],
+      "correct": "Собрать данные, провести анализ причин, исследовать пользователей, предложить решения"
+    },
+    "explanation_key": "ba_cases_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-10-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_cases_q3_fill",
+    "module_id": "ba_real_cases",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_cases_q3_title",
+    "description_key": null,
+    "payload": {
+      "template": "Для описания сценария тестирования в BDD используется язык ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "Python",
+            "Gherkin",
+            "Java",
+            "SQL"
+          ]
+        }
+      ],
+      "correct": [
+        "Gherkin"
+      ]
+    },
+    "explanation_key": "ba_cases_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-10-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q1_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Интервью",
+        "Анкетирование",
+        "Мозговой штурм",
+        "Наблюдение"
+      ],
+      "correct": "Интервью"
+    },
+    "explanation_key": "ba_req_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q2_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Сбор требований напрямую от стейкхолдеров через беседу",
+        "Написание технического задания",
+        "Тестирование продукта",
+        "Создание прототипа"
+      ],
+      "correct": "Сбор требований напрямую от стейкхолдеров через беседу"
+    },
+    "explanation_key": "ba_req_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q3_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Структурированное (с подготовленными вопросами)",
+        "Свободное (без плана)",
+        "Групповое",
+        "Анонимное"
+      ],
+      "correct": "Структурированное (с подготовленными вопросами)"
+    },
+    "explanation_key": "ba_req_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q4_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Мозговой штурм (Brainstorming)",
+        "Прототипирование (Prototyping)",
+        "Анкетирование (Survey)",
+        "Наблюдение (Observation)"
+      ],
+      "correct": "Мозговой штурм (Brainstorming)"
+    },
+    "explanation_key": "ba_req_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q5_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_req_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Анализ документов (Document Analysis)",
+        "Фокус-группа (Focus Group)",
+        "Интервью (Interview)",
+        "Наблюдение (Observation)"
+      ],
+      "correct": "Анализ документов (Document Analysis)"
+    },
+    "explanation_key": "ba_req_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q6_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Требования должны быть проверяемыми (testable)",
+        "Требования могут быть любыми",
+        "Требования пишутся на языке пользователя",
+        "Каждое требование должно быть уникальным"
+      ],
+      "correct": "Требования должны быть проверяемыми (testable)"
+    },
+    "explanation_key": "ba_req_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q7_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Функциональные (что система должна делать)",
+        "Нефункциональные (как система должна работать)",
+        "Бизнес-требования",
+        "Пользовательские истории"
+      ],
+      "correct": "Функциональные (что система должна делать)"
+    },
+    "explanation_key": "ba_req_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q8_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_req_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Производительность, безопасность, масштабируемость",
+        "Бизнес-правила и процессы",
+        "Интерфейс пользователя",
+        "Сценарии использования"
+      ],
+      "correct": "Производительность, безопасность, масштабируемость"
+    },
+    "explanation_key": "ba_req_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q9_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Участники совместно создают решение",
+        "Модератор задаёт вопросы группе",
+        "Каждый участник предлагает свои идеи",
+        "Эксперт рассказывает о лучших практиках"
+      ],
+      "correct": "Участники совместно создают решение"
+    },
+    "explanation_key": "ba_req_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q10_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_req_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Требования полны, непротиворечивы, однозначны",
+        "Требования нравятся заказчику",
+        "Требования написаны на английском",
+        "Требования согласованы с командой разработки"
+      ],
+      "correct": "Требования полны, непротиворечивы, однозначны"
+    },
+    "explanation_key": "ba_req_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q11_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_req_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Модель CMMI (Capability Maturity Model Integration)",
+        "Бенчмаркинг конкурентов",
+        "MVP (Minimum Viable Product)",
+        "User Story Mapping"
+      ],
+      "correct": "Модель CMMI (Capability Maturity Model Integration)"
+    },
+    "explanation_key": "ba_req_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q12_single",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_req_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Event Storming",
+        "Daily Standup",
+        "Ретроспектива",
+        "Code Review"
+      ],
+      "correct": "Event Storming"
+    },
+    "explanation_key": "ba_req_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q13_multi",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Интервью (Interview)",
+        "Анкетирование (Survey)",
+        "Анализ кода (Code Analysis)",
+        "Наблюдение (Observation)"
+      ],
+      "correct": [
+        "Интервью (Interview)",
+        "Анкетирование (Survey)",
+        "Наблюдение (Observation)"
+      ]
+    },
+    "explanation_key": "ba_req_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q14_multi",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q14_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Валидность (Validity)",
+        "Полнота (Completeness)",
+        "Непротиворечивость (Consistency)",
+        "Скорость реализации"
+      ],
+      "correct": [
+        "Валидность (Validity)",
+        "Полнота (Completeness)",
+        "Непротиворечивость (Consistency)"
+      ]
+    },
+    "explanation_key": "ba_req_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q15_multi",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_req_q15_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Заинтересованные стороны Stakeholder Analysis",
+        "Цели бизнеса Business Goals",
+        "Текущие бизнес-процессы (AS-IS)",
+        "Кодовую базу приложения"
+      ],
+      "correct": [
+        "Заинтересованные стороны Stakeholder Analysis",
+        "Цели бизнеса Business Goals",
+        "Текущие бизнес-процессы (AS-IS)"
+      ]
+    },
+    "explanation_key": "ba_req_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q16_multi",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_req_q16_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Требования понятны всем стейкхолдерам",
+        "Каждое требование имеет уникальный ID",
+        "Требования написаны на Python",
+        "Требования прослеживаются от бизнес-целей"
+      ],
+      "correct": [
+        "Требования понятны всем стейкхолдерам",
+        "Каждое требование имеет уникальный ID",
+        "Требования прослеживаются от бизнес-целей"
+      ]
+    },
+    "explanation_key": "ba_req_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q17_multi",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_req_q17_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Прототип (Mockup/Wireframe)",
+        "Use Case (вариант использования)",
+        "User Story (пользовательская история)",
+        "Бизнес-план"
+      ],
+      "correct": [
+        "Прототип (Mockup/Wireframe)",
+        "Use Case (вариант использования)",
+        "User Story (пользовательская история)"
+      ]
+    },
+    "explanation_key": "ba_req_q17_explanation",
+    "order": 17,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q17",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q18_multi",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_req_q18_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Изменение требований неизбежно",
+        "Изменения нужно контролировать через Change Control",
+        "Изменения запрещены после утверждения",
+        "Каждое изменение требует переоценки приоритетов"
+      ],
+      "correct": [
+        "Изменение требований неизбежно",
+        "Изменения нужно контролировать через Change Control",
+        "Каждое изменение требует переоценки приоритетов"
+      ]
+    },
+    "explanation_key": "ba_req_q18_explanation",
+    "order": 18,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q18",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q19_fill",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q19_title",
+    "description_key": null,
+    "payload": {
+      "template": "Техника сбора требований, при которой BA наблюдает за работой пользователя без активного вмешательства, называется ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "интервью",
+            "анкетирование",
+            "наблюдение",
+            "прототипирование"
+          ]
+        }
+      ],
+      "correct": [
+        "наблюдение"
+      ]
+    },
+    "explanation_key": "ba_req_q19_explanation",
+    "order": 19,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q19",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_req_q20_fill",
+    "module_id": "ba_requirements_elicitation",
+    "activity_type": "fill_blanks",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_req_q20_title",
+    "description_key": null,
+    "payload": {
+      "template": "Свойство требования, означающее что оно может быть проверено с помощью теста или инспекции, называется ___.",
+      "blanks": [
+        {
+          "id": "blank_0",
+          "options": [
+            "полнота",
+            "непротиворечивость",
+            "верифицируемость",
+            "однозначность"
+          ]
+        }
+      ],
+      "correct": [
+        "верифицируемость"
+      ]
+    },
+    "explanation_key": "ba_req_q20_explanation",
+    "order": 20,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-3-Q20",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q1_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q1_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "SELECT — для чтения данных",
+        "INSERT — для вставки",
+        "UPDATE — для обновления",
+        "DELETE — для удаления"
+      ],
+      "correct": "SELECT — для чтения данных"
+    },
+    "explanation_key": "ba_tech_q1_explanation",
+    "order": 1,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q1",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q2_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q2_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "FROM",
+        "WHERE",
+        "JOIN",
+        "GROUP BY"
+      ],
+      "correct": "FROM"
+    },
+    "explanation_key": "ba_tech_q2_explanation",
+    "order": 2,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q2",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q3_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q3_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "INNER JOIN",
+        "LEFT JOIN",
+        "RIGHT JOIN",
+        "FULL OUTER JOIN"
+      ],
+      "correct": "INNER JOIN"
+    },
+    "explanation_key": "ba_tech_q3_explanation",
+    "order": 3,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q3",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q4_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q4_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "GET — получение данных",
+        "POST — создание ресурса",
+        "PUT — полное обновление",
+        "DELETE — удаление"
+      ],
+      "correct": "GET — получение данных"
+    },
+    "explanation_key": "ba_tech_q4_explanation",
+    "order": 4,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q4",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q5_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q5_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "JSON (JavaScript Object Notation)",
+        "XML (eXtensible Markup Language)",
+        "CSV (Comma-Separated Values)",
+        "YAML"
+      ],
+      "correct": "JSON (JavaScript Object Notation)"
+    },
+    "explanation_key": "ba_tech_q5_explanation",
+    "order": 5,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q5",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q6_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q6_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "200 OK",
+        "201 Created",
+        "400 Bad Request",
+        "404 Not Found"
+      ],
+      "correct": "404 Not Found"
+    },
+    "explanation_key": "ba_tech_q6_explanation",
+    "order": 6,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q6",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q7_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q7_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "200 OK",
+        "201 Created",
+        "400 Bad Request",
+        "500 Internal Server Error"
+      ],
+      "correct": "500 Internal Server Error"
+    },
+    "explanation_key": "ba_tech_q7_explanation",
+    "order": 7,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q7",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q8_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_tech_q8_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "REST API — архитектурный стиль на основе HTTP методов",
+        "REST — это база данных",
+        "REST — это язык программирования",
+        "REST — это протокол безопасности"
+      ],
+      "correct": "REST API — архитектурный стиль на основе HTTP методов"
+    },
+    "explanation_key": "ba_tech_q8_explanation",
+    "order": 8,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q8",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q9_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q9_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Пара ключ-значение (Key-Value pair)",
+        "Массив значений",
+        "XML-элемент",
+        "SQL-запрос"
+      ],
+      "correct": "Пара ключ-значение (Key-Value pair)"
+    },
+    "explanation_key": "ba_tech_q9_explanation",
+    "order": 9,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q9",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q10_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_tech_q10_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Figma",
+        "Balsamiq Mockups",
+        "Axure RP",
+        "Draw.io"
+      ],
+      "correct": "Balsamiq Mockups"
+    },
+    "explanation_key": "ba_tech_q10_explanation",
+    "order": 10,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q10",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q11_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_tech_q11_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Swagger / OpenAPI",
+        "Postman",
+        "cURL",
+        "GitHub"
+      ],
+      "correct": "Swagger / OpenAPI"
+    },
+    "explanation_key": "ba_tech_q11_explanation",
+    "order": 11,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q11",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q12_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q12_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Git",
+        "SVN",
+        "Mercurial",
+        "CVS"
+      ],
+      "correct": "Git"
+    },
+    "explanation_key": "ba_tech_q12_explanation",
+    "order": 12,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q12",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q13_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_tech_q13_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "MVP (Minimum Viable Product)",
+        "PoC (Proof of Concept)",
+        "Prototype (Прототип)",
+        "Beta (Бета-версия)"
+      ],
+      "correct": "MVP (Minimum Viable Product)"
+    },
+    "explanation_key": "ba_tech_q13_explanation",
+    "order": 13,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q13",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q14_single",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "single_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_tech_q14_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "CI/CD — автоматизация сборки, тестирования и поставки",
+        "CI/CD — это база данных",
+        "CI/CD — это язык программирования",
+        "CI/CD — это методология управления проектами"
+      ],
+      "correct": "CI/CD — автоматизация сборки, тестирования и поставки"
+    },
+    "explanation_key": "ba_tech_q14_explanation",
+    "order": 14,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q14",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q15_multi",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_tech_q15_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Document stores (MongoDB)",
+        "Key-Value stores (Redis)",
+        "Graph databases (Neo4j)",
+        "Реляционные БД"
+      ],
+      "correct": [
+        "Document stores (MongoDB)",
+        "Key-Value stores (Redis)",
+        "Graph databases (Neo4j)"
+      ]
+    },
+    "explanation_key": "ba_tech_q15_explanation",
+    "order": 15,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q15",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q16_multi",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "middle",
+    "title_key": "ba_tech_q16_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Acceptance Testing",
+        "Integration Testing",
+        "UAT (User Acceptance Testing)",
+        "Unit Testing разработчиков"
+      ],
+      "correct": [
+        "Acceptance Testing",
+        "Integration Testing",
+        "UAT (User Acceptance Testing)"
+      ]
+    },
+    "explanation_key": "ba_tech_q16_explanation",
+    "order": 16,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q16",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q17_multi",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_tech_q17_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Monolithic (Монолит)",
+        "Microservices (Микросервисы)",
+        "Event-Driven (Событийно-ориентированная)",
+        "Blockchain (Блокчейн)"
+      ],
+      "correct": [
+        "Monolithic (Монолит)",
+        "Microservices (Микросервисы)",
+        "Event-Driven (Событийно-ориентированная)"
+      ]
+    },
+    "explanation_key": "ba_tech_q17_explanation",
+    "order": 17,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q17",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q18_multi",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "multiple_choice",
+    "evaluation_mode": "deterministic",
+    "difficulty": "senior",
+    "title_key": "ba_tech_q18_title",
+    "description_key": null,
+    "payload": {
+      "options": [
+        "Независимый деплой сервисов",
+        "Слабая связанность (loose coupling)",
+        "Технологическое разнообразие",
+        "Единая база данных"
+      ],
+      "correct": [
+        "Независимый деплой сервисов",
+        "Слабая связанность (loose coupling)",
+        "Технологическое разнообразие"
+      ]
+    },
+    "explanation_key": "ba_tech_q18_explanation",
+    "order": 18,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q18",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  },
+  {
+    "activity_id": "ba_tech_q19_number",
+    "module_id": "ba_technical_aspects",
+    "activity_type": "numeric",
+    "evaluation_mode": "deterministic",
+    "difficulty": "junior",
+    "title_key": "ba_tech_q19_title",
+    "description_key": null,
+    "payload": {
+      "correct": 5,
+      "tolerance": 0
+    },
+    "explanation_key": "ba_tech_q19_explanation",
+    "order": 19,
+    "version": "0.1.0",
+    "migration_metadata": {
+      "source_repository": "solomonczyk/bi-trainer-local",
+      "source_question_id": "module-9-Q19",
+      "migration_date": "2026-06-06",
+      "migration_version": "0.1.0"
+    }
+  }
+]

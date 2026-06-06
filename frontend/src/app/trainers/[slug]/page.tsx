@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { getTrainer, enrollTrainer, isAuthenticated } from "@/lib/api/client";
 import { t, ti } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
@@ -16,6 +17,19 @@ import {
   ArrowRight,
   GraduationCap,
 } from "lucide-react";
+
+const BA_MODULES = [
+  { module_id: 'ba_hr_screening', title: 'HR Screening & Self-Presentation', description: 'HR questions, self-presentation, motivation, salary expectations', activity_count: 20 },
+  { module_id: 'ba_basics_stakeholders', title: 'BA Basics & Stakeholders', description: 'Role of BA, BABOK, stakeholder types, RACI matrix', activity_count: 19 },
+  { module_id: 'ba_requirements_elicitation', title: 'Requirements Elicitation & Analysis', description: 'Elicitation techniques, requirements analysis, validation', activity_count: 20 },
+  { module_id: 'ba_documentation_artifacts', title: 'Documentation & Artifacts', description: 'User stories, Use cases, BRD, SRS, Acceptance criteria', activity_count: 19 },
+  { module_id: 'ba_process_data_modeling', title: 'Process & Data Modeling', description: 'BPMN, UML, ERD, Data Flow Diagrams, Event Storming', activity_count: 15 },
+  { module_id: 'ba_methodologies', title: 'Methodologies', description: 'Scrum, Kanban, SAFe, Waterfall, methodology comparison', activity_count: 16 },
+  { module_id: 'ba_metrics_prioritization', title: 'Metrics, Estimation & Prioritization', description: 'MoSCoW, Kano, WSJF, Story Points, ROI, NPV', activity_count: 16 },
+  { module_id: 'ba_communication_conflict', title: 'Communication & Conflict', description: 'Facilitation, negotiation, expectation management, conflict resolution', activity_count: 17 },
+  { module_id: 'ba_technical_aspects', title: 'Technical Aspects (SQL, API, Prototypes)', description: 'SQL queries, REST API, JSON, prototyping, architecture', activity_count: 19 },
+  { module_id: 'ba_real_cases', title: 'Real-World Case Studies', description: 'Complex scenarios with full analysis cycle', activity_count: 7 },
+];
 
 export default function TrainerDetailPage() {
   const params = useParams();
@@ -141,6 +155,43 @@ export default function TrainerDetailPage() {
           </div>
         )}
       </Card>
+
+      {/* BA Trainer Modules Section */}
+      {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
+        <Card padding="lg" className="mb-8">
+          <CardHeader>
+            <CardTitle>{t('ba_trainer.modules')}</CardTitle>
+            <CardDescription>
+              {t('ba_trainer.module_activities')} — {t('ba_trainer.phase_1_badge')}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {BA_MODULES.map((mod) => (
+                <Link key={mod.module_id} href={`/trainers/${slug}/modules/${mod.module_id}`}>
+                  <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer">
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-gray-100">
+                        {t(`modules.${mod.module_id}.title`) !== `modules.${mod.module_id}.title`
+                          ? t(`modules.${mod.module_id}.title`)
+                          : mod.title}
+                      </div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        {t(`modules.${mod.module_id}.description`) !== `modules.${mod.module_id}.description`
+                          ? t(`modules.${mod.module_id}.description`)
+                          : mod.description}
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-400 whitespace-nowrap ml-4">
+                      {mod.activity_count} {t('ba_trainer.activity_label')}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Details Grid */}
       <div className="grid gap-6 sm:grid-cols-2">

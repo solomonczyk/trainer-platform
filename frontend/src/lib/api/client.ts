@@ -410,6 +410,71 @@ export async function getTrainerProgress(trainerSlug: string) {
 }
 
 // ---------------------------------------------------------------------------
+// Activity System Types
+// ---------------------------------------------------------------------------
+
+export interface ActivityResponse {
+  activity_id: string;
+  module_id: string;
+  activity_type: 'single_choice' | 'multiple_choice' | 'numeric' | 'fill_blanks' | 'matching';
+  evaluation_mode: string;
+  difficulty: string;
+  title_key: string;
+  description_key: string | null;
+  payload: Record<string, unknown>;
+  order: number;
+  version: string;
+}
+
+export interface ActivityStartResponse {
+  activity_id: string;
+  activity_type: string;
+  title_key: string;
+  description_key: string | null;
+  difficulty: string;
+  module_id: string;
+  prompt: Record<string, unknown>;
+}
+
+export interface ActivitySubmitRequest {
+  activity_id: string;
+  answer: unknown;
+  idempotency_key?: string;
+}
+
+export interface ActivitySubmitResponse {
+  attempt_id: string;
+  activity_id: string;
+  status: 'correct' | 'partial' | 'incorrect';
+  score: number;
+  passed: boolean;
+  feedback: Record<string, unknown> | null;
+  explanation_key: string;
+  evaluation_mode: string;
+  is_retry: boolean;
+}
+
+export interface ModuleActivitiesResponse {
+  module_id: string;
+  activities: ActivityResponse[];
+  total_count: number;
+}
+
+// --- Activity Endpoints ---
+
+export async function getModuleActivities(trainerSlug: string, moduleId: string): Promise<ModuleActivitiesResponse> {
+  return api.get<ModuleActivitiesResponse>(`/api/v1/trainers/${trainerSlug}/modules/${moduleId}/activities`);
+}
+
+export async function startActivity(trainerSlug: string, activityId: string): Promise<ActivityStartResponse> {
+  return api.get<ActivityStartResponse>(`/api/v1/trainers/${trainerSlug}/activities/${activityId}/start`);
+}
+
+export async function submitActivity(trainerSlug: string, body: ActivitySubmitRequest): Promise<ActivitySubmitResponse> {
+  return api.post<ActivitySubmitResponse>(`/api/v1/trainers/${trainerSlug}/activities/submit`, body);
+}
+
+// ---------------------------------------------------------------------------
 // Analytics
 // ---------------------------------------------------------------------------
 

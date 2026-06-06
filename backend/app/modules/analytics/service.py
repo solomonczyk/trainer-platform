@@ -41,6 +41,12 @@ SAFE_EVENT_TYPES: frozenset[str] = frozenset(
         "answer_submitted",
         "user_registered",
         "landing_viewed",
+        "answer_evaluated",
+        "ba_trainer_opened",
+        "ba_module_opened",
+        "ba_activity_started",
+        "explanation_viewed",
+        "module_progress_viewed",
     }
 )
 

@@ -15,6 +15,7 @@ from app.modules.admin.schemas import (
     SeedStatusResponse,
     SystemHealthResponse,
 )
+from app.modules.admin.ba_trainer_seed import seed_ba_trainer
 from app.modules.admin.service import AdminService
 
 router = APIRouter(tags=["Admin"])
@@ -61,3 +62,13 @@ async def analytics_sanity(
     """Return total analytics event count and a breakdown by event type."""
     sanity = await AdminService.get_analytics_sanity(db)
     return AdminAnalyticsSanityResponse(**sanity)
+
+
+@router.post("/seed/ba-trainer")
+async def seed_ba_trainer_endpoint(
+    admin_id: str = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Seed the BA trainer package data into the database."""
+    results = await seed_ba_trainer(db)
+    return {"status": "ok", "results": results}

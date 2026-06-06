@@ -1,0 +1,43 @@
+{
+  "import_date": "2026-06-06",
+  "phase": "phase_1_deterministic",
+  "source_repository": "solomonczyk/bi-trainer-local",
+  "imported_activities": 164,
+  "breakdown": {
+    "single_choice": 98,
+    "multiple_choice": 44,
+    "numeric": 4,
+    "fill_blanks": 13,
+    "matching": 5
+  },
+  "modules": [
+    {"module_id": "ba_hr_screening", "title": "HR Screening & Self-Presentation", "activities": 20},
+    {"module_id": "ba_basics_stakeholders", "title": "BA Basics & Stakeholders", "activities": 19},
+    {"module_id": "ba_requirements_elicitation", "title": "Requirements Elicitation & Analysis", "activities": 20},
+    {"module_id": "ba_documentation_artifacts", "title": "Documentation & Artifacts", "activities": 19},
+    {"module_id": "ba_process_data_modeling", "title": "Process & Data Modeling", "activities": 15},
+    {"module_id": "ba_methodologies", "title": "Methodologies", "activities": 16},
+    {"module_id": "ba_metrics_prioritization", "title": "Metrics, Estimation & Prioritization", "activities": 16},
+    {"module_id": "ba_communication_conflict", "title": "Communication & Conflict", "activities": 17},
+    {"module_id": "ba_technical_aspects", "title": "Technical Aspects (SQL, API, Prototypes)", "activities": 19},
+    {"module_id": "ba_real_cases", "title": "Real-World Case Studies", "activities": 7}
+  ],
+  "quality_checks": {
+    "unique_activity_ids": true,
+    "correct_answers_present": true,
+    "explanations_present": true,
+    "all_localization_keys_resolve": true,
+    "no_duplicate_module_orders": true,
+    "no_diagnostics_included": true,
+    "no_exam_included": true,
+    "no_flashcards_included": true,
+    "no_textarea_included": true,
+    "unsafe_html_detected": false
+  },
+  "source_traceability": {
+    "source_repository": "solomonczyk/bi-trainer-local",
+    "all_activities_have_source_id": true,
+    "migration_date": "2026-06-06",
+    "migration_version": "0.1.0"
+  }
+}
