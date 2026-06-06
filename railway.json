@@ -16,7 +16,8 @@
       "name": "backend",
       "root": "backend",
       "build": {
-        "builder": "NIXPACKS"
+        "builder": "NIXPACKS",
+        "nixpacksConfigPath": "nixpacks.toml"
       },
       "deploy": {
         "numReplicas": 1,
