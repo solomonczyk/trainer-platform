@@ -1,0 +1,62 @@
+{
+  "layer": "TRAINER-PLATFORM-MVP-007B-FIX-FRONTEND-STAGING-API-BUILD-CONTRACT",
+  "date": "2026-06-06",
+  "verdict": "ACCEPTED",
+  "diagnosis": {
+    "localhost_source_found": true,
+    "canonical_env_var": "NEXT_PUBLIC_API_BASE_URL",
+    "build_time_env_issue_found": true,
+    "details": {
+      "root_cause_1": "Dockerfile did not accept NEXT_PUBLIC_API_BASE_URL as build ARG, so it was never available during npm run build",
+      "root_cause_2": "next.config.js contained duplicated getApiBaseUrl() and an env block that hardcoded the localhost fallback at build time",
+      "root_cause_3": "railway.json buildArgs referenced stale URL and were never consumed by Dockerfile"
+    }
+  },
+  "implementation": {
+    "canonical_api_resolver_added": true,
+    "localhost_fallback_removed_from_staging": true,
+    "localhost_fallback_removed_from_production": true,
+    "build_time_env_propagation_fixed": true,
+    "changes": {
+      "client_ts": "Migrated to NEXT_PUBLIC_API_BASE_URL as canonical var with backward-compat fallback to NEXT_PUBLIC_API_URL",
+      "next_config_js": "Removed duplicated getApiBaseUrl(), rewrites(), and hardcoding env block",
+      "dockerfile": "Added ARG/ENV for NEXT_PUBLIC_API_BASE_URL and NEXT_PUBLIC_APP_ENV before npm run build",
+      "railway_json": "Updated buildArgs with correct staging URL and APP_ENV=staging",
+      "env_vars_doc": "Updated canonical var documentation"
+    }
+  },
+  "verification": {
+    "frontend_build_passed": true,
+    "frontend_tests_passed": true,
+    "tests_passed_count": 17,
+    "localhost_absent_from_bundle": true,
+    "backend_url_in_bundle": true,
+    "frontend_redeployed": true,
+    "railway_environment": "staging",
+    "frontend_url": "https://frontend-staging-4146.up.railway.app",
+    "registration_browser_flow_passed": true,
+    "registration_endpoint": "https://backend-staging-0487.up.railway.app/api/v1/auth/register",
+    "registration_status": 201,
+    "login_browser_flow_passed": true,
+    "login_endpoint": "https://backend-staging-0487.up.railway.app/api/v1/auth/login",
+    "login_status": 200,
+    "localhost_requests_observed": false,
+    "external_backend_requests_observed": true,
+    "domain_catalog_loads": true,
+    "trainer_page_loads": true
+  },
+  "security": {
+    "frontend_provider_secrets_present": false,
+    "deepseek_key_exposed": false,
+    "openai_enabled": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "7e5d2da",
+    "pushed": true,
+    "clean": true
+  },
+  "next_allowed_action": "repeat_mvp_007_frontend_acceptance_or_prepare_production_security_review"
+}
