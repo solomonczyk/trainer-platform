@@ -32,7 +32,8 @@
         "builder": "DOCKERFILE",
         "dockerfilePath": "Dockerfile",
         "buildArgs": {
-          "NEXT_PUBLIC_API_URL": "https://backend.up.railway.app"
+          "NEXT_PUBLIC_API_BASE_URL": "https://backend-staging-0487.up.railway.app",
+          "NEXT_PUBLIC_APP_ENV": "staging"
         }
       },
       "deploy": {

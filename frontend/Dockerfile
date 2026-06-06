@@ -19,7 +19,15 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the Next.js app
+# Build-time public env vars — must be passed as Docker build args
+# (e.g. --build-arg NEXT_PUBLIC_API_BASE_URL=https://...)
+# Railway passes these automatically from service variables configured as build args.
+ARG NEXT_PUBLIC_API_BASE_URL
+ARG NEXT_PUBLIC_APP_ENV
+
+# Export build args as env vars so Next.js inlines them at build time
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_APP_ENV=$NEXT_PUBLIC_APP_ENV
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 

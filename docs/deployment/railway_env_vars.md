@@ -24,8 +24,12 @@
 
 | Variable                      | Value                                             | Source     |
 |-------------------------------|---------------------------------------------------|------------|
-| `NEXT_PUBLIC_API_URL`         | `https://backend-staging-0487.up.railway.app`     | Manual     |
+| `NEXT_PUBLIC_API_BASE_URL`    | `https://backend-staging-0487.up.railway.app`     | Manual     |
 | `NEXT_PUBLIC_APP_ENV`         | `staging`                                         | Manual     |
+
+> **Note:** `NEXT_PUBLIC_API_BASE_URL` is the canonical variable.
+> `NEXT_PUBLIC_API_URL` is supported as a backward-compatible fallback
+> during migration but should not be relied upon long-term.
 
 ## Database Service (PostgreSQL)
 
