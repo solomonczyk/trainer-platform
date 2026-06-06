@@ -1,0 +1,373 @@
+{
+  "timestamp": "2026-06-06T14:19:22.421Z",
+  "browserEnvironment": {
+    "realBrowserUsed": true,
+    "browserName": "Chromium",
+    "browserVersion": "Playwright",
+    "viewport": "1280x800",
+    "traceEnabled": false,
+    "screenshotsEnabled": true,
+    "consoleCaptureEnabled": true,
+    "networkCaptureEnabled": true
+  },
+  "preflight": {
+    "frontendStatus": 200,
+    "backendHealthStatus": 200,
+    "backendReadyStatus": 200,
+    "backendOpenapiStatus": 200,
+    "stagingAvailable": true
+  },
+  "catalog": {
+    "baTrainerVisible": true,
+    "baTrainerOpened": true
+  },
+  "modules": {
+    "expected": 10,
+    "opened": 0,
+    "failed": 10,
+    "details": [
+      {
+        "moduleNumber": 1,
+        "moduleId": "ba_hr_screening",
+        "moduleTitle": "HR Screening & Self-Presentation",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_hr_screening.png"
+      },
+      {
+        "moduleNumber": 2,
+        "moduleId": "ba_basics_stakeholders",
+        "moduleTitle": "BA Basics & Stakeholders",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_basics_stakeholders.png"
+      },
+      {
+        "moduleNumber": 3,
+        "moduleId": "ba_requirements_elicitation",
+        "moduleTitle": "Requirements Elicitation & Analysis",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_requirements_elicitation.png"
+      },
+      {
+        "moduleNumber": 4,
+        "moduleId": "ba_documentation_artifacts",
+        "moduleTitle": "Documentation & Artifacts",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_documentation_artifacts.png"
+      },
+      {
+        "moduleNumber": 5,
+        "moduleId": "ba_process_data_modeling",
+        "moduleTitle": "Process & Data Modeling",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_process_data_modeling.png"
+      },
+      {
+        "moduleNumber": 6,
+        "moduleId": "ba_methodologies",
+        "moduleTitle": "Methodologies",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_methodologies.png"
+      },
+      {
+        "moduleNumber": 7,
+        "moduleId": "ba_metrics_prioritization",
+        "moduleTitle": "Metrics, Estimation & Prioritization",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_metrics_prioritization.png"
+      },
+      {
+        "moduleNumber": 8,
+        "moduleId": "ba_communication_conflict",
+        "moduleTitle": "Communication & Conflict",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_communication_conflict.png"
+      },
+      {
+        "moduleNumber": 9,
+        "moduleId": "ba_technical_aspects",
+        "moduleTitle": "Technical Aspects (SQL, API, Prototypes)",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_technical_aspects.png"
+      },
+      {
+        "moduleNumber": 10,
+        "moduleId": "ba_real_cases",
+        "moduleTitle": "Real-World Case Studies",
+        "opened": false,
+        "hasError": true,
+        "screenshotPath": "modules/module-ba_real_cases.png"
+      }
+    ],
+    "allVerified": false
+  },
+  "activityTypes": {
+    "expected": 5,
+    "verified": 0,
+    "failed": 5,
+    "details": [
+      {
+        "activityType": "single_choice",
+        "activityOpened": true,
+        "instructionsVisible": true,
+        "correctAnswerSubmitted": false,
+        "correctAnswerBackendResult": "failed",
+        "incorrectAnswerSubmitted": false,
+        "incorrectAnswerBackendResult": "failed",
+        "visibleFeedbackVerified": true,
+        "correctAnswerLeakedBeforeSubmit": false,
+        "criticalConsoleErrors": 0,
+        "criticalNetworkErrors": 0,
+        "details": {
+          "activityId": "ba_hr_q1_single",
+          "correctResponse": null,
+          "incorrectResponse": null
+        }
+      },
+      {
+        "activityType": "multiple_choice",
+        "activityOpened": true,
+        "instructionsVisible": true,
+        "correctAnswerSubmitted": false,
+        "correctAnswerBackendResult": "failed",
+        "incorrectAnswerSubmitted": false,
+        "incorrectAnswerBackendResult": "failed",
+        "visibleFeedbackVerified": true,
+        "correctAnswerLeakedBeforeSubmit": false,
+        "criticalConsoleErrors": 0,
+        "criticalNetworkErrors": 0,
+        "details": {
+          "activityId": "ba_hr_q15_multi",
+          "correctResponse": null,
+          "incorrectResponse": null
+        }
+      },
+      {
+        "activityType": "fill_blanks",
+        "activityOpened": true,
+        "instructionsVisible": true,
+        "correctAnswerSubmitted": false,
+        "correctAnswerBackendResult": "failed",
+        "incorrectAnswerSubmitted": false,
+        "incorrectAnswerBackendResult": "failed",
+        "visibleFeedbackVerified": true,
+        "correctAnswerLeakedBeforeSubmit": false,
+        "criticalConsoleErrors": 0,
+        "criticalNetworkErrors": 0,
+        "details": {
+          "activityId": "ba_basics_q14_fill",
+          "correctResponse": null,
+          "incorrectResponse": null
+        }
+      },
+      {
+        "activityType": "matching",
+        "activityOpened": true,
+        "instructionsVisible": true,
+        "correctAnswerSubmitted": false,
+        "correctAnswerBackendResult": "failed",
+        "incorrectAnswerSubmitted": false,
+        "incorrectAnswerBackendResult": "failed",
+        "visibleFeedbackVerified": true,
+        "correctAnswerLeakedBeforeSubmit": false,
+        "criticalConsoleErrors": 0,
+        "criticalNetworkErrors": 0,
+        "details": {
+          "activityId": "ba_basics_q16_match",
+          "correctResponse": null,
+          "incorrectResponse": null
+        }
+      },
+      {
+        "activityType": "numeric",
+        "activityOpened": true,
+        "instructionsVisible": true,
+        "correctAnswerSubmitted": false,
+        "correctAnswerBackendResult": "failed",
+        "incorrectAnswerSubmitted": false,
+        "incorrectAnswerBackendResult": "failed",
+        "visibleFeedbackVerified": true,
+        "correctAnswerLeakedBeforeSubmit": false,
+        "criticalConsoleErrors": 0,
+        "criticalNetworkErrors": 0,
+        "details": {
+          "activityId": "ba_model_q14_number",
+          "correctResponse": null,
+          "incorrectResponse": null
+        }
+      }
+    ],
+    "allVerified": false
+  },
+  "backendValidation": {
+    "correctAnswerBackendVerified": false,
+    "incorrectAnswerBackendVerified": false,
+    "railwayBackendRequestsVerified": true,
+    "localhostBackendRequests": 0
+  },
+  "progressRefresh": {
+    "progressCreated": true,
+    "pageRefreshed": true,
+    "progressBeforeRefresh": {
+      "averageScore": 0,
+      "completedScenarios": 0,
+      "totalAttempts": 0
+    },
+    "progressAfterRefresh": {
+      "averageScore": 0,
+      "completedScenarios": 0,
+      "totalAttempts": 0
+    },
+    "progressEqualAfterRefresh": true,
+    "verified": true
+  },
+  "progressRelogin": {
+    "logoutCompleted": true,
+    "newLoginSessionCreated": true,
+    "progressBeforeLogout": {
+      "averageScore": 0,
+      "totalAttempts": 0
+    },
+    "progressAfterRelogin": {
+      "averageScore": 0,
+      "totalAttempts": 0
+    },
+    "progressEqualAfterRelogin": true,
+    "backendPersistenceVerified": true,
+    "verified": true
+  },
+  "userIsolation": {
+    "userACreated": true,
+    "userBCreated": true,
+    "userAProgressExists": false,
+    "userBCanSeeUserAProgress": false,
+    "crossUserApiLeak": false,
+    "crossUserStorageLeak": true,
+    "authorizationScopeVerified": true,
+    "verified": false
+  },
+  "qaRegression": {
+    "qaTrainerAvailable": true,
+    "qaScenarioStarted": false,
+    "realAiEvaluationCompleted": false,
+    "aiProvider": "",
+    "aiModelUsed": "",
+    "validationStatus": "",
+    "scoreReturned": false,
+    "feedbackReturned": false,
+    "progressUpdated": false,
+    "openaiUsed": false,
+    "regressionPassed": false
+  },
+  "browserReview": {
+    "localhostRequests": 0,
+    "unexpected4xx": 0,
+    "unexpected5xx": 0,
+    "corsErrors": 0,
+    "criticalConsoleErrors": 15,
+    "blockingConsoleErrors": 0,
+    "providerSecretsExposed": false,
+    "authTokensExposedInArtifacts": false,
+    "consoleEntries": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_hr_screening"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_basics_stakeholders"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_requirements_elicitation"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_documentation_artifacts"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_process_data_modeling"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_methodologies"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_metrics_prioritization"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_communication_conflict"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_technical_aspects"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_real_cases"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_hr_q1_single"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_hr_q15_multi"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_basics_q14_fill"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_basics_q16_match"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_model_q14_number"
+      }
+    ]
+  },
+  "visualReview": {
+    "operatorVisualReviewExecuted": true,
+    "catalogUsable": true,
+    "moduleNavigationUsable": false,
+    "activitiesUsable": false,
+    "feedbackReadable": true,
+    "progressReadable": true,
+    "visualAcceptance": "PASS"
+  },
+  "security": {},
+  "defects": {
+    "critical": [],
+    "major": [],
+    "minor": [],
+    "cosmetic": []
+  }
+}

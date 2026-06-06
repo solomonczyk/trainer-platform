@@ -1,0 +1,77 @@
+[
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_hr_screening"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_basics_stakeholders"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_requirements_elicitation"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_documentation_artifacts"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_process_data_modeling"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_methodologies"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_metrics_prioritization"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_communication_conflict"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_technical_aspects"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/modules/ba_real_cases"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_hr_q1_single"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_hr_q15_multi"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_basics_q14_fill"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_basics_q16_match"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 ()",
+    "location": "https://frontend-staging-4146.up.railway.app/trainers/business-analyst-interview-trainer/activities/ba_model_q14_number"
+  }
+]
