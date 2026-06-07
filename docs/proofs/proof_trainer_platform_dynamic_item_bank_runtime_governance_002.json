@@ -102,8 +102,8 @@
   },
   "git": {
     "branch": "master",
-    "commit": "",
-    "pushed": false,
+    "commit": "b4a396c3e4476ea12c0f41742387d61409dba312",
+    "pushed": true,
     "clean": true,
     "head_matches_origin_master": true
   },
