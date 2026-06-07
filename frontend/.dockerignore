@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+.next
+.npm
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# Test
+coverage
+test-results
+playwright-report
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
