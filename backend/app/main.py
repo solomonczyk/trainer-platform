@@ -112,6 +112,19 @@ from app.modules.analytics import router as analytics_router
 from app.modules.activities import router as activities_router
 from app.modules.admin import router as admin_router
 
+# Certification-grade core routers
+from app.certification_core.routers import (
+    competency_router,
+    blueprint_router,
+    knowledge_source_router,
+    item_family_router,
+    item_router,
+    rubric_router,
+    domain_pack_router,
+    audit_router,
+    transition_router,
+)
+
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
 app.include_router(users_router, prefix="/api/v1", tags=["Users"])
 app.include_router(domains_router, prefix="/api/v1", tags=["Domains"])
@@ -123,6 +136,17 @@ app.include_router(progress_router, prefix="/api/v1", tags=["Progress"])
 app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["Analytics"])
 app.include_router(activities_router, prefix="/api/v1", tags=["Activities"])
 app.include_router(admin_router, prefix="/api/v1/admin", tags=["Admin"])
+
+# Certification-grade core routes
+app.include_router(competency_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(blueprint_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(knowledge_source_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(item_family_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(item_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(rubric_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(domain_pack_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(audit_router, prefix="/api/v1", tags=["Certification-Core"])
+app.include_router(transition_router, prefix="/api/v1", tags=["Certification-Core"])
 
 
 # ---------------------------------------------------------------------------

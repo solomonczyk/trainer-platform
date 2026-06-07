@@ -17,6 +17,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 # Import all models so they register on Base.metadata
 # ---------------------------------------------------------------------------
 import app.db.models  # noqa: F401
+import app.certification_core.models  # noqa: F401
 
 from app.db.base import Base
 
