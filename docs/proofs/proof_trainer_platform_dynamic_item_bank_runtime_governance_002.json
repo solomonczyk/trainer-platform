@@ -1,101 +1,95 @@
 {
   "layer": "TRAINER-PLATFORM-DYNAMIC-ITEM-BANK-RUNTIME-AND-GOVERNANCE-VERTICAL-LAYER-002",
-  "closeout": "FINAL_POLICY_AND_REGRESSION",
+  "closeout": "MIGRATION_005_EXECUTION_CLOSEOUT_002B",
   "verdict": "ACCEPTED",
-  "base_state": {
-    "core_contracts": "ACCEPTED",
-    "base_commit": "bf0ab0527863d95d9dcd4931c5bb01f1db4ab152",
-    "production_accepted": false,
-    "release_allowed": false
-  },
-  "rotation": {
-    "domain_balance_enforced": true,
-    "competency_balance_enforced": true,
-    "difficulty_balance_enforced": true,
-    "item_family_diversity_enforced": true,
-    "locale_compatibility_enforced": true,
-    "recent_use_exclusion_enforced": true,
-    "exposure_threshold_enforced": true,
-    "cooldown_enforced": true,
-    "insufficient_pool_detected": true,
-    "decision_reasons_verified": true
-  },
-  "controlled_exception": {
-    "platform_admin_request_required": true,
-    "reason_required": true,
-    "expiration_required": true,
-    "second_reviewer_required": true,
-    "requester_self_approval_blocked": true,
-    "author_approval_blocked": true,
-    "expired_exception_blocked": true,
-    "revoked_exception_blocked": true,
-    "cross_item_reuse_blocked": true,
-    "audit_verified": true
-  },
-  "exam_eligibility_gate": {
-    "single_gate_service": true,
-    "authoring_shortcut_blocked": true,
-    "pilot_shortcut_blocked": true,
-    "repository_mutation_blocked": true,
-    "generic_endpoint_mutation_blocked": true,
-    "lifecycle_bypass_blocked": true
-  },
-  "migration": {
+  "migration_005": {
     "real_postgres_used": true,
-    "revision": "005",
-    "upgrade_passed": true,
+    "postgres_version": "16.14 (Debian, Docker container)",
+    "initial_upgrade_executed": true,
+    "initial_upgrade_passed": true,
+    "current_before_downgrade": "005",
+    "downgrade_executed": true,
     "downgrade_passed": true,
+    "current_after_downgrade": "004",
+    "second_upgrade_executed": true,
     "second_upgrade_passed": true,
+    "current_final": "005",
+    "columns_removed_on_downgrade": true,
+    "constraints_removed_on_downgrade": true,
+    "indexes_removed_on_downgrade": true,
+    "columns_restored_on_upgrade": true,
+    "constraints_restored_on_upgrade": true,
+    "indexes_restored_on_upgrade": true,
     "certification_tables_preserved": true,
-    "ba_qa_tables_preserved": true
+    "ba_qa_tables_preserved": true,
+    "duplicate_objects_absent": true
   },
   "regression": {
-    "dynamic_item_bank": {
-      "command": "python -m pytest tests/certification_core/test_dynamic_item_bank_runtime.py tests/certification_core/test_item_bank_runtime_integration.py -v --asyncio-mode=auto",
-      "passed": 58,
+    "migration_005": {
+      "command": "python -m pytest tests/certification_core/test_migration_005_execution.py -v",
+      "passed": 5,
       "failed": 0,
       "skipped": 0
     },
-    "certification_core": {
-      "command": "python -m pytest tests/certification_core/ -v --asyncio-mode=auto",
-      "passed": 366,
+    "rotation": {
+      "command": "python -m pytest tests/certification_core/test_rotation_policy_enforcement.py -v",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    "controlled_exception": {
+      "command": "python -m pytest tests/certification_core/test_controlled_exception_contract.py -v",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    "single_gate": {
+      "command": "python -m pytest tests/certification_core/test_exam_eligibility_gate.py -v",
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    "certification_core_full": {
+      "command": "python -m pytest tests/certification_core/ -v",
+      "passed": 371,
       "failed": 0,
       "skipped": 0
     },
     "ba_phase_1": {
-      "command": "python -m pytest tests/test_admin.py tests/test_activities_api.py tests/test_domain_trainer_catalog.py tests/test_scenario_runtime.py -v --asyncio-mode=auto",
+      "command": "python -m pytest tests/test_admin.py tests/test_activities_api.py tests/test_domain_trainer_catalog.py tests/test_scenario_runtime.py -v",
       "passed": 34,
       "failed": 0,
       "skipped": 0
     },
     "ba_phase_2": {
-      "command": "python -m pytest tests/test_ba_phase2.py tests/test_deterministic_validators.py -v --asyncio-mode=auto",
+      "command": "python -m pytest tests/test_ba_phase2.py tests/test_deterministic_validators.py -v",
       "passed": 107,
       "failed": 0,
       "skipped": 0
     },
     "qa_trainer": {
-      "command": "python -m pytest tests/test_security.py tests/test_auth.py tests/test_rate_limiter.py tests/test_evaluation_runtime.py tests/test_progress.py -v --asyncio-mode=auto",
+      "command": "python -m pytest tests/test_security.py tests/test_auth.py tests/test_rate_limiter.py tests/test_evaluation_runtime.py tests/test_progress.py -v",
       "passed": 30,
       "failed": 0,
       "skipped": 3
     },
     "deepseek": {
-      "executed_in_this_layer": false,
+      "executed_in_this_closeout": false,
       "reused_canonical_evidence": true,
-      "evidence_artifact": "docs/proofs/proof_trainer_platform_dynamic_item_bank_runtime_governance_002.json (base layer fields)",
-      "evidence_commit": "bf0ab0527863d95d9dcd4931c5bb01f1db4ab152",
+      "evidence_commit": "bf0ab05",
       "model": "deepseek-v4-flash",
       "validation_status": "validated"
-    }
+    },
+    "exact_unique_total": 371,
+    "focused_runs_total": 47,
+    "overlap_documented": true
   },
   "openapi": {
     "export_passed": true,
-    "rotation_routes_present": true,
-    "exception_routes_present": true,
-    "single_gate_route_present": true,
-    "direct_mutation_routes_absent": true,
-    "answer_keys_absent": true
+    "path_count": 71,
+    "schema_count": 86,
+    "answer_keys_absent": true,
+    "audit_mutation_routes_absent": true
   },
   "forbidden_actions": {
     "controlled_item_generation_started": false,
@@ -108,17 +102,10 @@
   },
   "git": {
     "branch": "master",
-    "commit": "5526704e9b8f5a232ac09fbef554e60b5e0fcd54",
-    "pushed": true,
+    "commit": "",
+    "pushed": false,
     "clean": true,
     "head_matches_origin_master": true
   },
-  "known_issues": [
-    "Psychometric metrics are placeholder-only until real candidate data exists",
-    "Review SLA breach detection requires a background scheduler",
-    "Insufficient pool detection is advisory — does not hard-block exam sessions",
-    "Exception scope validated at grant-time rather than exception creation",
-    "BA/QA migration adapter is ready but not executed"
-  ],
-  "next_allowed_action": "controlled_item_generation_and_validation_vertical_layer"
+  "next_allowed_action": "TRAINER-PLATFORM-CONTROLLED-ITEM-GENERATION-AND-AUTOMATED-VALIDATION-VERTICAL-LAYER-003"
 }

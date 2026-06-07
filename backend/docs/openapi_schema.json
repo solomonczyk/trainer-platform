@@ -3802,6 +3802,261 @@
         }
       }
     },
+    "/api/v1/certification-core/item-bank/items/{item_id}/exception/request": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Request Controlled Exception",
+        "description": "Request a controlled psychometric exception for an item.\n\nOnly platform_admin can request. Requires reason and future expiration.\nScope is limited to one item version.",
+        "operationId": "request_controlled_exception_api_v1_certification_core_item_bank_items__item_id__exception_request_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExceptionRequestCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/exception/{exception_id}/first-approve": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "First Approve Exception",
+        "description": "Record first approval for a controlled exception.",
+        "operationId": "first_approve_exception_api_v1_certification_core_item_bank_items__item_id__exception__exception_id__first_approve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          },
+          {
+            "name": "exception_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Exception Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExceptionApprovalFirst"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/exception/{exception_id}/second-approve": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Second Approve Exception",
+        "description": "Second (final) approval for a controlled exception by independent reviewer.\n\nEnforces:\n- Independent reviewer (not the requester)\n- Not the item author\n- Approved role (psychometric_reviewer, qa_reviewer, domain_owner)\n- Expiration checked",
+        "operationId": "second_approve_exception_api_v1_certification_core_item_bank_items__item_id__exception__exception_id__second_approve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          },
+          {
+            "name": "exception_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Exception Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExceptionApprovalSecond"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/exception/{exception_id}/revoke": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Revoke Exception",
+        "description": "Revoke a controlled exception (platform_admin only).",
+        "operationId": "revoke_exception_api_v1_certification_core_item_bank_items__item_id__exception__exception_id__revoke_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          },
+          {
+            "name": "exception_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Exception Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExceptionRevocation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/certification-core/item-bank/items/{item_id}/exam-eligibility": {
       "post": {
         "tags": [
@@ -3809,7 +4064,7 @@
           "Certification-Core-Item-Bank"
         ],
         "summary": "Grant Exam Eligibility",
-        "description": "Grant exam-eligible status to an item.",
+        "description": "Grant exam-eligible status to an item via the single authoritative gate.\n\nThis is the ONLY entry point for granting exam_eligible status.\nAll shortcuts (ORM mutation, repository update, generic update,\nauthoring bypass, pilot bypass, lifecycle transition bypass) are blocked.",
         "operationId": "grant_exam_eligibility_api_v1_certification_core_item_bank_items__item_id__exam_eligibility_post",
         "security": [
           {
@@ -3832,7 +4087,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PoolMembershipCreate"
+                "$ref": "#/components/schemas/ExamEligibilityRequest"
               }
             }
           }
@@ -6845,6 +7100,176 @@
         "type": "object",
         "title": "ExamBlueprintUpdate"
       },
+      "ExamEligibilityRequest": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "evaluated_by": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Evaluated By"
+          },
+          "evaluator_role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Evaluator Role"
+          },
+          "controlled_exception_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Controlled Exception Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "evaluated_by",
+          "evaluator_role"
+        ],
+        "title": "ExamEligibilityRequest",
+        "description": "Request to evaluate and grant exam eligibility."
+      },
+      "ExceptionApprovalFirst": {
+        "properties": {
+          "reviewer_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Reviewer Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Reviewer Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reviewer_id",
+          "reviewer_role"
+        ],
+        "title": "ExceptionApprovalFirst",
+        "description": "First approval — the requester's own approval is recorded."
+      },
+      "ExceptionApprovalSecond": {
+        "properties": {
+          "reviewer_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Reviewer Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Reviewer Role"
+          },
+          "decision": {
+            "type": "string",
+            "pattern": "^(approve|reject)$",
+            "title": "Decision",
+            "default": "approve"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reviewer_id",
+          "reviewer_role"
+        ],
+        "title": "ExceptionApprovalSecond",
+        "description": "Second approval — an independent reviewer approves or rejects."
+      },
+      "ExceptionRequestCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "item_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Item Version Id"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          },
+          "requested_by": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Requested By"
+          },
+          "requester_role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Requester Role"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "reason",
+          "requested_by",
+          "requester_role",
+          "expires_at"
+        ],
+        "title": "ExceptionRequestCreate",
+        "description": "Initial exception request — submitted by platform_admin."
+      },
+      "ExceptionRevocation": {
+        "properties": {
+          "revoked_by": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Revoked By"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "revoked_by",
+          "reason"
+        ],
+        "title": "ExceptionRevocation",
+        "description": "Revoke an exception."
+      },
       "ExposureEventCreate": {
         "properties": {
           "item_id": {
@@ -8408,48 +8833,6 @@
         "title": "ModuleActivitiesResponse",
         "description": "List of activities in a module (public, no correct answers)."
       },
-      "PoolMembershipCreate": {
-        "properties": {
-          "item_id": {
-            "type": "string",
-            "maxLength": 100,
-            "title": "Item Id"
-          },
-          "pool_type": {
-            "type": "string",
-            "maxLength": 20,
-            "title": "Pool Type"
-          },
-          "entered_by": {
-            "type": "string",
-            "maxLength": 100,
-            "title": "Entered By"
-          },
-          "controlled_exception": {
-            "type": "boolean",
-            "title": "Controlled Exception",
-            "default": false
-          },
-          "exception_reason": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Exception Reason"
-          }
-        },
-        "type": "object",
-        "required": [
-          "item_id",
-          "pool_type",
-          "entered_by"
-        ],
-        "title": "PoolMembershipCreate"
-      },
       "ProgressSummaryResponse": {
         "properties": {
           "trainer_slug": {
@@ -8646,6 +9029,77 @@
             "type": "boolean",
             "title": "Enabled",
             "default": true
+          },
+          "allowed_locales": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allowed Locales"
+          },
+          "domain_balance_quotas": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain Balance Quotas"
+          },
+          "competency_balance_quotas": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Competency Balance Quotas"
+          },
+          "difficulty_balance_ratios": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Difficulty Balance Ratios"
+          },
+          "max_items_per_family": {
+            "type": "integer",
+            "title": "Max Items Per Family",
+            "default": 3
+          },
+          "recent_use_window_days": {
+            "type": "integer",
+            "title": "Recent Use Window Days",
+            "default": 90
+          },
+          "exposure_threshold": {
+            "type": "integer",
+            "title": "Exposure Threshold",
+            "default": 50
           }
         },
         "type": "object",

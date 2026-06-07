@@ -18,7 +18,7 @@
 
 ## Migration Notes
 
-7. **Migration 005 adds enhanced columns**: New columns added to `cert_item_rotation_policies` (enhanced policy inputs) and `cert_item_exception_approvals` (two-person control fields). Full upgrade/downgrade/upgrade cycle verified.
+7. **Migration 005 adds enhanced columns**: New columns added to `cert_item_rotation_policies` (enhanced policy inputs) and `cert_item_exception_approvals` (two-person control fields). Full upgrade/downgrade/upgrade cycle verified against real PostgreSQL 16.
 
 ## Integration Points
 
@@ -37,3 +37,5 @@
 - ✅ Single exam-eligibility gate: all paths through one authoritative service
 - ✅ Regression evidence: exact commands and results documented
 - ✅ PostgreSQL migration 005 created and verified
+- ✅ Migration 005 real PostgreSQL cycle: upgrade → downgrade → upgrade proven executed
+- ✅ Migration 005 objects removed on downgrade and restored on second upgrade
