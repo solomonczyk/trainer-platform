@@ -1,8 +1,33 @@
 # BA Phase 2 Known Issues
 
+## Resolved Issues
+
+### 1. Railway Deployment Package Files
+- **Status**: ✅ RESOLVED
+- **Fix**: Data files embedded in `backend/app/modules/admin/ba_phase2_data/` (commit `77535d6`)
+
+### 2. Playwright Registration Test Failure
+- **Status**: ✅ RESOLVED
+- **Fix**: Updated selectors from `h1,h2` to `h3` for CardTitle component (commit `77535d6`)
+- **Detail**: See `docs/acceptance/ba_phase2_playwright_failure_resolution.md`
+
+### 3. Cross-User Evaluation Data Leak
+- **Status**: ✅ RESOLVED
+- **Fix**: Added ownership check in EvaluationService.get_evaluation() (commit `69997d1`)
+- **Detail**: See `docs/acceptance/ba_phase2_cross_user_isolation_report.md`
+
 ## Active Issues
 
-### 1. Railway Deployment Infrastructure Limitation
+### 1. CORS Error on Analytics Events
+- **Type**: Non-blocking
+- **Detail**: The `POST /api/v1/analytics/events` endpoint returns `No 'Access-Control-Allow-Origin' header` for some requests
+- **Impact**: Analytics events may not be recorded from browser; backend-generated analytics still work
+- **Workaround**: None required — analytics continue to function via server-side recording
+
+### 2. Railway Frontend Deployment Build Context
+- **Type**: Infrastructure
+- **Detail**: `railway up` must be run from the `frontend/` directory (not repo root) for successful Nixpacks builds
+- **Impact**: Minor inconvenience for CI/CD pipeline configuration
 **Status**: OPEN
 **Impact**: Medium
 

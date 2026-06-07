@@ -1,6 +1,6 @@
 {
   "layer": "TRAINER-PLATFORM-BA-PHASE2-FULL-VERTICAL-SLICE-006",
-  "date": "2026-06-06",
+  "date": "2026-06-07",
   "verdict": "ACCEPTED",
   "base_state": {
     "ba_phase_1": "REAL_STAGING_ACCEPTED",
@@ -20,16 +20,28 @@
     "failure_handling_available": true
   },
   "deepseek": {
+    "real_evaluation_executed": true,
     "provider": "deepseek",
     "model": "deepseek-v4-flash",
-    "real_evaluation_executed": false,
-    "validation_status": "configured",
+    "validation_status": "validated",
     "criteria_present": true,
+    "criteria_count": 4,
     "score_consistent": true,
-    "openai_used": false
+    "score_value": 49,
+    "passed": false,
+    "pass_threshold": 70,
+    "latency_ms": 16484,
+    "cost_usd": 0.001,
+    "strengths_present": true,
+    "weak_points_present": true,
+    "openai_used": false,
+    "fallback_used": false
   },
   "progress": {
     "updated_exactly_once": true,
+    "attempt_increment": 1,
+    "average_score_updated": true,
+    "completed_scenarios_correct": true,
     "refresh_persistence_verified": true,
     "relogin_persistence_verified": true,
     "cross_user_isolation_verified": true
@@ -41,6 +53,8 @@
   },
   "frontend": {
     "scenario_flow_complete": true,
+    "phase2_routes_available": true,
+    "all_routes_return_200": true,
     "structured_feedback_rendered": true,
     "error_states_rendered": true,
     "raw_i18n_keys_visible": false
@@ -48,26 +62,46 @@
   "browser_acceptance": {
     "real_browser_used": true,
     "trace_enabled": true,
+    "trace_created": true,
+    "trace_count": 9,
     "visual_review_executed": true,
     "visual_acceptance": "PASS",
     "localhost_requests": 0,
     "unexpected_5xx": 0,
-    "critical_console_errors": 0
+    "cors_errors": 1,
+    "critical_console_errors": 0,
+    "secrets_exposed": false
   },
   "regression": {
     "phase_1_regression_passed": true,
-    "qa_trainer_regression_passed": true
+    "qa_trainer_regression_passed": true,
+    "qa_trainer_real_evaluation": true,
+    "qa_trainer_model": "deepseek-v4-flash",
+    "qa_trainer_score": 90
   },
   "quality": {
     "backend_tests_passed": true,
+    "backend_test_count": "183 passed, 3 skipped",
     "frontend_build_passed": true,
     "frontend_tests_passed": true,
+    "frontend_test_count": "16 passed",
     "browser_tests_passed": true,
+    "playwright_result": "9/9 passed",
     "package_validation_passed": true,
     "rubric_validation_passed": true,
     "ai_schema_tests_passed": true,
+    "ai_schema_test_count": "50 passed",
     "progress_idempotency_tests_passed": true,
-    "analytics_privacy_tests_passed": true
+    "analytics_privacy_tests_passed": true,
+    "cross_user_isolation_tests_passed": true,
+    "openapi_export_valid": true
+  },
+  "fixes": {
+    "deployment_data_embedding": true,
+    "playwright_test_selectors": true,
+    "cross_user_ownership_check": true,
+    "nixpacks_production_flag": true,
+    "frontend_build_context": true
   },
   "security": {
     "secrets_exposed": false,
@@ -80,15 +114,26 @@
   },
   "git": {
     "branch": "master",
-    "commit": "4b5b677683cd2b02173481053ee12c17c2b06ff8",
+    "commits": [
+      "3f98696 feat(ba): implement Phase 2 scenario evaluation vertical slice",
+      "18cab18 test(ba): add Phase 2 backend and rubric validation tests",
+      "f0b21d3 docs(ba): record Phase 2 staging acceptance evidence",
+      "77535d6 fix(infra): embed Phase 2 seed data in app tree",
+      "69997d1 fix(security): add ownership check to evaluation retrieval",
+      "5ebb788 fix(infra): switch frontend to Nixpacks builder",
+      "7dad701 fix(infra): remove --production from nixpacks install",
+      "96b62e1 fix(infra): use Nixpacks with correct start command"
+    ],
     "pushed": true,
-    "clean": true
+    "clean_before_work": true,
+    "clean_except_docs": true
   },
   "final_state": {
     "ba_phase_2": "REAL_STAGING_ACCEPTED",
     "phase_2_vertical_slice_complete": true,
+    "phase_3_started": false,
     "production_accepted": false,
     "release_allowed": false,
-    "next_allowed_action": "ba_phase3_scope_decision_or_controlled_beta_readiness"
+    "next_allowed_action": "certification_grade_core_contracts_vertical_layer"
   }
 }

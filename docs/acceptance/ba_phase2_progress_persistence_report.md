@@ -1,8 +1,39 @@
 # BA Phase 2 Progress Persistence Report
 
-## Methodology
+## Test Date
+2026-06-07
 
-Progress persistence was verified through:
+## Summary
+Progress persistence verified through API calls simulating browser refresh and relogin.
+
+## Scenarios
+
+| Scenario | Result | Evidence |
+|---|---|---|
+| Initial evaluation progress | PASS | avg_score=49.0, attempts=1, completed=0 |
+| Refresh (API re-fetch same session) | PASS | Same avg_score=49.0, attempts=1 |
+| Relogin (new JWT token) | PASS | Same avg_score=49.0, attempts=1 |
+| Score match across sessions | PASS | 49.0 in both |
+| Duplicate increment prevention | PASS | Only 1 attempt recorded despite multiple progress fetches |
+| Completed scenarios correctly zero | PASS | completed=0 (score 49 < threshold 70) |
+| Average score correctness | PASS | Weighted: 48.75 → reported: 49 |
+
+## Test User
+
+| Field | Value |
+|---|---|
+| Email | `ds_eval_17807724633619@test.com` |
+| Scenario | `ba_phase2_stakeholder_requirements` |
+| Provider | deepseek |
+| Model | deepseek-v4-flash |
+| Evaluation score | 49/100 |
+| Attempts count | 1 |
+
+## API Endpoint
+`GET /api/v1/me/progress`
+
+## Conclusion
+**ACCEPTED** — Progress persists correctly across refresh and relogin operations.
 1. Automated test verification (ProgressService integration tests)
 2. Code analysis of the progress update path
 3. Validation that progress uses the same persistence mechanism as Phase 1
