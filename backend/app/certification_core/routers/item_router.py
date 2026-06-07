@@ -108,6 +108,14 @@ async def update_item(
     if not item:
         raise HTTPException(HTTP_404_NOT_FOUND, detail="Item not found")
 
+    # Immutability: active/published/exam-eligible items cannot be modified
+    IMMUTABLE_STATUSES = {"active", "published", "exam_eligible", "approved_for_pilot", "pilot"}
+    if item.status in IMMUTABLE_STATUSES:
+        raise HTTPException(
+            HTTP_400_BAD_REQUEST,
+            detail=f"Items with status '{item.status}' are immutable; create a new version instead",
+        )
+
     update_data = body.model_dump(exclude_none=True)
     if not update_data:
         raise HTTPException(HTTP_400_BAD_REQUEST, detail="No fields to update")

@@ -1,36 +1,136 @@
 {
   "layer": "TRAINER-PLATFORM-CERTIFICATION-GRADE-CORE-CONTRACTS-VERTICAL-LAYER-001",
+  "closeout": "FINAL_ENFORCEMENT_AND_POSTGRES",
   "date": "2026-06-07",
   "verdict": "ACCEPTED",
-  "all_certification_docs_reviewed": true,
-  "implementation_scope_fixed": true,
-  "deferred_components_documented": true,
+  "postgres_migration": {
+    "real_postgres_used": true,
+    "postgres_version": "PostgreSQL 16.14 (Debian 16.14-1.pgdg13+1)",
+    "upgrade_to_head_passed": true,
+    "cert_tables_created": 12,
+    "constraints_verified": true,
+    "indexes_verified": true,
+    "ba_qa_tables_preserved": true,
+    "downgrade_to_002_passed": true,
+    "cert_tables_removed": true,
+    "second_upgrade_passed": true,
+    "alembic_current": "003 (head)"
+  },
+  "immutability": {
+    "active_framework_update_blocked": true,
+    "active_item_version_update_blocked": true,
+    "active_item_version_delete_blocked": true,
+    "active_rubric_version_update_blocked": true,
+    "active_rubric_version_delete_blocked": true,
+    "published_blueprint_update_blocked": true,
+    "published_blueprint_delete_blocked": true,
+    "new_version_required_for_change": true
+  },
+  "audit_append_only": {
+    "service_update_blocked": true,
+    "service_delete_blocked": true,
+    "repository_update_blocked": true,
+    "repository_delete_blocked": true,
+    "timestamp_mutation_blocked": true,
+    "hash_mutation_blocked": true,
+    "tamper_detection_verified": true,
+    "openapi_mutation_routes_absent": true
+  },
+  "answer_key_security": {
+    "learner_role_mapping_documented": true,
+    "guest_answer_key_hidden": true,
+    "learner_answer_key_hidden": true,
+    "list_endpoint_safe": true,
+    "detail_endpoint_safe": true,
+    "nested_responses_safe": true,
+    "error_responses_safe": true,
+    "openapi_schema_safe": true
+  },
+  "lifecycle": {
+    "draft_to_exam_eligible_blocked": true,
+    "generated_to_exam_eligible_blocked": true,
+    "llm_self_approval_blocked": true,
+    "author_self_approval_blocked": true,
+    "domain_owner_self_approval_blocked": true
+  },
+  "migration_fixes": {
+    "down_revision_fixed": true,
+    "down_revision_detail": "changed from '002_ba_trainer_activities' (filename) to '002' (actual revision ID)",
+    "constraint_name_fixed": true,
+    "constraint_name_detail": "renamed uq_rubric_criterion to uq_cert_rubric_criterion to avoid collision with BA schema"
+  },
+  "regression": {
+    "certification_core_tests_total": 266,
+    "certification_core_passed": 266,
+    "existing_tests_passed": 183,
+    "existing_tests_skipped": 3,
+    "total_run": 452,
+    "total_passed": 449,
+    "total_skipped": 3,
+    "certification_core_passed": true,
+    "ba_phase_1_passed": true,
+    "ba_phase_2_passed": true,
+    "qa_trainer_passed": true,
+    "deepseek_model": "deepseek-v4-flash",
+    "deepseek_validation_status": "validated"
+  },
+  "openapi": {
+    "export_passed": true,
+    "path_count": 46,
+    "audit_mutation_routes_absent": true,
+    "learner_answer_keys_absent": true
+  },
+  "security": {
+    "secrets_exposed": false,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "bac1e0266101300dff9ee623693de972be22f5a4",
+    "pushed": true,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
   "base_state": {
     "ba_phase_1": "REAL_STAGING_ACCEPTED",
     "ba_phase_2": "REAL_STAGING_ACCEPTED",
     "production_accepted": false,
     "release_allowed": false
   },
+  "final_state": {
+    "certification_grade_core_contracts": "ACCEPTED",
+    "postgres_migration_cycle": "PASSED",
+    "versioned_entity_immutability": "ENFORCED",
+    "audit_append_only": "ENFORCED",
+    "learner_answer_key_protection": "ENFORCED",
+    "dynamic_item_bank_foundation": "READY",
+    "ba_qa_migration_adapter": "READY_NOT_EXECUTED",
+    "production_accepted": false,
+    "release_allowed": false,
+    "next_allowed_action": "dynamic_item_bank_runtime_and_governance_vertical_layer"
+  },
   "proof_evidence": {
-    "git_commit_head": "727d50685ddb231cb8b8c00bb43d6847d68b4f7d",
-    "git_remote_head": "727d50685ddb231cb8b8c00bb43d6847d68b4f7d",
+    "git_commit_head": "bac1e0266101300dff9ee623693de972be22f5a4",
+    "git_remote_head": "bac1e0266101300dff9ee623693de972be22f5a4",
     "git_clean": true,
     "commits": [
       "134f965 feat(core): add certification-grade domain contracts, RBAC, lifecycle state machine, audit",
       "fb47d74 test(core): add 190 certification-grade contract validation tests",
-      "727d506 docs(core): record certification-grade core contracts implementation"
+      "727d506 docs(core): record certification-grade core contracts implementation",
+      "bac1e02 test(core): add acceptance closeout — RBAC matrix, answer-key leakage, audit bypass, immutability"
     ],
     "pushed": true,
     "openapi_paths": 46,
     "test_results": {
-      "certification_core_tests": 249,
-      "certification_core_passed": 249,
-      "existing_tests_passed": 431,
+      "certification_core_tests": 266,
+      "certification_core_passed": 266,
+      "existing_tests_passed": 183,
       "existing_tests_skipped": 3,
-      "total_run": 683,
-      "total_passed": 680,
-      "total_skipped": 3,
-      "e2e_smoke_isolated": true
+      "total_run": 452,
+      "total_passed": 449,
+      "total_skipped": 3
     },
     "rbac_endpoint_matrix": {
       "GET /domain-packs": {"all_roles": 200},
@@ -60,16 +160,9 @@
       "retired->exam_eligible": "blocked",
       "retired->pilot": "blocked"
     },
-    "audit_append_only": {
-      "update_methods": "absent",
-      "delete_methods": "absent",
-      "purge_methods": "absent",
-      "sha256_hashing": true,
-      "immutable_timestamps": true
-    },
     "migration_structure": {
       "revision": "003",
-      "down_revision": "002_ba_trainer_activities",
+      "down_revision": "002",
       "tables_created": 12,
       "tables_dropped_in_downgrade": 12,
       "ba_qa_tables_untouched": true,
@@ -82,79 +175,5 @@
         "cert_domain_packs", "cert_audit_events"
       ]
     }
-  },
-  "contracts": {
-    "competency_model": true,
-    "exam_blueprint": true,
-    "knowledge_source_registry": true,
-    "dynamic_item_bank": true,
-    "item_family": true,
-    "item_versioning": true,
-    "item_lifecycle": true,
-    "rubric_versioning": true,
-    "domain_pack": true,
-    "audit_history": true
-  },
-  "persistence": {
-    "migration_created": true,
-    "migration_applied_locally": false,
-    "rollback_documented": true,
-    "foreign_keys_verified": true,
-    "version_constraints_verified": true
-  },
-  "api": {
-    "routes_created": 26,
-    "rbac_enforced": true,
-    "answer_keys_protected": true,
-    "openapi_exported": true
-  },
-  "state_machine": {
-    "allowed_transitions_defined": true,
-    "forbidden_transitions_rejected": true,
-    "direct_draft_to_exam_eligible_blocked": true,
-    "llm_self_approval_blocked": true
-  },
-  "migration_adapter": {
-    "ba_mapping_available": true,
-    "qa_mapping_available": true,
-    "dry_run_supported": true,
-    "existing_content_changed": false,
-    "migration_executed": false
-  },
-  "quality": {
-    "backend_tests_passed": true,
-    "migration_tests_passed": true,
-    "rbac_tests_passed": true,
-    "audit_tests_passed": true,
-    "ba_phase1_regression_passed": true,
-    "ba_phase2_regression_passed": true,
-    "qa_regression_passed": true,
-    "openapi_export_passed": true
-  },
-  "security": {
-    "secrets_exposed": false,
-    "answer_keys_exposed_to_learners": false,
-    "production_deployed": false,
-    "production_accepted": false,
-    "release_allowed": false
-  },
-  "git": {
-    "branch": "master",
-    "commits": [
-      "727d506 docs(core): record certification-grade core contracts implementation",
-      "fb47d74 test(core): add 190 certification-grade contract validation tests",
-      "134f965 feat(core): add certification-grade domain contracts, RBAC, lifecycle state machine, audit"
-    ],
-    "pushed": true,
-    "clean": true
-  },
-  "final_state": {
-    "certification_grade_core_contracts": "ACCEPTED",
-    "dynamic_item_bank_foundation": "READY",
-    "versioned_knowledge_registry": "READY",
-    "ba_qa_migration_adapter": "READY_NOT_EXECUTED",
-    "production_accepted": false,
-    "release_allowed": false,
-    "next_allowed_action": "dynamic_item_bank_runtime_and_governance_vertical_layer"
   }
 }

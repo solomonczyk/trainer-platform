@@ -358,3 +358,258 @@ class TestForbiddenTransitionsAcceptance:
         from app.certification_core.state_machine.item_lifecycle import validate_transition
         result = validate_transition(from_s, to_s, actor_role="platform_admin", actor_id="admin")
         assert result["allowed"] is False, f"Transition {from_s}->{to_s} should be forbidden"
+
+
+# ============================================================================
+# 6. ENHANCED IMMUTABILITY — item, rubric, blueprint immutability
+# ============================================================================
+
+class TestEnhancedImmutability:
+    """Enhanced immutability tests for all versioned entities."""
+
+    async def _create_published_blueprint(self, ac) -> str:
+        """Create and publish a blueprint for immutability testing."""
+        # Create a domain pack first
+        resp = await ac.post("/api/v1/certification-core/domain-packs",
+            json={"domain_pack_id": "immut.test.dp", "name": "Immut Test DP", "version": "1.0", "created_by": "tester"},
+            headers=_token("platform_admin"))
+        # Create blueprint
+        bp_id = "immut.test.bp"
+        resp = await ac.post("/api/v1/certification-core/blueprints",
+            json={**SAMPLE_BLUEPRINT, "blueprint_id": bp_id, "domain_pack_id": "immut.test.dp"},
+            headers=_token("domain_owner"))
+        assert resp.status_code == 201
+        # Publish it
+        resp = await ac.patch(f"/api/v1/certification-core/blueprints/{bp_id}",
+            json={"status": "active"}, headers=_token("domain_owner"))
+        assert resp.status_code == 200
+        return bp_id
+
+    async def _create_active_item(self, ac) -> str:
+        """Create and activate an item for immutability testing."""
+        resp = await ac.post("/api/v1/certification-core/items",
+            json={**SAMPLE_ITEM, "item_id": "immut.test.item"},
+            headers=_token("content_author"))
+        assert resp.status_code == 201
+        item_id = resp.json()["item_id"]
+        # Mark as active
+        resp = await ac.patch(f"/api/v1/certification-core/items/{item_id}",
+            json={"status": "active"}, headers=_token("domain_owner"))
+        assert resp.status_code == 200
+        return item_id
+
+    async def _create_active_rubric(self, ac) -> str:
+        """Create and activate a rubric for immutability testing."""
+        resp = await ac.post("/api/v1/certification-core/rubrics",
+            json={**SAMPLE_RUBRIC, "rubric_id": "immut.test.rubric"},
+            headers=_token("content_author"))
+        assert resp.status_code == 201
+        rubric_id = resp.json()["rubric_id"]
+        # Activate it
+        resp = await ac.patch(f"/api/v1/certification-core/rubrics/{rubric_id}",
+            json={"status": "active"}, headers=_token("domain_owner"))
+        assert resp.status_code == 200
+        return rubric_id
+
+    async def test_active_item_update_blocked(self, ac):
+        """Active items cannot be updated."""
+        item_id = await self._create_active_item(ac)
+        resp = await ac.patch(f"/api/v1/certification-core/items/{item_id}",
+            json={"prompt": {"text": "New question?"}},
+            headers=_token("content_author"))
+        assert resp.status_code == 400, f"Active item update should be blocked: {resp.status_code}"
+
+    async def test_active_rubric_update_blocked(self, ac):
+        """Active rubrics cannot be updated."""
+        rubric_id = await self._create_active_rubric(ac)
+        resp = await ac.patch(f"/api/v1/certification-core/rubrics/{rubric_id}",
+            json={"description": "Should be blocked"},
+            headers=_token("domain_owner"))
+        assert resp.status_code == 400, f"Active rubric update should be blocked: {resp.status_code}"
+
+    async def test_published_blueprint_update_blocked(self, ac):
+        """Published/active blueprints cannot be updated."""
+        bp_id = await self._create_published_blueprint(ac)
+        resp = await ac.patch(f"/api/v1/certification-core/blueprints/{bp_id}",
+            json={"exam_duration_minutes": 90},
+            headers=_token("domain_owner"))
+        assert resp.status_code == 400, f"Published blueprint update should be blocked: {resp.status_code}"
+
+
+# ============================================================================
+# 7. AUDIT REPOSITORY APPEND-ONLY GUARD
+# ============================================================================
+
+class TestAuditAppendOnlyGuard:
+    """Audit repository blocks all mutation operations."""
+
+    async def test_audit_repository_create_blocked(self):
+        """AuditRepository.create() must raise RuntimeError."""
+        from app.certification_core.repositories.audit_repository import AuditRepository
+        import uuid
+        from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+        url = f"sqlite+aiosqlite:///test_audit_repo_{uuid.uuid4().hex}.db"
+        eng = create_async_engine(url, echo=False)
+        sf = async_sessionmaker(eng, class_=AsyncSession, expire_on_commit=False)
+        async with eng.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        async with sf() as db:
+            repo = AuditRepository(db)
+            try:
+                await repo.create(audit_event_id="test", entity_type="item", entity_id="1",
+                                  action="create", actor_id="tester")
+                assert False, "Should have raised RuntimeError"
+            except RuntimeError as e:
+                assert "append-only" in str(e).lower()
+        await eng.dispose()
+
+    async def test_audit_repository_update_blocked(self):
+        """AuditRepository.update_entity() must raise RuntimeError."""
+        from app.certification_core.repositories.audit_repository import AuditRepository
+        import uuid
+        from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+        url = f"sqlite+aiosqlite:///test_audit_repo_{uuid.uuid4().hex}.db"
+        eng = create_async_engine(url, echo=False)
+        sf = async_sessionmaker(eng, class_=AsyncSession, expire_on_commit=False)
+        async with sf() as db:
+            repo = AuditRepository(db)
+            try:
+                await repo.update_entity("some-id", action="updated")
+                assert False, "Should have raised RuntimeError"
+            except RuntimeError as e:
+                assert "append-only" in str(e).lower()
+        await eng.dispose()
+
+    async def test_audit_repository_delete_blocked(self):
+        """AuditRepository.soft_delete() must raise RuntimeError."""
+        from app.certification_core.repositories.audit_repository import AuditRepository
+        import uuid
+        from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+        url = f"sqlite+aiosqlite:///test_audit_repo_{uuid.uuid4().hex}.db"
+        eng = create_async_engine(url, echo=False)
+        sf = async_sessionmaker(eng, class_=AsyncSession, expire_on_commit=False)
+        async with sf() as db:
+            repo = AuditRepository(db)
+            try:
+                await repo.soft_delete("some-id")
+                assert False, "Should have raised RuntimeError"
+            except RuntimeError as e:
+                assert "append-only" in str(e).lower()
+        await eng.dispose()
+
+    async def test_audit_tamper_detection(self):
+        """Verify SHA-256 hashing detects tampering with audit state."""
+        from app.certification_core.audit.service import _compute_hash
+        before = {"status": "draft", "difficulty": "medium"}
+        after = {"status": "active", "difficulty": "medium"}
+        h1 = _compute_hash(before)
+        h2 = _compute_hash(after)
+        # Different states must produce different hashes
+        assert h1 != h2, "Different states must produce different hashes"
+        # Same state must produce same hash
+        h1_copy = _compute_hash(before)
+        assert h1 == h1_copy, "Same state must produce the same hash"
+
+
+# ============================================================================
+# 8. ANSWER-KEY LEAKAGE — comprehensive coverage
+# ============================================================================
+
+class TestComprehensiveAnswerKeyLeakage:
+    """Verify answer keys are protected across all endpoints and contexts."""
+
+    async def test_answer_key_absent_from_list_endpoint(self, ac):
+        """Answer keys must not appear in item list responses for learner roles."""
+        admin_token = _token("platform_admin")
+        # Create an item with answer key
+        resp = await ac.post("/api/v1/certification-core/items",
+            json={**SAMPLE_ITEM, "item_id": "leak.test.list"},
+            headers=admin_token)
+        assert resp.status_code == 201
+
+        # Verify guest sees no answer_key in list
+        guest_resp = await ac.get("/api/v1/certification-core/items", headers=_token("guest"))
+        assert guest_resp.status_code == 200
+        data = guest_resp.json()
+        for item in data.get("items", []):
+            assert "answer_key" not in item, f"Guest should not see answer_key in list"
+
+        # Verify platform_admin sees answer_key in list
+        admin_resp = await ac.get("/api/v1/certification-core/items", headers=admin_token)
+        assert admin_resp.status_code == 200
+        data = admin_resp.json()
+        any_with_key = any("answer_key" in item for item in data.get("items", []))
+        assert any_with_key, "Admin should see answer_key in list"
+
+    async def test_error_response_no_answer_key_leakage(self, ac):
+        """Error responses must not leak answer key data."""
+        # Try an invalid operation with learner role
+        resp = await ac.get("/api/v1/certification-core/items/nonexistent-id", headers=_token("guest"))
+        assert resp.status_code == 404
+        body = resp.json()
+        body_str = str(body).lower()
+        # Ensure no answer key leaked in error
+        assert "correct" not in body_str or "answer_key" not in body_str
+
+    async def test_learner_mapping_guest_is_learner(self, ac):
+        """Guest role maps to learner with no answer-key access."""
+        from app.certification_core.services.authorization import AuthorizationService
+        assert AuthorizationService.can_read_answer_keys("guest") is False
+        assert AuthorizationService.can_read_answer_keys("registered_user") is False
+
+    async def test_learner_mapping_documented(self, ac):
+        """Learner is authenticated user without certification admin role."""
+        from app.certification_core.services.authorization import (
+            CERTIFICATION_ROLES, LEARNER_PERMISSIONS,
+        )
+        assert "certification:read" in LEARNER_PERMISSIONS
+        assert "certification:answer_key:read" not in LEARNER_PERMISSIONS
+        # Learners should not be in CERTIFICATION_ROLES
+        assert "learner" not in CERTIFICATION_ROLES
+        assert "registered_user" not in CERTIFICATION_ROLES
+
+
+# ============================================================================
+# 9. LIFECYCLE SECURITY — self-approval and role gates
+# ============================================================================
+
+class TestLifecycleSecurityAcceptance:
+    """Lifecycle approval gates and self-approval prevention."""
+
+    def test_content_author_cannot_self_approve(self):
+        from app.certification_core.services.authorization import AuthorizationService
+        assert AuthorizationService.can_self_approve("content_author") is False
+
+    def test_domain_owner_cannot_self_approve(self):
+        from app.certification_core.services.authorization import AuthorizationService
+        assert AuthorizationService.can_self_approve("domain_owner") is False
+
+    def test_platform_admin_can_self_approve(self):
+        from app.certification_core.services.authorization import AuthorizationService
+        # platform_admin is not in the restricted set
+        assert AuthorizationService.can_self_approve("platform_admin") is True
+
+    def test_llm_self_approval_blocked(self):
+        """LLM actors cannot self-approve expert gates."""
+        from app.certification_core.state_machine.item_lifecycle import validate_transition
+        result = validate_transition(
+            "expert_review_required", "approved_for_pilot",
+            actor_role="expert_reviewer", actor_id="llm:gpt-4",
+        )
+        assert result["allowed"] is False
+
+    def test_content_author_self_approval_blocked(self):
+        from app.certification_core.state_machine.item_lifecycle import validate_transition
+        result = validate_transition(
+            "expert_review_required", "approved_for_pilot",
+            actor_role="content_author", actor_id="user_1",
+        )
+        assert result["allowed"] is False
+
+    def test_domain_owner_self_approval_blocked(self):
+        from app.certification_core.state_machine.item_lifecycle import validate_transition
+        result = validate_transition(
+            "expert_review_required", "approved_for_pilot",
+            actor_role="domain_owner", actor_id="user_1",
+        )
+        assert result["allowed"] is False

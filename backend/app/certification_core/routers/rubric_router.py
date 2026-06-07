@@ -89,5 +89,13 @@ async def update_rubric(
     rubric = await repo.get_by_rubric_id(rubric_id)
     if not rubric:
         raise HTTPException(HTTP_404_NOT_FOUND, detail="Rubric not found")
+
+    # Immutability: active rubrics cannot be modified
+    if rubric.status == "active":
+        raise HTTPException(
+            HTTP_400_BAD_REQUEST,
+            detail="Active rubrics cannot be modified; create a new version instead",
+        )
+
     rubric = await repo.update_entity(rubric.id, **body.model_dump(exclude_none=True))
     return RubricResponse.model_validate(rubric)

@@ -24,7 +24,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "003"
-down_revision = "002_ba_trainer_activities"
+down_revision = "002"
 branch_labels: Optional[str] = None
 depends_on: Optional[str] = None
 
@@ -248,7 +248,7 @@ def upgrade() -> None:
         sa.Column("sort_order", sa.Integer, nullable=False, server_default="0"),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
-        sa.UniqueConstraint("rubric_id", "criterion_id", name="uq_rubric_criterion"),
+        sa.UniqueConstraint("rubric_id", "criterion_id", name="uq_cert_rubric_criterion"),
     )
 
     # ------------------------------------------------------------------ #

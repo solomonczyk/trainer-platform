@@ -106,8 +106,11 @@ async def update_framework(
         raise HTTPException(HTTP_404_NOT_FOUND, detail="Competency framework not found")
 
     # Prevent update if active (immutable published versions)
-    if fw.status == "active" and body.status and body.status != "deprecated":
-        raise HTTPException(HTTP_400_BAD_REQUEST, detail="Active frameworks cannot be modified; create a new version")
+    if fw.status == "active":
+        if body.status and body.status == "deprecated":
+            pass  # Allow deprecation
+        else:
+            raise HTTPException(HTTP_400_BAD_REQUEST, detail="Active frameworks cannot be modified; create a new version")
 
     before = {"status": fw.status}
     fw = await repo.update_entity(fw.id, **body.model_dump(exclude_none=True))

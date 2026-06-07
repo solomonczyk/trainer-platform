@@ -102,8 +102,14 @@ async def update_blueprint(
     if not bp:
         raise HTTPException(HTTP_404_NOT_FOUND, detail="Exam blueprint not found")
 
-    if bp.status == "active" and body.status and body.status != "deprecated":
-        raise HTTPException(HTTP_400_BAD_REQUEST, detail="Active blueprints cannot be modified")
+    if bp.status == "active":
+        # Allow only status change to "deprecated"
+        if body.status and body.status == "deprecated":
+            pass  # Allow deprecation
+        elif body.status:
+            raise HTTPException(HTTP_400_BAD_REQUEST, detail="Active blueprints cannot be modified")
+        else:
+            raise HTTPException(HTTP_400_BAD_REQUEST, detail="Active blueprints cannot be modified; create a new version")
 
     before = {"status": bp.status}
     bp = await repo.update_entity(bp.id, **body.model_dump(exclude_none=True))
