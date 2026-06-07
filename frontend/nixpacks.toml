@@ -1,5 +1,4 @@
 # Nixpacks configuration for Railway
-# Node.js 20 with Next.js standalone output
 
 [phases.setup]
 nixPkgs = ["nodejs_20"]
@@ -9,6 +8,3 @@ cmds = ["npm ci"]
 
 [phases.build]
 cmds = ["npm run build"]
-
-[start]
-cmd = "node .next/standalone/server.js"
