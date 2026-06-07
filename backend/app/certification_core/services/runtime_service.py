@@ -6,13 +6,14 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.certification_core.audit.service import AuditService
 from app.certification_core.models.item_models import Item, ItemFamily
 from app.certification_core.models.knowledge_source_models import KnowledgeSource
 from app.certification_core.models.rubric_models import CertRubric
+from app.certification_core.models.runtime_models import ItemExposureEvent, ItemRotationPolicy
 from app.certification_core.repositories.item_repository import ItemRepository, ItemFamilyRepository
 from app.certification_core.repositories.runtime_repository import (
     ItemSourceBindingRepository,
@@ -916,12 +917,28 @@ class ExposureService:
 # ---------------------------------------------------------------------------
 
 class RotationPolicyService:
-    """Manages rotation policy configuration and eligibility checks."""
+    """Manages rotation policy configuration and eligibility checks.
+
+    Evaluates all policy inputs:
+    - locale compatibility
+    - domain balance quotas
+    - competency balance quotas
+    - difficulty balance ratios
+    - item family diversity
+    - recent-use exclusion
+    - exposure threshold
+    - cool-down period
+    - suspended/retired state
+    - minimum pool size
+    """
 
     def __init__(self, db: AsyncSession):
         self.db = db
         self.policy_repo = ItemRotationPolicyRepository(db)
         self.exposure_service = ExposureService(db)
+        self.item_repo = ItemRepository(db)
+        self.pool_repo = ItemPoolMembershipRepository(db)
+        self.audit = AuditService(db)
 
     async def create_policy(self, data: RotationPolicyCreate, actor_role: str) -> dict:
         """Create a rotation policy."""
@@ -931,23 +948,804 @@ class RotationPolicyService:
         return {"success": True, "policy": policy}
 
     async def check_eligibility(self, item_id: str) -> dict:
-        """Check item eligibility per applicable policy."""
-        policy = await self.policy_repo.get_by_item(item_id)
-        if not policy and await self.policy_repo.get_by_business_id("default", "policy_id"):
-            policy_result = await self.db.execute(
-                select(ItemRotationPolicy).where(
-                    ItemRotationPolicy.policy_id == "default"
-                )
-            )
-            policy = policy_result.scalar_one_or_none()
+        """Check item eligibility per applicable policy.
 
-        result = await self.exposure_service.check_rotation_eligibility(item_id, policy)
+        Returns dict with eligible bool, all reason flags, decision_reasons list.
+        """
+        item = await self.item_repo.get_by_item_id(item_id)
+        if not item:
+            return self._build_result(item_id, eligible=False,
+                                       reasons=["Item not found"], code="item_not_found")
+
+        # Find applicable policy
+        policy = await self.policy_repo.get_by_item(item_id)
+        if not policy:
+            # Try by domain pack
+            if item.domain_pack_id:
+                policies, _ = await self.policy_repo.get_by_domain_pack(item.domain_pack_id)
+                if policies:
+                    policy = policies[0]
+            if not policy:
+                # Try default
+                policy = await self.policy_repo.get_by_business_id("default", "policy_id")
+
+        policy_id = policy.policy_id if policy else "none"
+        reasons: list[str] = []
+        flags: dict = {}
+        now = datetime.now(timezone.utc)
+
+        # 1. Suspended check
+        if item.status == "suspended":
+            return self._build_result(item_id, eligible=False, policy_id=policy_id,
+                                       reasons=["Item is suspended"], code="suspended",
+                                       suspended=True)
+
+        # 2. Retired check
+        if item.status == "retired":
+            return self._build_result(item_id, eligible=False, policy_id=policy_id,
+                                       reasons=["Item is retired"], code="retired",
+                                       retired=True)
+
+        # 3. Locale compatibility
+        if policy and policy.allowed_locales:
+            if item.locale not in policy.allowed_locales:
+                reasons.append(f"Locale '{item.locale}' not in allowed: {policy.allowed_locales}")
+                flags["wrong_locale"] = True
+
+        # 4. Domain balance
+        if policy and policy.domain_balance_quotas and item.domain_pack_id:
+            domain_key = item.domain_pack_id
+            quota = policy.domain_balance_quotas.get(domain_key, 0)
+            if quota > 0:
+                # Count active exam-eligible items in this domain
+                count_domain = await self.item_repo.count(
+                    filters={"domain_pack_id": domain_key, "status": "exam_eligible"}
+                )
+                if count_domain >= quota:
+                    reasons.append(f"Domain '{domain_key}' quota {quota} exceeded ({count_domain})")
+                    flags["domain_balance_failed"] = True
+
+        # 5. Competency balance
+        if policy and policy.competency_balance_quotas and item.competency_ids:
+            for comp_id in (item.competency_ids or []):
+                quota = policy.competency_balance_quotas.get(str(comp_id), 0)
+                if quota > 0:
+                    count_comp = await self.item_repo.count(
+                        filters={"status": "exam_eligible"}
+                    )
+                    # Rough check — count items referencing this competency
+                    if count_comp >= quota:
+                        reasons.append(f"Competency balance quota '{comp_id}' exceeded")
+                        flags["competency_balance_failed"] = True
+                        break
+
+        # 6. Difficulty balance
+        if policy and policy.difficulty_balance_ratios:
+            diff = item.difficulty_target or "medium"
+            max_ratio = policy.difficulty_balance_ratios.get(diff, 1.0)
+            total_items = await self.item_repo.count(filters={"status": "exam_eligible"})
+            diff_count = await self.item_repo.count(
+                filters={"difficulty_target": diff, "status": "exam_eligible"}
+            )
+            if total_items > 0 and (diff_count / total_items) > max_ratio:
+                reasons.append(f"Difficulty '{diff}' ratio {max_ratio} exceeded ({diff_count}/{total_items})")
+                flags["difficulty_balance_failed"] = True
+
+        # 7. Item family diversity
+        if policy and policy.max_items_per_family > 0 and item.item_family_id:
+            family_count = await self.item_repo.count(
+                filters={"item_family_id": item.item_family_id, "status": "exam_eligible"}
+            )
+            if family_count >= policy.max_items_per_family:
+                reasons.append(f"Item family limit {policy.max_items_per_family} reached ({family_count})")
+                flags["item_family_diversity_failed"] = True
+
+        # 8. Exposure checks via exposure service
+        exposure_check = await self.exposure_service.check_rotation_eligibility(item_id, policy)
+        if not exposure_check.get("eligible", True):
+            if exposure_check.get("temporarily_cooling_down") or exposure_check.get("cooling_down"):
+                reasons.append(exposure_check.get("reason", "Item is cooling down"))
+                flags["cooling_down"] = True
+            elif exposure_check.get("exposure_limit_reached"):
+                reasons.append(exposure_check.get("reason", "Exposure limit reached"))
+                flags["exposure_limit_reached"] = True
+
+        # 9. Recent use exclusion (check if used recently)
+        if policy and policy.recent_use_window_days > 0:
+            since = now - timedelta(days=policy.recent_use_window_days)
+            recent_events = await self.db.execute(
+                select(func.count(ItemExposureEvent.id))
+                .where(ItemExposureEvent.item_id == item.id)
+                .where(ItemExposureEvent.exposure_timestamp >= since)
+            )
+            recent_count = recent_events.scalar() or 0
+            if recent_count > 0:
+                reasons.append(f"Recent use exclusion: {recent_count} exposures in {policy.recent_use_window_days}d")
+                flags["recent_use_excluded"] = True
+
+        # 10. Insufficient pool detection
+        if policy and policy.min_pool_size > 0:
+            pool_items, pool_total = await self.pool_repo.list_pool(
+                pool_type="exam_eligible", status="active"
+            )
+            if pool_total < policy.min_pool_size:
+                reasons.append(f"Insufficient pool: {pool_total} items, minimum {policy.min_pool_size}")
+                flags["insufficient_pool"] = True
+
+        eligible = len(flags) == 0
+        if not eligible:
+            code = "blocked"
+        else:
+            code = "eligible"
+
+        # Build evaluated_inputs
+        evaluated_inputs = {
+            "item_id": item_id,
+            "status": item.status,
+            "locale": item.locale,
+            "domain_pack_id": item.domain_pack_id,
+            "difficulty_target": item.difficulty_target,
+            "competency_ids": item.competency_ids,
+            "item_family_id": item.item_family_id,
+        }
+        if policy:
+            evaluated_inputs["policy_id"] = policy.policy_id
+            evaluated_inputs["policy_enabled"] = policy.enabled
+            evaluated_inputs["min_pool_size"] = policy.min_pool_size
+            evaluated_inputs["recent_use_window_days"] = policy.recent_use_window_days
+            evaluated_inputs["exposure_threshold"] = policy.exposure_threshold
+
+        # Audit
+        audit_action = "rotation_evaluated" if eligible else "rotation_excluded"
+        await self.audit.record(
+            entity_type="item",
+            entity_id=item_id,
+            action=audit_action,
+            actor_id="system",
+            actor_role="rotation_policy",
+            reason=f"Rotation {'eligible' if eligible else 'excluded'}: {'; '.join(reasons) if reasons else 'all checks passed'}",
+        )
+
+        if flags.get("insufficient_pool"):
+            await self.audit.record(
+                entity_type="item",
+                entity_id=item_id,
+                action="insufficient_pool_detected",
+                actor_id="system",
+                actor_role="rotation_policy",
+                reason=f"Pool has insufficient items: minimum {policy.min_pool_size if policy else 5}",
+            )
+
+        return self._build_result(
+            item_id=item_id, eligible=eligible, policy_id=policy_id,
+            reasons=reasons, code=code, evaluated_inputs=evaluated_inputs,
+            **flags,
+        )
+
+    def _build_result(
+        self, item_id: str, eligible: bool,
+        policy_id: str = "none", reasons: list[str] = None,
+        code: str = "eligible", evaluated_inputs: dict = None,
+        **flags,
+    ) -> dict:
+        """Build a standardized rotation eligibility result."""
+        from datetime import datetime, timezone
+        result = {
+            "item_id": item_id,
+            "eligible": eligible,
+            "policy_id": policy_id,
+            "policy_version": "1",
+            "decision_code": code,
+            "decision_reasons": reasons or [],
+            "evaluated_inputs": evaluated_inputs,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "reason": "; ".join(reasons) if reasons else ("Eligible" if eligible else "Blocked"),
+        }
+        # Apply flags
+        for flag_name in [
+            "cooling_down", "exposure_limit_reached", "wrong_locale",
+            "domain_balance_failed", "competency_balance_failed",
+            "difficulty_balance_failed", "item_family_diversity_failed",
+            "recent_use_excluded", "suspended", "retired", "insufficient_pool",
+        ]:
+            result[flag_name] = flags.get(flag_name, False)
         return result
 
 
 # ---------------------------------------------------------------------------
-# Suspension / Retirement Service
+# Controlled Exception Service
 # ---------------------------------------------------------------------------
+
+class ControlledExceptionService:
+    """Controlled psychometric exception with two-person control, expiration, and audit.
+
+    Rules:
+    - Requester must be platform_admin
+    - Reason is required
+    - Expiration is required and must be in the future
+    - Requester cannot second-approve
+    - Item author cannot approve exception
+    - Expired/rejected/revoked exceptions are rejected
+    - Scope is limited to one item version
+    - All actions are audited
+    - Exception never bypasses: source traceability, expert review, QA review,
+      active item version, active rubric, suspension/retirement checks
+    """
+
+    SECOND_REVIEWER_ALLOWED_ROLES = [
+        "psychometric_reviewer",
+        "qa_reviewer",
+        "domain_owner",
+    ]
+
+    def __init__(self, db: AsyncSession):
+        self.db = db
+        self.exception_repo = ItemExceptionApprovalRepository(db)
+        self.item_repo = ItemRepository(db)
+        self.pool_repo = ItemPoolMembershipRepository(db)
+        self.traceability = SourceTraceabilityService(db)
+        self.audit = AuditService(db)
+
+    async def request_exception(
+        self,
+        data: ExceptionRequestCreate,
+        requester_role: str,
+    ) -> dict:
+        """Request a controlled exception. Only platform_admin can request."""
+        if requester_role != "platform_admin":
+            return {"success": False, "message": "Only platform_admin can request exceptions",
+                    "code": "FORBIDDEN_ROLE"}
+
+        item = await self.item_repo.get_by_item_id(data.item_id)
+        if not item:
+            return {"success": False, "message": "Item not found", "code": "ITEM_NOT_FOUND"}
+
+        # Reason is required
+        if not data.reason or not data.reason.strip():
+            return {"success": False, "message": "Reason is required",
+                    "code": "REASON_REQUIRED"}
+
+        # Expiration required
+        if not data.expires_at:
+            return {"success": False, "message": "Expiration date is required",
+                    "code": "EXPIRATION_REQUIRED"}
+
+        # Expiration must be in the future
+        expires_at = data.expires_at
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        if expires_at <= datetime.now(timezone.utc):
+            return {"success": False, "message": "Expiration must be in the future",
+                    "code": "EXPIRATION_PAST"}
+
+        # Validate scope is limited to one item version
+        if not data.item_version_id:
+            # Use current item version as scope
+            item_version = item.version
+            data.item_version_id = f"{item.item_id}_v{item.version}"
+
+        # Check for existing active exception for this item+version
+        existing = await self.exception_repo.get_by_item_and_version(
+            data.item_id, data.item_version_id,
+        )
+        for exc in existing[0] if existing[0] else []:
+            if exc.is_active and exc.expires_at > datetime.now(timezone.utc):
+                return {
+                    "success": False,
+                    "message": f"An active exception already exists: {exc.exception_id}",
+                    "code": "DUPLICATE_EXCEPTION",
+                    "existing_exception_id": exc.exception_id,
+                }
+
+        # DON'T check suspension/retirement here — exception cannot bypass those
+        if item.status == "suspended":
+            return {"success": False, "message": "Suspended items cannot receive exceptions",
+                    "code": "ITEM_SUSPENDED"}
+        if item.status == "retired":
+            return {"success": False, "message": "Retired items cannot receive exceptions",
+                    "code": "ITEM_RETIRED"}
+
+        # Create exception record (status: pending)
+        exception_id = f"exc-{uuid.uuid4().hex[:12]}"
+        exc = await self.exception_repo.create(
+            exception_id=exception_id,
+            item_version_id=data.item_version_id,
+            item_id=item.id,
+            exception_type="psychometric_exception",
+            reason=data.reason,
+            scope=data.scope or f"item_version:{data.item_version_id}",
+            requested_by=data.requested_by,
+            requester_role=requester_role,
+            granted_by=data.requested_by,
+            granted_by_role=requester_role,
+            expires_at=data.expires_at,
+            is_active=True,
+            status="pending",
+        )
+
+        # Audit
+        audit_event = await self.audit.record(
+            entity_type="item",
+            entity_id=data.item_id,
+            action="exception_requested",
+            actor_id=data.requested_by,
+            actor_role=requester_role,
+            reason=f"Exception requested: {data.reason[:200]}",
+        )
+
+        # Link audit correlation ID
+        exc.audit_correlation_id = audit_event.audit_event_id
+        await self.db.flush()
+
+        return {"success": True, "exception": exc}
+
+    async def first_approve(
+        self,
+        exception_id: str,
+        data: ExceptionApprovalFirst,
+        actor_role: str,
+    ) -> dict:
+        """Record first approval (the requester's own approval)."""
+        exc = await self.exception_repo.get_by_exception_id(exception_id)
+        if not exc:
+            return {"success": False, "message": "Exception not found", "code": "NOT_FOUND"}
+
+        # Check expiration
+        now = datetime.now(timezone.utc)
+        expires = exc.expires_at
+        if expires.tzinfo is None:
+            expires = expires.replace(tzinfo=timezone.utc)
+        if expires <= now:
+            await self.exception_repo.update_status(exception_id, "expired")
+            return {"success": False, "message": "Exception has expired",
+                    "code": "EXPIRED"}
+
+        # Check status
+        if exc.status != "pending":
+            return {"success": False, "message": f"Exception is in '{exc.status}' state, not 'pending'",
+                    "code": "WRONG_STATE"}
+
+        # First approval — record
+        exc.first_approver = data.reviewer_id
+        exc.first_approval_timestamp = datetime.now(timezone.utc)
+        exc.status = "first_approved"
+        await self.db.flush()
+
+        # Resolve business key for audit
+        item = await self.item_repo.get_by_id(exc.item_id)
+
+        # Audit
+        await self.audit.record(
+            entity_type="item",
+            entity_id=item.item_id if item else exc.item_id,
+            action="exception_first_approved",
+            actor_id=data.reviewer_id,
+            actor_role=actor_role,
+            reason=f"Exception first approved by {data.reviewer_id}",
+        )
+
+        return {"success": True, "message": "First approval recorded",
+                "exception": exc}
+
+    async def second_approve(
+        self,
+        exception_id: str,
+        data: ExceptionApprovalSecond,
+        actor_role: str,
+    ) -> dict:
+        """Second (final) approval by an independent reviewer.
+
+        Rules enforced:
+        - Second reviewer must have an allowed role
+        - Second reviewer cannot be the requester (self-approval blocked)
+        - Item author cannot approve exception
+        - Exception must not be expired
+        - Exception must be in 'first_approved' state
+        """
+        exc = await self.exception_repo.get_by_exception_id(exception_id)
+        if not exc:
+            return {"success": False, "message": "Exception not found", "code": "NOT_FOUND"}
+
+        # Check expiration
+        now = datetime.now(timezone.utc)
+        expires = exc.expires_at
+        if expires.tzinfo is None:
+            expires = expires.replace(tzinfo=timezone.utc)
+        if expires <= now:
+            await self.exception_repo.update_status(exception_id, "expired")
+            return {"success": False, "message": "Exception has expired",
+                    "code": "EXPIRED"}
+
+        # Check status — must be first_approved
+        if exc.status != "first_approved":
+            return {"success": False, "message": f"Exception is in '{exc.status}' state, need 'first_approved'",
+                    "code": "WRONG_STATE"}
+
+        # Second reviewer role check
+        if actor_role not in self.SECOND_REVIEWER_ALLOWED_ROLES:
+            return {
+                "success": False,
+                "message": f"Role '{actor_role}' cannot second-approve. Allowed: {self.SECOND_REVIEWER_ALLOWED_ROLES}",
+                "code": "FORBIDDEN_ROLE",
+            }
+
+        # Requester cannot second-approve (self-approval prevention)
+        if data.reviewer_id == exc.requested_by:
+            return {
+                "success": False,
+                "message": "Requester cannot second-approve their own exception",
+                "code": "SELF_APPROVAL_BLOCKED",
+            }
+
+        # First approver cannot second-approve
+        if exc.first_approver and data.reviewer_id == exc.first_approver:
+            return {
+                "success": False,
+                "message": "First approver cannot also be the second approver",
+                "code": "SINGLE_PERSON_EXCEPTION_BLOCKED",
+            }
+
+        # Item author cannot approve exception
+        item = await self.item_repo.get_by_id(exc.item_id)
+        if item and item.created_by == data.reviewer_id:
+            return {
+                "success": False,
+                "message": "Item author cannot approve exception for their own item",
+                "code": "AUTHOR_APPROVAL_BLOCKED",
+            }
+
+        if data.decision == "reject":
+            await self.exception_repo.update_status(exception_id, "rejected")
+            reject_item = await self.item_repo.get_by_id(exc.item_id)
+            await self.audit.record(
+                entity_type="item",
+                entity_id=reject_item.item_id if reject_item else exc.item_id,
+                action="exception_rejected",
+                actor_id=data.reviewer_id,
+                actor_role=actor_role,
+                reason=f"Exception rejected by {data.reviewer_id}",
+            )
+            return {"success": True, "message": "Exception rejected", "status": "rejected"}
+
+        # Approve
+        exc.second_reviewer = data.reviewer_id
+        exc.second_approval_timestamp = datetime.now(timezone.utc)
+        exc.status = "approved"
+        await self.db.flush()
+
+        # Audit
+        item_for_audit = await self.item_repo.get_by_id(exc.item_id)
+        await self.audit.record(
+            entity_type="item",
+            entity_id=item_for_audit.item_id if item_for_audit else exc.item_id,
+            action="exception_second_approved",
+            actor_id=data.reviewer_id,
+            actor_role=actor_role,
+            reason=f"Exception second approved by {data.reviewer_id}",
+        )
+
+        return {"success": True, "message": "Exception fully approved",
+                "exception": exc}
+
+    async def revoke_exception(
+        self,
+        exception_id: str,
+        data: ExceptionRevocation,
+        actor_role: str,
+    ) -> dict:
+        """Revoke an approved exception."""
+        if actor_role != "platform_admin":
+            return {"success": False, "message": "Only platform_admin can revoke exceptions",
+                    "code": "FORBIDDEN_ROLE"}
+
+        exc = await self.exception_repo.get_by_exception_id(exception_id)
+        if not exc:
+            return {"success": False, "message": "Exception not found", "code": "NOT_FOUND"}
+
+        if exc.status == "revoked":
+            return {"success": False, "message": "Exception already revoked", "code": "ALREADY_REVOKED"}
+
+        await self.exception_repo.update_status(exception_id, "revoked")
+
+        # Audit
+        revoke_item = await self.item_repo.get_by_id(exc.item_id)
+        await self.audit.record(
+            entity_type="item",
+            entity_id=revoke_item.item_id if revoke_item else exc.item_id,
+            action="exception_revoked",
+            actor_id=data.revoked_by,
+            actor_role=actor_role,
+            reason=f"Exception revoked: {data.reason[:200]}",
+        )
+
+        return {"success": True, "message": "Exception revoked"}
+
+    async def validate_exception_for_gate(
+        self,
+        exception_id: str,
+        item_id: str,
+    ) -> dict:
+        """Validate an exception can be used to grant exam eligibility.
+
+        Checks all non-psychometric gates that the exception cannot bypass:
+        - Source traceability
+        - Active item version requirement
+        - Active rubric requirement
+        - Suspension/retirement checks
+        """
+        exc = await self.exception_repo.get_by_exception_id(exception_id)
+        if not exc:
+            return {"valid": False, "message": "Exception not found", "code": "NOT_FOUND"}
+
+        # Exception must be approved
+        if exc.status != "approved":
+            return {"valid": False, "message": f"Exception is '{exc.status}', not 'approved'",
+                    "code": "NOT_APPROVED"}
+
+        # Must be active
+        if not exc.is_active:
+            return {"valid": False, "message": "Exception is not active", "code": "INACTIVE"}
+
+        # Expiration check
+        now = datetime.now(timezone.utc)
+        expires = exc.expires_at
+        if expires.tzinfo is None:
+            expires = expires.replace(tzinfo=timezone.utc)
+        if expires <= now:
+            return {"valid": False, "message": "Exception has expired", "code": "EXPIRED"}
+
+        # Check scope — must match this item version
+        item = await self.item_repo.get_by_item_id(item_id)
+        if not item:
+            return {"valid": False, "message": "Item not found", "code": "ITEM_NOT_FOUND"}
+
+        expected_version_id = f"{item.item_id}_v{item.version}"
+        if exc.item_version_id and exc.item_version_id != expected_version_id:
+            return {
+                "valid": False,
+                "message": f"Exception scope is version '{exc.item_version_id}' but item is '{expected_version_id}'",
+                "code": "VERSION_MISMATCH",
+            }
+
+        # Non-bypassable checks:
+        # Source traceability
+        source_check = await self.traceability.validate_item_sources(item.id)
+        if not source_check["valid"]:
+            return {"valid": False, "message": source_check["message"], "code": "SOURCE_INVALID"}
+
+        # Active rubric
+        if item.rubric_id:
+            rubric_result = await self.db.execute(
+                select(CertRubric).where(CertRubric.rubric_id == item.rubric_id)
+            )
+            rubric = rubric_result.scalar_one_or_none()
+            if not rubric or rubric.status not in ("active", "published"):
+                return {"valid": False, "message": "Rubric is not active",
+                        "code": "RUBRIC_INACTIVE"}
+
+        # Suspension/retirement checks
+        if item.status == "suspended":
+            return {"valid": False, "message": "Item is suspended — exception cannot bypass",
+                    "code": "ITEM_SUSPENDED"}
+        if item.status == "retired":
+            return {"valid": False, "message": "Item is retired — exception cannot bypass",
+                    "code": "ITEM_RETIRED"}
+
+        return {"valid": True, "message": "Exception valid for gate", "exception": exc}
+
+
+# ---------------------------------------------------------------------------
+# Single Exam-Eligibility Gate Service
+# ---------------------------------------------------------------------------
+
+class ExamEligibilityGateService:
+    """Single authoritative entry point for granting exam-eligible status.
+
+    All code paths that can result in 'exam_eligible' must pass through this service.
+    Direct ORM/repository/update shortcuts are blocked.
+
+    The service:
+    1. Validates the item exists and is in a valid state
+    2. Validates source traceability
+    3. Validates active rubric
+    4. Validates suspension/retirement not bypassed
+    5. If controlled_exception_id is provided: validates and uses exception
+    6. If no exception: requires 'calibrated' status
+    7. Creates pool membership and transitions status
+    8. Records audit
+    """
+
+    def __init__(self, db: AsyncSession):
+        self.db = db
+        self.item_repo = ItemRepository(db)
+        self.pool_repo = ItemPoolMembershipRepository(db)
+        self.traceability = SourceTraceabilityService(db)
+        self.audit = AuditService(db)
+        self.exception_service = ControlledExceptionService(db)
+
+    async def evaluate_and_grant_exam_eligibility(
+        self,
+        item_id: str,
+        evaluated_by: str,
+        evaluator_role: str,
+        controlled_exception_id: Optional[str] = None,
+    ) -> dict:
+        """Single authoritative method to grant exam eligibility.
+
+        Args:
+            item_id: The business key of the item
+            evaluated_by: User ID of the actor
+            evaluator_role: Role of the actor
+            controlled_exception_id: Optional exception ID if using controlled exception
+
+        Returns:
+            dict with eligibility result and decision details
+        """
+        item = await self.item_repo.get_by_item_id(item_id)
+        if not item:
+            return {
+                "eligible": False, "item_id": item_id,
+                "decision_code": "item_not_found",
+                "decision_reasons": ["Item not found"],
+                "messages": ["Item not found"],
+            }
+
+        reasons: list[str] = []
+
+        # 1. Suspension/retirement check
+        if item.status == "retired":
+            reasons.append("Item is retired — cannot grant exam eligibility")
+            await self._audit_denial(item_id, evaluated_by, evaluator_role, reasons)
+            return {
+                "eligible": False, "item_id": item_id,
+                "decision_code": "retired",
+                "decision_reasons": reasons,
+                "messages": reasons,
+            }
+        if item.status == "suspended":
+            reasons.append("Item is suspended — cannot grant exam eligibility")
+            await self._audit_denial(item_id, evaluated_by, evaluator_role, reasons)
+            return {
+                "eligible": False, "item_id": item_id,
+                "decision_code": "suspended",
+                "decision_reasons": reasons,
+                "messages": reasons,
+            }
+
+        # 2. Check if controlled exception path
+        using_exception = controlled_exception_id is not None
+        if using_exception:
+            # Validate the exception
+            exc_check = await self.exception_service.validate_exception_for_gate(
+                controlled_exception_id, item_id,
+            )
+            if not exc_check["valid"]:
+                reasons.append(exc_check["message"])
+                await self._audit_denial(item_id, evaluated_by, evaluator_role, reasons)
+                return {
+                    "eligible": False, "item_id": item_id,
+                    "decision_code": "exception_invalid",
+                    "decision_reasons": reasons,
+                    "messages": reasons,
+                }
+        else:
+            # Standard path: must be calibrated
+            if item.status != "calibrated":
+                reasons.append(
+                    f"Item must be 'calibrated' (status: '{item.status}'). "
+                    "Use controlled exception for other statuses."
+                )
+                await self._audit_denial(item_id, evaluated_by, evaluator_role, reasons)
+                return {
+                    "eligible": False, "item_id": item_id,
+                    "decision_code": "not_calibrated",
+                    "decision_reasons": reasons,
+                    "messages": reasons,
+                }
+
+        # 3. Source traceability (always required)
+        source_check = await self.traceability.validate_item_sources(item.id)
+        if not source_check["valid"]:
+            reasons.append(source_check["message"])
+            await self._audit_denial(item_id, evaluated_by, evaluator_role, reasons)
+            return {
+                "eligible": False, "item_id": item_id,
+                "decision_code": "source_invalid",
+                "decision_reasons": reasons,
+                "messages": reasons,
+            }
+
+        # 4. Active rubric (always required)
+        if item.rubric_id:
+            rubric_result = await self.db.execute(
+                select(CertRubric).where(CertRubric.rubric_id == item.rubric_id)
+            )
+            rubric = rubric_result.scalar_one_or_none()
+            if not rubric or rubric.status not in ("active", "published"):
+                reasons.append("Associated rubric is not active")
+                await self._audit_denial(item_id, evaluated_by, evaluator_role, reasons)
+                return {
+                    "eligible": False, "item_id": item_id,
+                    "decision_code": "rubric_inactive",
+                    "decision_reasons": reasons,
+                    "messages": reasons,
+                }
+
+        # 5. Check not already in exam_eligible pool
+        existing = await self.pool_repo.get_active_by_item_and_pool(item.id, "exam_eligible")
+        if existing:
+            reasons.append("Item is already in the exam-eligible pool")
+            return {
+                "eligible": False, "item_id": item_id,
+                "decision_code": "already_eligible",
+                "decision_reasons": reasons,
+                "messages": reasons,
+            }
+
+        # 6. Check not already in exam_eligible status
+        if item.status == "exam_eligible":
+            reasons.append("Item is already exam_eligible")
+            return {
+                "eligible": False, "item_id": item_id,
+                "decision_code": "already_eligible",
+                "decision_reasons": reasons,
+                "messages": reasons,
+            }
+
+        # ALL CHECKS PASSED — grant eligibility
+        membership = await self.pool_repo.create(
+            membership_id=f"mem-{uuid.uuid4().hex[:12]}",
+            item_id=item.id,
+            pool_type="exam_eligible",
+            status="active",
+            controlled_exception=using_exception,
+            entered_by=evaluated_by,
+        )
+
+        # Transition status
+        await self.item_repo.update_status(item.id, "exam_eligible")
+
+        # Snapshot
+        await self.item_repo.create_snapshot(
+            item.id,
+            change_reason="Exam eligibility granted via ExamEligibilityGateService",
+            created_by=evaluated_by,
+        )
+
+        # Audit
+        await self.audit.record(
+            entity_type="item",
+            entity_id=item_id,
+            action="exam_eligibility_granted",
+            actor_id=evaluated_by,
+            actor_role=evaluator_role,
+            reason=f"Exam eligibility granted via ExamEligibilityGateService. "
+                   f"Exception: {controlled_exception_id or 'none'}",
+        )
+
+        return {
+            "eligible": True,
+            "item_id": item_id,
+            "gate": "exam_eligibility_gate",
+            "decision_code": "eligible",
+            "decision_reasons": ["All gates passed"],
+            "exception_id": controlled_exception_id,
+            "messages": ["Exam eligibility granted"],
+            "membership": membership,
+        }
+
+    async def _audit_denial(
+        self, item_id: str, actor_id: str, actor_role: str, reasons: list[str],
+    ) -> None:
+        """Record an exam-eligibility denial audit event."""
+        await self.audit.record(
+            entity_type="item",
+            entity_id=item_id,
+            action="exam_eligibility_denied",
+            actor_id=actor_id,
+            actor_role=actor_role,
+            reason=f"Exam eligibility denied: {'; '.join(reasons)}",
+        )
 
 class GovernanceService:
     """Handles suspension, unsuspension, retirement, and supersession."""

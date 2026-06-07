@@ -255,6 +255,14 @@ class ItemRotationPolicy(Base, TimestampMixin):
     min_cool_down_days: Mapped[int] = mapped_column(Integer, default=7)
     min_pool_size: Mapped[int] = mapped_column(Integer, default=5)
     enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    # Enhanced rotation policy inputs
+    allowed_locales: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+    domain_balance_quotas: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    competency_balance_quotas: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    difficulty_balance_ratios: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    max_items_per_family: Mapped[int] = mapped_column(Integer, default=3)
+    recent_use_window_days: Mapped[int] = mapped_column(Integer, default=90)
+    exposure_threshold: Mapped[int] = mapped_column(Integer, default=50)
 
     __table_args__ = (
         Index("idx_irp_domain_pack", "domain_pack_id"),
@@ -329,6 +337,10 @@ class ItemSupersessionLink(Base, TimestampMixin):
 class ItemExceptionApproval(Base, TimestampMixin):
     """Controlled exceptions — documented overrides for exam-eligible pool entry
     without full psychometric gate or pilot completion.
+
+    Requires two-person control: requester + second reviewer.
+    Self-approval and author-approval are blocked.
+    Expiration is mandatory and enforced at runtime.
     """
 
     __tablename__ = "cert_item_exception_approvals"
@@ -337,20 +349,36 @@ class ItemExceptionApproval(Base, TimestampMixin):
     exception_id: Mapped[str] = mapped_column(
         String(100), unique=True, index=True, nullable=False
     )
+    item_version_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, index=True)
     item_id: Mapped[str] = mapped_column(
         String(36), ForeignKey("cert_items.id"), nullable=False, index=True
     )
     exception_type: Mapped[str] = mapped_column(String(50), nullable=False)
     reason: Mapped[str] = mapped_column(Text, nullable=False)
+    scope: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    requested_by: Mapped[str] = mapped_column(String(100), nullable=False)
+    requester_role: Mapped[str] = mapped_column(String(50), nullable=False)
     granted_by: Mapped[str] = mapped_column(String(100), nullable=False)
     granted_by_role: Mapped[str] = mapped_column(String(50), nullable=False)
+    first_approver: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    first_approval_timestamp: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     second_reviewer: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    second_approval_timestamp: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    status: Mapped[str] = mapped_column(
+        String(20), default="pending", index=True
+    )  # pending, first_approved, approved, rejected, revoked, expired
+    audit_correlation_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
 
     __table_args__ = (
         Index("idx_iea_item", "item_id"),
         Index("idx_iea_active", "is_active", "expires_at"),
+        Index("idx_iea_status", "status"),
     )

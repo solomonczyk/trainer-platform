@@ -224,16 +224,36 @@ class RotationPolicyCreate(BaseModel):
     min_cool_down_days: int = 7
     min_pool_size: int = 5
     enabled: bool = True
+    # Enhanced policy inputs
+    allowed_locales: Optional[list[str]] = None
+    domain_balance_quotas: Optional[dict[str, int]] = None
+    competency_balance_quotas: Optional[dict[str, int]] = None
+    difficulty_balance_ratios: Optional[dict[str, float]] = None
+    max_items_per_family: int = 3
+    recent_use_window_days: int = 90
+    exposure_threshold: int = 50
 
 
 class RotationEligibilityResponse(BaseModel):
     item_id: str
+    policy_id: Optional[str] = None
+    policy_version: Optional[str] = None
     eligible: bool
-    temporarily_cooling_down: bool = False
+    cooling_down: bool = False
     exposure_limit_reached: bool = False
+    wrong_locale: bool = False
+    domain_balance_failed: bool = False
+    competency_balance_failed: bool = False
+    difficulty_balance_failed: bool = False
+    item_family_diversity_failed: bool = False
+    recent_use_excluded: bool = False
     suspended: bool = False
     retired: bool = False
     insufficient_pool: bool = False
+    decision_code: str = "eligible"
+    decision_reasons: list[str] = []
+    evaluated_inputs: Optional[dict] = None
+    timestamp: Optional[str] = None
     reason: Optional[str] = None
 
 
@@ -354,25 +374,135 @@ class TraceabilitySummary(BaseModel):
 
 class ExceptionApprovalCreate(BaseModel):
     item_id: str = Field(..., max_length=100)
+    item_version_id: Optional[str] = None
     exception_type: str = Field(..., max_length=50)
     reason: str = Field(..., max_length=1000)
+    scope: Optional[str] = Field(None, max_length=100)
+    requested_by: str = Field(..., max_length=100)
+    requester_role: str = Field(..., max_length=50)
     granted_by: str = Field(..., max_length=100)
     granted_by_role: str = Field(..., max_length=50)
     second_reviewer: Optional[str] = None
+    second_reviewer_role: Optional[str] = None
     expires_at: datetime
 
 
 class ExceptionApprovalResponse(BaseModel):
     id: str
     exception_id: str
+    item_version_id: Optional[str] = None
     item_id: str
     exception_type: str
     reason: str
+    scope: Optional[str] = None
+    requested_by: str
+    requester_role: str
     granted_by: str
     granted_by_role: str
+    first_approver: Optional[str] = None
+    first_approval_timestamp: Optional[datetime] = None
     second_reviewer: Optional[str] = None
+    second_approval_timestamp: Optional[datetime] = None
     expires_at: datetime
     is_active: bool
+    status: str = "pending"
+    audit_correlation_id: Optional[str] = None
     created_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
+
+
+# ---------------------------------------------------------------------------
+# Rotation Evaluation Detail
+# ---------------------------------------------------------------------------
+
+class RotationEvaluationResult(BaseModel):
+    """Detailed per-item rotation evaluation result with decision reasons."""
+    item_id: str
+    policy_id: Optional[str] = None
+    policy_version: Optional[str] = None
+    eligible: bool
+    cooling_down: bool = False
+    exposure_limit_reached: bool = False
+    wrong_locale: bool = False
+    domain_balance_failed: bool = False
+    competency_balance_failed: bool = False
+    difficulty_balance_failed: bool = False
+    item_family_diversity_failed: bool = False
+    recent_use_excluded: bool = False
+    suspended: bool = False
+    retired: bool = False
+    insufficient_pool: bool = False
+    decision_code: str = "eligible"
+    decision_reasons: list[str] = []
+    evaluated_inputs: Optional[dict] = None
+    timestamp: str = ""
+
+
+# ---------------------------------------------------------------------------
+# Controlled Exception Workflow
+# ---------------------------------------------------------------------------
+
+class ExceptionRequestCreate(BaseModel):
+    """Initial exception request — submitted by platform_admin."""
+    item_id: str = Field(..., max_length=100)
+    item_version_id: Optional[str] = None
+    reason: str = Field(..., min_length=1, max_length=2000)
+    scope: Optional[str] = Field(None, max_length=100)
+    requested_by: str = Field(..., max_length=100)
+    requester_role: str = Field(..., max_length=50)
+    expires_at: datetime
+
+
+class ExceptionRequestResponse(BaseModel):
+    exception_id: str
+    item_id: str
+    item_version_id: Optional[str] = None
+    reason: str
+    scope: Optional[str] = None
+    requested_by: str
+    requester_role: str
+    expires_at: datetime
+    status: str = "pending"
+    created_at: Optional[datetime] = None
+
+
+class ExceptionApprovalFirst(BaseModel):
+    """First approval — the requester's own approval is recorded."""
+    reviewer_id: str = Field(..., max_length=100)
+    reviewer_role: str = Field(..., max_length=50)
+
+
+class ExceptionApprovalSecond(BaseModel):
+    """Second approval — an independent reviewer approves or rejects."""
+    reviewer_id: str = Field(..., max_length=100)
+    reviewer_role: str = Field(..., max_length=50)
+    decision: str = Field(default="approve", pattern="^(approve|reject)$")
+
+
+class ExceptionRevocation(BaseModel):
+    """Revoke an exception."""
+    revoked_by: str = Field(..., max_length=100)
+    reason: str = Field(..., max_length=1000)
+
+
+# ---------------------------------------------------------------------------
+# Exam Eligibility Gate
+# ---------------------------------------------------------------------------
+
+class ExamEligibilityRequest(BaseModel):
+    """Request to evaluate and grant exam eligibility."""
+    item_id: str = Field(..., max_length=100)
+    evaluated_by: str = Field(..., max_length=100)
+    evaluator_role: str = Field(..., max_length=50)
+    controlled_exception_id: Optional[str] = None
+
+
+class ExamEligibilityResponse(BaseModel):
+    eligible: bool
+    item_id: str
+    gate: str = "exam_eligibility_gate"
+    decision_code: str = "eligible"
+    decision_reasons: list[str] = []
+    exception_id: Optional[str] = None
+    messages: list[str] = []

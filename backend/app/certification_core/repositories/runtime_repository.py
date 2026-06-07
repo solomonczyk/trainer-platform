@@ -298,11 +298,35 @@ class ItemExceptionApprovalRepository(CertBaseRepository[ItemExceptionApproval])
     def __init__(self, db: AsyncSession):
         super().__init__(db, ItemExceptionApproval)
 
+    async def get_by_exception_id(self, exception_id: str) -> Optional[ItemExceptionApproval]:
+        return await self.get_by_business_id(exception_id, id_field="exception_id")
+
     async def get_active_by_item(self, item_id: str) -> Optional[ItemExceptionApproval]:
         result = await self.db.execute(
             select(ItemExceptionApproval)
             .where(ItemExceptionApproval.item_id == item_id)
             .where(ItemExceptionApproval.is_active.is_(True))
             .where(ItemExceptionApproval.expires_at > datetime.now(timezone.utc))
+            .where(ItemExceptionApproval.status.in_(["approved", "first_approved"]))
         )
         return result.scalar_one_or_none()
+
+    async def get_by_item_and_version(
+        self, item_id: str, item_version_id: Optional[str] = None,
+    ) -> tuple[list[ItemExceptionApproval], int]:
+        filters = {"item_id": item_id}
+        if item_version_id:
+            filters["item_version_id"] = item_version_id
+        return await self.list_all(filters=filters)
+
+    async def update_status(
+        self, exception_id: str, status: str,
+    ) -> Optional[ItemExceptionApproval]:
+        exc = await self.get_by_exception_id(exception_id)
+        if exc is None:
+            return None
+        exc.status = status
+        if status == "expired" or status == "revoked":
+            exc.is_active = False
+        await self.db.flush()
+        return exc

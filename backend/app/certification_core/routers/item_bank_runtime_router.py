@@ -33,6 +33,15 @@ from app.certification_core.schemas.runtime_schemas import (
     GovernanceIncidentListResponse,
     TraceabilityResponse,
     SourceBindingResponse,
+    ExceptionRequestCreate,
+    ExceptionRequestResponse,
+    ExceptionApprovalFirst,
+    ExceptionApprovalSecond,
+    ExceptionApprovalCreate,
+    ExceptionApprovalResponse,
+    ExceptionRevocation,
+    ExamEligibilityRequest,
+    ExamEligibilityResponse,
 )
 from app.certification_core.schemas.item_schemas import ItemResponse
 from app.certification_core.repositories.item_repository import ItemRepository
@@ -45,6 +54,8 @@ from app.certification_core.services.runtime_service import (
     RotationPolicyService,
     GovernanceService,
     SourceTraceabilityService,
+    ControlledExceptionService,
+    ExamEligibilityGateService,
 )
 from app.certification_core.services.authorization import (
     get_current_certification_role,
@@ -261,39 +272,127 @@ async def get_pilot_pool(
 
 
 # ----------------------------------------------------------------
-# Exam-Eligible Pool
+# Controlled Exception Contract
+# ----------------------------------------------------------------
+
+@router.post("/items/{item_id}/exception/request", status_code=HTTP_201_CREATED)
+async def request_controlled_exception(
+    item_id: str,
+    body: ExceptionRequestCreate,
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: AsyncSession = Depends(get_db),
+):
+    """Request a controlled psychometric exception for an item.
+
+    Only platform_admin can request. Requires reason and future expiration.
+    Scope is limited to one item version.
+    """
+    role, user_id = _get_role_and_user(credentials)
+    body.item_id = item_id
+    body.requested_by = user_id
+    body.requester_role = role
+    service = ControlledExceptionService(db)
+    result = await service.request_exception(body, role)
+    if not result["success"]:
+        status_code = HTTP_403_FORBIDDEN if result.get("code") in (
+            "FORBIDDEN_ROLE", "SELF_APPROVAL_BLOCKED", "AUTHOR_APPROVAL_BLOCKED",
+        ) else HTTP_400_BAD_REQUEST
+        raise HTTPException(status_code, detail=result)
+    return result
+
+
+@router.post("/items/{item_id}/exception/{exception_id}/first-approve")
+async def first_approve_exception(
+    item_id: str,
+    exception_id: str,
+    body: ExceptionApprovalFirst,
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: AsyncSession = Depends(get_db),
+):
+    """Record first approval for a controlled exception."""
+    role, user_id = _get_role_and_user(credentials)
+    role = await require_permission("certification:item_bank:govern")(credentials)
+    service = ControlledExceptionService(db)
+    result = await service.first_approve(exception_id, body, role)
+    if not result["success"]:
+        raise HTTPException(HTTP_400_BAD_REQUEST, detail=result)
+    return result
+
+
+@router.post("/items/{item_id}/exception/{exception_id}/second-approve")
+async def second_approve_exception(
+    item_id: str,
+    exception_id: str,
+    body: ExceptionApprovalSecond,
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: AsyncSession = Depends(get_db),
+):
+    """Second (final) approval for a controlled exception by independent reviewer.
+
+    Enforces:
+    - Independent reviewer (not the requester)
+    - Not the item author
+    - Approved role (psychometric_reviewer, qa_reviewer, domain_owner)
+    - Expiration checked
+    """
+    role, user_id = _get_role_and_user(credentials)
+    body.reviewer_id = user_id
+    body.reviewer_role = role
+    service = ControlledExceptionService(db)
+    result = await service.second_approve(exception_id, body, role)
+    if not result["success"]:
+        status_code = HTTP_403_FORBIDDEN if "BLOCKED" in result.get("code", "") else HTTP_400_BAD_REQUEST
+        raise HTTPException(status_code, detail=result)
+    return result
+
+
+@router.post("/items/{item_id}/exception/{exception_id}/revoke")
+async def revoke_exception(
+    item_id: str,
+    exception_id: str,
+    body: ExceptionRevocation,
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: AsyncSession = Depends(get_db),
+):
+    """Revoke a controlled exception (platform_admin only)."""
+    role, user_id = _get_role_and_user(credentials)
+    body.revoked_by = user_id
+    service = ControlledExceptionService(db)
+    result = await service.revoke_exception(exception_id, body, role)
+    if not result["success"]:
+        raise HTTPException(HTTP_400_BAD_REQUEST, detail=result)
+    return result
+
+
+# ----------------------------------------------------------------
+# Exam-Eligible Pool — Single Authoritative Gate
 # ----------------------------------------------------------------
 
 @router.post("/items/{item_id}/exam-eligibility")
 async def grant_exam_eligibility(
     item_id: str,
-    body: PoolMembershipCreate,
+    body: ExamEligibilityRequest,
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     db: AsyncSession = Depends(get_db),
 ):
-    """Grant exam-eligible status to an item."""
+    """Grant exam-eligible status to an item via the single authoritative gate.
+
+    This is the ONLY entry point for granting exam_eligible status.
+    All shortcuts (ORM mutation, repository update, generic update,
+    authoring bypass, pilot bypass, lifecycle transition bypass) are blocked.
+    """
     role, user_id = _get_role_and_user(credentials)
-    body.item_id = item_id
-    service = ExamEligiblePoolService(db)
-
-    exception_data = None
-    if body.controlled_exception:
-        exception_data = {
-            "reason": body.exception_reason,
-            "expires_at": None,  # would come from a full ExceptionApprovalCreate schema
-            "second_reviewer": user_id,
-        }
-
-    result = await service.enter_exam_eligible(
+    role = await require_permission("certification:item_bank:govern")(credentials)
+    service = ExamEligibilityGateService(db)
+    result = await service.evaluate_and_grant_exam_eligibility(
         item_id=item_id,
-        entered_by=user_id,
-        actor_role=role,
-        controlled_exception=body.controlled_exception,
-        exception_data=exception_data,
+        evaluated_by=body.evaluated_by or user_id,
+        evaluator_role=body.evaluator_role or role,
+        controlled_exception_id=body.controlled_exception_id,
     )
-    if not result["success"]:
-        raise HTTPException(HTTP_400_BAD_REQUEST, detail=result["message"])
-    return {"message": "Item granted exam-eligible status", "item_id": item_id}
+    if not result["eligible"]:
+        raise HTTPException(HTTP_400_BAD_REQUEST, detail=result)
+    return result
 
 
 @router.get("/pools/exam-eligible")
