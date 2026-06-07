@@ -1413,6 +1413,11 @@
         "summary": "Create Framework",
         "description": "Create a new competency framework with competencies.",
         "operationId": "create_framework_api_v1_certification_core_competency_frameworks_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1503,6 +1508,11 @@
         "summary": "Update Framework",
         "description": "Update a competency framework.",
         "operationId": "update_framework_api_v1_certification_core_competency_frameworks__framework_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "framework_id",
@@ -1557,6 +1567,11 @@
         "summary": "Add Competency",
         "description": "Add a competency to a framework.",
         "operationId": "add_competency_api_v1_certification_core_competency_frameworks__framework_id__competencies_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "framework_id",
@@ -1690,6 +1705,11 @@
         "summary": "Create Blueprint",
         "description": "Create a new exam blueprint with sections.",
         "operationId": "create_blueprint_api_v1_certification_core_blueprints_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1780,6 +1800,11 @@
         "summary": "Update Blueprint",
         "description": "Update an exam blueprint.",
         "operationId": "update_blueprint_api_v1_certification_core_blueprints__blueprint_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "blueprint_id",
@@ -1920,6 +1945,11 @@
         ],
         "summary": "Create Source",
         "operationId": "create_source_api_v1_certification_core_knowledge_sources_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2008,6 +2038,11 @@
         ],
         "summary": "Update Source",
         "operationId": "update_source_api_v1_certification_core_knowledge_sources__source_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "source_id",
@@ -2361,9 +2396,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemListResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -2406,9 +2439,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -2454,9 +2485,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -2510,9 +2539,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ItemResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -3005,6 +3032,11 @@
         "summary": "Query Audit",
         "description": "Query audit events with filters. Requires audit:read permission.",
         "operationId": "query_audit_api_v1_certification_core_audit_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "entity_type",
@@ -5979,261 +6011,6 @@
         "type": "object",
         "title": "ItemFamilyUpdate"
       },
-      "ItemListResponse": {
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/ItemResponse"
-            },
-            "type": "array",
-            "title": "Items"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total"
-          },
-          "skip": {
-            "type": "integer",
-            "title": "Skip",
-            "default": 0
-          },
-          "limit": {
-            "type": "integer",
-            "title": "Limit",
-            "default": 100
-          }
-        },
-        "type": "object",
-        "required": [
-          "items",
-          "total"
-        ],
-        "title": "ItemListResponse"
-      },
-      "ItemResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "item_id": {
-            "type": "string",
-            "title": "Item Id"
-          },
-          "item_family_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Item Family Id"
-          },
-          "domain_pack_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Domain Pack Id"
-          },
-          "version": {
-            "type": "integer",
-            "title": "Version"
-          },
-          "item_type": {
-            "type": "string",
-            "title": "Item Type"
-          },
-          "prompt": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Prompt"
-          },
-          "response_contract": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Response Contract"
-          },
-          "answer_key": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Answer Key"
-          },
-          "rubric_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rubric Id"
-          },
-          "competency_ids": {
-            "anyOf": [
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Competency Ids"
-          },
-          "knowledge_source_refs": {
-            "anyOf": [
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Knowledge Source Refs"
-          },
-          "difficulty_target": {
-            "type": "string",
-            "title": "Difficulty Target"
-          },
-          "difficulty_measured": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Difficulty Measured"
-          },
-          "discrimination_measured": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Discrimination Measured"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status"
-          },
-          "locale": {
-            "type": "string",
-            "title": "Locale"
-          },
-          "market": {
-            "type": "string",
-            "title": "Market"
-          },
-          "valid_from": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Valid From"
-          },
-          "valid_until": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Valid Until"
-          },
-          "created_by": {
-            "type": "string",
-            "title": "Created By"
-          },
-          "reviewed_by": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Reviewed By"
-          },
-          "exposure_count": {
-            "type": "integer",
-            "title": "Exposure Count"
-          },
-          "compromise_risk": {
-            "type": "string",
-            "title": "Compromise Risk"
-          },
-          "created_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At"
-          },
-          "versions": {
-            "items": {
-              "$ref": "#/components/schemas/ItemVersionResponse"
-            },
-            "type": "array",
-            "title": "Versions",
-            "default": []
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "item_id",
-          "version",
-          "item_type",
-          "difficulty_target",
-          "status",
-          "locale",
-          "market",
-          "created_by",
-          "exposure_count",
-          "compromise_risk"
-        ],
-        "title": "ItemResponse"
-      },
       "ItemTransitionRequest": {
         "properties": {
           "to_status": {
@@ -6478,61 +6255,6 @@
         },
         "type": "object",
         "title": "ItemUpdate"
-      },
-      "ItemVersionResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "item_id": {
-            "type": "string",
-            "title": "Item Id"
-          },
-          "version": {
-            "type": "integer",
-            "title": "Version"
-          },
-          "snapshot": {
-            "title": "Snapshot"
-          },
-          "change_reason": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Change Reason"
-          },
-          "created_by": {
-            "type": "string",
-            "title": "Created By"
-          },
-          "created_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "item_id",
-          "version",
-          "snapshot",
-          "created_by"
-        ],
-        "title": "ItemVersionResponse"
       },
       "KnowledgeSourceCreate": {
         "properties": {

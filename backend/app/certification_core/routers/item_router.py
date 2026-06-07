@@ -14,7 +14,7 @@ from app.certification_core.repositories.item_repository import ItemRepository, 
 from app.certification_core.validators.item_validator import ItemValidator
 from app.certification_core.audit.service import AuditService
 from app.certification_core.services.authorization import (
-    get_current_certification_role, require_certification_permission,
+    get_current_certification_role, require_permission,
     AuthorizationService,
 )
 from app.db.session import get_db
@@ -23,15 +23,19 @@ bearer_scheme = HTTPBearer(auto_error=False)
 router = APIRouter(prefix="/certification-core/items", tags=["Certification-Core"])
 
 
+from fastapi.responses import JSONResponse
+
+
 def _filter_item_response(item, role: str) -> dict:
-    """Filter out answer keys for learner-facing roles."""
-    data = ItemResponse.model_validate(item).model_dump()
+    """Filter out answer keys for learner-facing roles. Returns JSON-safe dict."""
+    resp = ItemResponse.model_validate(item)
+    data = resp.model_dump(mode="json")
     if not AuthorizationService.can_read_answer_keys(role):
         data.pop("answer_key", None)
     return data
 
 
-@router.get("", response_model=ItemListResponse)
+@router.get("")
 async def list_items(
     skip: int = Query(0, ge=0), limit: int = Query(100, ge=1, le=500),
     status: str = Query(None), domain_pack_id: str = Query(None),
@@ -47,10 +51,10 @@ async def list_items(
         item_family_id=item_family_id,
     )
     filtered = [_filter_item_response(it, role) for it in items]
-    return ItemListResponse(items=filtered, total=total, skip=skip, limit=limit)
+    return {"items": filtered, "total": total, "skip": skip, "limit": limit}
 
 
-@router.get("/{item_id}", response_model=ItemResponse)
+@router.get("/{item_id}")
 async def get_item(
     item_id: str,
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
@@ -64,10 +68,10 @@ async def get_item(
     return _filter_item_response(item, role)
 
 
-@router.post("", response_model=ItemResponse, status_code=HTTP_201_CREATED)
+@router.post("", status_code=HTTP_201_CREATED)
 async def create_item(
     body: ItemCreate,
-    role: str = Depends(get_current_certification_role),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     errors = ItemValidator.validate_item(body.model_dump())
@@ -80,7 +84,6 @@ async def create_item(
     item_data = body.model_dump()
     item = await repo.create(**item_data)
 
-    # Create initial version snapshot
     await repo.create_snapshot(item.id, change_reason="Initial creation", created_by=body.created_by)
     await db.refresh(item)
 
@@ -88,13 +91,14 @@ async def create_item(
         entity_type="item", entity_id=item.item_id,
         actor_id=body.created_by, actor_role=role,
     )
-    return _filter_item_response(item, role)
+    resp_data = _filter_item_response(item, role)
+    return JSONResponse(content=resp_data, status_code=HTTP_201_CREATED)
 
 
-@router.patch("/{item_id}", response_model=ItemResponse)
+@router.patch("/{item_id}")
 async def update_item(
     item_id: str, body: ItemUpdate,
-    role: str = Depends(get_current_certification_role),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     repo = ItemRepository(db)

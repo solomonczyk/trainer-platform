@@ -13,7 +13,7 @@ from app.certification_core.repositories.rubric_repository import RubricReposito
 from app.certification_core.validators.rubric_validator import RubricValidator
 from app.certification_core.audit.service import AuditService
 from app.certification_core.services.authorization import (
-    get_current_certification_role,
+    get_current_certification_role, require_permission,
 )
 from app.db.session import get_db
 
@@ -51,7 +51,7 @@ async def get_rubric(
 @router.post("", response_model=RubricResponse, status_code=HTTP_201_CREATED)
 async def create_rubric(
     body: RubricCreate,
-    role: str = Depends(get_current_certification_role),
+    role: str = Depends(require_permission("certification:manage_rubrics")),
     db: AsyncSession = Depends(get_db),
 ):
     errors = RubricValidator.validate_rubric(body.model_dump())

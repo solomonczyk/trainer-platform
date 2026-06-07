@@ -14,7 +14,7 @@ from app.certification_core.repositories.competency_repository import Competency
 from app.certification_core.validators.competency_validator import CompetencyValidator
 from app.certification_core.audit.service import AuditService
 from app.certification_core.services.authorization import (
-    get_current_certification_role, require_certification_permission,
+    get_current_certification_role, require_permission,
 )
 from app.db.session import get_db
 
@@ -56,7 +56,7 @@ async def get_framework(
 @router.post("", response_model=CompetencyFrameworkResponse, status_code=HTTP_201_CREATED)
 async def create_framework(
     body: CompetencyFrameworkCreate,
-    role: str = Depends(lambda: require_certification_permission("certification:write")),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     """Create a new competency framework with competencies."""
@@ -94,7 +94,7 @@ async def create_framework(
 async def update_framework(
     framework_id: str,
     body: CompetencyFrameworkUpdate,
-    role: str = Depends(lambda: require_certification_permission("certification:write")),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     """Update a competency framework."""
@@ -127,7 +127,7 @@ async def update_framework(
 async def add_competency(
     framework_id: str,
     body: CompetencyCreate,
-    role: str = Depends(lambda: require_certification_permission("certification:write")),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     """Add a competency to a framework."""

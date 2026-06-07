@@ -11,6 +11,10 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.status import HTTP_403_FORBIDDEN
 
+from typing import Callable
+
+from fastapi import Depends
+
 from app.core.security import decode_token
 from app.core.errors import ForbiddenError
 
@@ -149,6 +153,21 @@ class AuthorizationService:
     def can_self_approve(actor_role: str) -> bool:
         """Check if a role can self-approve items (content_author/domain_owner cannot)."""
         return actor_role not in SELF_APPROVAL_RESTRICTED_ROLES
+
+
+def require_permission(permission: str) -> Callable:
+    """Factory: returns a FastAPI dependency that requires a specific permission.
+
+    Usage:
+        @router.post(...)
+        async def create(role: str = Depends(require_permission("certification:write"))):
+            ...
+    """
+    async def _dependency(
+        credentials: Optional[HTTPAuthorizationCredentials] = Depends(bearer_scheme),
+    ) -> str:
+        return await require_certification_permission(permission, credentials)
+    return _dependency
 
 
 async def get_current_certification_role(

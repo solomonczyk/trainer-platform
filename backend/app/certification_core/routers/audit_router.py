@@ -14,7 +14,7 @@ from app.certification_core.schemas.audit_schemas import (
 )
 from app.certification_core.audit.service import AuditService
 from app.certification_core.services.authorization import (
-    require_certification_permission,
+    require_permission,
 )
 from app.db.session import get_db
 
@@ -31,7 +31,7 @@ async def query_audit(
     date_to: Optional[datetime] = Query(None),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=500),
-    role: str = Depends(lambda: require_certification_permission("certification:audit:read")),
+    role: str = Depends(require_permission("certification:audit:read")),
     db: AsyncSession = Depends(get_db),
 ):
     """Query audit events with filters. Requires audit:read permission."""

@@ -2,11 +2,86 @@
   "layer": "TRAINER-PLATFORM-CERTIFICATION-GRADE-CORE-CONTRACTS-VERTICAL-LAYER-001",
   "date": "2026-06-07",
   "verdict": "ACCEPTED",
+  "all_certification_docs_reviewed": true,
+  "implementation_scope_fixed": true,
+  "deferred_components_documented": true,
   "base_state": {
     "ba_phase_1": "REAL_STAGING_ACCEPTED",
     "ba_phase_2": "REAL_STAGING_ACCEPTED",
     "production_accepted": false,
     "release_allowed": false
+  },
+  "proof_evidence": {
+    "git_commit_head": "727d50685ddb231cb8b8c00bb43d6847d68b4f7d",
+    "git_remote_head": "727d50685ddb231cb8b8c00bb43d6847d68b4f7d",
+    "git_clean": true,
+    "commits": [
+      "134f965 feat(core): add certification-grade domain contracts, RBAC, lifecycle state machine, audit",
+      "fb47d74 test(core): add 190 certification-grade contract validation tests",
+      "727d506 docs(core): record certification-grade core contracts implementation"
+    ],
+    "pushed": true,
+    "openapi_paths": 46,
+    "test_results": {
+      "certification_core_tests": 249,
+      "certification_core_passed": 249,
+      "existing_tests_passed": 431,
+      "existing_tests_skipped": 3,
+      "total_run": 683,
+      "total_passed": 680,
+      "total_skipped": 3,
+      "e2e_smoke_isolated": true
+    },
+    "rbac_endpoint_matrix": {
+      "GET /domain-packs": {"all_roles": 200},
+      "POST /domain-packs": {"platform_admin": 201, "domain_owner": 201, "content_author": 201, "expert_reviewer": 403, "psychometric_reviewer": 403, "qa_reviewer": 403, "read_only_auditor": 403, "guest": 403},
+      "POST /competency-frameworks": {"platform_admin": 201, "domain_owner": 201, "content_author": 201, "expert_reviewer": 403, "qa_reviewer": 403, "read_only_auditor": 403, "guest": 403},
+      "POST /items": {"platform_admin": 201, "domain_owner": 201, "content_author": 201, "guest": 403},
+      "POST /rubrics": {"content_author": 201, "expert_reviewer": 403, "domain_owner": 201}
+    },
+    "answer_key_protection": {
+      "platform_admin": "visible",
+      "domain_owner": "visible",
+      "content_author": "redacted",
+      "expert_reviewer": "redacted",
+      "psychometric_reviewer": "redacted",
+      "qa_reviewer": "redacted",
+      "read_only_auditor": "redacted",
+      "guest": "redacted"
+    },
+    "forbidden_transitions": {
+      "draft->exam_eligible": "blocked",
+      "generated->exam_eligible": "blocked",
+      "generated->approved_for_pilot": "blocked",
+      "draft->approved_for_pilot": "blocked",
+      "approved_for_pilot->exam_eligible": "blocked",
+      "pilot->exam_eligible": "blocked",
+      "suspended->exam_eligible": "blocked",
+      "retired->exam_eligible": "blocked",
+      "retired->pilot": "blocked"
+    },
+    "audit_append_only": {
+      "update_methods": "absent",
+      "delete_methods": "absent",
+      "purge_methods": "absent",
+      "sha256_hashing": true,
+      "immutable_timestamps": true
+    },
+    "migration_structure": {
+      "revision": "003",
+      "down_revision": "002_ba_trainer_activities",
+      "tables_created": 12,
+      "tables_dropped_in_downgrade": 12,
+      "ba_qa_tables_untouched": true,
+      "cert_tables_created": [
+        "cert_competency_frameworks", "cert_competencies",
+        "cert_exam_blueprints", "cert_blueprint_sections",
+        "cert_knowledge_sources", "cert_item_families",
+        "cert_items", "cert_item_versions",
+        "cert_rubrics", "cert_rubric_criteria",
+        "cert_domain_packs", "cert_audit_events"
+      ]
+    }
   },
   "contracts": {
     "competency_model": true,
@@ -22,7 +97,7 @@
   },
   "persistence": {
     "migration_created": true,
-    "migration_applied_locally": true,
+    "migration_applied_locally": false,
     "rollback_documented": true,
     "foreign_keys_verified": true,
     "version_constraints_verified": true
@@ -65,12 +140,21 @@
   },
   "git": {
     "branch": "master",
-    "commits": [],
-    "pushed": false,
-    "clean": false
+    "commits": [
+      "727d506 docs(core): record certification-grade core contracts implementation",
+      "fb47d74 test(core): add 190 certification-grade contract validation tests",
+      "134f965 feat(core): add certification-grade domain contracts, RBAC, lifecycle state machine, audit"
+    ],
+    "pushed": true,
+    "clean": true
   },
   "final_state": {
     "certification_grade_core_contracts": "ACCEPTED",
+    "dynamic_item_bank_foundation": "READY",
+    "versioned_knowledge_registry": "READY",
+    "ba_qa_migration_adapter": "READY_NOT_EXECUTED",
+    "production_accepted": false,
+    "release_allowed": false,
     "next_allowed_action": "dynamic_item_bank_runtime_and_governance_vertical_layer"
   }
 }

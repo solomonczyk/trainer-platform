@@ -13,7 +13,7 @@ from app.certification_core.repositories.domain_pack_repository import DomainPac
 from app.certification_core.validators.domain_pack_validator import DomainPackValidator
 from app.certification_core.audit.service import AuditService
 from app.certification_core.services.authorization import (
-    get_current_certification_role,
+    get_current_certification_role, require_permission,
 )
 from app.db.session import get_db
 
@@ -51,7 +51,7 @@ async def get_domain_pack(
 @router.post("", response_model=DomainPackResponse, status_code=HTTP_201_CREATED)
 async def create_domain_pack(
     body: DomainPackCreate,
-    role: str = Depends(get_current_certification_role),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     errors = DomainPackValidator.validate_domain_pack(body.model_dump())
@@ -72,7 +72,7 @@ async def create_domain_pack(
 @router.patch("/{domain_pack_id}", response_model=DomainPackResponse)
 async def update_domain_pack(
     domain_pack_id: str, body: DomainPackUpdate,
-    role: str = Depends(get_current_certification_role),
+    role: str = Depends(require_permission("certification:write")),
     db: AsyncSession = Depends(get_db),
 ):
     repo = DomainPackRepository(db)
