@@ -25,10 +25,13 @@ from app.core.config import settings
 from app.core.rate_limiter import reset_store
 from app.db.base import Base
 from app.db.session import get_db
-from app.main import app
+import app.main as main_app_module
+fastapi_app = main_app_module.app
 from app.db.models import (
     User, UserProfile, Domain, TrainerProduct, Scenario, Rubric, RubricCriterion,
 )
+# Import certification-grade models so tables are created in test databases
+import app.certification_core.models  # noqa: F401
 from app.core.security import hash_password, create_access_token
 
 
@@ -90,7 +93,7 @@ async def per_test_db(request):
                 await session.rollback()
                 raise
 
-    app.dependency_overrides[get_db] = _override_get_db
+    fastapi_app.dependency_overrides[get_db] = _override_get_db
 
     yield
 
@@ -116,7 +119,7 @@ async def db() -> AsyncGenerator[AsyncSession, None]:
 
 @pytest_asyncio.fixture
 async def client() -> AsyncGenerator[AsyncClient, None]:
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(app=fastapi_app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
 
