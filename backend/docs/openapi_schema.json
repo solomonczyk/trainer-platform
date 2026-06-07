@@ -3242,6 +3242,1285 @@
           }
         }
       }
+    },
+    "/api/v1/certification-core/item-bank/items": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Create Item Draft",
+        "description": "Create a new item draft with controlled authoring workflow.",
+        "operationId": "create_item_draft_api_v1_certification_core_item_bank_items_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ControlledItemCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}": {
+      "patch": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Update Item Draft",
+        "description": "Update a draft item.",
+        "operationId": "update_item_draft_api_v1_certification_core_item_bank_items__item_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemDraftUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/submit": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Submit Item",
+        "description": "Submit an item for review after validation.",
+        "operationId": "submit_item_api_v1_certification_core_item_bank_items__item_id__submit_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/bind-source": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Bind Source",
+        "description": "Bind a knowledge source to an item with traceability snapshot.",
+        "operationId": "bind_source_api_v1_certification_core_item_bank_items__item_id__bind_source_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceBindingCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/traceability": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Get Traceability",
+        "description": "Get source traceability data for an item.",
+        "operationId": "get_traceability_api_v1_certification_core_item_bank_items__item_id__traceability_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/reviews/queue": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Get Review Queue",
+        "description": "Get items awaiting review.",
+        "operationId": "get_review_queue_api_v1_certification_core_item_bank_reviews_queue_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "review_stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Review Stage"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/review": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Review Item",
+        "description": "Perform a review decision on an item.",
+        "operationId": "review_item_api_v1_certification_core_item_bank_items__item_id__review_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/pilot": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Enter Pilot",
+        "description": "Enter an item into the pilot pool.",
+        "operationId": "enter_pilot_api_v1_certification_core_item_bank_items__item_id__pilot_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/pilot/complete": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Complete Pilot",
+        "description": "Complete pilot phase for an item.",
+        "operationId": "complete_pilot_api_v1_certification_core_item_bank_items__item_id__pilot_complete_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/pools/pilot": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Get Pilot Pool",
+        "description": "Query the pilot pool.",
+        "operationId": "get_pilot_pool_api_v1_certification_core_item_bank_pools_pilot_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/exam-eligibility": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Grant Exam Eligibility",
+        "description": "Grant exam-eligible status to an item.",
+        "operationId": "grant_exam_eligibility_api_v1_certification_core_item_bank_items__item_id__exam_eligibility_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PoolMembershipCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/pools/exam-eligible": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Get Exam Eligible Pool",
+        "description": "Query the exam-eligible pool.",
+        "operationId": "get_exam_eligible_pool_api_v1_certification_core_item_bank_pools_exam_eligible_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/exposure": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Record Exposure",
+        "description": "Record an item exposure event (idempotent).",
+        "operationId": "record_exposure_api_v1_certification_core_item_bank_items__item_id__exposure_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExposureEventCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Get Exposure",
+        "description": "Get exposure data for an item.",
+        "operationId": "get_exposure_api_v1_certification_core_item_bank_items__item_id__exposure_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/rotation/policies": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Create Rotation Policy",
+        "description": "Create a rotation policy.",
+        "operationId": "create_rotation_policy_api_v1_certification_core_item_bank_rotation_policies_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RotationPolicyCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/rotation-eligibility": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Check Rotation Eligibility",
+        "description": "Check item rotation eligibility.",
+        "operationId": "check_rotation_eligibility_api_v1_certification_core_item_bank_items__item_id__rotation_eligibility_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/suspend": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Suspend Item",
+        "description": "Suspend an item.",
+        "operationId": "suspend_item_api_v1_certification_core_item_bank_items__item_id__suspend_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GovernanceActionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/unsuspend": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Unsuspend Item",
+        "description": "Unsuspend an item.",
+        "operationId": "unsuspend_item_api_v1_certification_core_item_bank_items__item_id__unsuspend_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GovernanceActionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/retire": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Retire Item",
+        "description": "Retire an item.",
+        "operationId": "retire_item_api_v1_certification_core_item_bank_items__item_id__retire_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GovernanceActionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/items/{item_id}/supersede": {
+      "post": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Supersede Item",
+        "description": "Supersede an item with a successor.",
+        "operationId": "supersede_item_api_v1_certification_core_item_bank_items__item_id__supersede_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupersessionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/governance/summary": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "Get Governance Summary",
+        "description": "Get governance summary statistics.",
+        "operationId": "get_governance_summary_api_v1_certification_core_item_bank_governance_summary_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "domain_pack_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Domain Pack Id"
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locale"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification-core/item-bank/governance/incidents": {
+      "get": {
+        "tags": [
+          "Certification-Core-Item-Bank",
+          "Certification-Core-Item-Bank"
+        ],
+        "summary": "List Governance Incidents",
+        "description": "List governance incidents.",
+        "operationId": "list_governance_incidents_api_v1_certification_core_item_bank_governance_incidents_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "incident_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Incident Type"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4342,6 +5621,138 @@
         "title": "CompleteSessionResponse",
         "description": "Response returned after an attempt is marked complete."
       },
+      "ControlledItemCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "item_family_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Item Family Id"
+          },
+          "domain_pack_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Domain Pack Id"
+          },
+          "item_type": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Item Type"
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt"
+          },
+          "response_contract": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response Contract"
+          },
+          "answer_key": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Key"
+          },
+          "rubric_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Rubric Id"
+          },
+          "competency_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Competency Ids"
+          },
+          "knowledge_source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Knowledge Source Refs"
+          },
+          "difficulty_target": {
+            "type": "string",
+            "title": "Difficulty Target",
+            "default": "medium"
+          },
+          "locale": {
+            "type": "string",
+            "title": "Locale",
+            "default": "en-US"
+          },
+          "market": {
+            "type": "string",
+            "title": "Market",
+            "default": "global"
+          },
+          "created_by": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Created By"
+          },
+          "creation_method": {
+            "type": "string",
+            "enum": [
+              "human_authored",
+              "llm_assisted",
+              "imported"
+            ],
+            "title": "Creation Method",
+            "default": "human_authored"
+          },
+          "provenance": {
+            "type": "string",
+            "maxLength": 500,
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "domain_pack_id",
+          "item_type",
+          "rubric_id",
+          "competency_ids",
+          "knowledge_source_refs",
+          "created_by",
+          "provenance"
+        ],
+        "title": "ControlledItemCreate",
+        "description": "Extended item creation with all required runtime fields."
+      },
       "CriterionResultResponse": {
         "properties": {
           "criterion_id": {
@@ -5434,6 +6845,113 @@
         "type": "object",
         "title": "ExamBlueprintUpdate"
       },
+      "ExposureEventCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "session_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Session Id"
+          },
+          "exam_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exam Type"
+          },
+          "domain_pack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain Pack Id"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "cohort_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cohort Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "session_id"
+        ],
+        "title": "ExposureEventCreate"
+      },
+      "GovernanceActionCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "actor_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Actor Id"
+          },
+          "actor_role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Actor Role"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "title": "Reason"
+          },
+          "suspension_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suspension Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "actor_id",
+          "actor_role",
+          "reason"
+        ],
+        "title": "GovernanceActionCreate"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -5663,6 +7181,106 @@
           "created_by"
         ],
         "title": "ItemCreate"
+      },
+      "ItemDraftUpdate": {
+        "properties": {
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt"
+          },
+          "response_contract": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response Contract"
+          },
+          "answer_key": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Key"
+          },
+          "rubric_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rubric Id"
+          },
+          "competency_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Competency Ids"
+          },
+          "knowledge_source_refs": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Knowledge Source Refs"
+          },
+          "difficulty_target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Difficulty Target"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "title": "ItemDraftUpdate"
       },
       "ItemFamilyCreate": {
         "properties": {
@@ -6790,6 +8408,48 @@
         "title": "ModuleActivitiesResponse",
         "description": "List of activities in a module (public, no correct answers)."
       },
+      "PoolMembershipCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "pool_type": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Pool Type"
+          },
+          "entered_by": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Entered By"
+          },
+          "controlled_exception": {
+            "type": "boolean",
+            "title": "Controlled Exception",
+            "default": false
+          },
+          "exception_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exception Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "pool_type",
+          "entered_by"
+        ],
+        "title": "PoolMembershipCreate"
+      },
       "ProgressSummaryResponse": {
         "properties": {
           "trainer_slug": {
@@ -6872,6 +8532,127 @@
         ],
         "title": "RegisterRequest",
         "description": "Request body for user registration."
+      },
+      "ReviewCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "review_stage": {
+            "type": "string",
+            "maxLength": 30,
+            "title": "Review Stage"
+          },
+          "reviewer_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Reviewer Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Reviewer Role"
+          },
+          "decision": {
+            "type": "string",
+            "maxLength": 30,
+            "title": "Decision"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "reviewer_comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewer Comment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "review_stage",
+          "reviewer_id",
+          "reviewer_role",
+          "decision"
+        ],
+        "title": "ReviewCreate"
+      },
+      "RotationPolicyCreate": {
+        "properties": {
+          "policy_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Policy Id"
+          },
+          "domain_pack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain Pack Id"
+          },
+          "item_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Item Id"
+          },
+          "max_total_exposures": {
+            "type": "integer",
+            "title": "Max Total Exposures",
+            "default": 100
+          },
+          "rolling_window_days": {
+            "type": "integer",
+            "title": "Rolling Window Days",
+            "default": 30
+          },
+          "min_cool_down_days": {
+            "type": "integer",
+            "title": "Min Cool Down Days",
+            "default": 7
+          },
+          "min_pool_size": {
+            "type": "integer",
+            "title": "Min Pool Size",
+            "default": 5
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_id"
+        ],
+        "title": "RotationPolicyCreate"
       },
       "RubricCreate": {
         "properties": {
@@ -7475,6 +9256,95 @@
         "title": "SkillScoreResponse",
         "description": "Score for a single skill within a trainer's progress."
       },
+      "SourceBindingCreate": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Item Id"
+          },
+          "source_registry_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Source Registry Id"
+          },
+          "source_version_id": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Source Version Id"
+          },
+          "source_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Hash"
+          },
+          "source_title": {
+            "type": "string",
+            "maxLength": 500,
+            "title": "Source Title"
+          },
+          "source_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Uri"
+          },
+          "source_section_reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Section Reference"
+          },
+          "retrieved_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retrieved Date"
+          },
+          "domain_pack_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Domain Pack Id"
+          },
+          "binding_actor": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Binding Actor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "source_registry_id",
+          "source_version_id",
+          "source_title",
+          "domain_pack_id",
+          "binding_actor"
+        ],
+        "title": "SourceBindingCreate"
+      },
       "StartScenarioResponse": {
         "properties": {
           "session_id": {
@@ -7536,6 +9406,43 @@
         ],
         "title": "SubmitMessageResponse",
         "description": "Response returned after a message is saved."
+      },
+      "SupersessionCreate": {
+        "properties": {
+          "predecessor_item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Predecessor Item Id"
+          },
+          "successor_item_id": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Successor Item Id"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "created_by": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Created By"
+          }
+        },
+        "type": "object",
+        "required": [
+          "predecessor_item_id",
+          "successor_item_id",
+          "created_by"
+        ],
+        "title": "SupersessionCreate"
       },
       "SystemHealthResponse": {
         "properties": {

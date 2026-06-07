@@ -125,6 +125,9 @@ from app.certification_core.routers import (
     transition_router,
 )
 
+# Dynamic Item Bank Runtime routers
+from app.certification_core.routers.item_bank_runtime_router import router as item_bank_runtime_router
+
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
 app.include_router(users_router, prefix="/api/v1", tags=["Users"])
 app.include_router(domains_router, prefix="/api/v1", tags=["Domains"])
@@ -147,6 +150,13 @@ app.include_router(rubric_router, prefix="/api/v1", tags=["Certification-Core"])
 app.include_router(domain_pack_router, prefix="/api/v1", tags=["Certification-Core"])
 app.include_router(audit_router, prefix="/api/v1", tags=["Certification-Core"])
 app.include_router(transition_router, prefix="/api/v1", tags=["Certification-Core"])
+
+# Dynamic Item Bank Runtime routes
+app.include_router(
+    item_bank_runtime_router,
+    prefix="/api/v1",
+    tags=["Certification-Core-Item-Bank"],
+)
 
 
 # ---------------------------------------------------------------------------

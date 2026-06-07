@@ -1,4 +1,4 @@
-"""SQLAlchemy models for certification-grade core entities."""
+"""SQLAlchemy models for certification-grade core entities and runtime."""
 
 from app.certification_core.models.competency_models import CompetencyFramework, Competency
 from app.certification_core.models.blueprint_models import ExamBlueprint, BlueprintSection
@@ -7,6 +7,18 @@ from app.certification_core.models.item_models import ItemFamily, Item, ItemVers
 from app.certification_core.models.rubric_models import CertRubric, CertRubricCriterion
 from app.certification_core.models.domain_pack_models import DomainPack
 from app.certification_core.models.audit_models import AuditEvent
+from app.certification_core.models.runtime_models import (
+    ItemSourceBinding,
+    ItemReview,
+    ItemReviewDecision,
+    ItemPoolMembership,
+    ItemExposureEvent,
+    ItemExposureCounter,
+    ItemRotationPolicy,
+    ItemGovernanceIncident,
+    ItemSupersessionLink,
+    ItemExceptionApproval,
+)
 
 __all__ = [
     "CompetencyFramework",
@@ -21,4 +33,14 @@ __all__ = [
     "CertRubricCriterion",
     "DomainPack",
     "AuditEvent",
+    "ItemSourceBinding",
+    "ItemReview",
+    "ItemReviewDecision",
+    "ItemPoolMembership",
+    "ItemExposureEvent",
+    "ItemExposureCounter",
+    "ItemRotationPolicy",
+    "ItemGovernanceIncident",
+    "ItemSupersessionLink",
+    "ItemExceptionApproval",
 ]

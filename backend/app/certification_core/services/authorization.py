@@ -51,6 +51,15 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:manage_lifecycle",
         "certification:audit:read",
         "certification:answer_key:read",
+        # Item bank runtime permissions
+        "certification:item_bank:manage",
+        "certification:item_bank:author",
+        "certification:item_bank:review",
+        "certification:item_bank:publish",
+        "certification:item_bank:expose",
+        "certification:item_bank:govern",
+        "certification:item_bank:exception",
+        "certification:item_bank:audit",
     },
     "domain_owner": {
         "certification:read",
@@ -64,30 +73,41 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:manage_lifecycle",
         "certification:audit:read",
         "certification:answer_key:read",
+        # Item bank runtime permissions
+        "certification:item_bank:manage",
+        "certification:item_bank:author",
+        "certification:item_bank:review",
+        "certification:item_bank:govern",
+        "certification:item_bank:audit",
     },
     "content_author": {
         "certification:read",
         "certification:write",
         "certification:manage_items",
         "certification:manage_rubrics",
+        "certification:item_bank:author",
     },
     "expert_reviewer": {
         "certification:read",
         "certification:manage_lifecycle",
         "certification:audit:read",
+        "certification:item_bank:review",
     },
     "psychometric_reviewer": {
         "certification:read",
         "certification:manage_lifecycle",
         "certification:audit:read",
+        "certification:item_bank:review",
     },
     "qa_reviewer": {
         "certification:read",
         "certification:audit:read",
+        "certification:item_bank:review",
     },
     "read_only_auditor": {
         "certification:read",
         "certification:audit:read",
+        "certification:item_bank:audit",
     },
 }
 

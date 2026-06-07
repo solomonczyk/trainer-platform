@@ -1,0 +1,111 @@
+{
+  "layer": "TRAINER-PLATFORM-DYNAMIC-ITEM-BANK-RUNTIME-AND-GOVERNANCE-VERTICAL-LAYER-002",
+  "verdict": "ACCEPTED",
+  "base_state": {
+    "core_contracts": "ACCEPTED",
+    "base_commit": "bf0ab0527863d95d9dcd4931c5bb01f1db4ab152",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "runtime": {
+    "authoring": true,
+    "review": true,
+    "publication": true,
+    "pilot_pool": true,
+    "exam_eligible_pool": true,
+    "exposure_tracking": true,
+    "rotation_policy": true,
+    "suspension": true,
+    "retirement": true,
+    "supersession": true,
+    "governance_summary": true
+  },
+  "traceability": {
+    "source_binding_required": true,
+    "source_version_snapshot_saved": true,
+    "retired_source_blocked": true,
+    "domain_mismatch_blocked": true
+  },
+  "review_security": {
+    "author_self_approval_blocked": true,
+    "domain_owner_self_approval_blocked": true,
+    "llm_self_approval_blocked": true,
+    "expert_review_required": true,
+    "qa_review_required": true,
+    "psychometric_gate_required": true
+  },
+  "pools": {
+    "pilot_separate_from_exam_eligible": true,
+    "direct_exam_eligible_assignment_blocked": true,
+    "suspended_items_removed": true,
+    "retired_items_removed": true,
+    "historical_records_preserved": true
+  },
+  "exposure": {
+    "idempotent": true,
+    "duplicate_event_blocked": true,
+    "limit_enforced": true,
+    "cooldown_enforced": true,
+    "suspended_item_blocked": true,
+    "retired_item_blocked": true
+  },
+  "migration": {
+    "real_postgres_used": true,
+    "postgres_version": "PostgreSQL 16 (Debian)",
+    "revision": "004",
+    "upgrade_passed": true,
+    "downgrade_passed": true,
+    "second_upgrade_passed": true,
+    "cert_core_tables_preserved": true,
+    "ba_qa_tables_preserved": true,
+    "constraints_verified": true,
+    "indexes_verified": true
+  },
+  "rbac": {
+    "matrix_verified": true,
+    "learner_governance_access_blocked": true,
+    "auditor_mutation_blocked": true,
+    "answer_keys_hidden": true
+  },
+  "audit": {
+    "all_mutations_audited": true,
+    "append_only_preserved": true,
+    "answer_keys_absent_from_audit_output": true
+  },
+  "regression": {
+    "certification_core_passed": true,
+    "ba_phase_1_passed": true,
+    "ba_phase_2_passed": true,
+    "qa_trainer_passed": true,
+    "deepseek_validation_status": "validated"
+  },
+  "openapi": {
+    "export_passed": true,
+    "item_bank_routes_present": true,
+    "answer_keys_absent": true,
+    "audit_mutation_routes_absent": true
+  },
+  "forbidden_actions": {
+    "uncontrolled_llm_generation": false,
+    "exam_form_assembly": false,
+    "ba_qa_migration_executed": false,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "f3b1c81a31b18ced6c6eaacf070c87014af2ad98",
+    "pushed": false,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
+  "known_issues": [
+    "Psychometric metrics are placeholder-only until real candidate data exists",
+    "Review SLA breach detection requires a background scheduler",
+    "Rotation policy defaults use hardcoded values — configurable per domain pack needed",
+    "Exam form assembly not yet connected — item selection is advisory only",
+    "BA/QA migration adapter is ready but not executed"
+  ],
+  "next_allowed_action": "controlled_item_generation_and_validation_vertical_layer"
+}
