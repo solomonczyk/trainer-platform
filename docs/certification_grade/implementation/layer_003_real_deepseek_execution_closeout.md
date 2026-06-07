@@ -58,21 +58,78 @@ Narrowest valid fix in `test_migration_005_execution.py`:
 | Base URL | https://api.deepseek.com |
 | AI Gateway used | ✅ |
 | Provider adapter | OpenAIProviderAdapter(provider_name='deepseek') |
-| Key available | ❌ (DEEPSEEK_API_KEY not in environment) |
+| Key available | ✅ (DEEPSEEK_API_KEY set via environment) |
 | Key exposed | ❌ |
 | OpenAI used | ❌ |
 | Silent fallback | ❌ |
 
 ## Real Controlled Generation
 
-**NOT EXECUTED** — The DEEPSEEK_API_KEY is not available in the execution environment.
+**EXECUTED SUCCESSFULLY** — One real DeepSeek generation request completed.
 
-All preconditions are in place:
-- Provider adapter correctly resolves for 'deepseek'
-- OpenAIProviderAdapter selects base_url 'https://api.deepseek.com' when provider_name='deepseek'
-- _resolve_api_key() falls back to DEEPSEEK_API_KEY env var
-- Generation service correctly routes through AI Gateway
-- All 15 validators (V1-V15) are implemented and tested
+### Generation Flow
+
+| Step | Result |
+|------|--------|
+| Create request (provider=deepseek, model=deepseek-v4-flash) | ✅ gen-6db686968c0d |
+| Authorize (different user, self-auth blocked) | ✅ status=authorized |
+| Bind trusted source (src-ba-swdev-v1.0) | ✅ 1 binding |
+| Execute generation — 1 candidate, no retry | ✅ provider_call_executed=true |
+| Provider adapter | OpenAIProviderAdapter(provider_name='deepseek') |
+| Provider reported model | deepseek-v4-flash |
+| Raw response stored | ✅ |
+| Candidate normalized | ✅ cand-c1a83dade217 |
+
+### Validation Results (V1–V15)
+
+| Validator | Status | Details |
+|-----------|--------|---------|
+| V1 — Schema | ✅ passed | |
+| V2 — Required fields | ✅ passed | |
+| V3 — Source citations | ⚠️ warning | CITATION_SOURCE_MISMATCH: source "BA_SD_BP_v1.0" ≠ expected "src-ba-swdev-v1.0" |
+| V4 — Competency alignment | ✅ passed | |
+| V5 — Difficulty | ✅ passed | |
+| V6 — Item family | ✅ passed | |
+| V7 — Answer consistency | ✅ passed | |
+| V8 — Rubric | ✅ passed | |
+| V9 — Ambiguity | ✅ passed | |
+| V10 — Duplicate | ❌ failed | EXACT_DUPLICATE: self-match false positive (candidate compared against itself) |
+| V11 — Safety | ✅ passed | |
+| V12 — Locale | ✅ passed | |
+| V13 — Answer key leak | ✅ passed | |
+| V14 — Provenance | ✅ passed | |
+| V15 — Pool mutation guard | ✅ passed | |
+
+### Aggregate
+
+| Metric | Value |
+|--------|-------|
+| Passed | 13 |
+| Failed | 1 (V10 — self-duplicate false positive) |
+| Warnings | 1 (V3 — citation source label mismatch) |
+| Critical | 0 |
+| Major | 1 |
+| **Decision** | **VALIDATION_FAILED** |
+
+### Analysis
+
+The V10 failure is a **false positive**: the duplicate detection validator compares the freshly-flushed candidate against the existing candidate list, which includes the same candidate just inserted. This is a known pre-existing issue where the validator does not exclude the current candidate_id from the comparison.
+
+The V3 warning is a **cosmetic mismatch**: the DeepSeek-generated item cited source "BA_SD_BP_v1.0" (a reasonable abbreviation), while the expected source ID was "src-ba-swdev-v1.0". The content is substantively correct.
+
+## Review Handoff
+
+**NOT CREATED** — Decision is VALIDATION_FAILED, not READY_FOR_HUMAN_REVIEW. This is correct behavior per the validation pipeline contract.
+
+## Provenance & Audit
+
+| Check | Result |
+|-------|--------|
+| Candidate provenance record | ✅ Created (provider=deepseek, model=deepseek-v4-flash) |
+| Audit events | ✅ generation_request_created → authorized → generation_started → provider_call_completed → candidate_normalized → candidate_validation_started → candidate_validation_failed → generation_request_completed |
+| Raw response stored | ✅ In GenerationRawResponse table |
+| Validator versions recorded | ✅ All 15 validators at v1.0.0 |
+| Prompt hash recorded | ✅ 888fd326154cf69945df6ffffad60c1d0b4eaadc4dad5d184053d320c471e7e0 |
 
 ## Test Results
 
@@ -113,19 +170,35 @@ All preconditions are in place:
 | Raw provider output absent from learner schemas | ✅ |
 | Audit mutation routes absent | ✅ |
 
+## Mandatory Proof Checklist
+
+| Requirement | Result |
+|-------------|--------|
+| provider_call_executed=true | ✅ |
+| mock_adapter_used=false | ✅ (OpenAIProviderAdapter with provider_name='deepseek') |
+| provider=deepseek | ✅ |
+| provider_reported_model=deepseek-v4-flash | ✅ |
+| real_generation_requests=1 | ✅ |
+| candidates_requested=1 | ✅ |
+| automatic_retry_executed=false | ✅ |
+| review_handoff state matches decision | ✅ (no handoff for VALIDATION_FAILED) |
+| certification_core=457 passed, 0 failed, 0 errors | ✅ |
+| production_accepted=false | ✅ |
+| release_allowed=false | ✅ |
+
 ## Final Verdict
 
 ```json
 {
   "TRAINER_PLATFORM_CONTROLLED_ITEM_GENERATION_AND_AUTOMATED_VALIDATION_VERTICAL_LAYER_003": "ACCEPTED_WITH_BLOCKERS",
-  "real_deepseek_execution": "BLOCKED — DEEPSEEK_API_KEY UNAVAILABLE",
+  "real_deepseek_execution": "EXECUTED — VALIDATION_FAILED (V10 self-duplicate false positive)",
   "automated_validation_pipeline": "VERIFIED",
   "certification_core_regression": "PASSED (errors resolved)",
   "migration_head": "006",
   "blockers": [
-    "DEEPSEEK_API_KEY not available in execution environment"
+    "V10 EXACT_DUPLICATE false positive — validator does not exclude current candidate from comparison"
   ],
-  "next_allowed_action": "NEEDS_OPERATOR_ACTION"
+  "next_allowed_action": "ANALYZE_VALIDATION_FAILURE_V10"
 }
 ```
 
@@ -149,7 +222,7 @@ All forbidden actions are confirmed as NOT executed:
 
 ## Next Steps
 
-1. **OPERATOR ACTION REQUIRED**: Set DEEPSEEK_API_KEY in the execution environment
-2. After key is available, re-execute steps 6-9 of the closeout task: real generation preflight → execution → validation pipeline → review handoff
-3. If candidate passes validation (READY_FOR_HUMAN_REVIEW), proceed to Layer 004 (Human Review)
-4. If candidate fails validation, document failure reason and adjust prompt/source configuration without retry
+1. **ANALYZE V10 false positive**: The duplicate detection validator (V10) should exclude the current candidate_id from comparison. Fix the validator to skip self-comparison.
+2. **Address V3 citation label mismatch**: Align source citation labels between the generation prompt and the validation expectations, or make V3 tolerant of minor label differences.
+3. **After V10 fix**: Re-run a single real DeepSeek generation to verify V10 passes with a non-duplicate candidate.
+4. **If V10+V3 pass → READY_FOR_HUMAN_REVIEW**: Proceed to Layer 004 (Human Review).
