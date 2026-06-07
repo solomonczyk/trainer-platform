@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
+from typing import Any
+
 from app.ai_gateway.schemas import EvaluationGatewayRequest
 
 
@@ -35,3 +37,21 @@ class BaseProviderAdapter(ABC):
             ValueError: If the provider returns non-JSON or malformed content.
         """
         ...
+
+    async def generate_items(self, prompt: str) -> dict:
+        """Generate item candidates using the AI provider.
+
+        Default implementation raises NotImplementedError. Provider adapters
+        that support item generation should override this method.
+
+        Args:
+            prompt: The generation prompt including system instruction, context,
+                    and schema requirements.
+
+        Returns:
+            A dictionary containing generated items under an "items" key.
+
+        Raises:
+            NotImplementedError: If the provider does not support generation.
+        """
+        raise NotImplementedError(f"Provider '{self.provider_name}' does not support item generation")

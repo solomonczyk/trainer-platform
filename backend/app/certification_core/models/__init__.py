@@ -19,6 +19,17 @@ from app.certification_core.models.runtime_models import (
     ItemSupersessionLink,
     ItemExceptionApproval,
 )
+from app.certification_core.models.generation_models import (
+    GenerationRequest,
+    GenerationSourceBinding,
+    GenerationProviderRun,
+    GenerationRawResponse,
+    GeneratedCandidate,
+    CandidateValidationRun,
+    CandidateValidationResult,
+    CandidateProvenance,
+    CandidateReviewHandoff,
+)
 
 __all__ = [
     "CompetencyFramework",
@@ -43,4 +54,13 @@ __all__ = [
     "ItemGovernanceIncident",
     "ItemSupersessionLink",
     "ItemExceptionApproval",
+    "GenerationRequest",
+    "GenerationSourceBinding",
+    "GenerationProviderRun",
+    "GenerationRawResponse",
+    "GeneratedCandidate",
+    "CandidateValidationRun",
+    "CandidateValidationResult",
+    "CandidateProvenance",
+    "CandidateReviewHandoff",
 ]

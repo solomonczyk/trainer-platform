@@ -26,6 +26,7 @@ bearer_scheme = HTTPBearer(auto_error=False)
 
 CERTIFICATION_ROLES = [
     "platform_admin",
+    "generation_operator",
     "domain_owner",
     "content_author",
     "expert_reviewer",
@@ -60,6 +61,26 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:item_bank:govern",
         "certification:item_bank:exception",
         "certification:item_bank:audit",
+        # Generation pipeline permissions
+        "certification:generation:create",
+        "certification:generation:authorize",
+        "certification:generation:execute",
+        "certification:generation:view",
+        "certification:generation:view_raw",
+        "certification:generation:admin",
+    },
+    "generation_operator": {
+        "certification:read",
+        "certification:write",
+        "certification:audit:read",
+        "certification:answer_key:read",
+        # Generation pipeline permissions
+        "certification:generation:create",
+        "certification:generation:authorize",
+        "certification:generation:execute",
+        "certification:generation:view",
+        "certification:generation:view_raw",
+        "certification:item_bank:audit",
     },
     "domain_owner": {
         "certification:read",
@@ -79,6 +100,9 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:item_bank:review",
         "certification:item_bank:govern",
         "certification:item_bank:audit",
+        # Generation pipeline permissions
+        "certification:generation:create",
+        "certification:generation:view",
     },
     "content_author": {
         "certification:read",
@@ -103,6 +127,7 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:read",
         "certification:audit:read",
         "certification:item_bank:review",
+        "certification:generation:view_raw",
     },
     "read_only_auditor": {
         "certification:read",

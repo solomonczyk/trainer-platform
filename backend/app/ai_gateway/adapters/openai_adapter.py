@@ -359,6 +359,69 @@ class OpenAIProviderAdapter(BaseProviderAdapter):
             return value.strip().lower() in {"true", "1", "yes", "passed", "pass"}
         return bool(value)
 
+    async def generate_items(self, prompt: str) -> dict:
+        """Generate item candidates using the OpenAI-compatible API.
+
+        Args:
+            prompt: The generation prompt including system instruction, context,
+                    and schema requirements.
+
+        Returns:
+            A dictionary containing generated items under an "items" key.
+
+        Raises:
+            TimeoutError: If the API call times out.
+            ConnectionError: If the API is unreachable.
+            ValueError: If the response is invalid.
+        """
+        messages = [
+            {"role": "system", "content": "You are a certification item generation assistant. Return only valid JSON."},
+            {"role": "user", "content": prompt},
+        ]
+
+        url = f"{self.base_url.rstrip('/')}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+        payload: dict[str, Any] = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": 0.3,
+            "max_tokens": 8192,
+            "response_format": {"type": "json_object"},
+        }
+
+        last_error: Exception | None = None
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                async with httpx.AsyncClient(timeout=httpx.Timeout(self.timeout_seconds)) as client:
+                    response = await client.post(url, headers=headers, json=payload)
+                    response.raise_for_status()
+                    raw = response.json()
+                    parsed = self._parse_response(raw)
+                    return parsed
+            except (TimeoutError, httpx.TimeoutException) as exc:
+                last_error = exc
+                logger.warning(f"Generation timeout (attempt {attempt})")
+                if attempt < self.max_retries:
+                    continue
+                raise TimeoutError(f"Generation timed out after {self.max_retries} retries") from exc
+            except (httpx.HTTPStatusError, httpx.RequestError) as exc:
+                last_error = exc
+                logger.warning(f"Generation request error (attempt {attempt}): {exc}")
+                if attempt < self.max_retries:
+                    continue
+                raise ConnectionError(f"Generation API unreachable after {self.max_retries} retries") from exc
+            except (json.JSONDecodeError, ValueError) as exc:
+                last_error = exc
+                logger.warning(f"Generation parse error (attempt {attempt}): {exc}")
+                if attempt < self.max_retries:
+                    continue
+                raise ValueError(f"Failed to parse generation response: {exc}") from exc
+
+        raise RuntimeError("Unexpected error in generation") from last_error
+
     @staticmethod
     def _rubric_criteria(rubric: dict[str, Any]) -> list[tuple[str, str]]:
         criteria: list[tuple[str, str]] = []

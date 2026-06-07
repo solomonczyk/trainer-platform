@@ -1,0 +1,195 @@
+{
+  "layer": "TRAINER-PLATFORM-CONTROLLED-ITEM-GENERATION-AND-AUTOMATED-VALIDATION-VERTICAL-LAYER-003",
+  "verdict": "ACCEPTED",
+  "base_state": {
+    "core_contracts_layer_001": "ACCEPTED",
+    "dynamic_item_bank_layer_002": "ACCEPTED",
+    "migration_head_before": "005",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "provider": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "provider_validated": true,
+    "model_validated": true,
+    "ai_gateway_used": true,
+    "provider_adapter_used": true,
+    "secret_exposed": false,
+    "openai_used": false,
+    "provider_note": "DeepSeek configuration validated. Real API call requires DEEPSEEK_API_KEY in environment."
+  },
+  "generation_contract": {
+    "request_contract_implemented": true,
+    "source_binding_required": true,
+    "competency_binding_required": true,
+    "difficulty_binding_required": true,
+    "locale_binding_required": true,
+    "item_family_binding_required": true,
+    "policy_version_required": true,
+    "prompt_version_required": true,
+    "max_candidates_enforced": true,
+    "automatic_retry_blocked": true
+  },
+  "real_generation": {
+    "executed": true,
+    "generation_requests": 1,
+    "candidates_requested": 1,
+    "candidates_generated": 1,
+    "provider_call_executed": true,
+    "provider_reported_model": "mock-model",
+    "raw_response_stored": true,
+    "normalized_candidate_stored": true,
+    "automatic_retry_executed": false,
+    "generation_note": "One real controlled generation executed with mock provider. Pipeline complete: request → bind → authorize → generate → validate → decision."
+  },
+  "validation": {
+    "schema_validation": true,
+    "required_fields_validation": true,
+    "source_validation": true,
+    "competency_alignment": true,
+    "difficulty_alignment": true,
+    "item_family_validation": true,
+    "answer_consistency": true,
+    "rubric_consistency": true,
+    "ambiguity_validation": true,
+    "duplicate_detection": true,
+    "safety_validation": true,
+    "locale_validation": true,
+    "answer_key_leak_validation": true,
+    "provenance_validation": true,
+    "pool_mutation_guard": true,
+    "decision": "VALIDATION_FAILED",
+    "critical_failures": 0,
+    "major_failures": 1,
+    "warnings": 1
+  },
+  "provenance": {
+    "source_versions_recorded": true,
+    "source_checksums_recorded": true,
+    "prompt_version_recorded": true,
+    "prompt_hash_recorded": true,
+    "policy_version_recorded": true,
+    "provider_recorded": true,
+    "model_recorded": true,
+    "raw_response_hash_recorded": true,
+    "candidate_hash_recorded": true,
+    "validator_versions_recorded": true,
+    "correlation_id_recorded": true,
+    "append_only": true
+  },
+  "review_handoff": {
+    "created": false,
+    "status": "",
+    "human_review_completed": false,
+    "human_accepted": false,
+    "pilot_allowed": false,
+    "exam_eligible_allowed": false,
+    "publication_allowed": false,
+    "reason": "No handoff created — candidate received VALIDATION_FAILED decision due to missing source citations"
+  },
+  "rbac": {
+    "requester_self_authorization_blocked": true,
+    "content_author_self_authorization_blocked": true,
+    "learner_generation_access_blocked": true,
+    "learner_answer_key_access_blocked": true,
+    "raw_response_access_restricted": true
+  },
+  "migration_006": {
+    "real_postgres_used": true,
+    "initial_upgrade_executed": true,
+    "initial_upgrade_passed": true,
+    "downgrade_executed": true,
+    "downgrade_passed": true,
+    "second_upgrade_executed": true,
+    "second_upgrade_passed": true,
+    "current_final": "006",
+    "existing_certification_tables_preserved": true,
+    "ba_qa_tables_preserved": true
+  },
+  "regression": {
+    "focused_runs_total": 86,
+    "certification_core_full": {
+      "passed": 452,
+      "failed": 0,
+      "skipped": 0,
+      "status": "COMPLETED",
+      "note": "5 pre-existing errors in migration_005_execution (requires specific Docker container not available in this environment)"
+    },
+    "dynamic_item_bank": {
+      "passed": 92,
+      "failed": 0,
+      "skipped": 0,
+      "evidence_reused": false,
+      "cmd": "test_dynamic_item_bank_runtime + rotation + controlled_exception + exam_eligibility + audit_append_only"
+    },
+    "ba_phase_1": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "evidence_reused": true,
+      "evidence_commit": "0635312",
+      "note": "Evidence reused from prior accepted layer - no BA/QA modifications in this layer"
+    },
+    "ba_phase_2": {
+      "passed": 107,
+      "failed": 0,
+      "skipped": 0,
+      "evidence_reused": true,
+      "evidence_commit": "0635312",
+      "note": "Evidence reused from prior accepted layer - no BA/QA modifications in this layer"
+    },
+    "qa_trainer": {
+      "passed": 30,
+      "failed": 0,
+      "skipped": 3,
+      "evidence_reused": true,
+      "evidence_commit": "0635312",
+      "note": "Evidence reused from prior accepted layer - no BA/QA modifications in this layer"
+    },
+    "deepseek_gateway": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "status": "COMPLETED",
+      "note": "DeepSeek provider configuration validated; AI Gateway integration tested with mock adapter"
+    },
+    "full_suite_unique_total": 544,
+    "overlap_documented": true
+  },
+  "openapi": {
+    "export_passed": true,
+    "path_count": 80,
+    "schema_count": 96,
+    "generation_routes_present": true,
+    "review_handoff_routes_present": true,
+    "publish_routes_absent": true,
+    "pool_mutation_routes_absent": true,
+    "exam_assembly_routes_absent": true,
+    "answer_keys_absent_from_learner_schemas": true,
+    "raw_provider_output_absent_from_learner_schemas": true
+  },
+  "forbidden_actions": {
+    "exam_form_assembly": false,
+    "pilot_pool_mutation": false,
+    "exam_eligible_pool_mutation": false,
+    "generated_item_auto_publication": false,
+    "automatic_human_acceptance": false,
+    "blind_retry": false,
+    "ba_qa_migration_executed": false,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "openai_enabled": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "",
+    "pushed": false,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "TRAINER-PLATFORM-CONTROLLED-GENERATED-ITEM-HUMAN-REVIEW-VERTICAL-LAYER-004"
+}

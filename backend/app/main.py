@@ -128,6 +128,9 @@ from app.certification_core.routers import (
 # Dynamic Item Bank Runtime routers
 from app.certification_core.routers.item_bank_runtime_router import router as item_bank_runtime_router
 
+# Controlled Generation router
+from app.certification_core.routers.generation_router import router as generation_router
+
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
 app.include_router(users_router, prefix="/api/v1", tags=["Users"])
 app.include_router(domains_router, prefix="/api/v1", tags=["Domains"])
@@ -156,6 +159,12 @@ app.include_router(
     item_bank_runtime_router,
     prefix="/api/v1",
     tags=["Certification-Core-Item-Bank"],
+)
+
+# Controlled Generation routes
+app.include_router(
+    generation_router,
+    tags=["Certification-Generation"],
 )
 
 

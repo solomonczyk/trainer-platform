@@ -367,3 +367,56 @@ class MockProviderAdapter(BaseProviderAdapter):
             "critical": 0.98,
         }
         return confidence_map.get(quality, 0.5)
+
+    async def generate_items(self, prompt: str) -> dict:
+        """Generate deterministic mock item candidates.
+
+        Returns a controlled set of generated items for testing.
+        No external API call is made.
+        """
+        import hashlib
+        seed = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+        rng = random.Random(int(seed, 16))
+
+        # Generate a deterministic item based on the prompt seed
+        item_type = rng.choice(["multiple_choice", "single_choice", "open_answer"])
+
+        stem = (
+            f"Based on the provided context (seed={seed}), "
+            f"which of the following best describes a key principle?"
+        )
+
+        options = [
+            {"id": "A", "text": "Principle A: Systematic verification ensures quality outcomes"},
+            {"id": "B", "text": "Principle B: Ad-hoc testing is sufficient for most cases"},
+            {"id": "C", "text": "Principle C: Documentation is optional for experienced teams"},
+            {"id": "D", "text": "Principle D: Testing should only occur at the end of development"},
+        ]
+
+        if seed[-1] in "01234567":
+            correct_id = "A"
+        else:
+            correct_id = "B"
+
+        items = [{
+            "item_type": item_type,
+            "stem": stem,
+            "options": options if item_type != "open_answer" else [],
+            "answer_key": {"correct_option_id": correct_id} if item_type != "open_answer" else {},
+            "rationale": (
+                f"Option {correct_id} is correct because it aligns with industry best practices "
+                f"for quality assurance and verification processes."
+            ),
+            "rubric": {
+                "criteria": [
+                    {"criterion_id": "accuracy", "name": "Accuracy", "max_score": 5, "weight": 40},
+                    {"criterion_id": "completeness", "name": "Completeness", "max_score": 3, "weight": 30},
+                    {"criterion_id": "clarity", "name": "Clarity", "max_score": 2, "weight": 30},
+                ]
+            },
+            "source_citations": [
+                {"source_id": "mock-source-001", "version": "1.0", "reference": "Mock Certification Standard §3.2"}
+            ],
+        }]
+
+        return {"items": items}
