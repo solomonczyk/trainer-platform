@@ -79,14 +79,24 @@ def _alembic(*args: str) -> str:
 
 
 def _pg(sql: str) -> list[tuple]:
-    """Run SQL against PostgreSQL via docker exec + psql and return rows."""
-    cmd = [
-        "docker", "exec", "trainer-item-bank-migration-005",
-        "psql", "-U", "trainer", "-d", "trainer_item_bank_closeout",
-        "-t", "-A", "-F", "|",
-        "-c", sql,
-    ]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    """Run SQL against PostgreSQL and return rows."""
+    if not _HAS_PG and not MIGRATION_URL:
+        # Try docker exec
+        cmd = [
+            "docker", "exec", "trainer-migration-pg",
+            "psql", "-U", "trainer", "-d", "trainer_platform",
+            "-t", "-A", "-F", "|",
+            "-c", sql,
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    else:
+        cmd = [
+            "psql",
+            MIGRATION_URL,
+            "-t", "-A", "-F", "|",
+            "-c", sql,
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     if result.returncode != 0:
         pytest.fail(f"psql command failed:\n{result.stderr}")
     rows = []
@@ -140,12 +150,11 @@ class TestMigration005Execution:
     """Prove the full migration 005 cycle on real PostgreSQL."""
 
     def test_cycle_upgrade_downgrade_upgrade(self, pg_available):
-        """Full cycle: upgrade head → 005 → downgrade 004 → upgrade head → 005."""
-        # Step 1: verify we start at 005
-        rev = _current_revision()
-        assert rev == "005" or rev.startswith("005"), f"Expected 005, got {rev}"
+        """Full cycle: start at head → downgrade 004 → upgrade head. Verify 005 migration artifacts."""
+        # Step 1: record the current head revision
+        head_rev = _current_revision()
 
-        # Snapshot 005 columns and indexes
+        # Snapshot 005 columns and indexes before any downgrade
         cols_005 = {
             t: _columns_for(t)
             for t in MIGRATION_005_COLUMNS
@@ -183,10 +192,11 @@ class TestMigration005Execution:
         for expected_idx in MIGRATION_005_INDEXES:
             assert expected_idx not in idxs_004, f"Index {expected_idx} still present after downgrade"
 
-        # Step 3: upgrade back to head (005)
+        # Step 3: upgrade back to head
         _alembic("upgrade", "head")
         rev = _current_revision()
-        assert rev == "005" or rev.startswith("005"), f"Expected 005, got {rev}"
+        # After upgrade, head revision should be 006 (or whatever the current head is)
+        HEAD_REVISION = "006"
 
         # Verify 005 columns restored
         cols_005_restored = {
@@ -214,16 +224,17 @@ class TestMigration005Execution:
             )
             assert len(rows) == 0, f"Duplicate columns found in {table}: {rows}"
 
-        # Verify alembic version table has exactly one row = '005'
+        # Verify alembic version table has exactly one row at HEAD_REVISION
         rows = _pg("SELECT version_num FROM alembic_version")
         assert len(rows) == 1, f"Expected 1 row in alembic_version, got {len(rows)}"
-        assert rows[0] == "005", f"Expected '005', got '{rows[0]}'"
+        assert rows[0] == HEAD_REVISION, f"Expected '{HEAD_REVISION}', got '{rows[0]}'"
 
     def test_all_tables_preserved_after_cycle(self, pg_available):
-        """All 51 tables must remain after the cycle."""
+        """All tables must remain after the cycle."""
         rows = _pg("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name")
         names = {r for r in rows}
-        assert len(names) == 51, f"Expected 51 tables, got {len(names)}"
+        # With migration 006 applied, total tables = 60 (31 cert_ + 29 non-cert)
+        assert len(names) == 60, f"Expected 60 tables (005 + 006 inclusive), got {len(names)}"
 
         # Core contracts — spot check
         for core in ("cert_audit_events", "cert_exam_blueprints", "cert_item_rotation_policies",
@@ -238,14 +249,14 @@ class TestMigration005Execution:
             assert ba in names, f"BA/QA table {ba} missing"
 
     def test_core_contract_table_count(self, pg_available):
-        """22 cert_ tables must exist."""
+        """31 cert_ tables must exist (22 from 005 + 9 from 006)."""
         rows = _pg("SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name LIKE 'cert_%'")
-        assert rows[0] == "22", f"Expected 22 cert_ tables, got {rows[0]}"
+        assert rows[0] == "31", f"Expected 31 cert_ tables, got {rows[0]}"
 
-    def test_alembic_revision_matches_005(self, pg_available):
-        """Final alembic revision must be 005."""
+    def test_alembic_revision_matches_head(self, pg_available):
+        """Final alembic revision must be current head (006)."""
         rev = _current_revision()
-        assert rev == "005" or rev.startswith("005"), f"Expected 005, got {rev}"
+        assert rev == "006" or rev.startswith("006"), f"Expected 006 (head), got {rev}"
 
     def test_database_queryable(self, pg_available):
         """Database must be queryable after the full cycle."""

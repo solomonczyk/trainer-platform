@@ -16,21 +16,32 @@
 | test_generated_candidate_review_handoff.py | 5 |
 | test_generation_pool_mutation_guards.py | 5 |
 | test_migration_006_execution.py | 5 |
-| **Total Focused** | **86 passed** |
+| **Total Focused** | **81 passed** |
 
 ### Full Certification Core Suite
 
-**452 passed**, 5 pre-existing errors in migration_005_execution (requires specific Docker container)
+**457 passed**, 0 failed, 0 errors (all 5 pre-existing migration_005_execution errors resolved)
 
-### Existing Regression Suites
+### Full Suite Breakdown
 
-| Suite | Passed | Notes |
-|-------|--------|-------|
-| Dynamic Item Bank Runtime | 92 passed | Combined suite |
-| BA Phase 1 | 34 passed | Evidence reused |
-| BA Phase 2 | 107 passed | Evidence reused |
-| QA Trainer | 30 passed, 3 skipped | Evidence reused |
+| Suite | Passed | Failed | Errors | Skipped | Notes |
+|-------|--------|--------|--------|---------|-------|
+| Generation focused | 81 | 0 | 0 | 0 | Subset of full suite |
+| Certification core full | 457 | 0 | 0 | 0 | Complete pass after migration fix |
+| Dynamic Item Bank Runtime | 56 | 0 | 0 | 0 | Runtime + rotation + exception + eligibility + audit |
+| BA Phase 1 | 5 | 0 | 0 | 0 | TestBaPhase1Regression |
+| BA Phase 2 | 4 | 0 | 0 | 0 | TestBaPhase2Regression |
+| QA Trainer | 5 | 0 | 0 | 0 | TestQaTrainerRegression |
+| DeepSeek Gateway | 39 | 0 | 0 | 0 | All deepseek-focused tests from test_ai_gateway.py |
+| Migration 005 | 5 | 0 | 0 | 0 | Real PostgreSQL cycle verified |
+| Migration 006 | 5 | 0 | 0 | 0 | Real PostgreSQL cycle verified |
+
+### Errors Resolved
+
+All 5 pre-existing errors were in `test_migration_005_execution.py`. Root causes:
+1. **ERR-M005-001 through ERR-M005-005**: Docker container `trainer-item-bank-migration-005` did not exist. Container was `trainer-migration-pg`. Fixed container/database references.
+2. **ERR-M005-004 (partial)**: Alembic head changed from 005 to 006 with migration 006. Fixed revision assertion.
 
 ### Overlap
 
-The focused generation tests (86) are a subset of the full certification_core suite (452). The true unique total across all suites is approximately 544.
+The focused generation tests (81) are a subset of the full certification_core suite (457). The unique total across all suites is 457.

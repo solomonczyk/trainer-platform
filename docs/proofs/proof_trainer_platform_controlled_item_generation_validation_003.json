@@ -1,12 +1,30 @@
 {
   "layer": "TRAINER-PLATFORM-CONTROLLED-ITEM-GENERATION-AND-AUTOMATED-VALIDATION-VERTICAL-LAYER-003",
-  "verdict": "ACCEPTED",
+  "verdict": "ACCEPTED_WITH_BLOCKERS",
+  "closeout": "REAL_DEEPSEEK_EXECUTION_AND_REGRESSION_CLOSEOUT",
+  "closeout_date": "2026-06-07",
   "base_state": {
     "core_contracts_layer_001": "ACCEPTED",
     "dynamic_item_bank_layer_002": "ACCEPTED",
     "migration_head_before": "005",
+    "migration_head_after": "006",
     "production_accepted": false,
     "release_allowed": false
+  },
+  "previous_mock_execution": {
+    "executed": true,
+    "generation_requests": 1,
+    "candidates_requested": 1,
+    "candidates_generated": 1,
+    "provider_adapter": "MockProviderAdapter",
+    "provider": "mock",
+    "provider_reported_model": "mock-model",
+    "candidate_decision": "VALIDATION_FAILED",
+    "critical_failures": 0,
+    "major_failures": 1,
+    "warnings": 1,
+    "review_handoff_created": false,
+    "reason": "Candidate received VALIDATION_FAILED decision due to missing source citations (V3)"
   },
   "provider": {
     "provider": "deepseek",
@@ -15,10 +33,12 @@
     "provider_validated": true,
     "model_validated": true,
     "ai_gateway_used": true,
-    "provider_adapter_used": true,
-    "secret_exposed": false,
+    "provider_adapter_used": false,
+    "deepseek_key_available": false,
+    "deepseek_key_exposed": false,
     "openai_used": false,
-    "provider_note": "DeepSeek configuration validated. Real API call requires DEEPSEEK_API_KEY in environment."
+    "silent_fallback": false,
+    "provider_note": "DeepSeek configuration validated. Provider adapter resolves to OpenAIProviderAdapter(provider_name='deepseek'). DEEPSEEK_API_KEY not available in environment — real generation cannot execute without operator action."
   },
   "generation_contract": {
     "request_contract_implemented": true,
@@ -33,61 +53,43 @@
     "automatic_retry_blocked": true
   },
   "real_generation": {
-    "executed": true,
-    "generation_requests": 1,
-    "candidates_requested": 1,
-    "candidates_generated": 1,
-    "provider_call_executed": true,
-    "provider_reported_model": "mock-model",
-    "raw_response_stored": true,
-    "normalized_candidate_stored": true,
+    "executed": false,
+    "generation_requests": 0,
+    "candidates_requested": 0,
+    "candidates_generated": 0,
+    "provider_call_executed": false,
+    "mock_adapter_used": false,
+    "provider": "deepseek",
+    "configured_model": "deepseek-v4-flash",
+    "provider_reported_model": "",
+    "provider_request_id": "",
+    "raw_response_stored": false,
+    "normalized_candidate_stored": false,
     "automatic_retry_executed": false,
-    "generation_note": "One real controlled generation executed with mock provider. Pipeline complete: request → bind → authorize → generate → validate → decision."
+    "blocker": "DEEPSEEK_API_KEY not available in execution environment"
   },
   "validation": {
-    "schema_validation": true,
-    "required_fields_validation": true,
-    "source_validation": true,
-    "competency_alignment": true,
-    "difficulty_alignment": true,
-    "item_family_validation": true,
-    "answer_consistency": true,
-    "rubric_consistency": true,
-    "ambiguity_validation": true,
-    "duplicate_detection": true,
-    "safety_validation": true,
-    "locale_validation": true,
-    "answer_key_leak_validation": true,
-    "provenance_validation": true,
-    "pool_mutation_guard": true,
-    "decision": "VALIDATION_FAILED",
+    "mock_execution_decision": "VALIDATION_FAILED",
+    "mock_critical_failures": 0,
+    "mock_major_failures": 1,
+    "mock_warnings": 1,
+    "mock_failure_reason": "MISSING_SOURCE_CITATIONS (V3)",
+    "real_execution_validation": "NOT_EXECUTED",
+    "decision": "",
     "critical_failures": 0,
-    "major_failures": 1,
-    "warnings": 1
-  },
-  "provenance": {
-    "source_versions_recorded": true,
-    "source_checksums_recorded": true,
-    "prompt_version_recorded": true,
-    "prompt_hash_recorded": true,
-    "policy_version_recorded": true,
-    "provider_recorded": true,
-    "model_recorded": true,
-    "raw_response_hash_recorded": true,
-    "candidate_hash_recorded": true,
-    "validator_versions_recorded": true,
-    "correlation_id_recorded": true,
-    "append_only": true
+    "major_failures": 0,
+    "warnings": 0,
+    "validators_tested": "V1-V15 pass with mock data; real DeepSeek output requires key"
   },
   "review_handoff": {
     "created": false,
-    "status": "",
+    "status": "not_created",
     "human_review_completed": false,
     "human_accepted": false,
     "pilot_allowed": false,
     "exam_eligible_allowed": false,
     "publication_allowed": false,
-    "reason": "No handoff created — candidate received VALIDATION_FAILED decision due to missing source citations"
+    "state_consistent_with_decision": true
   },
   "rbac": {
     "requester_self_authorization_blocked": true,
@@ -96,6 +98,53 @@
     "learner_answer_key_access_blocked": true,
     "raw_response_access_restricted": true
   },
+  "regression_error_diagnosis": [
+    {
+      "error_id": "ERR-M005-001",
+      "test_name": "TestMigration005Execution::test_cycle_upgrade_downgrade_upgrade",
+      "classification": "fixture_isolation",
+      "root_cause": "Docker container 'trainer-item-bank-migration-005' not found. Container was renamed to 'trainer-migration-pg'. Database renamed to 'trainer_platform'.",
+      "layer_003_related": false,
+      "fix_required": true,
+      "fix_applied": "Updated docker container reference, database name, and head revision assertion"
+    },
+    {
+      "error_id": "ERR-M005-002",
+      "test_name": "TestMigration005Execution::test_all_tables_preserved_after_cycle",
+      "classification": "fixture_isolation",
+      "root_cause": "Same container/database connectivity failure as ERR-M005-001",
+      "layer_003_related": false,
+      "fix_required": true,
+      "fix_applied": "Same container/database fix; updated table count from 51 to 60 (inclusive of 006 tables)"
+    },
+    {
+      "error_id": "ERR-M005-003",
+      "test_name": "TestMigration005Execution::test_core_contract_table_count",
+      "classification": "fixture_isolation",
+      "root_cause": "Same container connectivity failure. Additionally, cert_ table count changed from 22 to 31 with 006 migration",
+      "layer_003_related": false,
+      "fix_required": true,
+      "fix_applied": "Updated expected cert_ table count from 22 to 31"
+    },
+    {
+      "error_id": "ERR-M005-004",
+      "test_name": "TestMigration005Execution::test_alembic_revision_matches_005",
+      "classification": "migration_conflict",
+      "root_cause": "Alembic head is now 006 (migration 006). Test expected 005",
+      "layer_003_related": true,
+      "fix_required": true,
+      "fix_applied": "Updated final revision assertion to accept 006 as current head"
+    },
+    {
+      "error_id": "ERR-M005-005",
+      "test_name": "TestMigration005Execution::test_database_queryable",
+      "classification": "fixture_isolation",
+      "root_cause": "Same container connectivity failure as ERR-M005-001",
+      "layer_003_related": false,
+      "fix_required": true,
+      "fix_applied": "Same container/database fix as ERR-M005-001"
+    }
+  ],
   "migration_006": {
     "real_postgres_used": true,
     "initial_upgrade_executed": true,
@@ -106,69 +155,80 @@
     "second_upgrade_passed": true,
     "current_final": "006",
     "existing_certification_tables_preserved": true,
-    "ba_qa_tables_preserved": true
+    "ba_qa_tables_preserved": true,
+    "migration_005_tests_passed": true,
+    "migration_006_tests_passed": true,
+    "test_order_independence_verified": true
   },
   "regression": {
-    "focused_runs_total": 86,
+    "focused_generation_tests_passed": 81,
+    "focused_generation_tests_failed": 0,
     "certification_core_full": {
-      "passed": 452,
+      "passed": 457,
       "failed": 0,
+      "errors": 0,
       "skipped": 0,
-      "status": "COMPLETED",
-      "note": "5 pre-existing errors in migration_005_execution (requires specific Docker container not available in this environment)"
+      "status": "PASSED",
+      "note": "All 457 tests passing. The 5 pre-existing errors (fixture isolation in migration_005_execution) are resolved."
     },
     "dynamic_item_bank": {
-      "passed": 92,
+      "passed": 56,
       "failed": 0,
       "skipped": 0,
       "evidence_reused": false,
-      "cmd": "test_dynamic_item_bank_runtime + rotation + controlled_exception + exam_eligibility + audit_append_only"
+      "cmd": "test_dynamic_item_bank_runtime + test_rotation_policy_enforcement + test_controlled_exception_contract + test_exam_eligibility_gate + test_audit_append_only"
     },
     "ba_phase_1": {
-      "passed": 34,
+      "passed": 5,
       "failed": 0,
       "skipped": 0,
-      "evidence_reused": true,
-      "evidence_commit": "0635312",
-      "note": "Evidence reused from prior accepted layer - no BA/QA modifications in this layer"
+      "evidence_reused": false,
+      "cmd": "test_ba_qa_regression.py::TestBaPhase1Regression"
     },
     "ba_phase_2": {
-      "passed": 107,
+      "passed": 4,
       "failed": 0,
       "skipped": 0,
-      "evidence_reused": true,
-      "evidence_commit": "0635312",
-      "note": "Evidence reused from prior accepted layer - no BA/QA modifications in this layer"
+      "evidence_reused": false,
+      "cmd": "test_ba_qa_regression.py::TestBaPhase2Regression"
     },
     "qa_trainer": {
-      "passed": 30,
+      "passed": 5,
       "failed": 0,
-      "skipped": 3,
-      "evidence_reused": true,
-      "evidence_commit": "0635312",
-      "note": "Evidence reused from prior accepted layer - no BA/QA modifications in this layer"
+      "skipped": 0,
+      "evidence_reused": false,
+      "cmd": "test_ba_qa_regression.py::TestQaTrainerRegression"
     },
     "deepseek_gateway": {
-      "passed": 10,
+      "passed": 39,
       "failed": 0,
       "skipped": 0,
       "status": "COMPLETED",
-      "note": "DeepSeek provider configuration validated; AI Gateway integration tested with mock adapter"
+      "cmd": "python -m pytest tests/ -k 'deepseek'",
+      "note": "39 DeepSeek gateway and schema normalization tests pass with mock/fake responses"
     },
-    "full_suite_unique_total": 544,
-    "overlap_documented": true
+    "full_suite_unique_total": 457,
+    "focused_runs_total": 81,
+    "overlap_documented": true,
+    "overlap_note": "Focused runs (81 tests) are a subset of the full suite (457 tests). All focused tests pass within the full suite."
   },
   "openapi": {
     "export_passed": true,
     "path_count": 80,
     "schema_count": 96,
     "generation_routes_present": true,
+    "validation_routes_present": true,
+    "provenance_routes_present": true,
     "review_handoff_routes_present": true,
     "publish_routes_absent": true,
-    "pool_mutation_routes_absent": true,
+    "pilot_mutation_routes_absent": false,
+    "pilot_mutation_routes_note": "Pilot/exam-eligible routes exist at /api/v1/certification-core/item-bank/ (layer 002 Dynamic Item Bank runtime). No generation layer (003) adds pool mutation routes.",
     "exam_assembly_routes_absent": true,
     "answer_keys_absent_from_learner_schemas": true,
-    "raw_provider_output_absent_from_learner_schemas": true
+    "answer_keys_note": "answer_key present only in ControlledItemCreate, GeneratedCandidateDetailResponse, ItemCreate/Update — all internal certification schemas, not learner-facing. GeneratedCandidateResponse (summary) has no answer_key.",
+    "raw_provider_output_absent_from_learner_schemas": true,
+    "raw_provider_output_note": "normalized_payload present only in GeneratedCandidateDetailResponse (detailed view). Raw response stored in GenerationRawResponse — not exposed via API.",
+    "audit_mutation_routes_absent": true
   },
   "forbidden_actions": {
     "exam_form_assembly": false,
@@ -177,19 +237,22 @@
     "generated_item_auto_publication": false,
     "automatic_human_acceptance": false,
     "blind_retry": false,
+    "manual_retry": false,
     "ba_qa_migration_executed": false,
     "production_deployed": false,
     "production_accepted": false,
     "release_allowed": false,
     "openai_enabled": false,
-    "secrets_exposed": false
+    "secrets_exposed": false,
+    "second_real_generation": false
   },
   "git": {
     "branch": "master",
-    "commit": "fa45c6583e513cf36c8b12b505e1fbcfc2b7d07c",
+    "commit": "ac8411d2e2fea249a3bd2cb71613ab3d1701d6d3",
     "pushed": true,
-    "clean": true,
-    "head_matches_origin_master": true
+    "clean_before_work": true,
+    "head_matches_origin_master": true,
+    "proof_commit": "CURRENT_WIP"
   },
-  "next_allowed_action": "TRAINER-PLATFORM-CONTROLLED-GENERATED-ITEM-HUMAN-REVIEW-VERTICAL-LAYER-004"
+  "next_allowed_action": "NEEDS_OPERATOR_ACTION"
 }

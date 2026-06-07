@@ -28,8 +28,43 @@
 
 ### Constraints
 
-- All 9 generation tables are created
-- Foreign keys between tables are preserved
-- Existing certification tables are preserved (cert_audit_events, cert_items, etc.)
-- BA/QA tables are preserved (activities, scenarios, etc.)
-- No destructive changes to existing tables
+- cert_generation_requests.correlation_id UNIQUE
+- cert_candidate_provenance.candidate_id UNIQUE
+- cert_candidate_validation_runs.candidate_id UNIQUE (one run per candidate)
+- cert_candidate_review_handoffs.candidate_id UNIQUE (one handoff per candidate)
+
+### Indexes (partial list)
+
+- ix_cert_generation_requests_status
+- ix_cert_generation_provider_runs_status
+- ix_cert_generation_source_bindings_request_id
+- ix_cert_generated_candidates_request_id
+- ix_cert_candidate_validation_runs_decision
+- ix_cert_candidate_provenance_provider
+
+### Migration 005 Cycle Verification
+
+Both migration 005 and 006 tests pass independently and together (10 tests total):
+
+| Test | Result |
+|------|--------|
+| 005: upgrade → downgrade 004 → upgrade head | PASSED |
+| 005: tables preserved after cycle (60 total) | PASSED |
+| 005: cert_ table count (31) | PASSED |
+| 005: alembic revision matches head (006) | PASSED |
+| 005: database queryable | PASSED |
+| 006: upgrade → downgrade 005 → upgrade head | PASSED |
+| 006: cert_ tables preserved | PASSED |
+| 006: BA/QA tables preserved | PASSED |
+| 006: alembic revision matches 006 | PASSED |
+| 006: database queryable | PASSED |
+
+All 5 pre-existing migration 005 errors resolved (container reference fix, database name fix, head revision alignment).
+
+### PostgreSQL Details
+
+- Container: `trainer-migration-pg`
+- Database: `trainer_platform`
+- Connection: docker exec psql or POSTGRES_MIGRATION_URL
+- Total tables: 60 (31 cert_ + 29 non-cert)
+- Current revision: 006

@@ -9,7 +9,7 @@
 | Prompt package construction | IMPLEMENTED |
 | AI Gateway integration | IMPLEMENTED |
 | Provider adapter (Mock) | IMPLEMENTED |
-| Provider adapter (DeepSeek) | IMPLEMENTED |
+| Provider adapter (DeepSeek/OpenAI-compatible) | IMPLEMENTED |
 | Raw response capture | IMPLEMENTED |
 | Candidate normalization | IMPLEMENTED |
 | Schema validation (V1) | IMPLEMENTED |
@@ -32,17 +32,20 @@
 | Audit record | IMPLEMENTED |
 | Review handoff | IMPLEMENTED |
 
-### Real Generation Execution
+### Real Generation Execution (Layer 003 Closeout)
 
-- Provider: mock (DeepSeek configured via AI Gateway)
-- Candidates requested: 1
-- Candidates generated: 1
-- Validation result: VALIDATION_FAILED (1 major, 1 warning)
-- Reason: Missing source citations in generated mock item
-- No automatic retry executed
-- No exam assembly executed
+| Item | Status |
+|------|--------|
+| Provider mock execution | COMPLETED (VALIDATION_FAILED) |
+| Provider DeepSeek configuration | VALIDATED |
+| Provider DeepSeek real execution | BLOCKED (DEEPSEEK_API_KEY unavailable) |
+| Candidates requested (mock) | 1 |
+| Candidates requested (real) | 0 |
+| Validation result (mock) | VALIDATION_FAILED (1 major: V3 missing citations, 1 warning) |
+| No automatic retry executed | VERIFIED |
+| No exam assembly executed | VERIFIED |
 
-### Audit Events Recorded
+### Audit Events Recorded (Mock Execution)
 
 - generation_request_created
 - generation_request_authorized
