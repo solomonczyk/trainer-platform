@@ -37,9 +37,10 @@ class TestCitationIdentityResolutionHelpers:
         assert isinstance(result, str)
 
     def test_normalize_label_punctuation(self):
-        """Punctuation removal."""
+        """Punctuation and underscore removal."""
         result = _normalize_label("Source-v1.0!")
         assert "!" not in result
+        assert "-" not in result
         assert result == "sourcev10"
 
     def test_normalize_label_empty(self):

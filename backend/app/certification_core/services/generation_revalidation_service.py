@@ -152,11 +152,19 @@ class CandidateRevalidationService:
             )
 
         # Record validator-specific audit events
+        # Load validation results directly (avoids async lazy loading issues)
+        from app.certification_core.models.generation_models import CandidateValidationResult
+        vr_rows = await self.db.execute(
+            select(CandidateValidationResult).where(
+                CandidateValidationResult.validation_run_id == validation_run.id
+            ).order_by(CandidateValidationResult.validator_code)
+        )
+        vr_results_list = list(vr_rows.scalars().all())
+
         v3_result = next(
-            (r for r in validation_run.results if r.validator_code == "V3"), None
+            (r for r in vr_results_list if r.validator_code == "V3"), None
         )
         if v3_result:
-            self.db.add(v3_result)  # ensure attached
             await self.audit.record(
                 action="candidate_validator_v3_corrective_run_completed",
                 actor_id=actor_id,
@@ -168,7 +176,7 @@ class CandidateRevalidationService:
             )
 
         v10_result = next(
-            (r for r in validation_run.results if r.validator_code == "V10"), None
+            (r for r in vr_results_list if r.validator_code == "V10"), None
         )
         if v10_result:
             await self.audit.record(
@@ -199,6 +207,7 @@ class CandidateRevalidationService:
             review_handoff = await self._create_corrective_review_handoff(
                 candidate=candidate,
                 validation_run=validation_run,
+                validation_results=vr_results_list,
                 gen_request=gen_request,
                 correlation_id=effective_correlation_id,
                 actor_id=actor_id,
@@ -206,13 +215,14 @@ class CandidateRevalidationService:
             )
 
         # Update provenance with new validator versions
-        await self._update_provenance(candidate, validation_run)
+        await self._update_provenance(candidate, validation_run, vr_results_list)
 
         # Build result
         result = self._build_revalidation_result(
             candidate=candidate,
             gen_request=gen_request,
             validation_run=validation_run,
+            validation_results=vr_results_list,
             revalidation_run_id=revalidation_run_id,
             reason=reason,
             started_at=started_at,
@@ -329,6 +339,7 @@ class CandidateRevalidationService:
         self,
         candidate: GeneratedCandidate,
         validation_run: CandidateValidationRun,
+        validation_results: list,
         gen_request: GenerationRequest,
         correlation_id: str,
         actor_id: str,
@@ -352,7 +363,7 @@ class CandidateRevalidationService:
 
         # Collect warnings from validation run
         warnings = []
-        for vr in validation_run.results:
+        for vr in validation_results:
             if vr.status == "warning":
                 warnings.append({
                     "validator_code": vr.validator_code,
@@ -410,6 +421,7 @@ class CandidateRevalidationService:
         self,
         candidate: GeneratedCandidate,
         validation_run: CandidateValidationRun,
+        validation_results: list,
     ) -> None:
         """Update candidate provenance with new validator versions."""
         result = await self.db.execute(
@@ -425,7 +437,7 @@ class CandidateRevalidationService:
                 "revalidation_run_id": validation_run.validation_run_id,
             })
             # Add or update specific validator versions
-            for vr in validation_run.results:
+            for vr in validation_results:
                 current_versions[f"{vr.validator_code}_corrective"] = vr.validator_version
             provenance.validator_versions = current_versions
 
@@ -434,6 +446,7 @@ class CandidateRevalidationService:
         candidate: GeneratedCandidate,
         gen_request: GenerationRequest,
         validation_run: CandidateValidationRun,
+        validation_results: list,
         revalidation_run_id: str,
         reason: str,
         started_at: datetime,
@@ -446,7 +459,7 @@ class CandidateRevalidationService:
         """Build the complete revalidation result dict."""
         # Gather individual validator results
         validator_details = []
-        for vr in validation_run.results:
+        for vr in validation_results:
             validator_details.append({
                 "validator_code": vr.validator_code,
                 "validator_version": vr.validator_version,

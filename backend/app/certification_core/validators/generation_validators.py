@@ -152,22 +152,29 @@ def _normalize_label(label: str) -> str:
     normalized = normalized.strip().lower()
     # Collapse whitespace
     normalized = re.sub(r"\s+", " ", normalized)
-    # Strip punctuation/symbols but preserve letters (including non-ASCII), digits, underscore, space
+    # Strip punctuation, symbols, and underscores; preserve letters (including non-ASCII), digits, and spaces
     # \w in Python 3 defaults to Unicode-aware (matches letters from any script)
     normalized = re.sub(r"[^\w\s]", "", normalized)
+    # Strip underscores (they are part of \w but are formatting, not identity)
+    normalized = normalized.replace("_", "")
     return normalized
 
 
 def _build_canonical_label_map(
     source_version_ids: list[str],
+    source_registry: list[dict] | None = None,
 ) -> dict[str, dict]:
     """Build a lookup from various label forms to canonical source info.
 
     Each source_version_id is registered under its canonical form plus
     derived normalized forms so that display labels match.
+    When source_registry is provided, source titles and aliases are
+    also registered for improved matching.
     """
     # Keyed by: source_version_id, normalized_label, normalized_aliases
     label_map: dict[str, dict] = {}
+
+    # Register from source_version_ids list
     for svid in source_version_ids:
         canonical_label = svid
         normalized = _normalize_label(canonical_label)
@@ -176,6 +183,76 @@ def _build_canonical_label_map(
         # Also register short-form derivations
         short = canonical_label.split("-")[-1] if "-" in canonical_label else canonical_label
         label_map[_normalize_label(short)] = {"source_version_id": svid, "canonical_label": canonical_label}
+
+    # Register from source_registry entries with titles
+    if source_registry:
+        for src in source_registry:
+            svid = src.get("source_version_id", "") or src.get("version_id", "") or src.get("id", "")
+            if not svid or svid not in source_version_ids:
+                continue
+            title = src.get("source_title", "") or src.get("title", "")
+            if title:
+                normalized_title = _normalize_label(title)
+                # Register full normalized title
+                label_map[normalized_title] = label_map.get(normalized_title) or {
+                    "source_version_id": svid,
+                    "canonical_label": title,
+                }
+                # Generate abbreviation variants from title words
+                words = title.split()
+                if len(words) > 1:
+                    # Acronym: first letters of each word
+                    acronym = "".join(w[0] for w in words if w).lower()
+                    label_map[acronym] = label_map.get(acronym) or {
+                        "source_version_id": svid, "canonical_label": title,
+                    }
+                    # Compound abbreviations: try different segmentations
+                    # e.g. "BA Software Development Best Practices v1.0" → "BA_SD_BP" (two-letter for compound terms)
+                    # Split each word into segments on capitals/underscores
+                    def word_segments(w: str) -> list[str]:
+                        segs = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$|\d)|\d+', w)
+                        return [s.lower() for s in segs] if segs else [w.lower()]
+
+                    # Generate multi-style abbreviations
+                    abbreviations = set()
+                    # Style 1: first letter of each word (existing)
+                    abbreviations.add(acronym)
+                    # Style 2: full first word + first letter of the rest
+                    first_word = words[0].lower() if words else ""
+                    rest_abbrev = first_word + "".join(w[0] for w in words[1:] if w).lower()
+                    abbreviations.add(rest_abbrev)
+                    # Style 3: All-first-letter with version-digits
+                    for w in words:
+                        if re.match(r'v?\d', w):
+                            digits = re.sub(r'\D', '', w)
+                            abbreviations.add(acronym + digits)
+                            abbreviations.add(rest_abbrev + digits)
+                    # Style 4: Take capitalized segments (handles CamelCase abbreviations)
+                    seg_abbrev = ""
+                    for w in words:
+                        segs = word_segments(w)
+                        seg_abbrev += "".join(s[0] for s in segs if s)
+                    abbreviations.add(seg_abbrev)
+                    # Style 5: Each word's segments concatenated
+                    for w in words:
+                        segs = word_segments(w)
+                        for s in segs:
+                            abbreviations.add(s)
+                    # Register all abbreviation variants
+                    for ab in abbreviations:
+                        if ab and ab not in label_map:
+                            label_map[ab] = {
+                                "source_version_id": svid, "canonical_label": title,
+                            }
+            # Register source_label if present
+            src_label = src.get("source_label", "") or src.get("label", "")
+            if src_label:
+                nsl = _normalize_label(src_label)
+                label_map[nsl] = label_map.get(nsl) or {
+                    "source_version_id": svid,
+                    "canonical_label": src_label,
+                }
+
     return label_map
 
 
@@ -302,8 +379,8 @@ def validate_source_citations(
                         },
                     )
 
-    # Build canonical label map from trusted source version IDs
-    canonical_label_map = _build_canonical_label_map(source_version_ids)
+    # Build canonical label map from trusted source version IDs and registry
+    canonical_label_map = _build_canonical_label_map(source_version_ids, source_registry)
 
     # Resolve each citation
     resolved_results = []

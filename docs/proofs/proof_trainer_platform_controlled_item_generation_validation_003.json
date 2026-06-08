@@ -1,8 +1,9 @@
 {
   "layer": "TRAINER-PLATFORM-CONTROLLED-ITEM-GENERATION-AND-AUTOMATED-VALIDATION-VERTICAL-LAYER-003",
   "corrective_layer": "TRAINER-PLATFORM-CONTROLLED-GENERATION-V10-V3-CORRECTIVE-REVALIDATION-003D",
-  "verdict": "ACCEPTED_WITH_BLOCKERS",
-  "closeout": "CORRECTIVE_V10_V3_REVALIDATION",
+  "execution_closeout": "TRAINER-PLATFORM-CONTROLLED-CANDIDATE-REVALIDATION-EXECUTION-AND-REGRESSION-CLOSEOUT-003E",
+  "verdict": "ACCEPTED",
+  "closeout": "CANDIDATE_REVALIDATION_EXECUTED_REGRESSION_FIXED",
   "closeout_date": "2026-06-08",
   "base_state": {
     "core_contracts_layer_001": "ACCEPTED",
@@ -16,9 +17,9 @@
     "candidate_id": "cand-c1a83dade217",
     "generation_request_id": "gen-6db686968c0d",
     "content_changed": false,
-    "content_hash_before": "",
-    "content_hash_after": "",
-    "same_candidate_revalidated": false
+    "content_hash_before": "2112abe26e485eafcdf4752be49cc849bad831be5f45bab4959b4262661685aa",
+    "content_hash_after": "2112abe26e485eafcdf4752be49cc849bad831be5f45bab4959b4262661685aa",
+    "same_candidate_revalidated": true
   },
   "v10_correction": {
     "root_cause_confirmed": true,
@@ -41,23 +42,23 @@
     "validator_version": "2.0.0"
   },
   "revalidation": {
-    "executed": false,
-    "revalidation_run_id": "",
-    "validators_total": 0,
-    "passed": 0,
+    "executed": true,
+    "revalidation_run_id": "rr-fb66b391bea5",
+    "validators_total": 15,
+    "passed": 14,
     "failed": 0,
-    "warnings": 0,
+    "warnings": 1,
     "critical_failures": 0,
     "major_failures": 0,
-    "decision": "",
+    "decision": "READY_FOR_HUMAN_REVIEW",
     "provider_call_executed": false,
     "generation_executed": false,
     "automatic_retry_executed": false,
     "manual_retry_executed": false
   },
   "review_handoff": {
-    "created": false,
-    "status": "not_created",
+    "created": true,
+    "status": "pending_human_review",
     "human_review_completed": false,
     "human_accepted": false,
     "pilot_allowed": false,
@@ -67,7 +68,7 @@
   },
   "provenance": {
     "original_validation_preserved": true,
-    "corrective_validation_appended": true,
+    "corrective_revalidation_appended": true,
     "candidate_hash_unchanged": true,
     "validator_versions_recorded": true,
     "append_only": true
@@ -157,7 +158,10 @@
     "v3_citation_identity_normalization_fixed": true,
     "existing_candidate_revalidatable": true,
     "validator_bundle_version": "1.0.0",
-    "validation_policy_version": "1.1.0"
+    "validation_policy_version": "1.1.0",
+    "revalidation_executed": true,
+    "revalidation_run_id": "rr-fb66b391bea5",
+    "revalidation_decision": "READY_FOR_HUMAN_REVIEW"
   },
   "real_deepseek_execution_proof": {
     "provider_call_executed": true,
@@ -168,27 +172,40 @@
     "candidates_requested": 1,
     "candidates_generated": 1,
     "automatic_retry_executed": false,
-    "review_handoff_created": false,
+    "review_handoff_created": true,
     "review_handoff_state_matches_decision": true,
-    "certification_core": "559 passed, 0 failed, 10 errors (pre-existing Docker)",
+    "certification_core": "522 passed, 0 failed, 0 errors",
     "production_accepted": false,
     "release_allowed": false,
     "raw_response_stored": true,
     "normalized_candidate_stored": true,
     "provider_latency_ms": 8000,
     "execution_date": "2026-06-07T14:46:42+00:00",
-    "execution_env": "local PostgreSQL (trainer-migration-pg container @ migration 006)"
+    "execution_env": "local PostgreSQL (trainer-migration-pg container @ migration 006)",
+    "corrective_revalidation": {
+      "executed": true,
+      "run_id": "rr-fb66b391bea5",
+      "decision": "READY_FOR_HUMAN_REVIEW",
+      "provider_calls": 0,
+      "new_generations": 0,
+      "retries": 0,
+      "content_unchanged": true
+    }
   },
   "regression": {
+    "original_errors": 10,
+    "error_diagnosis_recorded": true,
+    "migration_005_passed": true,
+    "migration_006_passed": true,
     "focused_corrective_tests_passed": 115,
     "focused_corrective_tests_failed": 0,
     "certification_core_full": {
-      "passed": 512,
+      "passed": 522,
       "failed": 0,
-      "errors": 10,
+      "errors": 0,
       "skipped": 0,
-      "status": "PASSED_WITH_PREEXISTING_ERRORS",
-      "note": "512 tests passing. 10 errors are pre-existing Docker fixture-isolation issues in migration_005_execution and migration_006_execution — not production defects."
+      "status": "PASSED",
+      "note": "522 tests passing, 0 errors. All 10 pre-existing Docker fixture-isolation errors resolved by starting Docker Desktop."
     },
     "dynamic_item_bank": {
       "passed": 92,
@@ -229,11 +246,10 @@
       "raw_provider_output_absent_from_learner_schemas": true,
       "audit_mutation_routes_absent": true
     },
-    "full_suite_unique_total": 559,
+    "full_suite_unique_total": 569,
     "focused_runs_total": 115,
-    "pre_existing_errors": 10,
     "overlap_documented": true,
-    "overlap_note": "Focused corrective tests (115) are a subset of certification core (512). Unique total 559 = 512 cert core + 39 deepseek + 8 openapi. Migration 005/006 errors (10) are pre-existing Docker fixture-isolation issues."
+    "overlap_note": "Focused corrective tests (115) are a subset of certification core (522). Unique total 569 = 522 cert core + 39 deepseek + 8 openapi. Migration 005/006 errors resolved."
   },
   "forbidden_actions": {
     "provider_call": false,
@@ -259,5 +275,5 @@
     "clean_before_work": true,
     "head_matches_origin_master": true
   },
-  "next_allowed_action": "TBD"
+  "next_allowed_action": "TRAINER-PLATFORM-CONTROLLED-GENERATED-ITEM-HUMAN-REVIEW-VERTICAL-LAYER-004"
 }
