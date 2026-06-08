@@ -30,6 +30,11 @@ from app.certification_core.models.generation_models import (
     CandidateProvenance,
     CandidateReviewHandoff,
 )
+from app.certification_core.models.human_review_models import (
+    HumanReviewCase,
+    ReviewerAssignment,
+    HumanReviewDecision,
+)
 
 __all__ = [
     "CompetencyFramework",
@@ -63,4 +68,7 @@ __all__ = [
     "CandidateValidationResult",
     "CandidateProvenance",
     "CandidateReviewHandoff",
+    "HumanReviewCase",
+    "ReviewerAssignment",
+    "HumanReviewDecision",
 ]

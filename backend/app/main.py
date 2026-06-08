@@ -131,6 +131,9 @@ from app.certification_core.routers.item_bank_runtime_router import router as it
 # Controlled Generation router
 from app.certification_core.routers.generation_router import router as generation_router
 
+# Human Review router
+from app.certification_core.routers.human_review_router import router as human_review_router
+
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
 app.include_router(users_router, prefix="/api/v1", tags=["Users"])
 app.include_router(domains_router, prefix="/api/v1", tags=["Domains"])
@@ -165,6 +168,12 @@ app.include_router(
 app.include_router(
     generation_router,
     tags=["Certification-Generation"],
+)
+
+# Human Review routes
+app.include_router(
+    human_review_router,
+    tags=["Certification-Human-Review"],
 )
 
 

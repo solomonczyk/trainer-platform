@@ -1,0 +1,92 @@
+{
+  "layer": "TRAINER-PLATFORM-CONTROLLED-GENERATED-ITEM-HUMAN-REVIEW-VERTICAL-LAYER-004",
+  "verdict": "IMPLEMENTED",
+  "base_state": {
+    "starting_commit": "bd28fcb",
+    "migration_head": "006",
+    "human_review_layer_004": "NOT_IMPLEMENTED",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "migration": {
+    "revision": "007",
+    "upgrade_passed": true,
+    "downgrade_passed": true,
+    "reupgrade_passed": true,
+    "final_head": "007",
+    "real_postgresql_used": false,
+    "existing_tables_preserved": true
+  },
+  "review_contract": {
+    "review_cases_persistent": true,
+    "assignments_persistent": true,
+    "decisions_persistent": true,
+    "decision_append_only": true,
+    "evidence_snapshot_persistent": true,
+    "audit_persistent": true
+  },
+  "rbac": {
+    "anonymous_blocked": true,
+    "wrong_role_blocked": true,
+    "self_review_blocked": true,
+    "llm_review_blocked": true,
+    "service_account_approval_blocked": true,
+    "separation_of_duties_enforced": true
+  },
+  "workflow": {
+    "valid_handoff_required": true,
+    "case_creation_idempotent": true,
+    "assignment_claimed": true,
+    "decision_submitted": true,
+    "stale_hash_blocked": true,
+    "duplicate_decision_blocked": true,
+    "concurrency_controlled": true
+  },
+  "frontend": {
+    "queue_implemented": true,
+    "detail_implemented": true,
+    "evidence_visible": true,
+    "decision_form_implemented": true,
+    "history_visible": true,
+    "browser_acceptance_passed": false,
+    "react_errors": 0
+  },
+  "tests": {
+    "backend_passed": 172,
+    "backend_failed": 0,
+    "backend_errors": 0,
+    "backend_skipped": 0,
+    "frontend_passed": 50,
+    "frontend_failed": 0,
+    "migration_007_tests_passed": true,
+    "e2e_passed": false
+  },
+  "forbidden_actions": {
+    "provider_call": false,
+    "generation": false,
+    "retry": false,
+    "candidate_content_modified": false,
+    "pilot_pool_mutation": false,
+    "exam_eligible_pool_mutation": false,
+    "publication": false,
+    "exam_assembly": false,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "github_actions": {
+    "run_id": "",
+    "commit": "",
+    "conclusion": "",
+    "all_jobs_green": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "",
+    "pushed": false,
+    "clean": true,
+    "head_matches_origin_master": false
+  },
+  "next_allowed_action": "HUMAN_REVIEW_LAYER_004_RESULT_ACCEPTANCE"
+}

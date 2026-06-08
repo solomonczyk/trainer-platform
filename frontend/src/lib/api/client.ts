@@ -496,3 +496,194 @@ export async function sendAnalyticsEvent(
     // Analytics failures should never break the UI
   }
 }
+
+// ---------------------------------------------------------------------------
+// Human Review
+// ---------------------------------------------------------------------------
+
+export interface ReviewCaseSummary {
+  case_id: string;
+  candidate_id: string;
+  review_handoff_id: string;
+  validation_run_id: string;
+  status: string;
+  review_type: string;
+  required_reviewer_role: string;
+  created_by: string;
+  created_at: string;
+  opened_at: string | null;
+  completed_at: string | null;
+  version: number;
+}
+
+export interface AssignmentSummary {
+  assignment_id: string;
+  reviewer_user_id: string;
+  reviewer_role: string;
+  assigned_by: string;
+  assigned_at: string;
+  claimed_at: string | null;
+  released_at: string | null;
+  status: string;
+  reason: string | null;
+}
+
+export interface DecisionSummary {
+  decision_id: string;
+  decision: string;
+  reviewer_user_id: string;
+  reviewer_role: string;
+  reason: string;
+  findings_json: Record<string, unknown> | null;
+  candidate_hash: string;
+  correlation_id: string | null;
+  created_at: string;
+}
+
+export interface ReviewCaseDetail {
+  case_id: string;
+  candidate_id: string;
+  review_handoff_id: string;
+  validation_run_id: string;
+  status: string;
+  review_type: string;
+  required_reviewer_role: string;
+  created_by: string;
+  created_at: string;
+  opened_at: string | null;
+  completed_at: string | null;
+  version: number;
+  candidate: Record<string, unknown> | null;
+  assignments: AssignmentSummary[];
+  decisions: DecisionSummary[];
+}
+
+export interface ReviewCaseListResponse {
+  items: ReviewCaseSummary[];
+  total: number;
+}
+
+export interface ReviewAssignRequest {
+  reviewer_user_id: string;
+  reviewer_role: string;
+  reason?: string;
+}
+
+export interface ReviewClaimRequest {
+  reason?: string;
+}
+
+export interface ReviewReleaseRequest {
+  reason: string;
+}
+
+export interface ReviewAssignmentResponse {
+  assignment_id: string;
+  review_case_id: string;
+  reviewer_user_id: string;
+  reviewer_role: string;
+  status: string;
+  message: string;
+}
+
+export interface ReviewDecisionSubmit {
+  decision: "APPROVED_FOR_PILOT_REVIEW" | "REJECTED" | "CHANGES_REQUESTED" | "ESCALATED";
+  reason: string;
+  findings_json?: Record<string, unknown>;
+  evidence_confirmed: boolean;
+}
+
+export interface ReviewDecisionResponse {
+  decision_id: string;
+  review_case_id: string;
+  candidate_id: string;
+  decision: string;
+  status: string;
+  message: string;
+}
+
+export interface ReviewHistoryEntry {
+  event_type: string;
+  actor_id: string;
+  actor_role: string | null;
+  previous_status: string | null;
+  new_status: string | null;
+  reason: string | null;
+  correlation_id: string | null;
+  decision_id: string | null;
+  event_timestamp: string;
+}
+
+export interface ReviewHistoryResponse {
+  case_id: string;
+  events: ReviewHistoryEntry[];
+}
+
+export async function createReviewCase(handoffId: string, reviewType = "expert_review") {
+  return api.post<ReviewCaseSummary>("/api/v1/certification/review-cases", {
+    handoff_id: handoffId,
+    review_type: reviewType,
+  });
+}
+
+export async function listReviewCases(params?: {
+  status?: string;
+  reviewer_user_id?: string;
+  assigned_to?: string;
+  skip?: number;
+  limit?: number;
+}) {
+  const searchParams = new URLSearchParams();
+  if (params?.status) searchParams.set("status", params.status);
+  if (params?.reviewer_user_id) searchParams.set("reviewer_user_id", params.reviewer_user_id);
+  if (params?.assigned_to) searchParams.set("assigned_to", params.assigned_to);
+  if (params?.skip) searchParams.set("skip", String(params.skip));
+  if (params?.limit) searchParams.set("limit", String(params.limit));
+  const qs = searchParams.toString();
+  const path = `/api/v1/certification/review-cases${qs ? `?${qs}` : ""}`;
+  return api.get<ReviewCaseListResponse>(path);
+}
+
+export async function getReviewCase(caseId: string) {
+  return api.get<ReviewCaseDetail>(`/api/v1/certification/review-cases/${caseId}`);
+}
+
+export async function assignReviewer(caseId: string, body: ReviewAssignRequest) {
+  return api.post<ReviewAssignmentResponse>(
+    `/api/v1/certification/review-cases/${caseId}/assign`,
+    body,
+  );
+}
+
+export async function claimReview(caseId: string, body?: ReviewClaimRequest) {
+  return api.post<ReviewAssignmentResponse>(
+    `/api/v1/certification/review-cases/${caseId}/claim`,
+    body || {},
+  );
+}
+
+export async function releaseReviewer(caseId: string, body: ReviewReleaseRequest) {
+  return api.post<ReviewAssignmentResponse>(
+    `/api/v1/certification/review-cases/${caseId}/release`,
+    body,
+  );
+}
+
+export async function submitReviewDecision(caseId: string, body: ReviewDecisionSubmit) {
+  return api.post<ReviewDecisionResponse>(
+    `/api/v1/certification/review-cases/${caseId}/decision`,
+    body,
+  );
+}
+
+export async function getReviewHistory(caseId: string) {
+  return api.get<ReviewHistoryResponse>(
+    `/api/v1/certification/review-cases/${caseId}/history`,
+  );
+}
+
+export async function getReviewEvidence(caseId: string) {
+  return api.get<Record<string, unknown>>(
+    `/api/v1/certification/review-cases/${caseId}/evidence`,
+  );
+}

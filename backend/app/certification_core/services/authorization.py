@@ -68,6 +68,14 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:generation:view",
         "certification:generation:view_raw",
         "certification:generation:admin",
+        # Human review permissions
+        "certification:human_review:list",
+        "certification:human_review:read",
+        "certification:human_review:assign",
+        "certification:human_review:claim",
+        "certification:human_review:decide",
+        "certification:human_review:escalate",
+        "certification:human_review:audit",
     },
     "generation_operator": {
         "certification:read",
@@ -81,6 +89,9 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:generation:view",
         "certification:generation:view_raw",
         "certification:item_bank:audit",
+        # Human review — can list and read, but NOT assign/claim/decide
+        "certification:human_review:list",
+        "certification:human_review:read",
     },
     "domain_owner": {
         "certification:read",
@@ -103,6 +114,14 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         # Generation pipeline permissions
         "certification:generation:create",
         "certification:generation:view",
+        # Human review permissions
+        "certification:human_review:list",
+        "certification:human_review:read",
+        "certification:human_review:assign",
+        "certification:human_review:claim",
+        "certification:human_review:decide",
+        "certification:human_review:escalate",
+        "certification:human_review:audit",
     },
     "content_author": {
         "certification:read",
@@ -116,18 +135,34 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "certification:manage_lifecycle",
         "certification:audit:read",
         "certification:item_bank:review",
+        # Human review permissions
+        "certification:human_review:list",
+        "certification:human_review:read",
+        "certification:human_review:claim",
+        "certification:human_review:decide",
+        "certification:human_review:audit",
     },
     "psychometric_reviewer": {
         "certification:read",
         "certification:manage_lifecycle",
         "certification:audit:read",
         "certification:item_bank:review",
+        # Human review permissions
+        "certification:human_review:list",
+        "certification:human_review:read",
+        "certification:human_review:claim",
+        "certification:human_review:decide",
+        "certification:human_review:audit",
     },
     "qa_reviewer": {
         "certification:read",
         "certification:audit:read",
         "certification:item_bank:review",
         "certification:generation:view_raw",
+        # Human review read-only
+        "certification:human_review:list",
+        "certification:human_review:read",
+        "certification:human_review:audit",
     },
     "read_only_auditor": {
         "certification:read",
