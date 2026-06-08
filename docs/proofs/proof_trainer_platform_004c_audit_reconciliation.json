@@ -2,6 +2,8 @@
   "layer": "TRAINER-PLATFORM-004C-AUDIT-RECONCILIATION-AND-NEXT-ACTION-GATE",
   "verdict": "ACCEPTED",
   "date": "2026-06-08",
+  "audit_commit": "45e7307db2311c8b9ee47f9960d39c4d81de0f26",
+  "audit_workflow_run_id": "27138118214",
   "base_state": {
     "004c_previous_verdict": "ACCEPTED_WITH_BLOCKERS",
     "migration_head": "006",
