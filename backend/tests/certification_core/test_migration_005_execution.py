@@ -1,17 +1,14 @@
 """Executable test for migration 005 full cycle: upgrade → downgrade → upgrade.
 
-Proves the real PostgreSQL migration cycle against the database in the
-Docker container *trainer-item-bank-migration-005*.  The test connects
-via ``docker exec`` and psql, so no additional Python database drivers
-are needed beyond what Alembic already provides.
+Proves the real PostgreSQL migration cycle against the database.
+Connects via the ``MIGRATION_DATABASE_URL`` (primary) or
+``POSTGRES_MIGRATION_URL`` (fallback) environment variable, or falls
+back to ``docker exec`` for local developer environments.
 
 The cycle verified:
     alembic upgrade head  → current=005
     alembic downgrade 004  → current=004
     alembic upgrade head  → current=005
-
-Environment variable ``POSTGRES_MIGRATION_URL`` must be set to the
-*sync* connection URL when running outside the container session.
 """
 
 from __future__ import annotations
@@ -23,8 +20,13 @@ from pathlib import Path
 
 import pytest
 
-# Set once per module
-MIGRATION_URL = os.environ.get("POSTGRES_MIGRATION_URL")
+# ---------------------------------------------------------------------------
+# Connection URL — highest precedence wins
+#   1. MIGRATION_DATABASE_URL (primary, used in CI & explicit configs)
+#   2. POSTGRES_MIGRATION_URL (legacy fallback)
+#   3. None → docker exec trainer-migration-pg (local developer fallback)
+# ---------------------------------------------------------------------------
+MIGRATION_URL = os.environ.get("MIGRATION_DATABASE_URL") or os.environ.get("POSTGRES_MIGRATION_URL")
 _HAS_PG = MIGRATION_URL is not None
 
 BACKEND = Path(__file__).resolve().parent.parent.parent
@@ -63,9 +65,22 @@ MIGRATION_005_INDEXES: list[str] = [
 # Helpers
 # ---------------------------------------------------------------------------
 
+def _to_async_url(url: str) -> str:
+    """Convert a sync ``postgresql://`` URL to async ``postgresql+asyncpg://``.
+
+    Alembic's ``env.py`` uses ``create_async_engine`` which requires an async
+    driver scheme.  If the URL already includes a driver (``+asyncpg``, etc.)
+    it is returned unchanged.
+    """
+    if url and url.startswith("postgresql://"):
+        return url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    return url
+
+
 def _alembic(*args: str) -> str:
     """Run ``alembic <args>`` in the backend directory and return stdout."""
-    env = {**os.environ, "DATABASE_URL": MIGRATION_URL} if _HAS_PG else os.environ.copy()
+    db_url = _to_async_url(MIGRATION_URL) if _HAS_PG else None
+    env = {**os.environ, "DATABASE_URL": db_url} if _HAS_PG else os.environ.copy()
     result = subprocess.run(
         [sys.executable, "-m", "alembic", *args],
         cwd=str(BACKEND),
@@ -79,26 +94,47 @@ def _alembic(*args: str) -> str:
 
 
 def _pg(sql: str) -> list[tuple]:
-    """Run SQL against PostgreSQL and return rows."""
-    if not _HAS_PG and not MIGRATION_URL:
-        # Try docker exec
-        cmd = [
-            "docker", "exec", "trainer-migration-pg",
-            "psql", "-U", "trainer", "-d", "trainer_platform",
-            "-t", "-A", "-F", "|",
-            "-c", sql,
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-    else:
-        cmd = [
-            "psql",
-            MIGRATION_URL,
-            "-t", "-A", "-F", "|",
-            "-c", sql,
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    """Run SQL against PostgreSQL and return rows.
+
+    When ``MIGRATION_DATABASE_URL`` (or ``POSTGRES_MIGRATION_URL`` fallback)
+    is set, connects via psycopg2 directly — no external ``psql`` binary needed.
+    Falls back to ``docker exec`` for local developer environments.
+    """
+    if MIGRATION_URL:
+        # Use Python psycopg2 driver — cross-platform, no psql dependency.
+        try:
+            import psycopg2
+        except ImportError:
+            pytest.fail(
+                "psycopg2 is required when using MIGRATION_DATABASE_URL.\n"
+                "Install: pip install psycopg2-binary"
+            )
+        try:
+            conn = psycopg2.connect(MIGRATION_URL)
+            cur = conn.cursor()
+            cur.execute(sql)
+            rows = []
+            for row in cur.fetchall():
+                if len(row) == 1:
+                    rows.append(str(row[0]))
+                else:
+                    rows.append(tuple(str(v) for v in row))
+            cur.close()
+            conn.close()
+            return rows
+        except Exception as exc:
+            pytest.fail(f"psycopg2 query failed: {exc}")
+
+    # Docker exec fallback (local developer environment)
+    cmd = [
+        "docker", "exec", "trainer-migration-pg",
+        "psql", "-U", "trainer", "-d", "trainer_platform",
+        "-t", "-A", "-F", "|",
+        "-c", sql,
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     if result.returncode != 0:
-        pytest.fail(f"psql command failed:\n{result.stderr}")
+        pytest.fail(f"docker exec psql failed:\n{result.stderr}")
     rows = []
     for line in result.stdout.strip().splitlines():
         line = line.strip()

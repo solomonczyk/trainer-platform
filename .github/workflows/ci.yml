@@ -59,11 +59,39 @@ jobs:
           python --version
           python -c "import bcrypt; print('bcrypt version:', bcrypt.__version__)"
           python -c "from passlib.hash import bcrypt as bcrypt_hash; print('passlib bcrypt backend:', bcrypt_hash.get_backend())"
+          which psql && psql --version || echo "psql not found (will install)"
 
-      - name: Run tests (SQLite)
+      - name: Wait for PostgreSQL readiness
+        env:
+          MIGRATION_DATABASE_URL: postgresql://trainer:trainer_pass@localhost:5432/trainer_platform
+        run: |
+          python << 'PYEOF'
+          import os, time, psycopg2
+          url = os.environ["MIGRATION_DATABASE_URL"]
+          for i in range(30):
+              try:
+                  conn = psycopg2.connect(url)
+                  cur = conn.cursor()
+                  cur.execute("SELECT 1")
+                  row = cur.fetchone()
+                  cur.close()
+                  conn.close()
+                  assert row and row[0] == 1
+                  print(f"PostgreSQL ready (SELECT 1 = {row[0]})")
+                  break
+              except Exception as e:
+                  if i == 29:
+                      raise RuntimeError(f"PostgreSQL not ready after 30 attempts: {e}")
+                  print(f"Waiting for PostgreSQL (attempt {i+1}/30)...")
+                  time.sleep(2)
+          PYEOF
+
+      - name: Run all tests (SQLite + PostgreSQL migration via URL)
         run: python -m pytest tests/ -v --tb=long -x --timeout=120
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
+          MIGRATION_DATABASE_URL: postgresql://trainer:trainer_pass@localhost:5432/trainer_platform
+          POSTGRES_MIGRATION_URL: postgresql://trainer:trainer_pass@localhost:5432/trainer_platform
           SECRET_KEY: ci-secret-key-not-for-production
           APP_ENV: testing
           DEBUG: "false"
