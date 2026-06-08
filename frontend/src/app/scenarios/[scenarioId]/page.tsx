@@ -175,12 +175,12 @@ export default function ScenarioPage() {
             <div className="mb-6">
               <h3 className="text-sm font-semibold text-gray-700 mb-2">{t("trainer.skills")}</h3>
               <div className="flex flex-wrap gap-2">
-                {scenario.target_skills.map((skill, idx) => (
+			{scenario.target_skills.map((skill, idx) => (
                   <span
-                    key={idx}
+                    key={typeof skill === "string" ? skill : skill.skill_id}
                     className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
                   >
-                    {skill}
+                    {typeof skill === "string" ? skill : skill.skill_id}
                   </span>
                 ))}
               </div>

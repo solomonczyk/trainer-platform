@@ -7,6 +7,17 @@ import { loadSavedLocale } from "@/lib/i18n";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
+function Favicon() {
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "icon";
+    link.href = "/favicon.svg";
+    link.type = "image/svg+xml";
+    document.head.appendChild(link);
+  }, []);
+  return null;
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru">
       <body className="min-h-screen flex flex-col bg-gray-50">
         <QueryClientProvider client={queryClient}>
+          <Favicon />
           <Header />
           <main className="flex-1">{mounted ? children : <div className="p-8 text-center text-gray-400">Loading...</div>}</main>
           <Footer />

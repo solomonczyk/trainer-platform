@@ -282,7 +282,7 @@ export interface ScenarioDetail {
   trainer_product_id: string;
   difficulty: string;
   estimated_duration_minutes: number;
-  target_skills?: string[];
+  target_skills?: Array<string | { skill_id: string; weight: number }>;
   user_role: string;
   ai_role: string;
   steps?: ScenarioStep[];
