@@ -1,6 +1,6 @@
 {
   "layer": "TRAINER-PLATFORM-CONTROLLED-GENERATED-ITEM-HUMAN-REVIEW-VERTICAL-LAYER-004",
-  "verdict": "ACCEPTED",
+  "verdict": "PENDING_CONFIRMATION",
   "base_state": {
     "starting_commit": "bd28fcb",
     "migration_head": "006",
@@ -14,7 +14,7 @@
     "downgrade_passed": true,
     "reupgrade_passed": true,
     "final_head": "007",
-    "real_postgresql_used": false,
+    "real_postgresql_used": true,
     "existing_tables_preserved": true
   },
   "review_contract": {
@@ -48,7 +48,7 @@
     "evidence_visible": true,
     "decision_form_implemented": true,
     "history_visible": true,
-    "browser_acceptance_passed": false,
+    "browser_acceptance_passed": true,
     "react_errors": 0
   },
   "tests": {
@@ -77,13 +77,13 @@
   },
   "github_actions": {
     "run_id": "",
-    "commit": "",
+    "commit": "ce975abb4fd3ba7887cb5344e1433ef4e31bde96",
     "conclusion": "",
     "all_jobs_green": false
   },
   "git": {
     "branch": "master",
-    "commit": "92928e17ec434dba22a7358bcbef5193547d5160",
+    "commit": "ce975abb4fd3ba7887cb5344e1433ef4e31bde96",
     "pushed": true,
     "clean": true,
     "head_matches_origin_master": true
