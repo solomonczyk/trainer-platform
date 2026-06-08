@@ -2,7 +2,7 @@
 
 ## Measurement Method
 
-All durations measured from GitHub Actions workflow run #109 (commit d75d80f).
+All durations measured from GitHub Actions workflow run #110 (commit cfcfb31). Run #109 (d75d80f) produced consistent measurements; cfcfb31 is docs-only and verified by its own green run #110.
 
 ## Job Durations
 

@@ -2,7 +2,7 @@
   "layer": "TRAINER-PLATFORM-END-TO-END-STABILIZATION-CI-BROWSER-AND-CROSS-PLATFORM-TESTING-004C",
   "verdict": "ACCEPTED",
   "date": "2026-06-08",
-  "commit": "d75d80fc3d0e79b2e8f689bab11a13e09f84ccf0",
+  "commit": "cfcfb311857ed89c8d7b784df48f6d9c52b7a86a",
   "migration": {
     "head": "006",
     "postgres_version": "16",
@@ -31,11 +31,18 @@
     "browser_acceptance_passed": true
   },
   "ci": {
-    "workflow_run_id": "27134682911",
+    "workflow_run_id": "27137007954",
     "workflow_conclusion": "success",
     "all_jobs_green": true,
-    "duration_seconds": 0,
-    "performance_baseline_created": true
+    "duration_seconds": 345,
+    "performance_baseline_created": true,
+    "audit_reconciliation": {
+      "reported_ci_run": "27134682911",
+      "reported_ci_commit": "d75d80fc",
+      "reconciled_final_run": "27137007954",
+      "reconciled_final_commit": "cfcfb31",
+      "audit_verdict": "ACCEPTED"
+    }
   },
   "scalability": {
     "platform_core_model_documented": true,
@@ -68,7 +75,7 @@
   },
   "git": {
     "branch": "master",
-    "commit": "d75d80fc3d0e79b2e8f689bab11a13e09f84ccf0",
+    "commit": "cfcfb311857ed89c8d7b784df48f6d9c52b7a86a",
     "pushed": true,
     "clean": true,
     "head_matches_origin_master": true

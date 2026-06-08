@@ -20,7 +20,15 @@
 
 - **Failing test**: `tests/e2e/test_smoke.py::test_full_user_journey`
 - **Stage**: N/A — test passed locally and in CI after infrastructure fixes.
-- **Root cause**: The test was never reached in previous CI runs because `-x` (exit on first failure) stopped at the migration test failure. After migration fix, the E2E test passes.
+- **Root cause (corrected)**: Requires a three-phase explanation to accurately reflect the history:
+
+  **Phase 1 — Pre-certification era (MVP-001 through cert layer 003):** The E2E test ran in every CI execution because it was the only test profile. It succeeded or failed based on its own logic, independent of external infrastructure constraints. Prior CI runs show the test did run and reported failures for product-code reasons (e.g., API contract changes, missing seed data).
+
+  **Phase 2 — Migration-test integration (layer 003 through early 004C):** When certification-core migration tests (005/006) were added to the same `python -m pytest tests/ -v --tb=long -x` invocation, the `-x` (exit-first) flag caused the suite to abort at the first migration test failure, which was caused by missing PostgreSQL CI infrastructure. The E2E test was never reached in these runs despite being technically runnable.
+
+  **Phase 3 — Post-004C stabilization:** Tests were split into isolated steps (migration, certification core, general, E2E smoke) with proper PostgreSQL service backing. The E2E smoke test now runs independently in its own step and passes.
+
+  **Previous statement was "never reached due to -x early exit"** — this was accurate for Phase 2 but did not account for Phase 1 where the E2E test ran independently and produced its own failures.
 - **Product regression**: false
 - **Test fixture regression**: false
 - **Environment regression**: false

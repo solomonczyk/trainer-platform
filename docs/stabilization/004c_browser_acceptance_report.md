@@ -24,9 +24,10 @@
 
 ## GitHub Actions CI
 
-- **Run**: #109 (commit d75d80f)
+- **Run**: #110 (commit cfcfb31)
 - **Conclusion**: success
 - **All jobs green**: true
+- **Reconciliation note**: Run #109 (d75d80f) was also green; cfcfb31 added proof-only changes and its own green run #110
 
 ## Known External Noise
 
