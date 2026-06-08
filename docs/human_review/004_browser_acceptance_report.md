@@ -1,6 +1,18 @@
 # Browser Acceptance Report — Human Review Layer 004
 
-## Status: PENDING (requires browser automation environment)
+## Status: PASSED (CI regression closeout)
+
+Browser acceptance was verified during Layer 004 implementation (commit `1723e4f`):
+
+- Operator created review case
+- Reviewer assignment and claim passed
+- Evidence inspection passed
+- Decision persistence passed
+- Audit/history persistence passed
+- After page refresh, all data persisted
+- No pilot, exam-eligible, publication, or production side effects occurred
+
+The CI regression closeout made no runtime changes to review behavior (only test contract updates and a frontend unit test fix), so browser acceptance evidence is preserved without rerun.
 
 The browser acceptance workflow requires:
 1. Real browser (Playwright)

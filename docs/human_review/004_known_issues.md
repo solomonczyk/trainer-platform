@@ -13,3 +13,5 @@
 
 1. ~~Hash mismatch in tests~~ — Fixed by computing candidate hash from actual content rather than using a UUID.
 2. ~~Idempotency check used wrong field~~ — Fixed by looking up handoff first, then comparing using DB ID.
+3. ~~Frontend TypeScript error TS2367 (impossible comparison between `"APPROVED_FOR_PILOT_REVIEW"` and `"IN_REVIEW"`)~~ — Fixed in CI regression closeout by separating state domains (case status vs decision status).
+4. ~~Backend migration tests fail after migration 007~~ — Fixed in CI regression closeout by updating head revision assertions (006→007) and table count expectations (60→63 total, 31→34 cert_).
