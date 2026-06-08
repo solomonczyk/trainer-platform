@@ -86,6 +86,12 @@ jobs:
                   time.sleep(2)
           PYEOF
 
+      - name: Apply Alembic migrations (prepare PostgreSQL for migration tests)
+        run: alembic upgrade head
+        env:
+          DATABASE_URL: postgresql+asyncpg://trainer:trainer_pass@localhost:5432/trainer_platform
+          APP_ENV: testing
+
       - name: Run all tests (SQLite + PostgreSQL migration via URL)
         run: python -m pytest tests/ -v --tb=long -x --timeout=120
         env:
