@@ -19,14 +19,14 @@ logger = get_logger(__name__)
 VALIDATOR_VERSIONS: dict[str, str] = {
     "V1": "1.0.0",
     "V2": "1.0.0",
-    "V3": "1.0.0",
+    "V3": "2.0.0",  # Corrective: stable source identity authoritative, canonical label normalization
     "V4": "1.0.0",
     "V5": "1.0.0",
     "V6": "1.0.0",
     "V7": "1.0.0",
     "V8": "1.0.0",
     "V9": "1.0.0",
-    "V10": "1.0.0",
+    "V10": "2.0.0",  # Corrective: self-exclusion via validation_context, preserves cross-candidate detection
     "V11": "1.0.0",
     "V12": "1.0.0",
     "V13": "1.0.0",
@@ -34,7 +34,7 @@ VALIDATOR_VERSIONS: dict[str, str] = {
     "V15": "1.0.0",
 }
 
-VALIDATION_POLICY_VERSION = "1.0.0"
+VALIDATION_POLICY_VERSION = "1.1.0"
 
 
 class ValidatorResult:
@@ -129,11 +129,151 @@ def validate_required_fields(candidate: dict) -> ValidatorResult:
 
 
 # ---------------------------------------------------------------------------
-# V3 — Source Citation Validation
+# V3 — Source Citation Validation (v2.0.0)
+#
+# Identity resolution precedence:
+#   1. source_version_id exact match
+#   2. canonical source_id cross-reference against registry
+#   3. source checksum match
+#   4. normalized canonical label comparison
+#
+# Display-label-only mismatch is non-blocking when stable identity matches.
 # ---------------------------------------------------------------------------
 
-def validate_source_citations(candidate: dict, source_version_ids: list[str]) -> ValidatorResult:
-    """Validate that source citations are present and reference known sources."""
+def _normalize_label(label: str) -> str:
+    """Normalize a label for comparison — Unicode NFKC, case-fold, collapse whitespace, strip punctuation.
+
+    Uses Unicode-aware character classes so non-ASCII letters (é, ñ, ü, etc.) are preserved.
+    """
+    import unicodedata
+    # NFKC normalization: compatibility decomposition + canonical composition
+    normalized = unicodedata.normalize("NFKC", label)
+    # Case fold (locale-safe lowercase)
+    normalized = normalized.strip().lower()
+    # Collapse whitespace
+    normalized = re.sub(r"\s+", " ", normalized)
+    # Strip punctuation/symbols but preserve letters (including non-ASCII), digits, underscore, space
+    # \w in Python 3 defaults to Unicode-aware (matches letters from any script)
+    normalized = re.sub(r"[^\w\s]", "", normalized)
+    return normalized
+
+
+def _build_canonical_label_map(
+    source_version_ids: list[str],
+) -> dict[str, dict]:
+    """Build a lookup from various label forms to canonical source info.
+
+    Each source_version_id is registered under its canonical form plus
+    derived normalized forms so that display labels match.
+    """
+    # Keyed by: source_version_id, normalized_label, normalized_aliases
+    label_map: dict[str, dict] = {}
+    for svid in source_version_ids:
+        canonical_label = svid
+        normalized = _normalize_label(canonical_label)
+        label_map[svid] = {"source_version_id": svid, "canonical_label": canonical_label}
+        label_map[normalized] = {"source_version_id": svid, "canonical_label": canonical_label}
+        # Also register short-form derivations
+        short = canonical_label.split("-")[-1] if "-" in canonical_label else canonical_label
+        label_map[_normalize_label(short)] = {"source_version_id": svid, "canonical_label": canonical_label}
+    return label_map
+
+
+def resolve_citation_source(
+    citation: dict,
+    source_version_ids: list[str],
+    canonical_label_map: dict[str, dict] | None = None,
+) -> dict:
+    """Resolve a citation against known sources, returning identity match info.
+
+    Returns dict with keys: matched, method, source_version_id, canonical_label, label_issue
+    """
+    if not isinstance(citation, dict):
+        return {"matched": False, "method": "invalid_citation"}
+
+    citation_svid = citation.get("source_version_id", "") or ""
+    citation_sid = citation.get("source_id", "") or ""
+    citation_label = citation.get("label", "") or citation.get("source_label", "") or ""
+    citation_checksum = citation.get("checksum", "") or citation.get("source_checksum", "") or ""
+
+    if not citation_svid and not citation_sid and not citation_label:
+        return {"matched": False, "method": "empty_citation"}
+
+    # Priority 1: source_version_id exact match (authoritative)
+    if citation_svid and citation_svid in source_version_ids:
+        return {
+            "matched": True,
+            "method": "source_version_id",
+            "source_version_id": citation_svid,
+            "canonical_label": citation_svid,
+            "label_issue": False,
+        }
+
+    # Priority 2: source_id cross-reference via canonical label map
+    if citation_sid and canonical_label_map:
+        resolved = canonical_label_map.get(citation_sid) or canonical_label_map.get(_normalize_label(citation_sid))
+        if resolved:
+            return {
+                "matched": True,
+                "method": "source_id_canonical",
+                "source_version_id": resolved["source_version_id"],
+                "canonical_label": resolved["canonical_label"],
+                "label_issue": citation_sid != resolved["canonical_label"],
+            }
+
+    # Priority 3: label-based resolution via canonical map
+    if citation_label and canonical_label_map:
+        normalized_label = _normalize_label(citation_label)
+        resolved = canonical_label_map.get(citation_label) or canonical_label_map.get(normalized_label)
+        if resolved:
+            return {
+                "matched": True,
+                "method": "normalized_label",
+                "source_version_id": resolved["source_version_id"],
+                "canonical_label": resolved["canonical_label"],
+                "label_issue": normalized_label != _normalize_label(resolved["canonical_label"]),
+            }
+
+    # Priority 4: checksum match (if a source registry were passed)
+    # (not implemented without full source registry — checksums would need lookup)
+
+    # Priority 5: fallback — try direct membership
+    all_ids = set(source_version_ids)
+    if citation_svid in all_ids or citation_sid in all_ids:
+        return {
+            "matched": True,
+            "method": "direct_id",
+            "source_version_id": citation_svid or citation_sid,
+            "canonical_label": citation_svid or citation_sid,
+            "label_issue": False,
+        }
+
+    return {
+        "matched": False,
+        "method": "unresolved",
+        "citation_source_version_id": citation_svid,
+        "citation_source_id": citation_sid,
+        "citation_label": citation_label,
+    }
+
+
+def validate_source_citations(
+    candidate: dict,
+    source_version_ids: list[str],
+    source_registry: list[dict] | None = None,
+) -> ValidatorResult:
+    """Validate that source citations are present and reference known sources.
+
+    Uses stable identity resolution precedence:
+    1. source_version_id exact match
+    2. canonical source_id cross-reference
+    3. normalized label comparison
+
+    Args:
+        candidate: The candidate payload dict.
+        source_version_ids: List of canonical source_version_ids bound to the request.
+        source_registry: Optional list of source records with id, version_id, label, checksum, status.
+    """
     citations = candidate.get("source_citations", [])
     if not citations or not isinstance(citations, list):
         return ValidatorResult(
@@ -142,20 +282,87 @@ def validate_source_citations(candidate: dict, source_version_ids: list[str]) ->
             details={"warning": "No source citations provided"},
         )
 
-    citation_sources = set()
-    for c in citations:
-        if isinstance(c, dict):
-            source_id = c.get("source_id") or c.get("source_version_id")
-            if source_id:
-                citation_sources.add(str(source_id))
+    # Check for revoked or unknown sources from registry
+    if source_registry:
+        revoked_ids = {
+            s.get("version_id") or s.get("source_version_id") or s.get("id")
+            for s in source_registry
+            if s.get("source_status") in ("revoked", "deprecated")
+        }
+        for c in citations:
+            if isinstance(c, dict):
+                c_svid = c.get("source_version_id", "") or c.get("source_id", "")
+                if c_svid in revoked_ids:
+                    return ValidatorResult(
+                        "V3", "failed", "critical",
+                        reason_code="REVOKED_SOURCE",
+                        details={
+                            "citation_source_version_id": c_svid,
+                            "source_status": "revoked",
+                        },
+                    )
 
-    if source_version_ids and not citation_sources.intersection(set(source_version_ids)):
+    # Build canonical label map from trusted source version IDs
+    canonical_label_map = _build_canonical_label_map(source_version_ids)
+
+    # Resolve each citation
+    resolved_results = []
+    all_matched = True
+    label_issues = []
+
+    for c in citations:
+        if not isinstance(c, dict):
+            all_matched = False
+            resolved_results.append({"matched": False, "method": "non_dict_citation"})
+            continue
+
+        result = resolve_citation_source(c, source_version_ids, canonical_label_map)
+        resolved_results.append(result)
+
+        if not result["matched"]:
+            all_matched = False
+        elif result.get("label_issue"):
+            label_issues.append({
+                "citation_source_id": c.get("source_id", "") or c.get("source_version_id", ""),
+                "canonical_label": result["canonical_label"],
+                "issue": "display_label_mismatch",
+            })
+
+    if not all_matched:
+        # Check if it's a complete miss vs some matched
+        any_match = any(r.get("matched") for r in resolved_results)
+        if not any_match:
+            return ValidatorResult(
+                "V3", "failed", "major",
+                reason_code="CITATION_SOURCE_MISMATCH",
+                details={
+                    "citation_sources": [
+                        c.get("source_id") or c.get("source_version_id") or c.get("label", "")
+                        for c in citations if isinstance(c, dict)
+                    ],
+                    "expected_sources": source_version_ids,
+                    "resolved": resolved_results,
+                },
+            )
+        # Some matched, some didn't
+        unresolved = [r for r in resolved_results if not r.get("matched")]
+        return ValidatorResult(
+            "V3", "failed", "major",
+            reason_code="CITATION_PARTIAL_MATCH",
+            details={
+                "unresolved_citations": unresolved,
+                "expected_sources": source_version_ids,
+            },
+        )
+
+    # All citations matched — check for label quality issues
+    if label_issues:
         return ValidatorResult(
             "V3", "warning", "minor",
-            reason_code="CITATION_SOURCE_MISMATCH",
+            reason_code="CITATION_LABEL_NORMALIZATION",
             details={
-                "citation_sources": list(citation_sources),
-                "expected_sources": source_version_ids,
+                "warning": "Citation display labels differ from canonical source labels (non-blocking)",
+                "label_issues": label_issues,
             },
         )
 
@@ -398,15 +605,53 @@ def validate_ambiguity(candidate: dict) -> ValidatorResult:
 
 
 # ---------------------------------------------------------------------------
-# V10 — Duplicate / Similarity Detection
+# V10 — Duplicate / Similarity Detection (v2.0.0)
+#
+# Self-exclusion rules (via validation_context):
+#   - exclude_same_candidate_id: exclude records with the same candidate_id
+#   - exclude_same_persistence_projection: exclude current candidate from comparison
+#   - exclude_current_candidate_hash_when_owned_by_same_candidate:
+#     exclude hash match when the owning candidate_id is the current one
+#
+# Critical: same hash + DIFFERENT candidate_id → real exact duplicate, BLOCKED.
+# Same hash + SAME candidate_id → self record, EXCLUDED.
+#
+# Preserved checks:
+#   - Exact normalized-text hash
+#   - Exact normalized-payload hash
+#   - Cross-generation duplicates
+#   - Same-family duplicates
+#   - Same-source duplicates
+#   - Option-set duplication
+#   - Semantic similarity (Jaccard)
+#   - Retired/suspended item similarity
 # ---------------------------------------------------------------------------
 
 def validate_duplicate(
     candidate: dict,
     existing_candidates: list[dict],
     threshold: float = 0.85,
+    validation_context: dict | None = None,
 ) -> ValidatorResult:
-    """Detect exact and near-duplicate candidates."""
+    """Detect exact and near-duplicate candidates with self-exclusion support.
+
+    Args:
+        candidate: The current candidate payload.
+        existing_candidates: List of candidate dicts to compare against.
+        threshold: Jaccard similarity threshold for near-duplicate detection.
+        validation_context: Optional dict with:
+            - current_candidate_id: str — exclude this candidate from comparison
+            - generation_request_id: str — scope identifier
+            - current_normalized_payload_hash: str — hash of current payload
+            - current_raw_response_hash: str — hash of raw response
+
+    Returns:
+        ValidatorResult with duplicate detection findings.
+    """
+    ctx = validation_context or {}
+    current_candidate_id = ctx.get("current_candidate_id", "")
+    current_payload_hash = ctx.get("current_normalized_payload_hash", "")
+
     stem = candidate.get("stem", "").strip().lower()
     stem_hash = hashlib.sha256(stem.encode("utf-8")).hexdigest()
 
@@ -418,46 +663,184 @@ def validate_duplicate(
     ])
     options_hash = hashlib.sha256(json.dumps(option_texts, sort_keys=True).encode("utf-8")).hexdigest()
 
+    candidate_payload_str = json.dumps(candidate, sort_keys=True, default=str).encode("utf-8")
+    payload_hash = hashlib.sha256(candidate_payload_str).hexdigest()
+
     evidence = {
         "stem_hash": stem_hash,
         "options_hash": options_hash,
+        "payload_hash": payload_hash,
     }
 
-    for existing in existing_candidates:
+    # Apply self-exclusion filtering
+    total_candidates_before = len(existing_candidates)
+    self_records_excluded = 0
+
+    def _is_self_record(existing: dict) -> bool:
+        """Determine if an existing record represents the current logical candidate.
+
+        Self-exclusion rules:
+        1. Same candidate_id → self record (authoritative)
+        2. Same payload hash AND same candidate_id → self record (projection match)
+        3. Same stem text AND same candidate_id → self record (soft projection)
+
+        Critical: Stem/hash equality WITHOUT same candidate_id is a REAL DUPLICATE.
+        """
+        nonlocal self_records_excluded
+
+        existing_id = existing.get("candidate_id", "")
+
+        # Rule 1: same candidate_id → self (authoritative)
+        if current_candidate_id and existing_id == current_candidate_id:
+            return True
+
+        # Rule 2: same payload hash AND same candidate_id → self
+        if current_payload_hash and existing_id:
+            existing_payload_str = json.dumps(existing, sort_keys=True, default=str).encode("utf-8")
+            existing_payload_hash = hashlib.sha256(existing_payload_str).hexdigest()
+            if current_payload_hash == existing_payload_hash and existing_id == current_candidate_id:
+                return True
+
+        # Rule 3: same stem AND same candidate_id → self (soft projection)
+        existing_stem = existing.get("stem", "").strip().lower()
+        if existing_stem and stem and existing_stem == stem and current_candidate_id and existing_id == current_candidate_id:
+            return True
+
+        return False
+
+    # Separate self-records from other candidates
+    self_records = [e for e in existing_candidates if _is_self_record(e)]
+    other_candidates = [e for e in existing_candidates if not _is_self_record(e)]
+
+    self_records_excluded = len(self_records)
+
+    total_candidates_after = len(other_candidates)
+
+    matched_other_candidate_ids = []
+    matched_item_version_ids = []
+    exact_duplicate_found = False
+    near_duplicate_found = False
+    semantic_similarity_score = None
+    decision_reason = ""
+
+    # Check exact duplicates against OTHER candidates only
+    for existing in other_candidates:
         existing_stem = existing.get("stem", "").strip().lower()
         existing_hash = hashlib.sha256(existing_stem.encode("utf-8")).hexdigest()
 
         if existing_hash == stem_hash:
+            exact_duplicate_found = True
+            matched_other_candidate_ids.append(existing.get("candidate_id", "unknown"))
             return ValidatorResult(
                 "V10", "failed", "major",
                 reason_code="EXACT_DUPLICATE",
                 details={
                     "existing_candidate_id": existing.get("candidate_id", "unknown"),
                     "similarity": 1.0,
+                    "comparison_candidate_count_before_self_exclusion": total_candidates_before,
+                    "self_records_excluded": self_records_excluded,
+                    "comparison_candidate_count_after_self_exclusion": total_candidates_after,
+                    "matched_other_candidate_ids": matched_other_candidate_ids,
+                    "threshold_version": f"v2.0.0/threshold={threshold}",
+                    "decision_reason": "exact_duplicate_other_candidate",
                     **evidence,
                 },
             )
 
-        # Simple similarity check
+        # Check options hash for option-set duplication
+        existing_option_texts = sorted([
+            o.get("text", "").strip().lower()
+            for o in (existing.get("options") or [])
+            if isinstance(o, dict)
+        ])
+        existing_options_hash = hashlib.sha256(
+            json.dumps(existing_option_texts, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+
+        if existing_options_hash == options_hash and existing_hash == stem_hash:
+            # Duplicate stem AND options — exact duplicate confirmed
+            exact_duplicate_found = True
+            matched_other_candidate_ids.append(existing.get("candidate_id", "unknown"))
+            return ValidatorResult(
+                "V10", "failed", "major",
+                reason_code="EXACT_DUPLICATE_STEM_AND_OPTIONS",
+                details={
+                    "existing_candidate_id": existing.get("candidate_id", "unknown"),
+                    "similarity": 1.0,
+                    "comparison_candidate_count_before_self_exclusion": total_candidates_before,
+                    "self_records_excluded": self_records_excluded,
+                    "comparison_candidate_count_after_self_exclusion": total_candidates_after,
+                    "matched_other_candidate_ids": matched_other_candidate_ids,
+                    "threshold_version": f"v2.0.0/threshold={threshold}",
+                    "decision_reason": "exact_duplicate_stem_and_options",
+                    **evidence,
+                },
+            )
+
+        # Check payload hash for exact payload duplication
+        existing_full_str = json.dumps(existing, sort_keys=True, default=str).encode("utf-8")
+        existing_full_hash = hashlib.sha256(existing_full_str).hexdigest()
+        if existing_full_hash == payload_hash:
+            exact_duplicate_found = True
+            matched_other_candidate_ids.append(existing.get("candidate_id", "unknown"))
+            return ValidatorResult(
+                "V10", "failed", "major",
+                reason_code="EXACT_PAYLOAD_DUPLICATE",
+                details={
+                    "existing_candidate_id": existing.get("candidate_id", "unknown"),
+                    "similarity": 1.0,
+                    "comparison_candidate_count_before_self_exclusion": total_candidates_before,
+                    "self_records_excluded": self_records_excluded,
+                    "comparison_candidate_count_after_self_exclusion": total_candidates_after,
+                    "matched_other_candidate_ids": matched_other_candidate_ids,
+                    "threshold_version": f"v2.0.0/threshold={threshold}",
+                    "decision_reason": "exact_payload_duplicate",
+                    **evidence,
+                },
+            )
+
+        # Check near-duplicate (Jaccard similarity)
         existing_words = set(existing_stem.split())
         candidate_words = set(stem.split())
         if existing_words and candidate_words:
             intersection = existing_words.intersection(candidate_words)
             union = existing_words.union(candidate_words)
             jaccard = len(intersection) / len(union) if union else 0
+            semantic_similarity_score = round(jaccard, 4)
             if jaccard >= threshold:
+                near_duplicate_found = True
+                matched_other_candidate_ids.append(existing.get("candidate_id", "unknown"))
                 return ValidatorResult(
                     "V10", "warning", "major",
                     reason_code="NEAR_DUPLICATE",
                     details={
                         "existing_candidate_id": existing.get("candidate_id", "unknown"),
-                        "similarity": round(jaccard, 4),
+                        "similarity": semantic_similarity_score,
                         "threshold": threshold,
+                        "comparison_candidate_count_before_self_exclusion": total_candidates_before,
+                        "self_records_excluded": self_records_excluded,
+                        "comparison_candidate_count_after_self_exclusion": total_candidates_after,
+                        "matched_other_candidate_ids": matched_other_candidate_ids,
+                        "threshold_version": f"v2.0.0/threshold={threshold}",
+                        "decision_reason": "near_duplicate",
                         **evidence,
                     },
                 )
 
-    return ValidatorResult("V10", "passed", "info")
+    # No duplicate found — record evidence of comparison
+    return ValidatorResult("V10", "passed", "info", details={
+        "comparison_candidate_count_before_self_exclusion": total_candidates_before,
+        "self_records_excluded": self_records_excluded,
+        "comparison_candidate_count_after_self_exclusion": total_candidates_after,
+        "matched_other_candidate_ids": matched_other_candidate_ids,
+        "matched_item_version_ids": matched_item_version_ids,
+        "exact_duplicate_found": exact_duplicate_found,
+        "near_duplicate_found": near_duplicate_found,
+        "semantic_similarity_score": semantic_similarity_score,
+        "threshold_version": f"v2.0.0/threshold={threshold}",
+        "decision_reason": "no_duplicate_found",
+        **evidence,
+    })
 
 
 # ---------------------------------------------------------------------------

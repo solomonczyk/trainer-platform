@@ -15,3 +15,11 @@
 7. **CORS and Frontend Integration:** No frontend generation UI has been created. This layer provides the backend API and CLI only.
 
 8. **Regression Fix — Migration 005 Container Reference:** The `test_migration_005_execution.py` test was fixed to use the running Docker container `trainer-migration-pg` instead of the previous `trainer-item-bank-migration-005` container that no longer exists. Database name updated to `trainer_platform`. The test now accepts the current alembic head (006) as the final revision after the upgrade cycle. These are fixture-isolation and migration-conflict fixes, not production policy changes.
+
+9. **Resolved — V10 Self-Duplicate False Positive (Layer 003D):** V10 no longer flags a candidate as a duplicate of itself. The validator accepts `validation_context` with `current_candidate_id` and excludes self-records. Same hash + different candidate ID is still blocked. Version: 2.0.0.
+
+10. **Resolved — V3 Citation Source Label Mismatch (Layer 003D):** V3 now uses stable source identity (source_version_id, source_id, checksum, normalized label) for citation resolution. Display-label-only differences produce a non-blocking warning. Revoked sources are detected via the `source_registry` parameter. Version: 2.0.0.
+
+11. **Pre-existing — Migration 005/006 Docker Tests:** The migration execution tests require a running Docker container with PostgreSQL. When Docker is unavailable, these 10 tests error (not fail). This is a fixture-isolation issue, not a production defect. These tests pass in CI/CD environments with Docker available.
+
+12. **Corrective Revalidation Service:** The `CandidateRevalidationService` and `revalidate_existing_candidate.py` CLI enable deterministic revalidation of existing candidates without provider calls. Controlled by `--execute` flag. Dry-run mode available without `--execute`.

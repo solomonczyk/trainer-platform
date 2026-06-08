@@ -49,8 +49,20 @@ class ValidationOrchestrator:
         candidate: GeneratedCandidate,
         request_params: dict[str, Any],
         existing_candidates: list[dict[str, Any]] | None = None,
+        validation_context: dict[str, Any] | None = None,
+        source_registry: list[dict[str, Any]] | None = None,
     ) -> CandidateValidationRun:
-        """Run all 15 validators against a candidate and return the aggregated run."""
+        """Run all 15 validators against a candidate and return the aggregated run.
+
+        Args:
+            candidate: The candidate to validate.
+            request_params: Generation request parameters.
+            existing_candidates: Existing candidates for duplicate comparison.
+            validation_context: Optional context for V10 self-exclusion.
+                Keys: current_candidate_id, generation_request_id,
+                      current_normalized_payload_hash, current_raw_response_hash.
+            source_registry: Optional source records for V3 citation resolution.
+        """
         validation_run = CandidateValidationRun(
             validation_run_id=f"vr-{uuid.uuid4().hex[:12]}",
             candidate_id=candidate.id,
@@ -79,18 +91,25 @@ class ValidationOrchestrator:
             "candidate_hash": candidate.normalized_payload_hash,
         }
 
+        # Build V10 validation context for self-exclusion
+        v10_context = dict(validation_context or {})
+        if "current_candidate_id" not in v10_context:
+            v10_context["current_candidate_id"] = candidate.candidate_id
+        if "current_normalized_payload_hash" not in v10_context:
+            v10_context["current_normalized_payload_hash"] = candidate.normalized_payload_hash or ""
+
         # Run all validators
         validators = [
             ("V1", validate_schema(candidate_payload)),
             ("V2", validate_required_fields(candidate_payload)),
-            ("V3", validate_source_citations(candidate_payload, source_version_ids)),
+            ("V3", validate_source_citations(candidate_payload, source_version_ids, source_registry)),
             ("V4", validate_competency_alignment(candidate_payload, expected_competency_id, expected_domain_id)),
             ("V5", validate_difficulty(candidate_payload, expected_difficulty)),
             ("V6", validate_item_family(candidate_payload, item_family_id)),
             ("V7", validate_answer_consistency(candidate_payload)),
             ("V8", validate_rubric(candidate_payload)),
             ("V9", validate_ambiguity(candidate_payload)),
-            ("V10", validate_duplicate(candidate_payload, existing_candidates or [])),
+            ("V10", validate_duplicate(candidate_payload, existing_candidates or [], validation_context=v10_context)),
             ("V11", validate_safety(candidate_payload)),
             ("V12", validate_locale(candidate_payload, expected_locale)),
             ("V13", validate_answer_key_leak(candidate_payload)),

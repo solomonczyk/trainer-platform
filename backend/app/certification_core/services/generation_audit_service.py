@@ -31,6 +31,12 @@ class GenerationAuditService:
         "candidate_rejected",
         "candidate_review_handoff_created",
         "generation_request_completed",
+        # Corrective revalidation actions
+        "candidate_corrective_revalidation_started",
+        "candidate_validator_v3_corrective_run_completed",
+        "candidate_validator_v10_corrective_run_completed",
+        "candidate_corrective_revalidation_completed",
+        "candidate_review_handoff_created_corrective",
     }
 
     def __init__(self, db: AsyncSession):
