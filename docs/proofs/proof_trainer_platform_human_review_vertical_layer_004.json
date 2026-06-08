@@ -76,10 +76,20 @@
     "secrets_exposed": false
   },
   "github_actions": {
-    "run_id": "",
-    "commit": "ce975abb4fd3ba7887cb5344e1433ef4e31bde96",
-    "conclusion": "",
-    "all_jobs_green": false
+    "run_id": "27145357199",
+    "commit": "1723e4f7128abde78028e6164e55f1a94eacbe67",
+    "conclusion": "failure",
+    "all_jobs_green": false,
+    "pre_existing_failures": true,
+    "jobs": {
+      "backend_tests": "failure",
+      "frontend_build": "failure",
+      "frontend_tests": "success",
+      "trainer_package_validation": "success",
+      "migration_check": "success",
+      "openapi_export": "success"
+    },
+    "note": "Backend Tests and Frontend Build failures are pre-existing (same failures on commits ce975ab and 92928e1). Our changes (proof JSON update + acceptance script) do not cause any new failures."
   },
   "git": {
     "branch": "master",
