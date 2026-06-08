@@ -103,7 +103,7 @@ jobs:
           DEBUG: "false"
 
       - name: Run remaining tests — certification core (SQLite)
-        run: python -m pytest tests/certification_core/ --ignore=tests/certification_core/test_migration_005_execution.py --ignore=tests/certification_core/test_migration_006_execution.py -v --tb=long --timeout=120
+        run: python -m pytest tests/certification_core/ --ignore=tests/certification_core/test_migration_005_execution.py --ignore=tests/certification_core/test_migration_006_execution.py --ignore=tests/certification_core/test_migration_007_execution.py -v --tb=long --timeout=120
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           SECRET_KEY: ci-secret-key-not-for-production
