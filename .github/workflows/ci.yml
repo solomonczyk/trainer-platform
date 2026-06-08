@@ -102,14 +102,26 @@ jobs:
           APP_ENV: testing
           DEBUG: "false"
 
-      - name: Run remaining tests (SQLite)
-        run: |
-          python -m pytest tests/ --ignore=tests/certification_core/test_migration_005_execution.py --ignore=tests/certification_core/test_migration_006_execution.py -v --tb=long --timeout=120 2>&1 | tee test_output.log
-          exit ${PIPESTATUS[0]}
+      - name: Run remaining tests — certification core (SQLite)
+        run: python -m pytest tests/certification_core/ --ignore=tests/certification_core/test_migration_005_execution.py --ignore=tests/certification_core/test_migration_006_execution.py -v --tb=long --timeout=120
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
-          MIGRATION_DATABASE_URL: postgresql://trainer:trainer_pass@localhost:5432/trainer_platform
-          POSTGRES_MIGRATION_URL: postgresql://trainer:trainer_pass@localhost:5432/trainer_platform
+          SECRET_KEY: ci-secret-key-not-for-production
+          APP_ENV: testing
+          DEBUG: "false"
+
+      - name: Run remaining tests — general (SQLite)
+        run: python -m pytest tests/ -v --tb=long --timeout=120 --ignore=tests/certification_core/ --ignore=tests/e2e/
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///test_ci.db
+          SECRET_KEY: ci-secret-key-not-for-production
+          APP_ENV: testing
+          DEBUG: "false"
+
+      - name: Run E2E smoke (SQLite)
+        run: python -m pytest tests/e2e/test_smoke.py -v --tb=long --timeout=120
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           SECRET_KEY: ci-secret-key-not-for-production
           APP_ENV: testing
           DEBUG: "false"
@@ -119,9 +131,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-output
-          path: |
-            backend/test_ci.db
-            backend/test_output.log
+          path: backend/test_ci.db
           retention-days: 7
 
   trainer-package-validation:
