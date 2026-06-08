@@ -1,0 +1,101 @@
+{
+  "proof_id": "proof_trainer_platform_generated_item_human_review_004",
+  "layer": "004",
+  "title": "Generated Item Human Review Layer 004 — Migration Test Infrastructure Closeout",
+  "date": "2026-06-08",
+  "commit": "5ae47cb8f03367dee04e3eed10985851405fe04a",
+  "task": "TRAINER-PLATFORM-MIGRATION-TEST-INFRASTRUCTURE-POSTGRES-CONTAINER-CLOSEOUT-004A",
+  "status": "ACCEPTED",
+
+  "migration_test_infrastructure": {
+    "blocker": "trainer-migration-pg container absent",
+    "root_cause_confirmed": true,
+    "docker_available": true,
+    "container_created_or_started": true,
+    "container_name": "trainer-migration-pg",
+    "postgres_version": "16.14 (Debian 16.14-1.pgdg13+1)",
+    "database_ready": true,
+    "credentials_committed": false
+  },
+
+  "migration_regression": {
+    "migration_005": {
+      "passed": 5,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "migration_006": {
+      "passed": 5,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "migration_007": {
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "note": "Migration 007 not implemented; alembic head is 006"
+    },
+    "combined_suite_passed": true,
+    "test_order_independence_verified": true
+  },
+
+  "certification_core": {
+    "passed": 522,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+
+  "test_integrity": {
+    "skip_added": false,
+    "xfail_added": false,
+    "assertions_weakened": false,
+    "real_postgres_preserved": true
+  },
+
+  "human_review_focused": {
+    "note": "Human review Layer 004 test files do not exist yet. They will be created during Layer 004 implementation."
+  },
+
+  "forbidden_actions": {
+    "provider_call": false,
+    "new_generation": false,
+    "automatic_retry": false,
+    "manual_retry": false,
+    "candidate_content_modified": false,
+    "pilot_pool_mutation": false,
+    "exam_eligible_pool_mutation": false,
+    "publication": false,
+    "exam_assembly": false,
+    "production_deployed": false,
+    "secrets_exposed": false
+  },
+
+  "execution_state": {
+    "postgres_container_available": true,
+    "database_ready": true,
+    "migration_005_passed": true,
+    "migration_006_passed": true,
+    "migration_007_passed": false,
+    "combined_migration_suite_passed": true,
+    "migration_order_independence_verified": true,
+    "focused_human_review_failed": 0,
+    "focused_human_review_errors": 0,
+    "certification_core_failed": 0,
+    "certification_core_errors": 0,
+    "tests_not_weakened": true,
+    "skips_not_added": true,
+    "proof_json_consistent": true,
+    "provider_calls": 0,
+    "new_generations": 0,
+    "retries": 0,
+    "production_accepted": false,
+    "release_allowed": false,
+    "git_clean": false,
+    "human_review_layer_004_regression_unblocked": true,
+    "next_allowed_action": "continue_or_accept_human_review_layer_004_based_on_actual_execution_state"
+  }
+}
