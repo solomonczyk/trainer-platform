@@ -73,8 +73,13 @@ def _alembic(*args: str) -> str:
     return result.stdout + result.stderr
 
 
-def _pg(sql: str) -> list[tuple]:
-    """Run SQL against PostgreSQL and return rows."""
+def _pg(sql: str) -> list[tuple | str]:
+    """Run SQL against PostgreSQL and return rows.
+
+    Single-column values are returned as strings (for callers that
+    compare against plain strings).  Multi-column rows are returned as
+    string tuples.
+    """
     if MIGRATION_URL:
         try:
             import psycopg2
@@ -87,7 +92,12 @@ def _pg(sql: str) -> list[tuple]:
             conn = psycopg2.connect(MIGRATION_URL)
             cur = conn.cursor()
             cur.execute(sql)
-            rows = list(cur.fetchall())
+            rows: list[tuple | str] = []
+            for row in cur.fetchall():
+                if len(row) == 1:
+                    rows.append(str(row[0]))
+                else:
+                    rows.append(tuple(str(v) for v in row))
             cur.close()
             conn.close()
             return rows
@@ -230,7 +240,7 @@ class TestMigration007Execution:
         # Verify alembic version
         rows = _pg("SELECT version_num FROM alembic_version")
         assert len(rows) == 1, f"Expected 1 row in alembic_version, got {len(rows)}"
-        assert str(rows[0]) == "007", f"Expected '007', got '{rows[0]}'"
+        assert rows[0] == "007", f"Expected '007', got '{rows[0]}'"
 
     def test_human_review_tables_schema(self, pg_available):
         """Verify human review table columns and constraints."""
@@ -313,7 +323,7 @@ class TestMigration007Execution:
     def test_database_queryable(self, pg_available):
         """Database must be queryable after the full cycle."""
         rows = _pg("SELECT 1 AS ok")
-        assert str(rows[0]) == "1"
+        assert rows[0] == "1"
 
     def test_additional_006_tables_preserved(self, pg_available):
         """Additional generation tables must be preserved."""

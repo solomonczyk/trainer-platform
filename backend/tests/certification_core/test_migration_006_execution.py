@@ -6,9 +6,9 @@ Connects via the ``MIGRATION_DATABASE_URL`` (primary) or
 back to ``docker exec`` for local developer environments.
 
 The cycle verified:
-    alembic upgrade head  → current=006
+    alembic upgrade head  → current=007
     alembic downgrade 005  → current=005
-    alembic upgrade head  → current=006
+    alembic upgrade head  → current=007
 """
 
 from __future__ import annotations
@@ -175,10 +175,10 @@ class TestMigration006Execution:
     """Prove the full migration 006 cycle on real PostgreSQL."""
 
     def test_cycle_upgrade_downgrade_upgrade(self, pg_available):
-        """Full cycle: upgrade head → 006 → downgrade 005 → upgrade head → 006."""
-        # Step 1: verify we start at 006
+        """Full cycle: upgrade head → 007 → downgrade 005 → upgrade head → 007."""
+        # Step 1: verify we start at 007
         rev = _current_revision()
-        assert rev == "006" or rev.startswith("006"), f"Expected 006, got {rev}"
+        assert rev == "007" or rev.startswith("007"), f"Expected 007, got {rev}"
 
         # Snapshot 006 tables
         all_tables = _tables_exist()
@@ -200,10 +200,10 @@ class TestMigration006Execution:
         for table in MIGRATION_006_TABLES:
             assert table not in tables_after_downgrade, f"Table {table} still present after downgrade"
 
-        # Step 3: upgrade back to head (006)
+        # Step 3: upgrade back to head (007)
         _alembic("upgrade", "head")
         rev = _current_revision()
-        assert rev == "006" or rev.startswith("006"), f"Expected 006, got {rev}"
+        assert rev == "007" or rev.startswith("007"), f"Expected 007, got {rev}"
 
         # Verify 006 tables restored
         tables_after_upgrade = _tables_exist()
@@ -218,7 +218,7 @@ class TestMigration006Execution:
         # Verify alembic version
         rows = _pg("SELECT version_num FROM alembic_version")
         assert len(rows) == 1, f"Expected 1 row in alembic_version, got {len(rows)}"
-        assert rows[0] == "006", f"Expected '006', got '{rows[0]}'"
+        assert rows[0] == "007", f"Expected '007', got '{rows[0]}'"
 
     def test_existing_certification_tables_preserved(self, pg_available):
         """Existing cert_ tables must be preserved after the cycle."""
@@ -243,9 +243,9 @@ class TestMigration006Execution:
             assert table in tables, f"BA/QA table {table} missing"
 
     def test_alembic_revision_matches_006(self, pg_available):
-        """Final alembic revision must be 006."""
+        """Final alembic revision must be 007."""
         rev = _current_revision()
-        assert rev == "006" or rev.startswith("006"), f"Expected 006, got {rev}"
+        assert rev == "007" or rev.startswith("007"), f"Expected 007, got {rev}"
 
     def test_database_queryable(self, pg_available):
         """Database must be queryable after the full cycle."""

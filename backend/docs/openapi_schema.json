@@ -5241,6 +5241,560 @@
           }
         }
       }
+    },
+    "/api/v1/certification/review-cases": {
+      "post": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Create Review Case",
+        "description": "Create a human review case from a review handoff.\n\nValidates handoff, candidate, provenance, validation, and source bindings.\nIdempotent: returns existing case if already created for this handoff.",
+        "operationId": "create_review_case_api_v1_certification_review_cases_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewCaseCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewCaseResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "List Review Cases",
+        "description": "List review cases with optional filters.",
+        "operationId": "list_review_cases_api_v1_certification_review_cases_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "reviewer_user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Reviewer User Id"
+            }
+          },
+          {
+            "name": "required_reviewer_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Required Reviewer Role"
+            }
+          },
+          {
+            "name": "assigned_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Assigned To"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewCaseListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}": {
+      "get": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Get Review Case Detail",
+        "description": "Get full review case detail including candidate, assignments, decisions.",
+        "operationId": "get_review_case_detail_api_v1_certification_review_cases__case_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewCaseDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}/assign": {
+      "post": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Assign Reviewer",
+        "description": "Assign a human reviewer to a review case.",
+        "operationId": "assign_reviewer_api_v1_certification_review_cases__case_id__assign_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewAssignRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewAssignmentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}/claim": {
+      "post": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Claim Assignment",
+        "description": "Claim an assignment for a review case.",
+        "operationId": "claim_assignment_api_v1_certification_review_cases__case_id__claim_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewClaimRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewAssignmentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}/release": {
+      "post": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Release Assignment",
+        "description": "Release/remove a reviewer assignment from a case.",
+        "operationId": "release_assignment_api_v1_certification_review_cases__case_id__release_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewAssignmentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}/decision": {
+      "post": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Submit Review Decision",
+        "description": "Submit a human review decision for a case.\n\nValidates that the reviewer has a claimed assignment and that\nevidence was inspected. Creates an immutable decision record.",
+        "operationId": "submit_review_decision_api_v1_certification_review_cases__case_id__decision_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewDecisionSubmit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDecisionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}/history": {
+      "get": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Get Review History",
+        "description": "Get the full audit history for a review case.",
+        "operationId": "get_review_history_api_v1_certification_review_cases__case_id__history_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewHistoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certification/review-cases/{case_id}/evidence": {
+      "get": {
+        "tags": [
+          "Certification-Human-Review",
+          "Certification-Human-Review"
+        ],
+        "summary": "Get Review Evidence",
+        "description": "Get the evidence snapshot for a review case.",
+        "operationId": "get_review_evidence_api_v1_certification_review_cases__case_id__evidence_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Case Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5563,6 +6117,81 @@
         ],
         "title": "AnalyticsEventResponse",
         "description": "Confirmation response after recording an event."
+      },
+      "AssignmentSummary": {
+        "properties": {
+          "assignment_id": {
+            "type": "string",
+            "title": "Assignment Id"
+          },
+          "reviewer_user_id": {
+            "type": "string",
+            "title": "Reviewer User Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "title": "Reviewer Role"
+          },
+          "assigned_by": {
+            "type": "string",
+            "title": "Assigned By"
+          },
+          "assigned_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Assigned At"
+          },
+          "claimed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claimed At"
+          },
+          "released_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Released At"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assignment_id",
+          "reviewer_user_id",
+          "reviewer_role",
+          "assigned_by",
+          "assigned_at",
+          "status"
+        ],
+        "title": "AssignmentSummary",
+        "description": "Summary of a reviewer assignment."
       },
       "AuditEventListResponse": {
         "properties": {
@@ -6508,6 +7137,73 @@
         ],
         "title": "CriterionResultResponse",
         "description": "Single criterion evaluation result."
+      },
+      "DecisionSummary": {
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "title": "Decision Id"
+          },
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "reviewer_user_id": {
+            "type": "string",
+            "title": "Reviewer User Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "title": "Reviewer Role"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "findings_json": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Findings Json"
+          },
+          "candidate_hash": {
+            "type": "string",
+            "title": "Candidate Hash"
+          },
+          "correlation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlation Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision_id",
+          "decision",
+          "reviewer_user_id",
+          "reviewer_role",
+          "reason",
+          "candidate_hash",
+          "created_at"
+        ],
+        "title": "DecisionSummary",
+        "description": "Summary of a review decision for history display."
       },
       "DomainDetailResponse": {
         "properties": {
@@ -10025,6 +10721,329 @@
         "title": "RegisterRequest",
         "description": "Request body for user registration."
       },
+      "ReviewAssignRequest": {
+        "properties": {
+          "reviewer_user_id": {
+            "type": "string",
+            "title": "Reviewer User Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "title": "Reviewer Role"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reviewer_user_id",
+          "reviewer_role"
+        ],
+        "title": "ReviewAssignRequest",
+        "description": "Request to assign a reviewer to a case."
+      },
+      "ReviewAssignmentResponse": {
+        "properties": {
+          "assignment_id": {
+            "type": "string",
+            "title": "Assignment Id"
+          },
+          "review_case_id": {
+            "type": "string",
+            "title": "Review Case Id"
+          },
+          "reviewer_user_id": {
+            "type": "string",
+            "title": "Reviewer User Id"
+          },
+          "reviewer_role": {
+            "type": "string",
+            "title": "Reviewer Role"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assignment_id",
+          "review_case_id",
+          "reviewer_user_id",
+          "reviewer_role",
+          "status",
+          "message"
+        ],
+        "title": "ReviewAssignmentResponse",
+        "description": "Response after an assignment action."
+      },
+      "ReviewCaseCreate": {
+        "properties": {
+          "handoff_id": {
+            "type": "string",
+            "title": "Handoff Id"
+          },
+          "review_type": {
+            "type": "string",
+            "title": "Review Type",
+            "default": "expert_review"
+          }
+        },
+        "type": "object",
+        "required": [
+          "handoff_id"
+        ],
+        "title": "ReviewCaseCreate",
+        "description": "Request to create a new review case from a handoff."
+      },
+      "ReviewCaseDetailResponse": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "title": "Case Id"
+          },
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "review_handoff_id": {
+            "type": "string",
+            "title": "Review Handoff Id"
+          },
+          "validation_run_id": {
+            "type": "string",
+            "title": "Validation Run Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "review_type": {
+            "type": "string",
+            "title": "Review Type"
+          },
+          "required_reviewer_role": {
+            "type": "string",
+            "title": "Required Reviewer Role"
+          },
+          "created_by": {
+            "type": "string",
+            "title": "Created By"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "opened_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Opened At"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "candidate": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate"
+          },
+          "assignments": {
+            "items": {
+              "$ref": "#/components/schemas/AssignmentSummary"
+            },
+            "type": "array",
+            "title": "Assignments",
+            "default": []
+          },
+          "decisions": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionSummary"
+            },
+            "type": "array",
+            "title": "Decisions",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "case_id",
+          "candidate_id",
+          "review_handoff_id",
+          "validation_run_id",
+          "status",
+          "review_type",
+          "required_reviewer_role",
+          "created_by",
+          "created_at",
+          "version"
+        ],
+        "title": "ReviewCaseDetailResponse",
+        "description": "Full review case detail with assignments and decisions."
+      },
+      "ReviewCaseListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewCaseResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ReviewCaseListResponse",
+        "description": "List of review cases with pagination."
+      },
+      "ReviewCaseResponse": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "title": "Case Id"
+          },
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "review_handoff_id": {
+            "type": "string",
+            "title": "Review Handoff Id"
+          },
+          "validation_run_id": {
+            "type": "string",
+            "title": "Validation Run Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "review_type": {
+            "type": "string",
+            "title": "Review Type"
+          },
+          "required_reviewer_role": {
+            "type": "string",
+            "title": "Required Reviewer Role"
+          },
+          "created_by": {
+            "type": "string",
+            "title": "Created By"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "opened_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Opened At"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "case_id",
+          "candidate_id",
+          "review_handoff_id",
+          "validation_run_id",
+          "status",
+          "review_type",
+          "required_reviewer_role",
+          "created_by",
+          "created_at",
+          "version"
+        ],
+        "title": "ReviewCaseResponse",
+        "description": "Response schema for a review case."
+      },
+      "ReviewClaimRequest": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "title": "ReviewClaimRequest",
+        "description": "Request to claim an assignment (reviewer claims their own)."
+      },
       "ReviewCreate": {
         "properties": {
           "item_id": {
@@ -10084,6 +11103,82 @@
           "decision"
         ],
         "title": "ReviewCreate"
+      },
+      "ReviewDecisionResponse": {
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "title": "Decision Id"
+          },
+          "review_case_id": {
+            "type": "string",
+            "title": "Review Case Id"
+          },
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision_id",
+          "review_case_id",
+          "candidate_id",
+          "decision",
+          "status",
+          "message"
+        ],
+        "title": "ReviewDecisionResponse",
+        "description": "Response after a decision submission."
+      },
+      "ReviewDecisionSubmit": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "pattern": "^(APPROVED_FOR_PILOT_REVIEW|REJECTED|CHANGES_REQUESTED|ESCALATED)$",
+            "title": "Decision"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Reason"
+          },
+          "findings_json": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Findings Json"
+          },
+          "evidence_confirmed": {
+            "type": "boolean",
+            "title": "Evidence Confirmed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision",
+          "reason"
+        ],
+        "title": "ReviewDecisionSubmit",
+        "description": "Submit a review decision."
       },
       "ReviewHandoffResponse": {
         "properties": {
@@ -10186,6 +11281,133 @@
         ],
         "title": "ReviewHandoffResponse",
         "description": "Human review handoff record."
+      },
+      "ReviewHistoryEntry": {
+        "properties": {
+          "event_type": {
+            "type": "string",
+            "title": "Event Type"
+          },
+          "actor_id": {
+            "type": "string",
+            "title": "Actor Id"
+          },
+          "actor_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Role"
+          },
+          "previous_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Status"
+          },
+          "new_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "correlation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlation Id"
+          },
+          "decision_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Id"
+          },
+          "event_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Event Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_type",
+          "actor_id",
+          "event_timestamp"
+        ],
+        "title": "ReviewHistoryEntry",
+        "description": "A single event in the review case history."
+      },
+      "ReviewHistoryResponse": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "title": "Case Id"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewHistoryEntry"
+            },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "type": "object",
+        "required": [
+          "case_id",
+          "events"
+        ],
+        "title": "ReviewHistoryResponse",
+        "description": "Review case history."
+      },
+      "ReviewReleaseRequest": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "ReviewReleaseRequest",
+        "description": "Request to release/remove a reviewer from a case."
       },
       "RotationPolicyCreate": {
         "properties": {

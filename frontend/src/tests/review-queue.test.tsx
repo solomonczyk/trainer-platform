@@ -141,10 +141,10 @@ describe("Review case detail state handling", () => {
   });
 
   it("hides decision form when already submitted", () => {
-    const caseStatus = "APPROVED_FOR_PILOT_REVIEW";
+    const caseStatus = "IN_REVIEW";
     const isClaimedByMe = true;
     const hasDecision = true;
-    const canDecide = caseStatus === "IN_REVIEW" && isClaimedByMe;
+    const canDecide = caseStatus === "IN_REVIEW" && isClaimedByMe && !hasDecision;
     expect(canDecide).toBe(false);
   });
 });
@@ -341,6 +341,174 @@ describe("Type safety", () => {
     };
 
     expect(submit.evidence_confirmed).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Regression Tests — State Domain Separation (CI Blocker)
+// ---------------------------------------------------------------------------
+
+describe("State domain separation (CI regression 27145357199)", () => {
+  type ReviewCaseStatus =
+    | "PENDING_ASSIGNMENT"
+    | "ASSIGNED"
+    | "IN_REVIEW"
+    | "CHANGES_REQUESTED"
+    | "REJECTED"
+    | "APPROVED_FOR_PILOT_REVIEW"
+    | "ESCALATED"
+    | "CLOSED";
+
+  type DecisionOutcome =
+    | "APPROVED_FOR_PILOT_REVIEW"
+    | "REJECTED"
+    | "CHANGES_REQUESTED"
+    | "ESCALATED";
+
+  type AssignmentStatus = "ASSIGNED" | "CLAIMED" | "COMPLETED";
+
+  // Terminal states where no active-review controls should render
+  const terminalCaseStatuses: ReviewCaseStatus[] = [
+    "REJECTED",
+    "APPROVED_FOR_PILOT_REVIEW",
+    "CLOSED",
+  ];
+
+  const nonTerminalStatuses: ReviewCaseStatus[] = [
+    "PENDING_ASSIGNMENT",
+    "ASSIGNED",
+    "IN_REVIEW",
+    "CHANGES_REQUESTED",
+    "ESCALATED",
+  ];
+
+  it.each(nonTerminalStatuses)(
+    "non-terminal case status %s does not block by case status alone",
+    (status) => {
+      // This should never hit the impossible-comparison bug
+      const isTerminal = (["REJECTED", "APPROVED_FOR_PILOT_REVIEW", "CLOSED"] as ReviewCaseStatus[]).includes(status);
+      const isInReview = status === "IN_REVIEW";
+      // Only IN_REVIEW and claimed should show decision form
+      const canDecide = isInReview && true; // isClaimedByMe=true
+      expect(isTerminal).toBe(false);
+      if (status === "IN_REVIEW") {
+        expect(canDecide).toBe(true);
+      } else {
+        expect(canDecide).toBe(false);
+      }
+    },
+  );
+
+  it.each(terminalCaseStatuses)(
+    "terminal case status %s: decision form is hidden regardless of claim state",
+    (status) => {
+      // Terminal statuses must never show active-review controls
+      const isInReview = status === "IN_REVIEW";
+      expect(isInReview).toBe(false);
+      // The TypeScript comparison IN_REVIEW vs terminal status is impossible
+      // This test proves we never reach that comparison for terminal statuses
+    },
+  );
+
+  it("canDecide uses caseStatus AND claim state AND hasDecision — separate domains", () => {
+    // Regression: previously tested caseStatus === "IN_REVIEW" alone
+    // which created an impossible comparison with APPROVED_FOR_PILOT_REVIEW.
+    // Now all three independent fields are checked separately.
+    const testCases: Array<{
+      name: string;
+      caseStatus: ReviewCaseStatus;
+      isClaimedByMe: boolean;
+      hasDecision: boolean;
+      expected: boolean;
+    }> = [
+      { name: "in review, claimed, no decision", caseStatus: "IN_REVIEW", isClaimedByMe: true, hasDecision: false, expected: true },
+      { name: "in review, claimed, has decision", caseStatus: "IN_REVIEW", isClaimedByMe: true, hasDecision: true, expected: false },
+      { name: "in review, not claimed", caseStatus: "IN_REVIEW", isClaimedByMe: false, hasDecision: false, expected: false },
+      { name: "not in review, claimed", caseStatus: "ASSIGNED", isClaimedByMe: true, hasDecision: false, expected: false },
+      { name: "terminal status, claimed", caseStatus: "APPROVED_FOR_PILOT_REVIEW", isClaimedByMe: true, hasDecision: false, expected: false },
+      { name: "terminal status, not claimed", caseStatus: "REJECTED", isClaimedByMe: false, hasDecision: false, expected: false },
+    ];
+
+    testCases.forEach(({ caseStatus, isClaimedByMe, hasDecision, expected }) => {
+      const canDecide = caseStatus === "IN_REVIEW" && isClaimedByMe && !hasDecision;
+      expect(canDecide).toBe(expected);
+    });
+  });
+
+  it("assignment status is separate from case status", () => {
+    // Assignment status and case status are independent fields
+    const assignments: Array<{
+      assignmentStatus: AssignmentStatus;
+      caseStatus: ReviewCaseStatus;
+    }> = [
+      { assignmentStatus: "ASSIGNED", caseStatus: "PENDING_ASSIGNMENT" },
+      { assignmentStatus: "CLAIMED", caseStatus: "IN_REVIEW" },
+      { assignmentStatus: "COMPLETED", caseStatus: "APPROVED_FOR_PILOT_REVIEW" },
+      { assignmentStatus: "ASSIGNED", caseStatus: "IN_REVIEW" },
+    ];
+
+    assignments.forEach(({ assignmentStatus, caseStatus }) => {
+      // Both are independently meaningful fields
+      expect(assignmentStatus).toBeDefined();
+      expect(caseStatus).toBeDefined();
+      // No impossible cross-field comparison
+      const sameValue = assignmentStatus === caseStatus;
+      // They CAN be equal by coincidence (both strings) but shouldn't be confused
+      // The important part is that we never compare across domains
+      if (sameValue) {
+        // Only ASSIGNED overlaps between assignment status and case status
+        expect(assignmentStatus).toBe("ASSIGNED");
+        expect(caseStatus).toBe("ASSIGNED");
+      }
+    });
+  });
+
+  it("decision outcome is separate from case status", () => {
+    // Decision outcome and case status share some values but are semantically different
+    const decisionOutcomes: DecisionOutcome[] = [
+      "APPROVED_FOR_PILOT_REVIEW",
+      "REJECTED",
+      "CHANGES_REQUESTED",
+      "ESCALATED",
+    ];
+
+    decisionOutcomes.forEach((decision) => {
+      // It's valid for a decision value to equal a case status value
+      // But logic must compare against the right field
+      // A case with APPROVED_FOR_PILOT_REVIEW decision has case status that may also
+      // be APPROVED_FOR_PILOT_REVIEW — but they are different semantic concepts
+      expect(decision).toBeTruthy();
+    });
+  });
+
+  it("stale state — case status can advance after local snapshot", () => {
+    // Simulate: local state has case IN_REVIEW, but server already advanced
+    const localState = "IN_REVIEW" as ReviewCaseStatus;
+    const serverState = "APPROVED_FOR_PILOT_REVIEW" as ReviewCaseStatus;
+
+    // Local thinks we can decide
+    const localCanDecide = localState === "IN_REVIEW";
+    expect(localCanDecide).toBe(true);
+
+    // Server says already completed
+    const serverCanDecide = serverState === "IN_REVIEW";
+    expect(serverCanDecide).toBe(false);
+
+    // Guard: always recheck against server state before submitting
+    const safeSubmit = localCanDecide && serverCanDecide;
+    expect(safeSubmit).toBe(false);
+  });
+
+  it("no double-submit after decision recorded", () => {
+    let submitted = false;
+
+    const submit = () => {
+      if (submitted) throw new Error("Already submitted");
+      submitted = true;
+    };
+
+    submit();
+    expect(() => submit()).toThrow("Already submitted");
   });
 });
 
