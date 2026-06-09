@@ -5,6 +5,8 @@
   "difficulty": "junior_basic",
   "difficulty_order": 4,
   "estimated_duration_minutes": 8,
+  "title_key": "scenario.qa_regression_vs_retest_v1.title",
+  "goal_key": "scenario.qa_regression_vs_retest_v1.goal",
   "title": "Regression Testing vs Retesting",
   "title_ru": "Регрессионное тестирование vs Ретест",
   "goal": "Evaluate the candidate's ability to distinguish between regression testing and retesting, understand when each is applied, and explain their roles in the QA process with practical examples.",

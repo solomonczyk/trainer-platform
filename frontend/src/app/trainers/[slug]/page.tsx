@@ -97,9 +97,17 @@ export default function TrainerDetailPage() {
               <GraduationCap className="h-8 w-8" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{trainer.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {t(`trainer.${trainer.trainer_product_id}`) !== `trainer.${trainer.trainer_product_id}`
+                  ? t(`trainer.${trainer.trainer_product_id}`)
+                  : trainer.name}
+              </h1>
               {trainer.description && (
-                <p className="mt-1 text-gray-500">{trainer.description}</p>
+                <p className="mt-1 text-gray-500">
+                  {t(`trainer.${trainer.trainer_product_id}_desc`) !== `trainer.${trainer.trainer_product_id}_desc`
+                    ? t(`trainer.${trainer.trainer_product_id}_desc`)
+                    : trainer.description}
+                </p>
               )}
             </div>
           </div>
@@ -249,7 +257,11 @@ export default function TrainerDetailPage() {
             <CardContent>
               <ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
                 {trainer.target_audience.map((item, idx) => (
-                  <li key={idx}>{item}</li>
+                  <li key={idx}>
+                    {t(`trainer.audience_${item}`) !== `trainer.audience_${item}`
+                      ? t(`trainer.audience_${item}`)
+                      : item.replace(/_/g, " ")}
+                  </li>
                 ))}
               </ul>
             </CardContent>

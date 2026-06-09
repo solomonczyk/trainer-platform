@@ -76,6 +76,29 @@ const en = {
     locale: "Language",
     backToTrainer: "Back to Trainer",
     notEnrolled: "Enroll in the trainer to start",
+    // Trainer product name localizations (keys match trainer_product_id slugs)
+    qa_engineer_interview_trainer: "QA Engineer Interview Trainer",
+    business_analyst_interview_trainer: "Business Analyst Interview Trainer",
+    // Trainer product description localizations
+    qa_engineer_interview_trainer_desc: "Text-based interview trainer for Junior QA candidates. Practice answering common QA interview questions with structured AI evaluation.",
+    business_analyst_interview_trainer_desc: "Text-based interview trainer for Business Analyst candidates. Practice answering common BA interview questions with structured AI evaluation.",
+    // Trainer target audience labels
+    audience_junior_qa_candidate: "Junior QA Candidate",
+    audience_career_switcher: "Career Switcher",
+    audience_trainee_qa: "QA Trainee",
+    audience_junior_ba: "Junior BA",
+    audience_middle_ba: "Middle BA",
+    audience_senior_ba: "Senior BA",
+    audience_ba_career_switcher: "Career Switcher to BA",
+    audience_ba_trainee: "BA Trainee",
+    audience_ba_junior: "Junior BA",
+    // Level identifiers
+    level_junior: "Junior",
+    level_middle: "Middle",
+    level_senior: "Senior",
+    level_junior_basic: "Junior (Basic)",
+    level_intermediate: "Intermediate",
+    level_advanced: "Advanced",
   },
 
   scenario: {
@@ -100,6 +123,27 @@ const en = {
     backToList: "Back to Scenario List",
     emptyAnswerError: "Answer cannot be empty",
     hints: "Hints",
+    // QA scenario title and goal translations
+    qa_self_presentation_v1: {
+      title: "Tell Me About Yourself as a QA Candidate",
+      goal: "Evaluate the candidate's ability to present themselves professionally, structure their background, and articulate their motivation for pursuing a QA role.",
+    },
+    qa_test_case_vs_checklist_v1: {
+      title: "Test Case vs Checklist: Differences and Use Cases",
+      goal: "Evaluate the candidate's understanding of test documentation: the difference between test cases and checklists, their structure, when to use each, and the trade-offs involved.",
+    },
+    qa_bug_report_structure_v1: {
+      title: "Bug Report Structure",
+      goal: "Evaluate the candidate's knowledge of proper bug report structure, including all required fields, severity vs priority classification, and best practices for writing clear reproduction steps.",
+    },
+    qa_regression_vs_retest_v1: {
+      title: "Regression Testing vs Retesting",
+      goal: "Evaluate the candidate's ability to distinguish between regression testing and retesting, understand when each is applied, and explain their roles in the QA process with practical examples.",
+    },
+    qa_login_form_testing_v1: {
+      title: "Login Form Testing Scenarios",
+      goal: "Evaluate the candidate's ability to design comprehensive test scenarios for a login form, applying test design techniques, identifying edge cases, and structuring their test coverage logically.",
+    },
   },
 
   result: {

@@ -89,7 +89,11 @@ export default function ScenarioListPage() {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">
-          {trainer?.name || t("trainer.scenarioList")}
+          {trainer
+            ? (t(`trainer.${trainer.trainer_product_id}`) !== `trainer.${trainer.trainer_product_id}`
+              ? t(`trainer.${trainer.trainer_product_id}`)
+              : trainer.name)
+            : t("trainer.scenarioList")}
         </h1>
         <p className="mt-2 text-gray-500">{t("trainer.scenarioList")}</p>
       </div>
@@ -112,7 +116,7 @@ export default function ScenarioListPage() {
                   </CardTitle>
                   {scenario.goal_key && (
                     <CardDescription className="mt-1 line-clamp-2">
-                      {scenario.goal_key}
+                      {t(scenario.goal_key)}
                     </CardDescription>
                   )}
                   <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -123,7 +127,7 @@ export default function ScenarioListPage() {
                       }`}
                     >
                       <BarChart3 className="h-3 w-3" />
-                      {scenario.difficulty}
+                      {t(`trainer.level_${scenario.difficulty}`) !== `trainer.level_${scenario.difficulty}` ? t(`trainer.level_${scenario.difficulty}`) : scenario.difficulty}
                     </span>
 
                     {/* Duration */}

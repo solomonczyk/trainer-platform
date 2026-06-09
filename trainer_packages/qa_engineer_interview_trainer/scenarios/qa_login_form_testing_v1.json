@@ -5,6 +5,8 @@
   "difficulty": "junior_basic",
   "difficulty_order": 5,
   "estimated_duration_minutes": 10,
+  "title_key": "scenario.qa_login_form_testing_v1.title",
+  "goal_key": "scenario.qa_login_form_testing_v1.goal",
   "title": "Login Form Testing Scenarios",
   "title_ru": "Тестирование формы логина",
   "goal": "Evaluate the candidate's ability to design comprehensive test scenarios for a login form, applying test design techniques, identifying edge cases, and structuring their test coverage logically.",

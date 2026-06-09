@@ -82,6 +82,29 @@ const ru = {
     locale: "Язык",
     backToTrainer: "К тренажёру",
     notEnrolled: "Запишитесь на тренажёр, чтобы начать",
+    // Trainer product name localizations
+    qa_engineer_interview_trainer: "Тренажёр собеседования QA-инженера",
+    business_analyst_interview_trainer: "Тренажёр собеседования бизнес-аналитика",
+    // Trainer product description localizations
+    qa_engineer_interview_trainer_desc: "Текстовый тренажёр для подготовки к собеседованию на Junior QA. Практикуйте ответы на типовые вопросы с структурированной AI-оценкой.",
+    business_analyst_interview_trainer_desc: "Текстовый тренажёр для подготовки к собеседованию бизнес-аналитика. Практикуйте ответы на типовые вопросы с структурированной AI-оценкой.",
+    // Trainer target audience labels
+    audience_junior_qa_candidate: "Кандидат Junior QA",
+    audience_career_switcher: "Смена карьеры",
+    audience_trainee_qa: "Стажёр QA",
+    audience_junior_ba: "Junior BA",
+    audience_middle_ba: "Middle BA",
+    audience_senior_ba: "Senior BA",
+    audience_ba_career_switcher: "Смена карьеры в BA",
+    audience_ba_trainee: "Стажёр BA",
+    audience_ba_junior: "Junior BA",
+    // Level identifiers
+    level_junior: "Junior",
+    level_middle: "Middle",
+    level_senior: "Senior",
+    level_junior_basic: "Junior (Базовый)",
+    level_intermediate: "Intermediate",
+    level_advanced: "Advanced",
   },
 
   // Scenario Runner
@@ -107,6 +130,27 @@ const ru = {
     backToList: "К списку сценариев",
     emptyAnswerError: "Ответ не может быть пустым",
     hints: "Подсказки",
+    // QA scenario title and goal translations
+    qa_self_presentation_v1: {
+      title: "Расскажите о себе как о кандидате QA",
+      goal: "Оценить способность кандидата профессионально себя представить, структурировать свой опыт и сформулировать мотивацию к работе в QA.",
+    },
+    qa_test_case_vs_checklist_v1: {
+      title: "Тест-кейс vs Чеклист: различия и применение",
+      goal: "Оценить понимание кандидатом тестовой документации: разница между тест-кейсами и чеклистами, их структура, когда использовать каждый из них и связанные компромиссы.",
+    },
+    qa_bug_report_structure_v1: {
+      title: "Структура баг-репорта",
+      goal: "Оценить знание кандидатом правильной структуры баг-репорта, включая все обязательные поля, классификацию severity vs priority и лучшие практики написания четких шагов воспроизведения.",
+    },
+    qa_regression_vs_retest_v1: {
+      title: "Регрессионное тестирование vs Ретест",
+      goal: "Оценить способность кандидата различать регрессионное тестирование и ретест, понимать когда каждый применяется, и объяснять их роль в QA-процессе с практическими примерами.",
+    },
+    qa_login_form_testing_v1: {
+      title: "Тестирование формы логина",
+      goal: "Оценить способность кандидата разрабатывать комплексные тестовые сценарии для формы логина, применять техники тест-дизайна, выявлять краевые случаи и логически структурировать тестовое покрытие.",
+    },
   },
 
   // Evaluation Results

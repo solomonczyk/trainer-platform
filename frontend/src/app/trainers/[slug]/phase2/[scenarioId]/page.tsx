@@ -281,7 +281,7 @@ export default function Phase2ScenarioPage() {
             <div className="mt-2 flex flex-wrap gap-2">
               <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
                 <BarChart3 className="h-3 w-3" />
-                {scenario.difficulty || "intermediate"}
+                {(scenario.difficulty ? (t(`trainer.level_${scenario.difficulty}`) !== `trainer.level_${scenario.difficulty}` ? t(`trainer.level_${scenario.difficulty}`) : scenario.difficulty) : "intermediate")}
               </span>
               <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">
                 <Clock className="h-3 w-3" />
@@ -299,7 +299,7 @@ export default function Phase2ScenarioPage() {
               {t("ba_phase2.business_context")}
             </h2>
             <p className="text-sm text-gray-600 leading-relaxed">
-              {scenario.goal_key}
+              {t(scenario.goal_key)}
             </p>
           </div>
 
@@ -406,7 +406,7 @@ export default function Phase2ScenarioPage() {
             <span className="font-medium text-gray-700">
               {t("ba_phase2.business_context")}:
             </span>{" "}
-            {scenario.goal_key?.substring(0, 200)}
+            {t(scenario.goal_key)?.substring(0, 200)}
             {(scenario.goal_key?.length || 0) > 200 ? "..." : ""}
           </div>
 

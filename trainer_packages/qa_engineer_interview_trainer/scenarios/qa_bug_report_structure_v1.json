@@ -5,6 +5,8 @@
   "difficulty": "junior_basic",
   "difficulty_order": 3,
   "estimated_duration_minutes": 8,
+  "title_key": "scenario.qa_bug_report_structure_v1.title",
+  "goal_key": "scenario.qa_bug_report_structure_v1.goal",
   "title": "Bug Report Structure",
   "title_ru": "Структура баг-репорта",
   "goal": "Evaluate the candidate's knowledge of proper bug report structure, including all required fields, severity vs priority classification, and best practices for writing clear reproduction steps.",

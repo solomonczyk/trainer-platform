@@ -150,13 +150,17 @@ export default function Phase2ScenarioListPage() {
                       </CardTitle>
                       {scenario.goal_key && (
                         <CardDescription className="mt-1 line-clamp-2">
-                          {scenario.goal_key}
+                          {t(scenario.goal_key)}
                         </CardDescription>
                       )}
                       <div className="mt-2 flex flex-wrap items-center gap-3">
                         <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
                           <BarChart3 className="h-3 w-3" />
-                          {scenario.difficulty || "intermediate"}
+                          {scenario.difficulty
+                            ? (t(`trainer.level_${scenario.difficulty}`) !== `trainer.level_${scenario.difficulty}`
+                              ? t(`trainer.level_${scenario.difficulty}`)
+                              : scenario.difficulty)
+                            : t("trainer.level_intermediate")}
                         </span>
                         <span className="inline-flex items-center gap-1 text-xs text-gray-500">
                           <Clock className="h-3 w-3" />

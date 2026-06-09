@@ -66,9 +66,17 @@ export default function DomainDetailPage() {
             </div>
           )}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{domain.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t(`domains.${domain.slug}`) !== `domains.${domain.slug}`
+                ? t(`domains.${domain.slug}`)
+                : domain.name}
+            </h1>
             {domain.description && (
-              <p className="mt-2 text-lg text-gray-500">{domain.description}</p>
+              <p className="mt-2 text-lg text-gray-500">
+                {t(`domains.${domain.slug}Description`) !== `domains.${domain.slug}Description`
+                  ? t(`domains.${domain.slug}Description`)
+                  : domain.description}
+              </p>
             )}
           </div>
         </div>

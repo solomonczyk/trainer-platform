@@ -132,14 +132,14 @@ export default function ScenarioPage() {
                 : scenario.title_key}
             </h1>
             {scenario.goal_key && (
-              <p className="mt-2 text-gray-500">{scenario.goal_key}</p>
+              <p className="mt-2 text-gray-500">{t(scenario.goal_key)}</p>
             )}
           </div>
 
           <div className="mb-6 flex flex-wrap gap-3">
             <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
               <BarChart3 className="h-3.5 w-3.5" />
-              {scenario.difficulty}
+              {t(`trainer.level_${scenario.difficulty}`) !== `trainer.level_${scenario.difficulty}` ? t(`trainer.level_${scenario.difficulty}`) : scenario.difficulty}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
               <Clock className="h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ export default function ScenarioPage() {
               ? t(scenario.title_key)
               : scenario.title_key}
           </h1>
-          <p className="mt-1 text-sm text-gray-500">{scenario.goal_key}</p>
+          <p className="mt-1 text-sm text-gray-500">{t(scenario.goal_key)}</p>
         </div>
 
         {/* Submit answer area */}

@@ -5,6 +5,8 @@
   "difficulty": "junior_basic",
   "difficulty_order": 1,
   "estimated_duration_minutes": 5,
+  "title_key": "scenario.qa_self_presentation_v1.title",
+  "goal_key": "scenario.qa_self_presentation_v1.goal",
   "title": "Tell Me About Yourself as a QA Candidate",
   "title_ru": "Расскажите о себе как о кандидате QA",
   "goal": "Evaluate the candidate's ability to present themselves professionally, structure their background, and articulate their motivation for pursuing a QA role.",

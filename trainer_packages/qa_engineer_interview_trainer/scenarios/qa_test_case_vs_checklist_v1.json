@@ -5,6 +5,8 @@
   "difficulty": "junior_basic",
   "difficulty_order": 2,
   "estimated_duration_minutes": 8,
+  "title_key": "scenario.qa_test_case_vs_checklist_v1.title",
+  "goal_key": "scenario.qa_test_case_vs_checklist_v1.goal",
   "title": "Test Case vs Checklist: Differences and Use Cases",
   "title_ru": "Тест-кейс vs Чеклист: различия и применение",
   "goal": "Evaluate the candidate's understanding of test documentation: the difference between test cases and checklists, their structure, when to use each, and the trade-offs involved.",
