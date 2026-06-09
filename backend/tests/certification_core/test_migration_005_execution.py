@@ -229,7 +229,7 @@ class TestMigration005Execution:
             assert expected_idx not in idxs_004, f"Index {expected_idx} still present after downgrade"
 
         # Step 3: upgrade back to head
-        _alembic("upgrade", "head")
+        _alembic("upgrade", "007")
         rev = _current_revision()
         # After upgrade, head revision should be 007 (or whatever the current head is)
         HEAD_REVISION = "007"

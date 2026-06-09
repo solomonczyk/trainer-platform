@@ -201,7 +201,7 @@ class TestMigration006Execution:
             assert table not in tables_after_downgrade, f"Table {table} still present after downgrade"
 
         # Step 3: upgrade back to head (007)
-        _alembic("upgrade", "head")
+        _alembic("upgrade", "007")
         rev = _current_revision()
         assert rev == "007" or rev.startswith("007"), f"Expected 007, got {rev}"
 
