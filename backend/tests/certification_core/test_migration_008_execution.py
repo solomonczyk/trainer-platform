@@ -108,9 +108,14 @@ class TestMigration008Cycle:
     """Full migration 008 lifecycle test against real PostgreSQL."""
 
     def test_cycle_upgrade_downgrade_upgrade(self):
-        """Full cycle: upgrade head → 008 → downgrade 007 → upgrade head → 008."""
-        # Step 1: verify we start at 008 (the current head)
+        """Full cycle: align to 008 → downgrade 007 → upgrade 008."""
+        # Step 1: align to 008 (upgrade from 007 if needed, since prior tests may leave at 007)
         rev = _current_revision()
+        major = rev[:3]
+        assert major in ("007", "008"), f"Expected 007 or 008, got {rev}"
+        if major == "007":
+            _alembic("upgrade", "head")
+            rev = _current_revision()
         assert rev == "008" or rev.startswith("008"), f"Expected 008, got {rev}"
 
         # Snapshot 008 tables
