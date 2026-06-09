@@ -86,14 +86,23 @@ jobs:
                   time.sleep(2)
           PYEOF
 
-      - name: Apply Alembic migrations (prepare PostgreSQL for migration tests)
+      - name: Apply Alembic migrations to 007 (for legacy migration tests)
+        run: alembic upgrade 007
+        env:
+          DATABASE_URL: postgresql+asyncpg://trainer:trainer_pass@localhost:5432/trainer_platform
+          APP_ENV: testing
+
+      - name: Run legacy migration tests (005, 006, 007)
+        run: python -m pytest tests/certification_core/test_migration_005_execution.py tests/certification_core/test_migration_006_execution.py tests/certification_core/test_migration_007_execution.py -v --tb=long --timeout=120
+
+      - name: Apply Alembic migrations to 008 (upgrade to head)
         run: alembic upgrade head
         env:
           DATABASE_URL: postgresql+asyncpg://trainer:trainer_pass@localhost:5432/trainer_platform
           APP_ENV: testing
 
-      - name: Run migration tests
-        run: python -m pytest tests/certification_core/test_migration_005_execution.py tests/certification_core/test_migration_006_execution.py tests/certification_core/test_migration_007_execution.py tests/certification_core/test_migration_008_execution.py -v --tb=long --timeout=120
+      - name: Run migration 008 test
+        run: python -m pytest tests/certification_core/test_migration_008_execution.py -v --tb=long --timeout=120
         env:
           DATABASE_URL: sqlite+aiosqlite:///test_ci.db
           MIGRATION_DATABASE_URL: postgresql://trainer:trainer_pass@localhost:5432/trainer_platform
