@@ -33,14 +33,20 @@ File: `.github/workflows/deploy-staging.yml`
 6. Restart services with `docker compose up -d`
 7. Health check (retry up to 5 times)
 
-### Required GitHub Secrets
+### Required Configuration
 
-| Secret          | Description                    |
-|-----------------|--------------------------------|
-| VPS_HOST        | 152.53.227.37                  |
-| VPS_USER        | trainer                        |
-| VPS_SSH_KEY     | SSH private key for deployment |
-| VPS_PORT        | 22                             |
+| Setting          | Source     | Value                     |
+|------------------|------------|---------------------------|
+| VPS_HOST         | env var    | 152.53.227.37             |
+| VPS_USER         | env var    | trainer                   |
+| VPS_PORT         | env var    | 22                        |
+| VPS_SSH_KEY      | Secret     | SSH private key for deployment |
+| VPS_DEPLOY_PATH  | env var    | /opt/trainer-platform     |
+
+### Preflight Validation
+
+The workflow includes a `Validate deployment secrets` step that fails fast
+before SSH connection if any required configuration is missing.
 
 ## Rollback
 

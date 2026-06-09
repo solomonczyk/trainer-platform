@@ -69,7 +69,11 @@
     "deploy_requires_green_ci": true,
     "exact_commit_deployed": true,
     "health_check": true,
-    "rollback_defined": true
+    "rollback_defined": true,
+    "github_actions_deploy": "GREEN",
+    "github_actions_run_id": "27194300276",
+    "cicd_execution_closeout": "ACCEPTED",
+    "closeout_proof": "docs/proofs/proof_trainer_platform_vps_staging_cicd_execution_closeout_009a.json"
   },
   "fast_path": {
     "focused_tests_used": true,

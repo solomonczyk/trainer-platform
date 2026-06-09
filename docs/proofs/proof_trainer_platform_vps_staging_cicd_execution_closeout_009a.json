@@ -1,0 +1,113 @@
+{
+  "layer": "TRAINER-PLATFORM-VPS-STAGING-CICD-EXECUTION-CLOSEOUT-009A",
+  "verdict": "ACCEPTED",
+  "base_state": {
+    "layer_009": "ACCEPTED_WITH_BLOCKER",
+    "vps_staging_runtime": "ACCEPTED",
+    "qa_browser_flow": "PASSED",
+    "ba_browser_flow": "PASSED",
+    "react_error_31": "ABSENT",
+    "https": "ACTIVE",
+    "backup": "PASSED",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "failed_run": {
+    "workflow": "Deploy Staging (VPS)",
+    "run_number": 1,
+    "failure_step": "Deploy via SSH",
+    "error": "missing server host",
+    "ssh_connection_attempted": false,
+    "deployment_executed": false,
+    "health_check_executed": false
+  },
+  "root_cause": {
+    "confirmed": true,
+    "code": "SECRET_NAME_MISMATCH",
+    "workflow_host_reference": "${{ secrets.VPS_HOST }}",
+    "secret_scope": "none (repository secrets were empty)",
+    "secret_name": "VPS_HOST",
+    "fixed": true
+  },
+  "secrets": {
+    "vps_host_present": true,
+    "vps_user_present": true,
+    "vps_port_present": false,
+    "vps_ssh_key_present": true,
+    "vps_deploy_path_present": false,
+    "secret_values_logged": false,
+    "secrets_committed": false
+  },
+  "ssh": {
+    "host": "152.53.227.37",
+    "user": "trainer",
+    "port": 22,
+    "key_authentication_passed": true,
+    "host_key_verified": true
+  },
+  "successful_run": {
+    "workflow": "Deploy Staging (VPS)",
+    "run_id": "27194300276",
+    "commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "conclusion": "success",
+    "deploy_via_ssh": "success",
+    "health_check": "success",
+    "all_required_jobs_green": true
+  },
+  "deployment": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "workflow_commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "server_deployed_commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "exact_commit_match": true,
+    "docker_compose_healthy": true,
+    "frontend_healthy": true,
+    "backend_healthy": true,
+    "postgres_healthy": true,
+    "https_healthy": true
+  },
+  "rollback": {
+    "script_exists": true,
+    "script_executable": true,
+    "previous_commit_recorded": true,
+    "rollback_target_resolvable": true,
+    "dry_run_passed": true,
+    "real_rollback_executed": false
+  },
+  "fast_path": {
+    "focused_checks_used": true,
+    "full_local_backend_runs": 0,
+    "full_local_frontend_runs": 0,
+    "browser_e2e_runs": 0,
+    "real_provider_calls": 0,
+    "redundant_test_runs": 0
+  },
+  "runtime_integrity": {
+    "runtime_code_changed": false,
+    "frontend_runtime_changed": false,
+    "backend_runtime_changed": false,
+    "database_schema_changed": false,
+    "browser_e2e_repeat_required": false
+  },
+  "forbidden_actions": {
+    "vps_rebuilt": false,
+    "database_deleted": false,
+    "postgres_exposed": false,
+    "backend_exposed": false,
+    "secrets_exposed": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "openai_used": false,
+    "deepseek_called": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "7601281b034fd47ba91924a5fbca5605faadf6cb",
+    "final_commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "pushed": true,
+    "clean": false,
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "VPS_STAGING_CICD_CLOSEOUT_RESULT_ACCEPTANCE"
+}

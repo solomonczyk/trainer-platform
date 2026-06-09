@@ -27,3 +27,12 @@
 6. **The `trainer_count` localization** shows "сценарии" (scenarios) instead
    of "тренажёры" (trainers) for multiple trainers — a minor translation
    choice, not a functional issue.
+
+## Resolved
+
+7. **GitHub Actions SSH host empty** (Layer 009A). The `appleboy/ssh-action`
+   referenced `${{ secrets.VPS_HOST }}` etc. when these are public env vars.
+   Fixed by using `${{ env.VPS_HOST }}` for host, user, and port; only
+   `VPS_SSH_KEY` remains as a secret. Preflight validation added.
+   - Root cause: `SECRET_NAME_MISMATCH`
+   - Fix: commit `222d5ba` + repository secret `VPS_SSH_KEY`
