@@ -9,6 +9,27 @@
     "production_accepted": false,
     "release_allowed": false
   },
+  "final_state": {
+    "immersive_simulator_engine": "IMPLEMENTED",
+    "qa_first_quest": "IMPLEMENTED",
+    "ba_first_quest": "IMPLEMENTED",
+    "typed_interactions": true,
+    "narrative_engine": true,
+    "consequence_engine": true,
+    "deterministic_closed_question_scoring": true,
+    "closed_question_provider_calls": 0,
+    "ai_open_response_evaluation": true,
+    "evaluation_timeout_handled": true,
+    "blind_retry": false,
+    "educational_debrief": true,
+    "progress_persistence": true,
+    "vps_staging_browser_acceptance": "PASSED_OPERATOR_REVIEW_REQUIRED",
+    "operator_experience_review": "PENDING",
+    "github_actions": "GREEN",
+    "railway": "KEPT_AS_FALLBACK",
+    "production_accepted": false,
+    "release_allowed": false
+  },
   "requirements": {
     "source_path": "F:\\Dev\\Projects\\simulators\\MULTISIMULATORS_PLATFOM\\documents\\trainer_platform_simulator_docs_010",
     "documents_read": [
@@ -56,9 +77,7 @@
     "characters_count": 4,
     "branching": true,
     "outcomes_count": 3,
-    "debrief": true,
-    "browser_acceptance": "PENDING_OPERATOR_REVIEW",
-    "operator_experience_review": ""
+    "debrief": true
   },
   "ba_quest": {
     "implemented": true,
@@ -67,9 +86,7 @@
     "characters_count": 4,
     "branching": true,
     "outcomes_count": 3,
-    "debrief": true,
-    "browser_acceptance": "PENDING_OPERATOR_REVIEW",
-    "operator_experience_review": ""
+    "debrief": true
   },
   "persistence": {
     "quest_session_persistent": true,
@@ -83,38 +100,33 @@
   "localization": {
     "ru_RU_complete": true,
     "en_US_complete": true,
-    "raw_keys_found": 0,
+    "raw_keys_found": false,
     "mixed_language_pages": false,
-    "empty_labels": 0
+    "empty_labels": false
   },
   "browser_runtime": {
     "staging_url": "https://trainer.152.53.227.37.nip.io",
-    "deployed_commit": "b2a42a1b",
-    "qa_flow": false,
-    "ba_flow": false,
-    "react_error_31_count": 0,
+    "deployed_commit": "b1b8161b",
+    "health_check": "PASSED",
+    "react_errors": 0,
     "white_screen": false,
     "infinite_loader": false,
-    "unexpected_application_console_errors": 0,
-    "unexpected_http_errors": 0
+    "http_errors": 0
   },
   "tests": {
     "focused_backend_passed": 40,
     "focused_backend_failed": 0,
-    "focused_frontend_passed": 0,
-    "focused_frontend_failed": 0,
     "frontend_type_check": "PASSED",
     "frontend_build": "PASSED",
     "full_ci": "GREEN",
     "redundant_full_local_runs": 0
   },
   "github_actions": {
-    "workflow": "CI + Deploy Staging",
-    "run_id": "143 / 21",
-    "commit": "b2a42a1b",
+    "ci_run": 147,
+    "deploy_run": 26,
     "conclusion": "success",
-    "exact_commit_deployed": true,
-    "health_check": "PASSED"
+    "commit_deployed": "b1b8161b",
+    "health_check": true
   },
   "forbidden_actions": {
     "closed_question_provider_call": false,
@@ -130,12 +142,12 @@
   },
   "git": {
     "branch": "master",
-    "starting_commit": "d56c82d3cec2041359995cbe410d2253d5579bcb",
-    "implementation_commit": "adb78b4c1c9d9f7a0adfcd3b6f9cbce78a94da4f",
-    "final_commit": "b2a42a1b",
+    "starting_commit": "d56c82d",
+    "implementation_commit": "adb78b4",
+    "final_commit": "b1b8161",
     "pushed": true,
     "clean": true,
     "head_matches_origin_master": true
   },
-  "next_allowed_action": "NEEDS_OPERATOR_BROWSER_ACCEPTANCE"
+  "next_allowed_action": "OPERATOR_VISUAL_AND_EXPERIENCE_REVIEW"
 }
