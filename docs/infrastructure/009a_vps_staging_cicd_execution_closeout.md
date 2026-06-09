@@ -43,7 +43,27 @@ Three changes to `.github/workflows/deploy-staging.yml`:
 - ✅ Exact commit deployed: 2b625b11ef970aecf5da266a0907d87480521625
 - ✅ Docker Compose: HEALTHY (all 4 services: frontend, backend, caddy, postgres)
 - ✅ Rollback readiness: VERIFIED
+- ✅ Persistent commit tracking: ACTIVE (Layer 009B)
+- ✅ Health-gated commit rotation: ACTIVE (Layer 009B)
+- ✅ Rollback dry-run: PASSED (Layer 009B)
 - ✅ Runtime code unchanged (workflow-only changes)
+
+## Layer 009B Closeout
+
+Persistent rollback, git clean, and HEAD reconciliation closeout completed as
+Layer 009B. Key outcomes:
+
+- `/tmp` ephemeral commit records replaced with persistent paths
+  `/opt/trainer-platform/deploy/{current,previous,pending}_commit`
+- Health-gated rotation: pending written before deploy, current/previous
+  rotated only after health check passes
+- Rollback script updated with `--dry-run` and `--target <sha>` modes
+- Rollback dry-run validates: target resolution, distinctness, checkout,
+  rebuild, database volume preservation, container + HTTPS health checks
+- `.claude/` classified as local agent state and gitignored
+- Final HEAD reconciled and deployed
+- Report: `docs/infrastructure/009b_persistent_rollback_git_clean_head_reconciliation.md`
+- Proof: `docs/proofs/proof_trainer_platform_vps_staging_closeout_009b.json`
 
 ## Final Run Details
 

@@ -26,12 +26,18 @@ File: `.github/workflows/deploy-staging.yml`
 ### Process
 
 1. Checkout exact commit
-2. SSH to VPS
-3. `git fetch` + checkout exact commit
-4. Build Docker images (backend + frontend)
-5. Run Alembic migrations
-6. Restart services with `docker compose up -d`
-7. Health check (retry up to 5 times)
+2. Record target commit to `DEPLOYED_COMMIT` env
+3. Validate deployment secrets (fail-fast)
+4. SSH to VPS
+5. Write target to `pending_commit` (atomic `mktemp` + `mv`)
+6. `git fetch` + checkout exact commit (with SHA mismatch guard)
+7. Build Docker images (backend + frontend)
+8. Run Alembic migrations
+9. Restart services with `docker compose up -d`
+10. Wait for container health checks
+11. HTTPS health check (retry up to 5 times)
+12. **On success**: rotate `current_commit→previous_commit`, `pending_commit→current_commit`, remove `pending_commit`
+13. **On failure**: preserve `current_commit` and `previous_commit`, do not mark failed target
 
 ### Required Configuration
 
@@ -56,11 +62,37 @@ Location: `/opt/trainer-platform/scripts/rollback.sh`
 
 Usage:
 ```bash
+# Dry-run (validate without executing)
+/opt/trainer-platform/scripts/rollback.sh --dry-run
+
 # Rollback to previous deployment
-sudo -u trainer /opt/trainer-platform/scripts/rollback.sh
+/opt/trainer-platform/scripts/rollback.sh
 
 # Rollback to specific commit
-sudo -u trainer /opt/trainer-platform/scripts/rollback.sh <commit-sha>
+/opt/trainer-platform/scripts/rollback.sh --target <commit-sha>
+```
+
+### Modes
+
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Validate rollback plan without executing |
+| `--target <sha>` | Roll back to specific commit (default: `previous_commit`) |
+| (no flags) | Execute real rollback to `previous_commit` |
+
+### Dry-Run Output
+
+```
+current_commit=<sha>
+rollback_target=<sha>
+target_resolvable=true
+target_distinct=true
+would_checkout_exact_sha=true
+would_rebuild_or_restart=true
+would_preserve_database_volume=true
+would_run_container_health_checks=true
+would_run_https_health_check=true
+real_rollback_executed=false
 ```
 
 ### Manual Rollback
@@ -75,7 +107,13 @@ docker compose up -d backend frontend caddy
 
 ### Rollback Safety
 
-- Previous commit SHA is recorded at `/tmp/previous_deployed_commit`
+- Previous commit SHA is recorded at `/opt/trainer-platform/deploy/previous_commit`
+- Current commit SHA at `/opt/trainer-platform/deploy/current_commit`
+- Pending commit (during active deployment) at `/opt/trainer-platform/deploy/pending_commit`
+- All files use atomic writes (`mktemp` + `mv`)
 - Rollback rebuilds images from that commit
 - No data rollback needed (migrations are backward-compatible)
+- Database volume is preserved (no destructive prune)
+- Post-rollback container health checks and HTTPS health checks are automated
+- Rollback dry-run validates target resolution, distinctness, and all infrastructure preconditions
 - Railway staging remains as fallback

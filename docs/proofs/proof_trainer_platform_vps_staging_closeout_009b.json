@@ -1,0 +1,114 @@
+{
+  "layer": "TRAINER-PLATFORM-VPS-STAGING-CICD-PERSISTENT-ROLLBACK-GIT-CLEAN-AND-HEAD-RECONCILIATION-CLOSEOUT-009B",
+  "verdict": "ACCEPTED",
+  "base_state": {
+    "layer_009": "ACCEPTED",
+    "closeout_009a": "ACCEPTED_WITH_BLOCKERS",
+    "github_actions_deploy": "GREEN",
+    "runtime_deployed_commit": "2b625b11ef970aecf5da266a0907d87480521625",
+    "repository_head": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git_hygiene": {
+    "claude_directory_inspected": true,
+    "classification": "LOCAL_AGENT_STATE",
+    "secrets_found": false,
+    "resolution": "IGNORED",
+    "git_status_porcelain_empty": true
+  },
+  "head_reconciliation": {
+    "diff_inspected": true,
+    "changed_files": [
+      "docs/infrastructure/009a_vps_staging_cicd_execution_closeout.md",
+      "docs/proofs/proof_trainer_platform_vps_staging_cicd_execution_closeout_009a.json",
+      "docs/proofs/proof_trainer_platform_vps_staging_deployment_009.json",
+      ".github/workflows/deploy-staging.yml",
+      ".gitignore"
+    ],
+    "frontend_runtime_changed": false,
+    "backend_runtime_changed": false,
+    "database_schema_changed": false,
+    "workflow_changed": true,
+    "deployment_script_changed": false,
+    "docs_proof_only": false,
+    "final_head_requires_deployment": true,
+    "runtime_deployed_commit": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
+    "repository_final_head": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678"
+  },
+  "persistent_commit_tracking": {
+    "directory": "/opt/trainer-platform/deploy",
+    "current_path": "/opt/trainer-platform/deploy/current_commit",
+    "previous_path": "/opt/trainer-platform/deploy/previous_commit",
+    "pending_path": "/opt/trainer-platform/deploy/pending_commit",
+    "current_commit": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
+    "previous_commit": "2b625b11ef970aecf5da266a0907d87480521625",
+    "current_previous_distinct": true,
+    "pending_absent_after_success": true,
+    "current_updated_after_health_only": true,
+    "failed_deploy_preserves_current": true,
+    "atomic_updates": true
+  },
+  "rollback": {
+    "script": "/opt/trainer-platform/scripts/rollback.sh",
+    "executable": true,
+    "dry_run_supported": true,
+    "selected_target": "2b625b11ef970aecf5da266a0907d87480521625",
+    "target_resolvable": true,
+    "target_distinct": true,
+    "checkout_planned": true,
+    "compose_restart_planned": true,
+    "container_health_check_planned": true,
+    "https_health_check_planned": true,
+    "database_volume_preserved": true,
+    "dry_run_passed": true,
+    "real_rollback_executed": false
+  },
+  "successful_workflow": {
+    "workflow": "Deploy Staging (VPS)",
+    "run_id": "manual-deploy-d2c7ea3",
+    "commit": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
+    "conclusion": "success",
+    "deploy_via_ssh": "success",
+    "health_check": "success",
+    "all_required_jobs_green": true
+  },
+  "runtime_health": {
+    "frontend": true,
+    "backend": true,
+    "postgres": true,
+    "caddy": true,
+    "https": true,
+    "unexpected_5xx": false
+  },
+  "fast_path": {
+    "focused_checks_used": true,
+    "full_local_backend_runs": 0,
+    "full_local_frontend_runs": 0,
+    "browser_e2e_runs": 0,
+    "provider_calls": 0,
+    "redundant_runs": 0
+  },
+  "forbidden_actions": {
+    "real_rollback_executed": false,
+    "database_deleted": false,
+    "postgres_exposed": false,
+    "backend_exposed": false,
+    "secrets_exposed": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "openai_used": false,
+    "deepseek_called": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "d6a7a922ef86f798ea7bc558b5d5d0763f4cb2ef",
+    "final_commit": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
+    "pushed": true,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "VPS_STAGING_LAYER_009_FULL_RESULT_ACCEPTANCE"
+}

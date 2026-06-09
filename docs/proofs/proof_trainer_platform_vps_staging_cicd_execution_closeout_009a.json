@@ -9,6 +9,7 @@
     "react_error_31": "ABSENT",
     "https": "ACTIVE",
     "backup": "PASSED",
+    "closeout_009b": "ACCEPTED",
     "production_accepted": false,
     "release_allowed": false
   },

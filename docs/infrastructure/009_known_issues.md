@@ -36,3 +36,12 @@
    `VPS_SSH_KEY` remains as a secret. Preflight validation added.
    - Root cause: `SECRET_NAME_MISMATCH`
    - Fix: commit `222d5ba` + repository secret `VPS_SSH_KEY`
+
+8. **`/tmp` ephemeral commit records** (Layer 009B). Previous/current deploy
+   commit SHAs were stored at `/tmp/current_deployed_commit` and
+   `/tmp/previous_deployed_commit`, which are ephemeral and lost on reboot.
+   Fixed by migrating to persistent files at
+   `/opt/trainer-platform/deploy/{current,previous,pending}_commit` with
+   atomic writes and health-gated rotation.
+   - Root cause: ephemeral storage
+   - Fix: commit `d2c7ea3`
