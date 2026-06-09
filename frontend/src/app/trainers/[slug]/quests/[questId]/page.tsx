@@ -419,9 +419,9 @@ export default function QuestPlayPage() {
               <BookOpen className="h-8 w-8 text-primary-600" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              {quest.title_key}
+              {tl(quest.title_key)}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{quest.summary_key}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{tl(quest.summary_key)}</p>
           </div>
 
           {/* Role, Mission, Setting */}
@@ -431,7 +431,7 @@ export default function QuestPlayPage() {
                 <Target className="h-4 w-4 text-blue-600" />
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">{tl('quest.your_role')}</span>
               </div>
-              <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">{quest.learner_role_key}</p>
+              <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">{tl(quest.learner_role_key)}</p>
             </div>
 
             <div className="p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800">
@@ -439,7 +439,7 @@ export default function QuestPlayPage() {
                 <Award className="h-4 w-4 text-purple-600" />
                 <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">{tl('quest.mission')}</span>
               </div>
-              <p className="text-sm text-purple-800 dark:text-purple-200">{quest.mission_key}</p>
+              <p className="text-sm text-purple-800 dark:text-purple-200">{tl(quest.mission_key)}</p>
             </div>
 
             <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
@@ -447,7 +447,7 @@ export default function QuestPlayPage() {
                 <Map className="h-4 w-4 text-gray-600" />
                 <span className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">{tl('quest.setting')}</span>
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{quest.setting_key}</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{tl(quest.setting_key)}</p>
             </div>
 
             {/* Characters */}
@@ -457,8 +457,8 @@ export default function QuestPlayPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {quest.characters.map((ch) => (
                     <div key={ch.id} className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{ch.name_key}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{ch.role_key}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{tl(ch.name_key)}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{tl(ch.role_key)}</p>
                     </div>
                   ))}
                 </div>
@@ -630,7 +630,7 @@ export default function QuestPlayPage() {
                 <span className="text-xs font-bold uppercase tracking-wider text-gray-600">{tl('quest.story_context')}</span>
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                {currentStep.story_context_key}
+                {tl(currentStep.story_context_key)}
               </p>
             </div>
           )}
@@ -638,7 +638,7 @@ export default function QuestPlayPage() {
           {/* Prompt */}
           <div className="mb-6">
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
-              {currentStep.prompt_key}
+              {tl(currentStep.prompt_key)}
             </h2>
             <p className="text-xs text-gray-500">{tl(`quest.step_${currentStep.step_type}`)}</p>
           </div>
@@ -782,10 +782,10 @@ export default function QuestPlayPage() {
 
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{tl('quest.quest_complete')}</h1>
             <h2 className="text-xl font-semibold text-primary-700 dark:text-primary-300">
-              {outcomeResult.outcome_title_key || ''}
+              {tl(outcomeResult.outcome_title_key) || ''}
             </h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed">
-              {outcomeResult.outcome_summary_key || ''}
+              {tl(outcomeResult.outcome_summary_key) || ''}
             </p>
           </div>
 
@@ -819,10 +819,10 @@ export default function QuestPlayPage() {
         {/* Outcome summary */}
         <Card padding="lg" className="mb-6 border-primary-200">
           <h2 className="text-lg font-bold text-primary-800 dark:text-primary-200 mb-2">
-            {outcomeResult.outcome_title_key || ''}
+            {tl(outcomeResult.outcome_title_key) || ''}
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-            {outcomeResult.outcome_summary_key || ''}
+            {tl(outcomeResult.outcome_summary_key) || ''}
           </p>
         </Card>
 

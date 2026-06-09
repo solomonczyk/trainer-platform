@@ -41,15 +41,26 @@ export function t(key: string): string {
   // Skip empty/falsy keys
   if (!key) return key;
 
+  // First, try to look up the full key as-is (supports dotted string keys like "quest.qa.payment_defect")
+  if (key in (locales[currentLocale] as Record<string, unknown>)) {
+    const direct = (locales[currentLocale] as Record<string, unknown>)[key];
+    if (typeof direct === "string") return direct;
+  }
+
+  // Then try dotted-path traversal
   const keys = key.split(".");
   let value: unknown = locales[currentLocale];
   for (const k of keys) {
     if (value && typeof value === "object" && k in value) {
       value = (value as Record<string, unknown>)[k];
     } else {
+      // Try combining remaining segments as a single dotted key
+      const remaining = keys.slice(keys.indexOf(k)).join(".");
+      if (value && typeof value === "object" && remaining in (value as Record<string, unknown>)) {
+        value = (value as Record<string, unknown>)[remaining];
+        break;
+      }
       // Key not found — return the raw key.
-      // In a production build this is logged to console for diagnostics
-      // but not shown to the user. Callers should handle this case.
       return key;
     }
   }
