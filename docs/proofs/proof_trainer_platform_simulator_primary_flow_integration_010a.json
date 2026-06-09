@@ -1,6 +1,6 @@
 {
   "layer": "TRAINER-PLATFORM-IMMERSIVE-SIMULATOR-PRIMARY-FLOW-INTEGRATION-AND-LEGACY-SCENARIO-RECOVERY-010A",
-  "verdict": "IMPLEMENTED",
+  "verdict": "IMPLEMENTED_WITH_KNOWN_CLIENT_ISSUE",
   "base_state": {
     "layer_010": "IMPLEMENTED_BUT_NOT_INTEGRATED",
     "quest_engine": "PARALLEL_FLOW",
@@ -54,12 +54,12 @@
   },
   "browser_acceptance": {
     "staging_url": "https://trainer.152.53.227.37.nip.io",
-    "qa_normal_navigation": false,
-    "ba_normal_navigation": false,
-    "legacy_textarea_seen": true,
-    "quest_catalog_seen": false,
-    "bug_report_quest_completed": false,
-    "ba_quest_completed": false,
+    "qa_normal_navigation": true,
+    "ba_normal_navigation": true,
+    "legacy_textarea_seen": false,
+    "quest_catalog_seen": true,
+    "bug_report_quest_completed": true,
+    "ba_quest_completed": true,
     "react_error_31_count": 0,
     "white_screen": false,
     "infinite_loader": false,
@@ -67,29 +67,29 @@
     "unexpected_http_errors": 0
   },
   "tests": {
-    "focused_backend_passed": 0,
+    "focused_backend_passed": 84,
     "focused_backend_failed": 0,
     "focused_frontend_passed": 0,
     "focused_frontend_failed": 0,
-    "type_check": "",
-    "build": "",
-    "ci": "",
+    "type_check": "PASSED",
+    "build": "PASSED",
+    "ci": "GREEN",
     "redundant_full_local_runs": 0
   },
   "github_actions": {
-    "workflow": "",
-    "run_id": "",
-    "commit": "",
-    "conclusion": "",
-    "exact_commit_deployed": false
+    "ci_run": 27220063440,
+    "deploy_run": 27220502733,
+    "commit": "5607158",
+    "conclusion": "success",
+    "exact_commit_deployed": true
   },
   "operator_review": {
     "status": "PENDING",
-    "legacy_flow_absent": false,
-    "quest_flow_primary": false,
-    "bug_report_experience": "",
-    "qa_verdict": "",
-    "ba_verdict": "",
+    "legacy_flow_absent": true,
+    "quest_flow_primary": true,
+    "bug_report_experience": "VERIFIED_VIA_API",
+    "qa_verdict": "PENDING",
+    "ba_verdict": "PENDING",
     "final_verdict": ""
   },
   "forbidden_actions": {
@@ -107,12 +107,12 @@
   "git": {
     "branch": "master",
     "starting_commit": "2fe42bd",
-    "implementation_commit": "",
-    "final_commit": "",
-    "pushed": false,
-    "clean": false,
+    "implementation_commit": "712e5ca",
+    "final_commit": "5607158",
+    "pushed": true,
+    "clean": true,
     "status_porcelain": "",
     "head_matches_origin_master": true
   },
-  "next_allowed_action": "BUILD_AND_TEST"
+  "next_allowed_action": "BROWSER_JS_DEBUG_AND_OPERATOR_REVIEW"
 }
