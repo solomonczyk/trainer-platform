@@ -1,0 +1,19 @@
+{
+  "layer": "TRAINER-PLATFORM-VPS-STAGING-CICD-FINAL-GITHUB-RUN-CLOSEOUT-009C",
+  "verdict": "IN_PROGRESS",
+  "note": "Placeholder — will be updated after successful workflow run",
+  "base_state": {
+    "layer_009": "ACCEPTED",
+    "closeout_009a": "ACCEPTED",
+    "closeout_009b": "ACCEPTED",
+    "persistent_commit_tracking": true,
+    "rollback_dry_run": "PASSED",
+    "git_clean": true,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "github_actions": {
+    "run_id": "",
+    "conclusion": ""
+  }
+}
