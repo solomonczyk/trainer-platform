@@ -36,13 +36,25 @@ jobs:
           echo "DEPLOYED_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
           echo "DEPLOYED_TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
+      - name: Validate deployment secrets
+        run: |
+          ERRORS=0
+          if [ -z "$VPS_HOST" ]; then echo "::error::VPS_HOST is not configured"; ERRORS=$((ERRORS+1)); fi
+          if [ -z "$VPS_USER" ]; then echo "::error::VPS_USER is not configured"; ERRORS=$((ERRORS+1)); fi
+          if [ -z "$VPS_SSH_KEY" ]; then echo "::error::VPS_SSH_KEY is not configured"; ERRORS=$((ERRORS+1)); fi
+          if [ -z "$VPS_DEPLOY_PATH" ]; then echo "::error::VPS_DEPLOY_PATH is not configured"; ERRORS=$((ERRORS+1)); fi
+          if [ "$ERRORS" -ne 0 ]; then echo "::error::$ERRORS deployment configuration value(s) missing — aborting"; exit 1; fi
+          echo "All deployment secrets validated"
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
+          host: ${{ env.VPS_HOST }}
+          username: ${{ env.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
+          port: ${{ env.VPS_PORT }}
           script: |
             set -e
             cd ${{ env.VPS_DEPLOY_PATH }}/repo
