@@ -185,9 +185,14 @@ class TestMigration007Execution:
     """Prove the full migration 007 cycle on real PostgreSQL."""
 
     def test_cycle_upgrade_downgrade_upgrade(self, pg_available):
-        """Full cycle: upgrade head → 007 → downgrade 006 → upgrade head → 007."""
-        # Step 1: verify we start at 007
+        """Full cycle: align to 007 -> downgrade 006 -> upgrade 007."""
+        # Step 1: align to 007 (downgrade from head if migration 008+ applied)
         rev = _current_revision()
+        major = rev[:3]
+        assert major in ("007", "008"), f"Expected 007 or 008, got {rev}"
+        if major == "008":
+            _alembic("downgrade", "007")
+            rev = _current_revision()
         assert rev == "007" or rev.startswith("007"), f"Expected 007, got {rev}"
 
         # Snapshot 007 tables
@@ -216,8 +221,8 @@ class TestMigration007Execution:
             assert table in tables_after_downgrade, \
                 f"Table {table} missing after downgrade"
 
-        # Step 3: upgrade back to head (007)
-        _alembic("upgrade", "head")
+        # Step 3: upgrade back to 007
+        _alembic("upgrade", "007")
         rev = _current_revision()
         assert rev == "007" or rev.startswith("007"), f"Expected 007, got {rev}"
 
