@@ -41,27 +41,47 @@ export function t(key: string): string {
   // Skip empty/falsy keys
   if (!key) return key;
 
-  // First, try to look up the full key as-is (supports dotted string keys like "quest.qa.payment_defect")
-  if (key in (locales[currentLocale] as Record<string, unknown>)) {
-    const direct = (locales[currentLocale] as Record<string, unknown>)[key];
+  // Support dotted keys at any level — try the full key as-is first
+  const root = locales[currentLocale] as Record<string, unknown>;
+  if (key in root) {
+    const direct = root[key];
     if (typeof direct === "string") return direct;
   }
 
-  // Then try dotted-path traversal
-  const keys = key.split(".");
-  let value: unknown = locales[currentLocale];
-  for (const k of keys) {
-    if (value && typeof value === "object" && k in value) {
-      value = (value as Record<string, unknown>)[k];
+  // Dotted-path traversal with dotted-key fallback at each level
+  const parts = key.split(".");
+  let value: unknown = root;
+  let i = 0;
+  while (i < parts.length) {
+    const seg = parts[i];
+    if (value && typeof value === "object" && seg in (value as Record<string, unknown>)) {
+      value = (value as Record<string, unknown>)[seg];
+      i++;
     } else {
-      // Try combining remaining segments as a single dotted key
-      const remaining = keys.slice(keys.indexOf(k)).join(".");
-      if (value && typeof value === "object" && remaining in (value as Record<string, unknown>)) {
-        value = (value as Record<string, unknown>)[remaining];
-        break;
+      // Try combining remaining segments as a single dotted key at this level
+      let found = false;
+      for (let j = parts.length - 1; j > i; j--) {
+        const dotted = parts.slice(i, j + 1).join(".");
+        if (value && typeof value === "object" && dotted in (value as Record<string, unknown>)) {
+          value = (value as Record<string, unknown>)[dotted];
+          i = j + 1;
+          found = true;
+          break;
+        }
       }
-      // Key not found — return the raw key.
-      return key;
+      // Also try at root level
+      if (!found) {
+        for (let j = parts.length - 1; j > i; j--) {
+          const dotted = parts.slice(i, j + 1).join(".");
+          if (dotted in root) {
+            value = root[dotted];
+            i = j + 1;
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found) return key;
     }
   }
   if (typeof value === "string") return value;
