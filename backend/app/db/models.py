@@ -569,3 +569,91 @@ class DeterministicEvaluation(Base, TimestampMixin):
 Attempt.deterministic_evaluation = relationship(
     "DeterministicEvaluation", back_populates="attempt", uselist=False, lazy="selectin"
 )
+
+
+# ---------------------------------------------------------------------------
+# Quest Engine (Layer 010 — Immersive Simulator)
+# ---------------------------------------------------------------------------
+
+
+class QuestSession(Base, TimestampMixin):
+    """Tracks an active immersive quest session with narrative state."""
+
+    __tablename__ = "quest_sessions"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), nullable=False, index=True)
+    quest_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    trainer_slug: Mapped[str] = mapped_column(String(100), nullable=False)
+    locale: Mapped[str] = mapped_column(String(10), default="ru-RU")
+    status: Mapped[str] = mapped_column(String(50), default="in_progress")  # in_progress, completed, abandoned, failed
+
+    # Narrative state
+    current_step_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    completed_step_ids: Mapped[Optional[list]] = mapped_column(JSON, default=list)
+    visited_branch_ids: Mapped[Optional[list]] = mapped_column(JSON, default=list)
+
+    # Tracked narrative values
+    risk: Mapped[int] = mapped_column(Integer, default=0)
+    time_remaining: Mapped[int] = mapped_column(Integer, default=100)
+    team_trust: Mapped[int] = mapped_column(Integer, default=100)
+    client_trust: Mapped[int] = mapped_column(Integer, default=100)
+    evidence_quality: Mapped[int] = mapped_column(Integer, default=0)
+    decision_quality: Mapped[int] = mapped_column(Integer, default=0)
+
+    # Flags, outcome, debrief
+    flags: Mapped[Optional[dict]] = mapped_column(JSON, default=dict)
+    selected_outcome_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    debrief_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    user = relationship("User", backref="quest_sessions")
+    step_results = relationship("QuestStepResult", back_populates="quest_session", cascade="all, delete-orphan")
+
+
+class QuestStepResult(Base, TimestampMixin):
+    """Per-step answer and evaluation for a quest session."""
+
+    __tablename__ = "quest_step_results"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    quest_session_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("quest_sessions.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    step_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    step_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+
+    # Answer
+    answer: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    # Evaluation state
+    status: Mapped[str] = mapped_column(String(50), default="pending")
+    # pending, answered, submitting, evaluating, completed, failed, timed_out
+
+    evaluation_mode: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)  # deterministic, ai_rubric, hybrid
+    score: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    max_score: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    correct: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=True)
+    feedback_key: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    feedback_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    # Consequence updates
+    consequence_updates: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+
+    # AI metadata
+    retry_count: Mapped[int] = mapped_column(Integer, default=0)
+    idempotency_key: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    provider: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    provider_model: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    ai_latency_ms: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    ai_cost_usd: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    correlation_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    timed_out: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    quest_session = relationship("QuestSession", back_populates="step_results")
+
+    __table_args__ = (
+        UniqueConstraint("quest_session_id", "step_id", name="uq_quest_session_step"),
+    )

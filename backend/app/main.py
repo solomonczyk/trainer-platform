@@ -111,6 +111,7 @@ from app.modules.progress import router as progress_router
 from app.modules.analytics import router as analytics_router
 from app.modules.activities import router as activities_router
 from app.modules.admin import router as admin_router
+from app.modules.quests.router import router as quests_router
 
 # Certification-grade core routers
 from app.certification_core.routers import (
@@ -145,6 +146,7 @@ app.include_router(progress_router, prefix="/api/v1", tags=["Progress"])
 app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["Analytics"])
 app.include_router(activities_router, prefix="/api/v1", tags=["Activities"])
 app.include_router(admin_router, prefix="/api/v1/admin", tags=["Admin"])
+app.include_router(quests_router, prefix="/api/v1", tags=["Quests"])
 
 # Certification-grade core routes
 app.include_router(competency_router, prefix="/api/v1", tags=["Certification-Core"])

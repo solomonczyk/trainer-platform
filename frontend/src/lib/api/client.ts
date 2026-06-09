@@ -687,3 +687,142 @@ export async function getReviewEvidence(caseId: string) {
     `/api/v1/certification/review-cases/${caseId}/evidence`,
   );
 }
+
+// ---------------------------------------------------------------------------
+// Quest Engine (Layer 010 — Immersive Simulator)
+// ---------------------------------------------------------------------------
+
+export interface QuestDefinition {
+  quest_id: string;
+  trainer_slug: string;
+  version: string;
+  locale: string;
+  title_key: string;
+  summary_key: string;
+  learner_role_key: string;
+  mission_key: string;
+  setting_key: string;
+  estimated_minutes: number;
+  initial_state: Record<string, number>;
+  steps: QuestStepDefinition[];
+  outcomes: QuestOutcomeDefinition[];
+  debrief_contract: { sections: string[]; skill_dimensions: string[] };
+  characters: Array<{ id: string; name_key: string; role_key: string }>;
+  tags: string[];
+}
+
+export interface QuestStepDefinition {
+  step_id: string;
+  step_type: 'single_choice' | 'multiple_choice' | 'free_text' | 'ordering' | 'matching' | 'evidence_select' | 'decision' | 'dialogue' | 'branching';
+  story_context_key: string;
+  prompt_key: string;
+  interaction: Record<string, unknown>;
+  evaluation_mode: 'deterministic' | 'ai_rubric' | 'hybrid';
+  consequences: Record<string, number>;
+  next_step_rules: { default?: string; by_choice?: Record<string, string>; by_flag?: Record<string, string> };
+  learning_objectives: string[];
+  skill_bindings: string[];
+}
+
+export interface QuestOutcomeDefinition {
+  outcome_id: string;
+  title_key: string;
+  summary_key: string;
+  min_decision_quality?: number;
+  min_team_trust?: number;
+  min_client_trust?: number;
+  is_default?: boolean;
+}
+
+export interface QuestStartResponse {
+  session_id: string;
+  quest: QuestDefinition;
+  current_step: QuestStepDefinition;
+  narrative_state: Record<string, number>;
+  status: string;
+}
+
+export interface QuestAnswerRequest {
+  step_id: string;
+  answer: unknown;
+  idempotency_key?: string;
+  locale?: string;
+}
+
+export interface QuestAnswerResponse {
+  step_id: string;
+  status: string;
+  score?: number;
+  max_score?: number;
+  correct?: boolean;
+  feedback_key?: string;
+  feedback_data?: Record<string, unknown> | null;
+  consequence_updates?: Record<string, number> | null;
+  narrative_state: Record<string, number>;
+  next_step?: QuestStepDefinition | null;
+  next_step_id?: string;
+  evaluation_mode?: string;
+  timed_out: boolean;
+  correlation_id?: string;
+}
+
+export interface QuestStepResponse {
+  session_id: string;
+  step: QuestStepDefinition;
+  narrative_state: Record<string, number>;
+  completed_step_ids: string[];
+  answers: Record<string, unknown>;
+  step_result?: { status: string; score?: number; max_score?: number; correct?: boolean; feedback_key?: string } | null;
+}
+
+export interface QuestOutcomeResponse {
+  session_id: string;
+  outcome_id: string;
+  outcome_title_key: string;
+  outcome_summary_key: string;
+  narrative_state: Record<string, number>;
+  debrief: Record<string, unknown>;
+  status: string;
+}
+
+export interface QuestProgressResponse {
+  session_found: boolean;
+  session_id?: string;
+  quest?: QuestDefinition;
+  current_step?: QuestStepDefinition;
+  narrative_state?: Record<string, number>;
+  completed_step_ids?: string[];
+  answers?: Record<string, unknown>;
+  step_results?: Record<string, unknown>;
+  status?: string;
+  outcome?: { outcome_id: string; title_key: string; summary_key: string };
+  debrief?: Record<string, unknown>;
+}
+
+export async function listQuests() {
+  return api.get<{ quests: Record<string, unknown> }>('/api/v1/quests');
+}
+
+export async function startQuest(questId: string, locale = 'ru-RU') {
+  return api.post<QuestStartResponse>(`/api/v1/quests/${questId}/start`, { locale });
+}
+
+export async function getQuestStep(sessionId: string) {
+  return api.get<QuestStepResponse>(`/api/v1/quests/sessions/${sessionId}/step`);
+}
+
+export async function submitQuestAnswer(sessionId: string, body: QuestAnswerRequest) {
+  return api.post<QuestAnswerResponse>(`/api/v1/quests/sessions/${sessionId}/answer`, body);
+}
+
+export async function retryQuestEvaluation(sessionId: string, body: { step_id: string; locale?: string; idempotency_key?: string }) {
+  return api.post<QuestAnswerResponse>(`/api/v1/quests/sessions/${sessionId}/retry`, body);
+}
+
+export async function completeQuest(sessionId: string) {
+  return api.post<QuestOutcomeResponse>(`/api/v1/quests/sessions/${sessionId}/complete`);
+}
+
+export async function getQuestProgress(sessionId: string) {
+  return api.get<QuestProgressResponse>(`/api/v1/quests/sessions/${sessionId}/progress`);
+}
