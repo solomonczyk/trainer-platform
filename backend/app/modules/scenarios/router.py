@@ -55,20 +55,20 @@ async def list_scenarios_for_trainer(
 
 
 @router.get(
-    "/scenarios/{scenario_id}",
-    response_model=ScenarioDetailResponse,
-    summary="Get scenario detail by scenario_id",
+    "/scenarios/mappings",
+    summary="List all scenario-to-quest mappings",
 )
-async def get_scenario_detail(
-    scenario_id: str,
-    db: AsyncSession = Depends(get_db),
-) -> ScenarioDetailResponse:
-    """Return full detail for a single scenario by its business scenario_id string."""
-    scenario = await scenarios_service.get_scenario_by_scenario_id(db, scenario_id=scenario_id)
-    if not scenario:
-        raise NotFoundError(entity="Scenario", entity_id=scenario_id)
-
-    return ScenarioDetailResponse.model_validate(scenario)
+async def list_scenario_mappings() -> dict:
+    """Return all scenario-to-quest mappings for the platform."""
+    result = {}
+    for scenario_id, mapping in SCENARIO_QUEST_MAPPING.items():
+        result[scenario_id] = {
+            "quest_id": mapping.get("quest_id"),
+            "mode": mapping.get("mode", "UNMAPPED"),
+            "trainer_slug": mapping.get("trainer_slug"),
+            "reason": mapping.get("reason", ""),
+        }
+    return {"mappings": result}
 
 
 @router.get(
@@ -101,17 +101,17 @@ async def get_scenario_mapping_endpoint(
 
 
 @router.get(
-    "/scenarios/mappings",
-    summary="List all scenario-to-quest mappings",
+    "/scenarios/{scenario_id}",
+    response_model=ScenarioDetailResponse,
+    summary="Get scenario detail by scenario_id",
 )
-async def list_scenario_mappings() -> dict:
-    """Return all scenario-to-quest mappings for the platform."""
-    result = {}
-    for scenario_id, mapping in SCENARIO_QUEST_MAPPING.items():
-        result[scenario_id] = {
-            "quest_id": mapping.get("quest_id"),
-            "mode": mapping.get("mode", "UNMAPPED"),
-            "trainer_slug": mapping.get("trainer_slug"),
-            "reason": mapping.get("reason", ""),
-        }
-    return {"mappings": result}
+async def get_scenario_detail(
+    scenario_id: str,
+    db: AsyncSession = Depends(get_db),
+) -> ScenarioDetailResponse:
+    """Return full detail for a single scenario by its business scenario_id string."""
+    scenario = await scenarios_service.get_scenario_by_scenario_id(db, scenario_id=scenario_id)
+    if not scenario:
+        raise NotFoundError(entity="Scenario", entity_id=scenario_id)
+
+    return ScenarioDetailResponse.model_validate(scenario)
