@@ -25,9 +25,9 @@
     "hostname": "trainer.152.53.227.37.nip.io",
     "https_active": true,
     "certificate_valid": true,
-    "deployed_commit": "96168d1dba195694bca2675a8c1160971e0be579",
-    "frontend_commit": "96168d1dba195694bca2675a8c1160971e0be579",
-    "backend_commit": "96168d1dba195694bca2675a8c1160971e0be579",
+    "deployed_commit": "2b625b11ef970aecf5da266a0907d87480521625",
+    "frontend_commit": "2b625b11ef970aecf5da266a0907d87480521625",
+    "backend_commit": "2b625b11ef970aecf5da266a0907d87480521625",
     "tested_commit_matches_deployment": true,
     "docker_compose_running": true
   },
@@ -71,7 +71,7 @@
     "health_check": true,
     "rollback_defined": true,
     "github_actions_deploy": "GREEN",
-    "github_actions_run_id": "27194300276",
+    "github_actions_run_id": "27195360143",
     "cicd_execution_closeout": "ACCEPTED",
     "closeout_proof": "docs/proofs/proof_trainer_platform_vps_staging_cicd_execution_closeout_009a.json"
   },
@@ -97,7 +97,7 @@
   },
   "git": {
     "branch": "master",
-    "commit": "96168d1dba195694bca2675a8c1160971e0be579",
+    "commit": "2b625b11ef970aecf5da266a0907d87480521625",
     "pushed": true,
     "clean": true,
     "head_matches_origin_master": true

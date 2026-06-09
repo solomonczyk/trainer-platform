@@ -37,13 +37,19 @@ Three changes to `.github/workflows/deploy-staging.yml`:
 
 - ✅ SSH key authentication: PASSED
 - ✅ Host key verified: YES (ed25519)
-- ✅ GitHub Actions run: GREEN (run #27194300276)
+- ✅ GitHub Actions run: GREEN (run #27195360143)
 - ✅ Deploy via SSH: PASSED
 - ✅ Health check: PASSED
-- ✅ Exact commit deployed: 222d5bafd8af69cf4edd61e20fe63b3bfcd9676e
-- ✅ Docker Compose: HEALTHY (all 4 services)
+- ✅ Exact commit deployed: 2b625b11ef970aecf5da266a0907d87480521625
+- ✅ Docker Compose: HEALTHY (all 4 services: frontend, backend, caddy, postgres)
 - ✅ Rollback readiness: VERIFIED
 - ✅ Runtime code unchanged (workflow-only changes)
+
+## Final Run Details
+
+- Run #6: id `27195360143`, commit `2b625b1`
+- All steps green: checkout → record commit → validate secrets → SSH deploy → health check → notify
+- URL: <https://github.com/solomonczyk/trainer-platform/actions/runs/27195360143>
 
 ## Proof
 

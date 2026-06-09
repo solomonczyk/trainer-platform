@@ -32,9 +32,9 @@
   "secrets": {
     "vps_host_present": true,
     "vps_user_present": true,
-    "vps_port_present": false,
+    "vps_port_present": true,
     "vps_ssh_key_present": true,
-    "vps_deploy_path_present": false,
+    "vps_deploy_path_present": true,
     "secret_values_logged": false,
     "secrets_committed": false
   },
@@ -47,8 +47,8 @@
   },
   "successful_run": {
     "workflow": "Deploy Staging (VPS)",
-    "run_id": "27194300276",
-    "commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "run_id": "27195360143",
+    "commit": "2b625b11ef970aecf5da266a0907d87480521625",
     "conclusion": "success",
     "deploy_via_ssh": "success",
     "health_check": "success",
@@ -56,8 +56,8 @@
   },
   "deployment": {
     "staging_url": "https://trainer.152.53.227.37.nip.io",
-    "workflow_commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
-    "server_deployed_commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "workflow_commit": "2b625b11ef970aecf5da266a0907d87480521625",
+    "server_deployed_commit": "2b625b11ef970aecf5da266a0907d87480521625",
     "exact_commit_match": true,
     "docker_compose_healthy": true,
     "frontend_healthy": true,
@@ -104,9 +104,9 @@
   "git": {
     "branch": "master",
     "starting_commit": "7601281b034fd47ba91924a5fbca5605faadf6cb",
-    "final_commit": "222d5bafd8af69cf4edd61e20fe63b3bfcd9676e",
+    "final_commit": "2b625b11ef970aecf5da266a0907d87480521625",
     "pushed": true,
-    "clean": false,
+    "clean": true,
     "head_matches_origin_master": true
   },
   "next_allowed_action": "VPS_STAGING_CICD_CLOSEOUT_RESULT_ACCEPTANCE"
