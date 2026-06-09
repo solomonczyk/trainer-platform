@@ -89,7 +89,7 @@
   },
   "browser_runtime": {
     "staging_url": "https://trainer.152.53.227.37.nip.io",
-    "deployed_commit": "",
+    "deployed_commit": "b2a42a1b",
     "qa_flow": false,
     "ba_flow": false,
     "react_error_31_count": 0,
@@ -105,16 +105,16 @@
     "focused_frontend_failed": 0,
     "frontend_type_check": "PASSED",
     "frontend_build": "PASSED",
-    "full_ci": "PENDING",
+    "full_ci": "GREEN",
     "redundant_full_local_runs": 0
   },
   "github_actions": {
-    "workflow": "PENDING",
-    "run_id": "",
-    "commit": "adb78b4",
-    "conclusion": "",
-    "exact_commit_deployed": false,
-    "health_check": false
+    "workflow": "CI + Deploy Staging",
+    "run_id": "143 / 21",
+    "commit": "b2a42a1b",
+    "conclusion": "success",
+    "exact_commit_deployed": true,
+    "health_check": "PASSED"
   },
   "forbidden_actions": {
     "closed_question_provider_call": false,
@@ -132,10 +132,10 @@
     "branch": "master",
     "starting_commit": "d56c82d3cec2041359995cbe410d2253d5579bcb",
     "implementation_commit": "adb78b4c1c9d9f7a0adfcd3b6f9cbce78a94da4f",
-    "final_commit": "",
-    "pushed": false,
-    "clean": false,
+    "final_commit": "b2a42a1b",
+    "pushed": true,
+    "clean": true,
     "head_matches_origin_master": true
   },
-  "next_allowed_action": "NEEDS_OPERATOR_BROWSER_ACCEPTANCE_AND_VPS_DEPLOYMENT"
+  "next_allowed_action": "NEEDS_OPERATOR_BROWSER_ACCEPTANCE"
 }
