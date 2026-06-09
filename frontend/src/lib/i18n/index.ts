@@ -69,10 +69,14 @@ export function t(key: string): string {
           break;
         }
       }
-      // Also try at root level
+      // Also try at root level using progressive prefix
       if (!found) {
-        for (let j = parts.length - 1; j > i; j--) {
-          const dotted = parts.slice(i, j + 1).join(".");
+        // Try full key at root, back to partial prefix
+        for (let j = parts.length - 1; j >= i; j--) {
+          // Try from start of key to j — this handles cases like
+          // "quest.qa.payment_defect" being a root key while
+          // traversal already consumed "quest" as first segment
+          const dotted = parts.slice(0, j + 1).join(".");
           if (dotted in root) {
             value = root[dotted];
             i = j + 1;
