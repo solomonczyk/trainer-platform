@@ -60,7 +60,8 @@ jobs:
             cd ${{ env.VPS_DEPLOY_PATH }}/repo
             git fetch origin
             git checkout ${{ inputs.commit || github.sha }}
-            echo "Checked out $(git rev-parse HEAD)"
+            DEPLOYED_SHA=$(git rev-parse HEAD)
+            echo "Checked out $DEPLOYED_SHA"
 
             cd ${{ env.VPS_DEPLOY_PATH }}/deploy
 
@@ -78,8 +79,8 @@ jobs:
             # Restart services
             docker compose -f docker-compose.staging.yml up -d backend frontend caddy 2>&1
 
-            # Record new commit
-            echo "$(git rev-parse HEAD)" > /tmp/current_deployed_commit
+            # Record new commit (from $repo so it works regardless of current directory)
+            echo "$DEPLOYED_SHA" > /tmp/current_deployed_commit
 
       - name: Health Check
         run: |
