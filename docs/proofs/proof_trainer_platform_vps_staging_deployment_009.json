@@ -78,7 +78,9 @@
     "health_gated_rotation": true,
     "rollback_dry_run": "PASSED",
     "cicd_persistent_rollback_closeout": "ACCEPTED",
-    "persistent_rollback_closeout_proof": "docs/proofs/proof_trainer_platform_vps_staging_closeout_009b.json"
+    "persistent_rollback_closeout_proof": "docs/proofs/proof_trainer_platform_vps_staging_closeout_009b.json",
+    "cicd_final_github_run_closeout": "ACCEPTED",
+    "final_github_run_closeout_proof": "docs/proofs/proof_trainer_platform_vps_staging_final_github_run_009c.json"
   },
   "fast_path": {
     "focused_tests_used": true,

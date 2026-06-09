@@ -1,7 +1,6 @@
 {
   "layer": "TRAINER-PLATFORM-VPS-STAGING-CICD-FINAL-GITHUB-RUN-CLOSEOUT-009C",
-  "verdict": "IN_PROGRESS",
-  "note": "Placeholder — will be updated after successful workflow run",
+  "verdict": "ACCEPTED",
   "base_state": {
     "layer_009": "ACCEPTED",
     "closeout_009a": "ACCEPTED",
@@ -12,8 +11,91 @@
     "production_accepted": false,
     "release_allowed": false
   },
+  "head_reconciliation": {
+    "runtime_deployed_commit_before_009c": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
+    "repository_starting_head": "e0b352166defedb399af99aec74ce43249036847",
+    "diff_inspected": true,
+    "workflow_changed": false,
+    "frontend_runtime_changed": false,
+    "backend_runtime_changed": false,
+    "database_schema_changed": false,
+    "final_head_requires_workflow_execution": false
+  },
   "github_actions": {
-    "run_id": "",
-    "conclusion": ""
-  }
+    "workflow": "Deploy Staging (VPS)",
+    "run_id": "27201256216",
+    "run_number": 17,
+    "run_url": "https://github.com/solomonczyk/trainer-platform/actions/runs/27201256216",
+    "event": "workflow_run",
+    "commit": "121d9002b4a8a6f7972d1761f2fc3435c6f251d9",
+    "status": "completed",
+    "conclusion": "success",
+    "checkout": "success",
+    "preflight": "success",
+    "deploy_via_ssh": "success",
+    "health_check": "success",
+    "all_required_steps_green": true
+  },
+  "persistent_commit_tracking": {
+    "current_path": "/opt/trainer-platform/deploy/current_commit",
+    "previous_path": "/opt/trainer-platform/deploy/previous_commit",
+    "pending_path": "/opt/trainer-platform/deploy/pending_commit",
+    "current_commit": "121d9002b4a8a6f7972d1761f2fc3435c6f251d9",
+    "previous_commit": "e0b352166defedb399af99aec74ce43249036847",
+    "current_previous_distinct": true,
+    "workflow_commit_matches_current": true,
+    "pending_absent_after_success": true,
+    "pending_written_before_deploy": true,
+    "current_rotated_after_health": true,
+    "previous_preserved": true
+  },
+  "rollback": {
+    "dry_run_passed": true,
+    "target": "e0b352166defedb399af99aec74ce43249036847",
+    "target_resolvable": true,
+    "target_distinct": true,
+    "health_checks_planned": true,
+    "database_volume_preserved": true,
+    "real_rollback_executed": false
+  },
+  "runtime_health": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "frontend": true,
+    "backend": true,
+    "postgres": true,
+    "caddy": true,
+    "https": true,
+    "unexpected_5xx": false
+  },
+  "fast_path": {
+    "focused_checks_used": true,
+    "full_local_backend_runs": 0,
+    "full_local_frontend_runs": 0,
+    "browser_e2e_runs": 0,
+    "provider_calls": 0,
+    "redundant_runs": 0
+  },
+  "forbidden_actions": {
+    "manual_ssh_used_as_github_run_substitute": false,
+    "real_rollback_executed": false,
+    "database_deleted": false,
+    "postgres_exposed": false,
+    "backend_exposed": false,
+    "secrets_exposed": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "openai_used": false,
+    "deepseek_called": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "e0b352166defedb399af99aec74ce43249036847",
+    "final_commit": "121d9002b4a8a6f7972d1761f2fc3435c6f251d9",
+    "pushed": true,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "VPS_STAGING_LAYER_009_FULL_RESULT_ACCEPTANCE"
 }

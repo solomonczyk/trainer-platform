@@ -151,3 +151,16 @@ real_rollback_executed=false
 - Proof JSON: `docs/proofs/proof_trainer_platform_vps_staging_closeout_009b.json`
 - Layer 009 proof: `docs/proofs/proof_trainer_platform_vps_staging_deployment_009.json`
 - Layer 009A proof: `docs/proofs/proof_trainer_platform_vps_staging_cicd_execution_closeout_009a.json`
+
+## Layer 009C Closeout
+
+The final CI/CD audit blocker — executing the updated workflow through a real
+GitHub Actions run — was resolved in Layer 009C:
+
+- Run #27201256216 (`workflow_run` from CI) deployed commit `121d900`
+- All 8 workflow steps green including persistent commit rotation
+- `current_commit=121d900`, `previous_commit=e0b3521`, `pending` absent
+- Rollback dry-run: PASSED against `e0b3521`
+- Runtime health: all containers healthy
+- Report: `docs/infrastructure/009c_final_github_actions_run_closeout.md`
+- Proof: `docs/proofs/proof_trainer_platform_vps_staging_final_github_run_009c.json`

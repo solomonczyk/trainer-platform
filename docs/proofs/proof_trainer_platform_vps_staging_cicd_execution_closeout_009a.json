@@ -10,6 +10,7 @@
     "https": "ACTIVE",
     "backup": "PASSED",
     "closeout_009b": "ACCEPTED",
+    "closeout_009c": "ACCEPTED",
     "production_accepted": false,
     "release_allowed": false
   },

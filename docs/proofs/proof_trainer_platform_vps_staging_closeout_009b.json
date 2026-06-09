@@ -3,7 +3,9 @@
   "verdict": "ACCEPTED",
   "base_state": {
     "layer_009": "ACCEPTED",
-    "closeout_009a": "ACCEPTED_WITH_BLOCKERS",
+    "closeout_009a": "ACCEPTED",
+    "closeout_009b": "ACCEPTED",
+    "closeout_009c": "ACCEPTED",
     "github_actions_deploy": "GREEN",
     "runtime_deployed_commit": "2b625b11ef970aecf5da266a0907d87480521625",
     "repository_head": "d2c7ea3aa3f316fa6cde618a4e45e0a57acc8678",
