@@ -413,11 +413,14 @@ async def submit_and_evaluate_step(
         if retry_count >= 3:
             raise ValueError("Maximum retry attempts reached for this step")
 
+    # Extract raw value from dict-wrapped answer (API format: {"value": ...})
+    raw_answer = answer.get("value") if isinstance(answer, dict) else answer
+
     # Evaluate
     if step.evaluation_mode == "deterministic":
         evaluation = evaluate_deterministic(
             step.step_type,
-            answer,
+            raw_answer,
             step.interaction.model_dump() if hasattr(step.interaction, "model_dump") else dict(step.interaction),
         )
         # Apply step-level consequences
@@ -425,7 +428,7 @@ async def submit_and_evaluate_step(
 
         # Apply choice-specific consequences
         if step.step_type in ("single_choice", "decision", "branching"):
-            choice_id = answer.get("value") if isinstance(answer, dict) else str(answer)
+            choice_id = raw_answer if raw_answer is not None else str(raw_answer)
             choice_consequence = get_default_consequence(
                 step.interaction.model_dump() if hasattr(step.interaction, "model_dump") else dict(step.interaction),
                 choice_id,
