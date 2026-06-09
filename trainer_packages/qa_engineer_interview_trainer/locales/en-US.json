@@ -197,5 +197,17 @@
       "accept": "I understand, start training",
       "decline": "Go back"
     }
+  },
+  "strings": {
+    "scenario.qa_self_presentation_v1.title": "Tell Me About Yourself as a QA Candidate",
+    "scenario.qa_self_presentation_v1.goal": "Evaluate the candidate's ability to present themselves professionally, structure their background, and articulate their motivation for pursuing a QA role.",
+    "scenario.qa_test_case_vs_checklist_v1.title": "Test Case vs Checklist: Differences and Use Cases",
+    "scenario.qa_test_case_vs_checklist_v1.goal": "Evaluate the candidate's understanding of test documentation: the difference between test cases and checklists, their structure, when to use each, and the trade-offs involved.",
+    "scenario.qa_bug_report_structure_v1.title": "Bug Report Structure",
+    "scenario.qa_bug_report_structure_v1.goal": "Evaluate the candidate's knowledge of proper bug report structure, including all required fields, severity vs priority classification, and best practices for writing clear reproduction steps.",
+    "scenario.qa_regression_vs_retest_v1.title": "Regression Testing vs Retesting",
+    "scenario.qa_regression_vs_retest_v1.goal": "Evaluate the candidate's ability to distinguish between regression testing and retesting, understand when each is applied, and explain their roles in the QA process with practical examples.",
+    "scenario.qa_login_form_testing_v1.title": "Login Form Testing Scenarios",
+    "scenario.qa_login_form_testing_v1.goal": "Evaluate the candidate's ability to design comprehensive test scenarios for a login form, applying test design techniques, identifying edge cases, and structuring their test coverage logically."
   }
 }
