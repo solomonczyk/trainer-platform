@@ -86,12 +86,14 @@ def _table_has_columns(table_name: str) -> list[str]:
 
 
 def _alembic(cmd: str, arg: str) -> None:
-    """Run an Alembic command (e.g., ``upgrade head``, ``downgrade 006``)."""
+    """Run an Alembic command (e.g., ``upgrade head``, ``downgrade 007``)."""
+    # Use the PostgreSQL migration URL to keep alembic and psql queries in sync
+    db_url = MIGRATION_URL.replace("postgresql://", "postgresql+asyncpg://") if MIGRATION_URL else os.environ.get("DATABASE_URL", "")
     result = subprocess.run(
         [sys.executable, "-m", "alembic", cmd, arg],
         capture_output=True, text=True, timeout=120,
         cwd=str(BACKEND),
-        env={**os.environ, "APP_ENV": "testing"},
+        env={**os.environ, "DATABASE_URL": db_url, "APP_ENV": "testing"},
     )
     if result.returncode != 0:
         print(result.stdout, file=sys.stderr)
