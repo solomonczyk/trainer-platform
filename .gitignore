@@ -41,3 +41,6 @@ frontend/docs/
 # Generated files
 docs/openapi_schema.json
 *.tsbuildinfo
+
+# Claude Code local agent state
+.claude/
