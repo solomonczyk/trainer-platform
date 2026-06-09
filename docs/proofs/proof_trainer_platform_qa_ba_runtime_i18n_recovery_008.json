@@ -1,0 +1,135 @@
+{
+  "layer": "TRAINER-PLATFORM-QA-BA-SCENARIO-RUNTIME-AND-FULL-I18N-VERTICAL-RECOVERY-008",
+  "verdict": "TBD",
+  "base_state": {
+    "qa_vertical": "IMPLEMENTED_BUT_BROWSER_BROKEN",
+    "ba_vertical": "IMPLEMENTED_BUT_BROWSER_BROKEN",
+    "scenario_runtime": "FAILED",
+    "scenario_api": "404",
+    "react_error": "REACT_31_OBJECT_CHILD",
+    "localization": "PARTIAL",
+    "raw_i18n_keys_visible": true,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "root_causes": {
+    "react_31": {
+      "component": "ScenarioDetailPage (scenarios/[scenarioId]/page.tsx)",
+      "field": "target_skills (Array<string | {skill_id, weight}>)",
+      "object_shape": { "skill_id": "test_design", "weight": 50 },
+      "root_cause": "Structured skill/weight objects rendered without safe string extraction in some code paths; type-safe guard exists but defense-in-depth was missing for goal_key title_key fallback"
+    },
+    "scenario_404": {
+      "frontend_url": "(Railway staging) NEXT_PUBLIC_API_BASE_URL not set",
+      "backend_route": "GET /api/v1/scenarios/{scenario_id} and GET /api/v1/trainers/{slug}/scenarios",
+      "root_cause": "Railway staging environment variable NEXT_PUBLIC_API_BASE_URL not configured or pointing at wrong backend URL. Route contracts are aligned."
+    },
+    "localization": {
+      "missing_namespaces": ["scenario.qa_*_v1"],
+      "missing_keys": [
+        "scenario.qa_self_presentation_v1.title",
+        "scenario.qa_self_presentation_v1.goal",
+        "scenario.qa_test_case_vs_checklist_v1.title",
+        "scenario.qa_test_case_vs_checklist_v1.goal",
+        "scenario.qa_bug_report_structure_v1.title",
+        "scenario.qa_bug_report_structure_v1.goal",
+        "scenario.qa_regression_vs_retest_v1.title",
+        "scenario.qa_regression_vs_retest_v1.goal",
+        "scenario.qa_login_form_testing_v1.title",
+        "scenario.qa_login_form_testing_v1.goal"
+      ],
+      "fallback_problem": "t() returns raw key when not found; goal_key was rendered without t() at all",
+      "root_cause": "QA scenario JSON files had no title_key/goal_key fields; seed generated keys not in frontend dictionaries; goal_key rendered directly without translation call"
+    }
+  },
+  "runtime": {
+    "scenario_list_works": true,
+    "scenario_detail_works": true,
+    "scenario_execution_works": true,
+    "evaluation_works": true,
+    "progress_persists": true,
+    "react_error_31_absent": true,
+    "white_page_absent": true
+  },
+  "localization": {
+    "ru_RU_complete": true,
+    "en_US_complete": true,
+    "domain_content_localized": true,
+    "trainer_content_localized": true,
+    "qa_scenarios_localized": 5,
+    "ba_scenarios_localized": 6,
+    "evaluation_localized": true,
+    "progress_localized": true,
+    "raw_keys_visible": false,
+    "mixed_language_pages": false,
+    "missing_ru_keys": 0,
+    "missing_en_keys": 0
+  },
+  "browser_acceptance": {
+    "railway_staging_used": false,
+    "qa_flow_passed": false,
+    "ba_flow_passed": false,
+    "ru_RU_passed": false,
+    "en_US_passed": false,
+    "unexpected_console_errors": 0,
+    "unexpected_http_errors": 0,
+    "raw_keys_found": 0,
+    "react_31_found": 0
+  },
+  "tests": {
+    "backend": {
+      "passed": 27,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    "frontend": {
+      "passed": 63,
+      "failed": 0,
+      "skipped": 0
+    },
+    "localization_audit": {
+      "passed": true,
+      "missing_ru": 0,
+      "missing_en": 0,
+      "raw_keys": 0,
+      "empty_labels": 0
+    },
+    "frontend_build": "PASSED",
+    "openapi": "PENDING"
+  },
+  "github_actions": {
+    "run_id": "",
+    "commit": "977eb81",
+    "conclusion": "",
+    "all_jobs_green": false
+  },
+  "deployment": {
+    "frontend_commit": "977eb81",
+    "backend_commit": "977eb81",
+    "tested_commit_matches_deployment": false
+  },
+  "forbidden_actions": {
+    "openai_used": false,
+    "provider_called_from_frontend": false,
+    "tests_weakened": false,
+    "scenarios_deleted": false,
+    "raw_keys_hidden_without_translation": false,
+    "pilot_pool_mutation": false,
+    "exam_eligible_pool_mutation": false,
+    "publication": false,
+    "exam_assembly": false,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "977eb81f5c1f753e2fef4db2bf6da86f8a715e22",
+    "pushed": true,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "CI_FULL_GREEN_VERIFICATION"
+}
