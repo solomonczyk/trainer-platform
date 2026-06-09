@@ -1325,6 +1325,346 @@
         ]
       }
     },
+    "/api/v1/quests": {
+      "get": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "List all available quests",
+        "description": "Returns metadata for all registered quests.",
+        "operationId": "list_quests_api_v1_quests_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quests/{quest_id}/start": {
+      "post": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "Start or resume a quest",
+        "description": "Start or resume an immersive quest session.",
+        "operationId": "start_quest_endpoint_api_v1_quests__quest_id__start_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "quest_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Quest Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestStartRequest",
+                "default": {
+                  "locale": "ru-RU"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestStartResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quests/sessions/{session_id}/step": {
+      "get": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "Get current step for a quest session",
+        "description": "Get the current step with narrative state.",
+        "operationId": "get_current_step_endpoint_api_v1_quests_sessions__session_id__step_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestStepResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quests/sessions/{session_id}/answer": {
+      "post": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "Submit answer and evaluate for a quest step",
+        "description": "Submit an answer for the current step. Evaluates deterministically or via AI rubric.",
+        "operationId": "submit_answer_endpoint_api_v1_quests_sessions__session_id__answer_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestAnswerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestAnswerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quests/sessions/{session_id}/retry": {
+      "post": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "Retry evaluation for a failed/timed-out step",
+        "description": "Explicitly retry AI evaluation for a failed or timed-out step.",
+        "operationId": "retry_evaluation_endpoint_api_v1_quests_sessions__session_id__retry_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestAnswerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestAnswerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quests/sessions/{session_id}/complete": {
+      "post": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "Complete quest and return outcome + debrief",
+        "description": "Complete the quest and receive outcome and educational debrief.",
+        "operationId": "complete_quest_endpoint_api_v1_quests_sessions__session_id__complete_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestOutcomeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quests/sessions/{session_id}/progress": {
+      "get": {
+        "tags": [
+          "Quests"
+        ],
+        "summary": "Get quest progress (for refresh resume)",
+        "description": "Get progress for an existing quest session (supports refresh resume).",
+        "operationId": "get_quest_progress_endpoint_api_v1_quests_sessions__session_id__progress_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestProgressResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/certification-core/competency-frameworks": {
       "get": {
         "tags": [
@@ -6024,6 +6364,43 @@
         "title": "AdminAnalyticsSanityResponse",
         "description": "Analytics event sanity check."
       },
+      "AiRubric": {
+        "properties": {
+          "rubric_version": {
+            "type": "string",
+            "title": "Rubric Version",
+            "default": "1.0.0"
+          },
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/RubricCriterion"
+            },
+            "type": "array",
+            "title": "Criteria",
+            "default": []
+          },
+          "minimum_pass_score": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Minimum Pass Score",
+            "default": 60
+          },
+          "evaluation_prompt_key": {
+            "type": "string",
+            "title": "Evaluation Prompt Key",
+            "default": ""
+          },
+          "system_prompt_key": {
+            "type": "string",
+            "title": "System Prompt Key",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "AiRubric",
+        "description": "Rubric contract for AI evaluation."
+      },
       "AllProgressResponse": {
         "properties": {
           "progress_list": {
@@ -6538,6 +6915,62 @@
           "sort_order"
         ],
         "title": "BlueprintSectionResponse"
+      },
+      "ChoiceOption": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "text_key": {
+            "type": "string",
+            "title": "Text Key"
+          },
+          "is_correct": {
+            "type": "boolean",
+            "title": "Is Correct",
+            "default": false
+          },
+          "consequence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuestConsequence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "next_step_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Step Id"
+          },
+          "dialogue_response": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dialogue Response"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "text_key"
+        ],
+        "title": "ChoiceOption",
+        "description": "Option for choice-based steps (single, multiple, decision)."
       },
       "CompetencyCreate": {
         "properties": {
@@ -7137,6 +7570,38 @@
         ],
         "title": "CriterionResultResponse",
         "description": "Single criterion evaluation result."
+      },
+      "DebriefContract": {
+        "properties": {
+          "sections": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sections",
+            "default": [
+              "strengths",
+              "mistakes",
+              "missed_risks",
+              "decision_consequences",
+              "professional_recommendation",
+              "practical_takeaways",
+              "skill_profile",
+              "suggested_next_practice"
+            ]
+          },
+          "skill_dimensions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skill Dimensions",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "DebriefContract",
+        "description": "Defines how debrief data is structured."
       },
       "DecisionSummary": {
         "properties": {
@@ -7981,6 +8446,41 @@
         ],
         "title": "EvaluationResponse",
         "description": "Full evaluation result for an attempt."
+      },
+      "EvidenceItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "text_key": {
+            "type": "string",
+            "title": "Text Key"
+          },
+          "is_relevant": {
+            "type": "boolean",
+            "title": "Is Relevant",
+            "default": false
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "text_key"
+        ],
+        "title": "EvidenceItem",
+        "description": "Item in an evidence selection step."
       },
       "ExamBlueprintCreate": {
         "properties": {
@@ -10499,6 +10999,108 @@
         "title": "ModuleActivitiesResponse",
         "description": "List of activities in a module (public, no correct answers)."
       },
+      "NextStepRule": {
+        "properties": {
+          "default": {
+            "type": "string",
+            "title": "Default",
+            "default": ""
+          },
+          "by_choice": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "By Choice",
+            "default": {}
+          },
+          "by_flag": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "By Flag",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "NextStepRule",
+        "description": "Rule for determining the next step after a step is completed."
+      },
+      "OrderingItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "text_key": {
+            "type": "string",
+            "title": "Text Key"
+          },
+          "correct_order": {
+            "type": "integer",
+            "title": "Correct Order",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "text_key"
+        ],
+        "title": "OrderingItem",
+        "description": "Item in an ordering step."
+      },
+      "OutcomeDefinition": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "title": "Outcome Id"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "summary_key": {
+            "type": "string",
+            "title": "Summary Key"
+          },
+          "condition_flag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Condition Flag"
+          },
+          "min_decision_quality": {
+            "type": "integer",
+            "title": "Min Decision Quality",
+            "default": 0
+          },
+          "min_team_trust": {
+            "type": "integer",
+            "title": "Min Team Trust",
+            "default": 0
+          },
+          "is_default": {
+            "type": "boolean",
+            "title": "Is Default",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "title_key",
+          "summary_key"
+        ],
+        "title": "OutcomeDefinition",
+        "description": "A possible quest outcome."
+      },
       "ProgressSummaryResponse": {
         "properties": {
           "trainer_slug": {
@@ -10684,6 +11286,691 @@
         ],
         "title": "ProvenanceResponse",
         "description": "Complete provenance record."
+      },
+      "QuestAnswerRequest": {
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "title": "Step Id"
+          },
+          "answer": {
+            "title": "Answer"
+          },
+          "idempotency_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idempotency Key"
+          },
+          "locale": {
+            "type": "string",
+            "title": "Locale",
+            "default": "ru-RU"
+          }
+        },
+        "type": "object",
+        "required": [
+          "step_id"
+        ],
+        "title": "QuestAnswerRequest",
+        "description": "Request to submit an answer for a step."
+      },
+      "QuestAnswerResponse": {
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "title": "Step Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "max_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Score"
+          },
+          "correct": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correct"
+          },
+          "feedback_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback Key"
+          },
+          "feedback_data": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback Data"
+          },
+          "consequence_updates": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consequence Updates"
+          },
+          "narrative_state": {
+            "type": "object",
+            "title": "Narrative State",
+            "default": {}
+          },
+          "next_step": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuestStep"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "next_step_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Step Id"
+          },
+          "evaluation_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evaluation Mode"
+          },
+          "timed_out": {
+            "type": "boolean",
+            "title": "Timed Out",
+            "default": false
+          },
+          "correlation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlation Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "step_id",
+          "status"
+        ],
+        "title": "QuestAnswerResponse",
+        "description": "Response after submitting and evaluating a step answer."
+      },
+      "QuestConsequence": {
+        "properties": {
+          "risk": {
+            "type": "integer",
+            "title": "Risk",
+            "default": 0
+          },
+          "time_remaining": {
+            "type": "integer",
+            "title": "Time Remaining",
+            "default": 0
+          },
+          "team_trust": {
+            "type": "integer",
+            "title": "Team Trust",
+            "default": 0
+          },
+          "client_trust": {
+            "type": "integer",
+            "title": "Client Trust",
+            "default": 0
+          },
+          "evidence_quality": {
+            "type": "integer",
+            "title": "Evidence Quality",
+            "default": 0
+          },
+          "decision_quality": {
+            "type": "integer",
+            "title": "Decision Quality",
+            "default": 0
+          },
+          "flags": {
+            "type": "object",
+            "title": "Flags",
+            "default": {}
+          },
+          "next_step_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Step Id"
+          }
+        },
+        "type": "object",
+        "title": "QuestConsequence",
+        "description": "Consequence updates applied after a step or choice."
+      },
+      "QuestDefinition": {
+        "properties": {
+          "quest_id": {
+            "type": "string",
+            "title": "Quest Id"
+          },
+          "trainer_slug": {
+            "type": "string",
+            "title": "Trainer Slug"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "default": "1.0.0"
+          },
+          "locale": {
+            "type": "string",
+            "title": "Locale",
+            "default": "ru-RU"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "summary_key": {
+            "type": "string",
+            "title": "Summary Key"
+          },
+          "learner_role_key": {
+            "type": "string",
+            "title": "Learner Role Key"
+          },
+          "mission_key": {
+            "type": "string",
+            "title": "Mission Key"
+          },
+          "setting_key": {
+            "type": "string",
+            "title": "Setting Key"
+          },
+          "estimated_minutes": {
+            "type": "integer",
+            "title": "Estimated Minutes",
+            "default": 30
+          },
+          "initial_state": {
+            "type": "object",
+            "title": "Initial State",
+            "default": {}
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/QuestStep"
+            },
+            "type": "array",
+            "title": "Steps",
+            "default": []
+          },
+          "outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/OutcomeDefinition"
+            },
+            "type": "array",
+            "title": "Outcomes",
+            "default": []
+          },
+          "debrief_contract": {
+            "$ref": "#/components/schemas/DebriefContract",
+            "default": {
+              "sections": [
+                "strengths",
+                "mistakes",
+                "missed_risks",
+                "decision_consequences",
+                "professional_recommendation",
+                "practical_takeaways",
+                "skill_profile",
+                "suggested_next_practice"
+              ],
+              "skill_dimensions": []
+            }
+          },
+          "characters": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Characters",
+            "default": []
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "quest_id",
+          "trainer_slug",
+          "title_key",
+          "summary_key",
+          "learner_role_key",
+          "mission_key",
+          "setting_key"
+        ],
+        "title": "QuestDefinition",
+        "description": "Complete typed quest definition."
+      },
+      "QuestOutcomeResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "outcome_id": {
+            "type": "string",
+            "title": "Outcome Id"
+          },
+          "outcome_title_key": {
+            "type": "string",
+            "title": "Outcome Title Key"
+          },
+          "outcome_summary_key": {
+            "type": "string",
+            "title": "Outcome Summary Key"
+          },
+          "narrative_state": {
+            "type": "object",
+            "title": "Narrative State"
+          },
+          "debrief": {
+            "type": "object",
+            "title": "Debrief"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "completed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "outcome_id",
+          "outcome_title_key",
+          "outcome_summary_key",
+          "narrative_state",
+          "debrief"
+        ],
+        "title": "QuestOutcomeResponse",
+        "description": "Response for quest completion with outcome and debrief."
+      },
+      "QuestProgressResponse": {
+        "properties": {
+          "session_found": {
+            "type": "boolean",
+            "title": "Session Found"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "quest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuestDefinition"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_step": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuestStep"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "narrative_state": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Narrative State"
+          },
+          "completed_step_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Completed Step Ids",
+            "default": []
+          },
+          "answers": {
+            "type": "object",
+            "title": "Answers",
+            "default": {}
+          },
+          "step_results": {
+            "type": "object",
+            "title": "Step Results",
+            "default": {}
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": ""
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "debrief": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debrief"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_found"
+        ],
+        "title": "QuestProgressResponse",
+        "description": "Response for quest session progress (used on refresh)."
+      },
+      "QuestStartRequest": {
+        "properties": {
+          "locale": {
+            "type": "string",
+            "title": "Locale",
+            "default": "ru-RU"
+          }
+        },
+        "type": "object",
+        "title": "QuestStartRequest",
+        "description": "Request to start a quest."
+      },
+      "QuestStartResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "quest": {
+            "$ref": "#/components/schemas/QuestDefinition"
+          },
+          "current_step": {
+            "$ref": "#/components/schemas/QuestStep"
+          },
+          "narrative_state": {
+            "type": "object",
+            "title": "Narrative State"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "started"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "quest",
+          "current_step",
+          "narrative_state"
+        ],
+        "title": "QuestStartResponse",
+        "description": "Response when starting a quest."
+      },
+      "QuestStep": {
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "title": "Step Id"
+          },
+          "step_type": {
+            "type": "string",
+            "enum": [
+              "single_choice",
+              "multiple_choice",
+              "free_text",
+              "ordering",
+              "matching",
+              "evidence_select",
+              "decision",
+              "dialogue",
+              "branching"
+            ],
+            "title": "Step Type"
+          },
+          "story_context_key": {
+            "type": "string",
+            "title": "Story Context Key"
+          },
+          "prompt_key": {
+            "type": "string",
+            "title": "Prompt Key"
+          },
+          "interaction": {
+            "$ref": "#/components/schemas/StepInteraction",
+            "default": {
+              "options": [],
+              "choices": [],
+              "min_selections": 1,
+              "max_selections": 0,
+              "items": [],
+              "shuffle": true,
+              "left_items": [],
+              "right_items": [],
+              "correct_mappings": {},
+              "evidence_items": [],
+              "min_select": 1,
+              "max_select": 0,
+              "max_length": 3000,
+              "min_length": 50,
+              "placeholder_key": "",
+              "guidance_key": "",
+              "character_says_key": "",
+              "predefined_responses": [],
+              "allow_free_text": false
+            }
+          },
+          "evaluation_mode": {
+            "type": "string",
+            "enum": [
+              "deterministic",
+              "ai_rubric",
+              "hybrid"
+            ],
+            "title": "Evaluation Mode",
+            "default": "deterministic"
+          },
+          "consequences": {
+            "$ref": "#/components/schemas/QuestConsequence",
+            "default": {
+              "risk": 0,
+              "time_remaining": 0,
+              "team_trust": 0,
+              "client_trust": 0,
+              "evidence_quality": 0,
+              "decision_quality": 0,
+              "flags": {}
+            }
+          },
+          "next_step_rules": {
+            "$ref": "#/components/schemas/NextStepRule",
+            "default": {
+              "default": "",
+              "by_choice": {},
+              "by_flag": {}
+            }
+          },
+          "learning_objectives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Learning Objectives",
+            "default": []
+          },
+          "skill_bindings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skill Bindings",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "step_id",
+          "step_type",
+          "story_context_key",
+          "prompt_key"
+        ],
+        "title": "QuestStep",
+        "description": "A single step in a quest."
+      },
+      "QuestStepResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "step": {
+            "$ref": "#/components/schemas/QuestStep"
+          },
+          "narrative_state": {
+            "type": "object",
+            "title": "Narrative State"
+          },
+          "completed_step_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Completed Step Ids",
+            "default": []
+          },
+          "answers": {
+            "type": "object",
+            "title": "Answers",
+            "default": {}
+          },
+          "step_result": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step Result"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "step",
+          "narrative_state"
+        ],
+        "title": "QuestStepResponse",
+        "description": "Response for fetching a quest step."
       },
       "RegisterRequest": {
         "properties": {
@@ -11622,6 +12909,39 @@
         ],
         "title": "RubricCreate"
       },
+      "RubricCriterion": {
+        "properties": {
+          "criterion_id": {
+            "type": "string",
+            "title": "Criterion Id"
+          },
+          "weight": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Weight"
+          },
+          "description_key": {
+            "type": "string",
+            "title": "Description Key"
+          },
+          "max_score": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Max Score",
+            "default": 100
+          }
+        },
+        "type": "object",
+        "required": [
+          "criterion_id",
+          "weight",
+          "description_key"
+        ],
+        "title": "RubricCriterion",
+        "description": "Single criterion in an AI evaluation rubric."
+      },
       "RubricCriterionCreate": {
         "properties": {
           "criterion_id": {
@@ -12260,6 +13580,142 @@
         ],
         "title": "StartScenarioResponse",
         "description": "Response returned when a user starts a scenario."
+      },
+      "StepInteraction": {
+        "properties": {
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/ChoiceOption"
+            },
+            "type": "array",
+            "title": "Options",
+            "default": []
+          },
+          "choices": {
+            "items": {
+              "$ref": "#/components/schemas/ChoiceOption"
+            },
+            "type": "array",
+            "title": "Choices",
+            "default": []
+          },
+          "min_selections": {
+            "type": "integer",
+            "title": "Min Selections",
+            "default": 1
+          },
+          "max_selections": {
+            "type": "integer",
+            "title": "Max Selections",
+            "default": 0
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OrderingItem"
+            },
+            "type": "array",
+            "title": "Items",
+            "default": []
+          },
+          "shuffle": {
+            "type": "boolean",
+            "title": "Shuffle",
+            "default": true
+          },
+          "left_items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Left Items",
+            "default": []
+          },
+          "right_items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Right Items",
+            "default": []
+          },
+          "correct_mappings": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Correct Mappings",
+            "default": {}
+          },
+          "evidence_items": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceItem"
+            },
+            "type": "array",
+            "title": "Evidence Items",
+            "default": []
+          },
+          "min_select": {
+            "type": "integer",
+            "title": "Min Select",
+            "default": 1
+          },
+          "max_select": {
+            "type": "integer",
+            "title": "Max Select",
+            "default": 0
+          },
+          "max_length": {
+            "type": "integer",
+            "title": "Max Length",
+            "default": 3000
+          },
+          "min_length": {
+            "type": "integer",
+            "title": "Min Length",
+            "default": 50
+          },
+          "placeholder_key": {
+            "type": "string",
+            "title": "Placeholder Key",
+            "default": ""
+          },
+          "guidance_key": {
+            "type": "string",
+            "title": "Guidance Key",
+            "default": ""
+          },
+          "character_says_key": {
+            "type": "string",
+            "title": "Character Says Key",
+            "default": ""
+          },
+          "predefined_responses": {
+            "items": {
+              "$ref": "#/components/schemas/ChoiceOption"
+            },
+            "type": "array",
+            "title": "Predefined Responses",
+            "default": []
+          },
+          "allow_free_text": {
+            "type": "boolean",
+            "title": "Allow Free Text",
+            "default": false
+          },
+          "ai_rubric": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AiRubric"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "StepInteraction",
+        "description": "The interaction payload for a step."
       },
       "SubmitMessageRequest": {
         "properties": {

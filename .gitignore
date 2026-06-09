@@ -44,3 +44,6 @@ docs/openapi_schema.json
 
 # Claude Code local agent state
 .claude/
+documents/
+backend/docs/openapi_schema.json
+backend/scripts/

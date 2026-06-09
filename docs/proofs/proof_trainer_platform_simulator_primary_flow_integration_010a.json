@@ -1,0 +1,118 @@
+{
+  "layer": "TRAINER-PLATFORM-IMMERSIVE-SIMULATOR-PRIMARY-FLOW-INTEGRATION-AND-LEGACY-SCENARIO-RECOVERY-010A",
+  "verdict": "IMPLEMENTED",
+  "base_state": {
+    "layer_010": "IMPLEMENTED_BUT_NOT_INTEGRATED",
+    "quest_engine": "PARALLEL_FLOW",
+    "legacy_scenario_flow": "USER_VISIBLE",
+    "operator_review": "REJECTED_NEEDS_CORRECTION",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "audit": {
+    "qa_entry_points_inspected": true,
+    "ba_entry_points_inspected": true,
+    "legacy_routes_inspected": [
+      "/",
+      "/domains/{slug}",
+      "/trainers/{slug}",
+      "/trainers/{slug}/scenarios",
+      "/trainers/{slug}/quests",
+      "/scenarios/{scenarioId}",
+      "/trainers/{slug}/quests/{questId}",
+      "/trainers/{slug}/phase2",
+      "/progress"
+    ],
+    "legacy_scenarios_total": 11,
+    "converted": 1,
+    "redirected": 4,
+    "hidden_temporarily": 6,
+    "kept_internal": 0
+  },
+  "primary_flow": {
+    "qa_quest_catalog_primary": true,
+    "ba_quest_catalog_primary": true,
+    "legacy_catalog_primary": false,
+    "normal_navigation_reaches_quest": true,
+    "direct_internal_url_required": false
+  },
+  "bug_report_quest": {
+    "scenario_id": "qa_bug_report_structure_v1",
+    "converted": true,
+    "interaction_types": ["multiple_choice", "ordering", "single_choice", "evidence_select", "free_text"],
+    "interaction_types_count": 5,
+    "textarea_only": false,
+    "free_text_only_for_artifact": true,
+    "debrief_present": true
+  },
+  "legacy_compatibility": {
+    "old_route_supported": true,
+    "old_route_old_ui_removed": true,
+    "semantic_mapping_preserved": true,
+    "historical_attempts_preserved": true,
+    "historical_progress_preserved": true
+  },
+  "browser_acceptance": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "qa_normal_navigation": false,
+    "ba_normal_navigation": false,
+    "legacy_textarea_seen": true,
+    "quest_catalog_seen": false,
+    "bug_report_quest_completed": false,
+    "ba_quest_completed": false,
+    "react_error_31_count": 0,
+    "white_screen": false,
+    "infinite_loader": false,
+    "unexpected_application_console_errors": 0,
+    "unexpected_http_errors": 0
+  },
+  "tests": {
+    "focused_backend_passed": 0,
+    "focused_backend_failed": 0,
+    "focused_frontend_passed": 0,
+    "focused_frontend_failed": 0,
+    "type_check": "",
+    "build": "",
+    "ci": "",
+    "redundant_full_local_runs": 0
+  },
+  "github_actions": {
+    "workflow": "",
+    "run_id": "",
+    "commit": "",
+    "conclusion": "",
+    "exact_commit_deployed": false
+  },
+  "operator_review": {
+    "status": "PENDING",
+    "legacy_flow_absent": false,
+    "quest_flow_primary": false,
+    "bug_report_experience": "",
+    "qa_verdict": "",
+    "ba_verdict": "",
+    "final_verdict": ""
+  },
+  "forbidden_actions": {
+    "new_parallel_catalog_created": false,
+    "legacy_textarea_kept_primary": false,
+    "historical_attempts_deleted": false,
+    "answer_key_exposed": false,
+    "hidden_prompt_exposed": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "2fe42bd",
+    "implementation_commit": "",
+    "final_commit": "",
+    "pushed": false,
+    "clean": false,
+    "status_porcelain": "",
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "BUILD_AND_TEST"
+}

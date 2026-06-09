@@ -581,8 +581,235 @@ BA_QUEST = QuestDefinition(
 )
 
 
+# ============================================================================
+# QA MINI-QUEST — Bug Report Structure (converted from legacy scenario)
+# ============================================================================
+
+QA_BUG_REPORT_MINI_QUEST = QuestDefinition(
+    quest_id="qa_bug_report_structure_v1",
+    trainer_slug="qa_engineer_interview_trainer",
+    version="1.0.0",
+    locale="ru-RU",
+    title_key="quest.qa.bug_report.title",
+    summary_key="quest.qa.bug_report.summary",
+    learner_role_key="quest.qa.bug_report.role",
+    mission_key="quest.qa.bug_report.mission",
+    setting_key="quest.qa.bug_report.setting",
+    estimated_minutes=15,
+    tags=["qa", "bug_reporting", "defect_tracking"],
+    characters=[
+        {
+            "id": "qa_lead",
+            "name_key": "quest.qa.bug_report.characters.lead",
+            "role_key": "quest.qa.bug_report.characters.lead_role",
+        },
+    ],
+    initial_state={
+        "risk": 20,
+        "time_remaining": 100,
+        "team_trust": 80,
+        "client_trust": 80,
+        "evidence_quality": 0,
+        "decision_quality": 0,
+    },
+    steps=[
+        # ---- Step 1: Multiple Choice — Required Fields ----
+        {
+            "step_id": "br_step_01_required_fields",
+            "step_type": "multiple_choice",
+            "story_context_key": "quest.qa.bug_report.step01.context",
+            "prompt_key": "quest.qa.bug_report.step01.prompt",
+            "interaction": {
+                "choices": [
+                    {"id": "title", "text_key": "quest.qa.bug_report.step01.opt_title", "is_correct": True},
+                    {"id": "description", "text_key": "quest.qa.bug_report.step01.opt_description", "is_correct": True},
+                    {"id": "environment", "text_key": "quest.qa.bug_report.step01.opt_environment", "is_correct": True},
+                    {"id": "steps_to_reproduce", "text_key": "quest.qa.bug_report.step01.opt_steps", "is_correct": True},
+                    {"id": "actual_result", "text_key": "quest.qa.bug_report.step01.opt_actual", "is_correct": True},
+                    {"id": "expected_result", "text_key": "quest.qa.bug_report.step01.opt_expected", "is_correct": True},
+                    {"id": "severity", "text_key": "quest.qa.bug_report.step01.opt_severity", "is_correct": True},
+                    {"id": "priority", "text_key": "quest.qa.bug_report.step01.opt_priority", "is_correct": True},
+                    {"id": "assignee_name", "text_key": "quest.qa.bug_report.step01.opt_assignee", "is_correct": False},
+                    {"id": "sprint_name", "text_key": "quest.qa.bug_report.step01.opt_sprint", "is_correct": False},
+                    {"id": "developer_estimate", "text_key": "quest.qa.bug_report.step01.opt_estimate", "is_correct": False},
+                ],
+                "min_selections": 6,
+                "max_selections": 11,
+            },
+            "evaluation_mode": "deterministic",
+            "consequences": {"evidence_quality": 15, "decision_quality": 5},
+            "next_step_rules": {"default": "br_step_02_ordering"},
+            "learning_objectives": ["quest.qa.bug_report.lo.fields"],
+            "skill_bindings": ["bug_reporting", "technical_accuracy"],
+        },
+        # ---- Step 2: Ordering — Arrange Bug Report Fields ----
+        {
+            "step_id": "br_step_02_ordering",
+            "step_type": "ordering",
+            "story_context_key": "quest.qa.bug_report.step02.context",
+            "prompt_key": "quest.qa.bug_report.step02.prompt",
+            "interaction": {
+                "items": [
+                    {"id": "summary_title", "text_key": "quest.qa.bug_report.step02.item_title", "correct_order": 1},
+                    {"id": "environment_info", "text_key": "quest.qa.bug_report.step02.item_env", "correct_order": 2},
+                    {"id": "preconditions", "text_key": "quest.qa.bug_report.step02.item_precond", "correct_order": 3},
+                    {"id": "steps_to_repro", "text_key": "quest.qa.bug_report.step02.item_steps", "correct_order": 4},
+                    {"id": "actual_result_reported", "text_key": "quest.qa.bug_report.step02.item_actual", "correct_order": 5},
+                    {"id": "expected_result_reported", "text_key": "quest.qa.bug_report.step02.item_expected", "correct_order": 6},
+                    {"id": "attachments", "text_key": "quest.qa.bug_report.step02.item_attach", "correct_order": 7},
+                ],
+                "shuffle": True,
+            },
+            "evaluation_mode": "deterministic",
+            "consequences": {"evidence_quality": 10, "decision_quality": 10},
+            "next_step_rules": {"default": "br_step_03_severity_priority"},
+            "learning_objectives": ["quest.qa.bug_report.lo.structure"],
+            "skill_bindings": ["bug_reporting", "technical_writing"],
+        },
+        # ---- Step 3: Single Choice — Severity vs Priority ----
+        {
+            "step_id": "br_step_03_severity_priority",
+            "step_type": "single_choice",
+            "story_context_key": "quest.qa.bug_report.step03.context",
+            "prompt_key": "quest.qa.bug_report.step03.prompt",
+            "interaction": {
+                "options": [
+                    {
+                        "id": "severity_is_impact",
+                        "text_key": "quest.qa.bug_report.step03.opt_severity",
+                        "is_correct": True,
+                        "consequence": {"evidence_quality": 15, "decision_quality": 15},
+                    },
+                    {
+                        "id": "severity_is_urgency",
+                        "text_key": "quest.qa.bug_report.step03.opt_urgency",
+                        "is_correct": False,
+                        "consequence": {"evidence_quality": -5, "decision_quality": -5},
+                    },
+                    {
+                        "id": "both_same",
+                        "text_key": "quest.qa.bug_report.step03.opt_same",
+                        "is_correct": False,
+                        "consequence": {"evidence_quality": -10, "decision_quality": -10},
+                    },
+                ]
+            },
+            "evaluation_mode": "deterministic",
+            "consequences": {"decision_quality": 10},
+            "next_step_rules": {"default": "br_step_04_evidence_select"},
+            "learning_objectives": ["quest.qa.bug_report.lo.severity_priority"],
+            "skill_bindings": ["bug_reporting", "technical_accuracy"],
+        },
+        # ---- Step 4: Evidence Select — Find Defects in Bad Report ----
+        {
+            "step_id": "br_step_04_evidence_select",
+            "step_type": "evidence_select",
+            "story_context_key": "quest.qa.bug_report.step04.context",
+            "prompt_key": "quest.qa.bug_report.step04.prompt",
+            "interaction": {
+                "evidence_items": [
+                    {"id": "missing_env", "text_key": "quest.qa.bug_report.step04.ev_missing_env", "is_relevant": True, "category": "defects"},
+                    {"id": "vague_steps", "text_key": "quest.qa.bug_report.step04.ev_vague_steps", "is_relevant": True, "category": "defects"},
+                    {"id": "no_expected_result", "text_key": "quest.qa.bug_report.step04.ev_no_expected", "is_relevant": True, "category": "defects"},
+                    {"id": "subjective_language", "text_key": "quest.qa.bug_report.step04.ev_subjective", "is_relevant": True, "category": "defects"},
+                    {"id": "missing_severity", "text_key": "quest.qa.bug_report.step04.ev_missing_severity", "is_relevant": True, "category": "defects"},
+                    {"id": "good_title", "text_key": "quest.qa.bug_report.step04.ev_good_title", "is_relevant": False, "category": "good"},
+                    {"id": "correct_format", "text_key": "quest.qa.bug_report.step04.ev_correct_format", "is_relevant": False, "category": "good"},
+                ],
+                "min_select": 3,
+                "max_select": 7,
+            },
+            "evaluation_mode": "deterministic",
+            "consequences": {"evidence_quality": 20, "decision_quality": 10},
+            "next_step_rules": {"default": "br_step_05_free_text"},
+            "learning_objectives": ["quest.qa.bug_report.lo.evidence"],
+            "skill_bindings": ["bug_reporting", "analytical_thinking"],
+        },
+        # ---- Step 5: Free Text — Professional Bug Report ----
+        {
+            "step_id": "br_step_05_free_text",
+            "step_type": "free_text",
+            "story_context_key": "quest.qa.bug_report.step05.context",
+            "prompt_key": "quest.qa.bug_report.step05.prompt",
+            "interaction": {
+                "max_length": 3000,
+                "min_length": 100,
+                "placeholder_key": "quest.qa.bug_report.step05.placeholder",
+                "guidance_key": "quest.qa.bug_report.step05.guidance",
+                "ai_rubric": {
+                    "rubric_version": "1.0.0",
+                    "criteria": [
+                        {"criterion_id": "bug_structure", "weight": 0.3, "description_key": "quest.qa.bug_report.rubric.structure", "max_score": 100},
+                        {"criterion_id": "severity_priority", "weight": 0.2, "description_key": "quest.qa.bug_report.rubric.severity", "max_score": 100},
+                        {"criterion_id": "reproduction_steps", "weight": 0.3, "description_key": "quest.qa.bug_report.rubric.reproduction", "max_score": 100},
+                        {"criterion_id": "environment_details", "weight": 0.2, "description_key": "quest.qa.bug_report.rubric.environment", "max_score": 100},
+                    ],
+                    "minimum_pass_score": 60,
+                    "evaluation_prompt_key": "quest.qa.bug_report.rubric.eval_prompt",
+                    "system_prompt_key": "quest.qa.bug_report.rubric.system_prompt",
+                },
+            },
+            "evaluation_mode": "ai_rubric",
+            "next_step_rules": {"default": "__terminal__"},
+            "learning_objectives": ["quest.qa.bug_report.lo.artifact"],
+            "skill_bindings": ["bug_reporting", "technical_writing"],
+        },
+    ],
+    outcomes=[
+        {
+            "outcome_id": "br_excellent",
+            "title_key": "quest.qa.bug_report.outcome.excellent.title",
+            "summary_key": "quest.qa.bug_report.outcome.excellent.summary",
+            "min_decision_quality": 70,
+            "min_evidence_quality": 70,
+        },
+        {
+            "outcome_id": "br_good",
+            "title_key": "quest.qa.bug_report.outcome.good.title",
+            "summary_key": "quest.qa.bug_report.outcome.good.summary",
+            "min_decision_quality": 40,
+            "min_evidence_quality": 40,
+            "is_default": True,
+        },
+        {
+            "outcome_id": "br_needs_practice",
+            "title_key": "quest.qa.bug_report.outcome.needs_practice.title",
+            "summary_key": "quest.qa.bug_report.outcome.needs_practice.summary",
+            "min_decision_quality": 0,
+            "min_evidence_quality": 0,
+        },
+    ],
+    debrief_contract={
+        "sections": [
+            "strengths",
+            "mistakes",
+            "missed_risks",
+            "decision_consequences",
+            "professional_recommendation",
+            "practical_takeaways",
+            "correct_structure",
+            "professional_sample",
+            "lessons_learned",
+            "skill_profile",
+            "suggested_next_practice",
+        ],
+        "skill_dimensions": [
+            "bug_reporting",
+            "technical_accuracy",
+            "analytical_thinking",
+            "technical_writing",
+            "defect_triage",
+        ],
+    },
+)
+
+
+# ============================================================================
 # Registry of all quests by quest_id
+# ============================================================================
+
 QUEST_REGISTRY: dict[str, QuestDefinition] = {
     "qa_payment_defect_release": QA_QUEST,
     "ba_payment_requirements_conflict": BA_QUEST,
+    "qa_bug_report_structure_v1": QA_BUG_REPORT_MINI_QUEST,
 }

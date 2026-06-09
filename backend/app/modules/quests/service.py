@@ -109,12 +109,13 @@ def _select_outcome(quest: QuestDefinition, session) -> str:
     decision_quality = state.get("decision_quality", 0)
     team_trust = state.get("team_trust", 0)
     client_trust = state.get("client_trust", 0)
+    evidence_quality = state.get("evidence_quality", 0)
 
     # Sort outcomes by specificity (most specific first)
     sorted_outcomes = sorted(
         quest.outcomes,
         key=lambda o: (
-            -(o.min_decision_quality or 0) - (o.min_team_trust or 0) - (o.min_client_trust or 0)
+            -(o.min_decision_quality or 0) - (o.min_team_trust or 0) - (o.min_client_trust or 0) - (o.min_evidence_quality or 0)
         ),
     )
 
@@ -123,7 +124,8 @@ def _select_outcome(quest: QuestDefinition, session) -> str:
             continue
         if (decision_quality >= (outcome.min_decision_quality or 0)
                 and team_trust >= (outcome.min_team_trust or 0)
-                and client_trust >= (outcome.min_client_trust or 0)):
+                and client_trust >= (outcome.min_client_trust or 0)
+                and evidence_quality >= (outcome.min_evidence_quality or 0)):
             return outcome.outcome_id
 
     # Fall back to default

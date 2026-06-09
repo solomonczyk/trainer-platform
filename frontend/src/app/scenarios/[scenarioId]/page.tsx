@@ -1,27 +1,64 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { getScenario, startScenario, submitMessage, completeSession } from "@/lib/api/client";
-import { t } from "@/lib/i18n";
+import { getScenario, startScenario, submitMessage, completeSession, sendAnalyticsEvent } from "@/lib/api/client";
+import { t, tl } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
-import { AlertCircle, Play, Send, CheckCircle, Clock, BarChart3, Lightbulb, ArrowLeft } from "lucide-react";
+import { AlertCircle, Play, Send, CheckCircle, Clock, BarChart3, Lightbulb, ArrowLeft, Loader2, Zap } from "lucide-react";
 import Link from "next/link";
 
-type ScenarioState = "idle" | "ready" | "submitting" | "evaluating" | "completed";
+type ScenarioState = "idle" | "ready" | "submitting" | "evaluating" | "completed" | "checking_mapping";
 
 export default function ScenarioPage() {
   const params = useParams();
   const router = useRouter();
   const scenarioId = params?.scenarioId as string;
 
-  const [state, setState] = useState<ScenarioState>("idle");
+  const [state, setState] = useState<ScenarioState>("checking_mapping");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
+
+  // Check scenario-to-quest mapping on mount
+  useEffect(() => {
+    async function checkMapping() {
+      try {
+        const res = await fetch(`/api/v1/scenarios/${scenarioId}/mapping`);
+        if (!res.ok) {
+          // No mapping found, proceed with legacy scenario
+          setState("idle");
+          return;
+        }
+        const mapping = await res.json();
+        if (mapping.mode === "CONVERTED" && mapping.quest_id && mapping.trainer_slug) {
+          // Redirect to immersive quest — quest_id matches scenario_id
+          sendAnalyticsEvent('scenario_quest_redirect', {
+            scenario_id: scenarioId,
+            properties: { quest_id: mapping.quest_id, mode: mapping.mode },
+          });
+          router.replace(`/trainers/${mapping.trainer_slug}/quests/${mapping.quest_id}`);
+          return;
+        }
+        if (mapping.mode === "REDIRECTED" && mapping.quest_id && mapping.trainer_slug) {
+          sendAnalyticsEvent('scenario_quest_redirect', {
+            scenario_id: scenarioId,
+            properties: { quest_id: mapping.quest_id, mode: mapping.mode },
+          });
+          router.replace(`/trainers/${mapping.trainer_slug}/quests/${mapping.quest_id}`);
+          return;
+        }
+        // Fallback: no quest target, show legacy UI
+        setState("idle");
+      } catch {
+        setState("idle");
+      }
+    }
+    checkMapping();
+  }, [scenarioId, router]);
 
   const {
     data: scenario,
@@ -32,7 +69,7 @@ export default function ScenarioPage() {
   } = useQuery({
     queryKey: ["scenario", scenarioId],
     queryFn: () => getScenario(scenarioId),
-    enabled: !!scenarioId,
+    enabled: !!scenarioId && state !== "checking_mapping",
   });
 
   const startMutation = useMutation({
@@ -99,10 +136,11 @@ export default function ScenarioPage() {
     }
   }, [attemptId, router]);
 
-  if (isLoading) {
+  if (isLoading || state === "checking_mapping") {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent" />
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+        <p className="text-sm text-gray-500">{t("common.loading")}</p>
       </div>
     );
   }

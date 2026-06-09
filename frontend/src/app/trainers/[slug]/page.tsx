@@ -132,13 +132,17 @@ export default function TrainerDetailPage() {
               <BookOpen className="h-4 w-4" />
               {trainer.scenario_count} {t("trainer.scenarios").toLowerCase()}
             </span>
+            <span className="flex items-center gap-1 text-sm text-primary-500">
+              <Zap className="h-4 w-4" />
+              {t("trainer.questsAvailable")}
+            </span>
           </div>
 
           {trainer.is_enrolled ? (
             <Button
-              onClick={() => router.push(`/trainers/${slug}/scenarios`)}
+              onClick={() => router.push(`/trainers/${slug}/quests`)}
             >
-              {t("trainer.startScenario")}
+              {t("trainer.startQuest")}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
@@ -202,6 +206,43 @@ export default function TrainerDetailPage() {
                 </Link>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Quest Catalog Section — primary entry */}
+      {trainer.is_enrolled && (
+        <Card padding="lg" className="mb-8 border-primary-200">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary-600" />
+              <CardTitle>{t('trainer.questCatalog')}</CardTitle>
+            </div>
+            <CardDescription>
+              {t('trainer.questCatalogDesc')}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg bg-primary-50 p-4 mb-4 border border-primary-100">
+              <div className="flex items-start gap-3">
+                <Zap className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-primary-800">
+                    {t('trainer.immersiveExperience')}
+                  </p>
+                  <p className="mt-1 text-sm text-primary-700">
+                    {t('trainer.immersiveExperienceDesc')}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={() => router.push(`/trainers/${slug}/quests`)}
+              className="w-full sm:w-auto"
+            >
+              {t('trainer.startQuest')}
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </CardContent>
         </Card>
       )}
@@ -315,14 +356,14 @@ export default function TrainerDetailPage() {
         </Card>
       </div>
 
-      {/* View Scenarios CTA (if enrolled) */}
-      {trainer.is_enrolled && trainer.scenario_count > 0 && (
+      {/* Quest Catalog CTA (if enrolled) — primary entry point */}
+      {trainer.is_enrolled && (
         <div className="mt-8 text-center">
           <Button
             size="lg"
-            onClick={() => router.push(`/trainers/${slug}/scenarios`)}
+            onClick={() => router.push(`/trainers/${slug}/quests`)}
           >
-            {t("trainer.startScenario")}
+            {t("trainer.startQuest")}
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>

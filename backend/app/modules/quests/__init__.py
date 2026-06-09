@@ -186,6 +186,8 @@ class OutcomeDefinition(BaseModel):
     condition_flag: Optional[str] = None
     min_decision_quality: int = 0
     min_team_trust: int = 0
+    min_client_trust: int = 0
+    min_evidence_quality: int = 0
     is_default: bool = False
 
 
