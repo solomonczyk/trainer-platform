@@ -39,8 +39,8 @@ def upgrade() -> None:
     op.create_table(
         "quest_sessions",
         sa.Column("id", sa.String(36), primary_key=True),
-        sa.Column("user_id", sa.String(36), sa.ForeignKey("users.id"), nullable=False, index=True),
-        sa.Column("quest_id", sa.String(100), nullable=False, index=True),
+        sa.Column("user_id", sa.String(36), sa.ForeignKey("users.id"), nullable=False, index=False),
+        sa.Column("quest_id", sa.String(100), nullable=False, index=False),
         sa.Column("trainer_slug", sa.String(100), nullable=False),
         sa.Column("locale", sa.String(10), nullable=False, server_default="ru-RU"),
         sa.Column("status", sa.String(50), nullable=False, server_default="in_progress"),
@@ -70,8 +70,6 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
     )
 
-    op.create_index("ix_quest_sessions_user_id", "quest_sessions", ["user_id"])
-    op.create_index("ix_quest_sessions_quest_id", "quest_sessions", ["quest_id"])
 
     # ---------------------------------------------------------------------------
     # quest_step_results
@@ -82,7 +80,7 @@ def upgrade() -> None:
         sa.Column(
             "quest_session_id", sa.String(36),
             sa.ForeignKey("quest_sessions.id", ondelete="CASCADE"),
-            nullable=False, index=True,
+            nullable=False, index=False,
         ),
         sa.Column("step_id", sa.String(100), nullable=False),
         sa.Column("step_type", sa.String(50), nullable=True),
