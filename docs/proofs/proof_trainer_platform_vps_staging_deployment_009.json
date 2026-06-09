@@ -1,0 +1,102 @@
+{
+  "layer": "TRAINER-PLATFORM-SELF-HOSTED-VPS-STAGING-DEPLOYMENT-AND-RUNTIME-ACCEPTANCE-009",
+  "verdict": "ACCEPTED",
+  "server": {
+    "provider_hostname": "v2202508292476370494.powersrv.de",
+    "public_ipv4": "152.53.227.37",
+    "architecture": "ARM64",
+    "cpu_cores": 6,
+    "memory_mib": 8192,
+    "disk_gib": 256,
+    "os": "Debian GNU/Linux 12 (bookworm) aarch64",
+    "ssh_verified": true,
+    "sudo_verified": true
+  },
+  "security": {
+    "firewall_active": true,
+    "ssh_allowed": true,
+    "http_allowed": true,
+    "https_allowed": true,
+    "postgres_publicly_exposed": false,
+    "backend_publicly_exposed": false,
+    "secrets_committed": false
+  },
+  "deployment": {
+    "hostname": "trainer.152.53.227.37.nip.io",
+    "https_active": true,
+    "certificate_valid": true,
+    "deployed_commit": "96168d1dba195694bca2675a8c1160971e0be579",
+    "frontend_commit": "96168d1dba195694bca2675a8c1160971e0be579",
+    "backend_commit": "96168d1dba195694bca2675a8c1160971e0be579",
+    "tested_commit_matches_deployment": true,
+    "docker_compose_running": true
+  },
+  "services": {
+    "caddy": "HEALTHY",
+    "frontend": "HEALTHY",
+    "backend": "HEALTHY",
+    "postgres": "HEALTHY",
+    "migration_head": "007"
+  },
+  "runtime": {
+    "home_page": true,
+    "api_health": true,
+    "qa_flow": true,
+    "ba_flow": true,
+    "react_error_31_absent": true,
+    "raw_i18n_keys_absent": true,
+    "evaluation_completed": true,
+    "progress_persisted": true
+  },
+  "browser_acceptance": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "qa_ru_RU": true,
+    "qa_en_US": true,
+    "ba_ru_RU": true,
+    "ba_en_US": true,
+    "unexpected_console_errors": 0,
+    "unexpected_http_errors": 0,
+    "screenshots_recorded": true
+  },
+  "backup": {
+    "script_created": true,
+    "schedule_created": true,
+    "backup_executed": true,
+    "restore_documented": true
+  },
+  "cicd": {
+    "github_actions": ".github/workflows/deploy-staging.yml",
+    "deploy_requires_green_ci": true,
+    "exact_commit_deployed": true,
+    "health_check": true,
+    "rollback_defined": true
+  },
+  "fast_path": {
+    "focused_tests_used": true,
+    "ci_primary_full_gate": true,
+    "redundant_full_local_runs": 0,
+    "implementation_commits_before_green_ci": 1
+  },
+  "forbidden_actions": {
+    "disk_formatted": false,
+    "unknown_services_deleted": false,
+    "ssh_access_broken": false,
+    "postgres_exposed": false,
+    "backend_exposed": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "openai_used": false,
+    "production_deployed": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "commit": "96168d1dba195694bca2675a8c1160971e0be579",
+    "pushed": true,
+    "clean": true,
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "VPS_STAGING_RESULT_ACCEPTANCE"
+}
