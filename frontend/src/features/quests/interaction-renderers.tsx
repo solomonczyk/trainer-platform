@@ -30,19 +30,19 @@ export function SingleChoiceRenderer({ step, value, onChange, disabled }: Single
             role="radio"
             aria-checked={isSelected}
             tabIndex={0}
-            className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+            className={`w-full text-left p-5 rounded-xl border-2 transition-all duration-150 ${
               isSelected
-                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600'
-            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500'}`}
+                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-md'
+                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 dark:hover:border-primary-500'
+            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 active:scale-[0.99]'}`}
           >
-            <div className="flex items-center gap-3">
-              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                isSelected ? 'border-primary-500' : 'border-gray-400 dark:border-gray-500'
+            <div className="flex items-center gap-4">
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800'
               }`}>
-                {isSelected && <div className="w-3 h-3 rounded-full bg-primary-500" />}
+                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
               </div>
-              <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+              <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white leading-snug">
                 {tl(option.text_key)}
               </span>
             </div>
@@ -88,23 +88,23 @@ export function MultipleChoiceRenderer({ step, value = [], onChange, disabled }:
             disabled={disabled}
             role="checkbox"
             aria-checked={isSelected}
-            className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+            className={`w-full text-left p-5 rounded-xl border-2 transition-all duration-150 ${
               isSelected
-                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600'
-            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500'}`}
+                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-md'
+                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 dark:hover:border-primary-500'
+            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 active:scale-[0.99]'}`}
           >
-            <div className="flex items-center gap-3">
-              <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 dark:border-gray-500'
+            <div className="flex items-center gap-4">
+              <div className={`w-6 h-6 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800'
               }`}>
                 {isSelected && (
-                  <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 )}
               </div>
-              <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{tl(choice.text_key)}</span>
+              <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white leading-snug">{tl(choice.text_key)}</span>
             </div>
           </button>
         );
@@ -131,10 +131,10 @@ export function FreeTextRenderer({ step, value = '', onChange, disabled }: FreeT
   const guidance = (step.interaction?.guidance_key as string) || '';
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {guidance && (
-        <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 p-4 border border-blue-200 dark:border-blue-800">
-          <p className="text-sm text-blue-700 dark:text-blue-300">{guidance}</p>
+        <div className="rounded-xl bg-blue-50 dark:bg-blue-900/20 p-5 border border-blue-200 dark:border-blue-800">
+          <p className="text-base text-blue-800 dark:text-blue-200 leading-relaxed font-medium">{guidance}</p>
         </div>
       )}
       <textarea
@@ -144,10 +144,10 @@ export function FreeTextRenderer({ step, value = '', onChange, disabled }: FreeT
         placeholder={placeholder}
         rows={8}
         maxLength={maxLength}
-        className="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-3 text-sm shadow-sm placeholder:text-gray-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:opacity-50 disabled:bg-gray-50 dark:disabled:bg-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+        className="block w-full rounded-xl border-2 border-gray-300 dark:border-gray-600 px-5 py-4 text-base shadow-sm placeholder:text-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50 disabled:bg-gray-50 dark:disabled:bg-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 leading-relaxed"
         aria-label="Free text answer"
       />
-      <div className="flex justify-between text-xs text-gray-500">
+      <div className="flex justify-between text-sm font-medium text-gray-600 dark:text-gray-400">
         <span>{minLength > 0 ? `Minimum ${minLength} characters` : ''}</span>
         <span>{value.length > 0 ? `${maxLength - value.length} characters remaining` : ''}</span>
       </div>

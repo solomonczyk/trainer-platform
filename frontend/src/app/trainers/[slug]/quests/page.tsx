@@ -44,11 +44,11 @@ export default function QuestCatalogPage() {
         {tl('quest.back_to_trainer')}
       </button>
 
-      <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
+      <div className="mb-10">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
           {tl('quest.quest_catalog')}
         </h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <p className="mt-3 text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
           {tl('quest.quest_catalog_desc')}
         </p>
       </div>
@@ -75,40 +75,40 @@ export default function QuestCatalogPage() {
       )}
 
       {quests.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {quests.map((q: any) => (
-            <Card key={q.quest_id} padding="lg" className="hover:shadow-md transition-shadow cursor-pointer"
+            <Card key={q.quest_id} padding="lg" className="border-2 border-gray-200 hover:border-primary-400 hover:shadow-lg transition-all duration-200 cursor-pointer bg-white dark:bg-gray-900"
               onClick={() => router.push(`/trainers/${slug}/quests/${q.quest_id}`)}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex-1">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 leading-tight">
                     {tl(q.title_key) !== q.title_key ? tl(q.title_key) : q.title_key}
                   </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">
+                  <p className="text-base sm:text-[16px] text-gray-700 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed">
                     {tl(q.summary_key) !== q.summary_key ? tl(q.summary_key) : q.summary_key}
                   </p>
 
-                  <div className="flex flex-wrap gap-3">
-                    <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                      <Clock className="h-3.5 w-3.5" />
+                  <div className="flex flex-wrap items-center gap-4 mb-3">
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <Clock className="h-4 w-4 text-gray-500" />
                       {q.estimated_minutes} min
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                      <Layers className="h-3.5 w-3.5" />
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <Layers className="h-4 w-4 text-gray-500" />
                       {tl('quest.steps_count').replace('{count}', String(q.steps_count))}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                      <Users className="h-3.5 w-3.5" />
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <Users className="h-4 w-4 text-gray-500" />
                       {q.characters_count} {tl('quest.characters')}
                     </span>
                   </div>
 
                   {/* Interaction type badges */}
-                  <div className="flex flex-wrap gap-1 mt-2">
+                  <div className="flex flex-wrap gap-2">
                     {(q.interaction_types as string[]).map((type: string) => (
                       <span key={type}
-                        className="inline-flex items-center rounded-full bg-primary-50 dark:bg-primary-900/20 px-2 py-0.5 text-[10px] font-medium text-primary-700 dark:text-primary-300"
+                        className="inline-flex items-center rounded-full bg-primary-100 dark:bg-primary-900/40 px-3 py-1 text-sm font-semibold text-primary-800 dark:text-primary-200 border border-primary-200 dark:border-primary-700"
                       >
                         {tl(`quest.step_${type}`)}
                       </span>
@@ -116,9 +116,9 @@ export default function QuestCatalogPage() {
                   </div>
                 </div>
 
-                <div className="flex-shrink-0">
-                  <Button size="sm">
-                    <Play className="h-4 w-4 mr-1" />
+                <div className="flex-shrink-0 self-start sm:self-center">
+                  <Button size="md" className="shadow-sm">
+                    <Play className="h-5 w-5 mr-2" />
                     {tl('quest.start_quest')}
                   </Button>
                 </div>

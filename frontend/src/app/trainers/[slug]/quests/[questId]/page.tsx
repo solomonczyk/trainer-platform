@@ -82,20 +82,20 @@ function NarrativeBar({ state, showLabel = true }: NarrativeBarProps) {
   ];
 
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+    <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
       {bars.map((bar) => {
         const val = state[bar.key] ?? 0;
         const displayVal = bar.invert ? 100 - val : val;
         return (
           <div key={bar.key} className="text-center">
-            <div className="h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-2.5 w-full bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden shadow-inner">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${bar.color}`}
                 style={{ width: `${Math.max(0, Math.min(100, displayVal))}%` }}
               />
             </div>
             {showLabel && (
-              <p className="mt-1 text-[10px] text-gray-500 dark:text-gray-400 truncate">{tl(bar.label)}</p>
+              <p className="mt-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 truncate">{tl(bar.label)}</p>
             )}
           </div>
         );
@@ -406,59 +406,61 @@ export default function QuestPlayPage() {
   if (pageState === 'intro' && quest && currentStep) {
     const totalSteps = quest.steps.length;
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         {/* Step indicator */}
-        <div className="mb-6 flex items-center gap-2 text-sm text-gray-500">
-          <Map className="h-4 w-4" />
+        <div className="mb-8 flex items-center gap-2 text-base font-medium text-gray-600 dark:text-gray-300">
+          <Map className="h-5 w-5" />
           <span>{tl('quest.step_of').replace('{current}', '0').replace('{total}', String(totalSteps))}</span>
         </div>
 
-        <Card padding="lg" className="border-primary-200">
-          <div className="mb-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-900/30 mb-4">
-              <BookOpen className="h-8 w-8 text-primary-600" />
+        <Card padding="lg" className="border-2 border-primary-200 shadow-md">
+          <div className="mb-10 text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary-100 dark:bg-primary-900/30 mb-6">
+              <BookOpen className="h-10 w-10 text-primary-600" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-3 leading-tight">
               {tl(quest.title_key)}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{tl(quest.summary_key)}</p>
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
+              {tl(quest.summary_key)}
+            </p>
           </div>
 
           {/* Role, Mission, Setting */}
-          <div className="space-y-4 mb-8">
-            <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-              <div className="flex items-center gap-2 mb-1">
-                <Target className="h-4 w-4 text-blue-600" />
-                <span className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">{tl('quest.your_role')}</span>
+          <div className="space-y-5 mb-10">
+            <div className="p-5 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Target className="h-5 w-5 text-blue-600" />
+                <span className="text-sm font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">{tl('quest.your_role')}</span>
               </div>
-              <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">{tl(quest.learner_role_key)}</p>
+              <p className="text-base sm:text-lg text-blue-800 dark:text-blue-200 font-semibold">{tl(quest.learner_role_key)}</p>
             </div>
 
-            <div className="p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800">
-              <div className="flex items-center gap-2 mb-1">
-                <Award className="h-4 w-4 text-purple-600" />
-                <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">{tl('quest.mission')}</span>
+            <div className="p-5 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Award className="h-5 w-5 text-purple-600" />
+                <span className="text-sm font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">{tl('quest.mission')}</span>
               </div>
-              <p className="text-sm text-purple-800 dark:text-purple-200">{tl(quest.mission_key)}</p>
+              <p className="text-base sm:text-lg text-purple-800 dark:text-purple-200 leading-relaxed">{tl(quest.mission_key)}</p>
             </div>
 
-            <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-2 mb-1">
-                <Map className="h-4 w-4 text-gray-600" />
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">{tl('quest.setting')}</span>
+            <div className="p-5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-2 mb-2">
+                <Map className="h-5 w-5 text-gray-600" />
+                <span className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">{tl('quest.setting')}</span>
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{tl(quest.setting_key)}</p>
+              <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">{tl(quest.setting_key)}</p>
             </div>
 
             {/* Characters */}
             {quest.characters && quest.characters.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">{tl('quest.characters')}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-3">{tl('quest.characters')}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {quest.characters.map((ch) => (
-                    <div key={ch.id} className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{tl(ch.name_key)}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{tl(ch.role_key)}</p>
+                    <div key={ch.id} className="p-4 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
+                      <p className="text-base font-semibold text-gray-900 dark:text-white">{tl(ch.name_key)}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{tl(ch.role_key)}</p>
                     </div>
                   ))}
                 </div>
@@ -467,12 +469,13 @@ export default function QuestPlayPage() {
           </div>
 
           {/* Narrative bars */}
-          <div className="mb-6">
+          <div className="mb-8">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{tl('quest.narrative_state')}</h3>
             <NarrativeBar state={narrativeState} />
           </div>
 
           <div className="flex justify-center">
-            <Button size="lg" onClick={handleStart} className="w-full sm:w-auto">
+            <Button size="lg" onClick={handleStart} className="w-full sm:w-auto px-8 py-3 text-base shadow-md">
               {tl('quest.start_quest')}
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
@@ -486,6 +489,7 @@ export default function QuestPlayPage() {
   if ((pageState === 'ready' || pageState === 'submitting') && quest && currentStep) {
     const totalSteps = quest.steps.length;
     const isSubmitting = pageState === 'submitting';
+    const progressPercent = totalSteps > 0 ? Math.round((completedStepIds.length / totalSteps) * 100) : 0;
 
     const renderStep = () => {
       const step = currentStep as QuestStepDefinition;
@@ -594,75 +598,83 @@ export default function QuestPlayPage() {
     })();
 
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        {/* Progress Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <Map className="h-4 w-4" />
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+        {/* Progress Header — stepper style */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3 text-base font-semibold text-gray-700 dark:text-gray-300">
+              <Map className="h-5 w-5 text-primary-600" />
               <span>{tl('quest.step_of').replace('{current}', String(stepIndex)).replace('{total}', String(totalSteps))}</span>
             </div>
             {currentStep.evaluation_mode === 'ai_rubric' && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 dark:bg-purple-900/30 px-2.5 py-0.5 text-[10px] font-medium text-purple-700 dark:text-purple-300">
-                <Award className="h-3 w-3" /> AI Evaluated
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 px-3 py-1 text-sm font-semibold text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700">
+                <Award className="h-4 w-4" /> AI Evaluated
               </span>
             )}
           </div>
-          <div className="h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary-500 rounded-full transition-all duration-500"
-              style={{ width: `${(completedStepIds.length / totalSteps) * 100}%` }}
-            />
+          {/* Progress bar with percentage label */}
+          <div className="relative">
+            <div className="h-3 w-full bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden shadow-inner">
+              <div
+                className="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transition-all duration-500"
+                style={{ width: `${Math.max(2, progressPercent)}%` }}
+              />
+            </div>
+            <span className="absolute right-0 -bottom-6 text-sm font-medium text-gray-500 dark:text-gray-400">
+              {completedStepIds.length}/{totalSteps}
+            </span>
           </div>
         </div>
 
         {/* Narrative Status */}
-        <div className="mb-6 p-3 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+        <div className="mb-8 p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{tl('quest.narrative_state')}</h3>
           <NarrativeBar state={narrativeState} />
         </div>
 
-        <Card padding="lg">
+        <Card padding="lg" className="border-2 border-gray-200 shadow-md">
           {/* Story Context */}
           {currentStep.story_context_key && (
-            <div className="mb-6 p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-2 mb-2">
-                <BookOpen className="h-4 w-4 text-gray-600" />
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-600">{tl('quest.story_context')}</span>
+            <div className="mb-8 p-5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-2 mb-3">
+                <BookOpen className="h-5 w-5 text-gray-600" />
+                <span className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">{tl('quest.story_context')}</span>
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                 {tl(currentStep.story_context_key)}
               </p>
             </div>
           )}
 
           {/* Prompt */}
-          <div className="mb-6">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
+          <div className="mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 leading-tight">
               {tl(currentStep.prompt_key)}
             </h2>
-            <p className="text-xs text-gray-500">{tl(`quest.step_${currentStep.step_type}`)}</p>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{tl(`quest.step_${currentStep.step_type}`)}</p>
           </div>
 
           {/* Interaction */}
-          <div className="mb-6">
+          <div className="mb-8">
             {renderStep()}
           </div>
 
           {/* Error message */}
           {errorMessage && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-900/20 p-3 text-sm text-red-700">
-              <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <div className="mb-6 flex items-center gap-3 rounded-lg bg-red-50 dark:bg-red-900/20 p-4 text-base font-medium text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800">
+              <AlertCircle className="h-5 w-5 flex-shrink-0" />
               {errorMessage}
             </div>
           )}
 
           {/* Submit / Next */}
-          <div className="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex justify-end pt-6 border-t-2 border-gray-200 dark:border-gray-700">
             <Button
               onClick={handleSubmit}
               isLoading={isSubmitting}
               disabled={!hasAnswer || isSubmitting}
               size="lg"
+              className="px-8 py-3 text-base shadow-md"
             >
               {isSubmitting ? tl('quest.submitting') : tl('quest.next_step')}
             </Button>
@@ -773,30 +785,33 @@ export default function QuestPlayPage() {
   // OUTCOME
   if (pageState === 'outcome' && outcomeResult) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12">
-        <Card padding="lg" className="text-center">
-          <div className="flex flex-col items-center gap-4 py-4">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/30">
-              <Star className="h-10 w-10 text-primary-600" />
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <Card padding="lg" className="text-center border-2 border-primary-200 shadow-lg">
+          <div className="flex flex-col items-center gap-5 py-6">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary-100 dark:bg-primary-900/30 shadow-inner">
+              <Star className="h-12 w-12 text-primary-600" />
             </div>
 
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{tl('quest.quest_complete')}</h1>
-            <h2 className="text-xl font-semibold text-primary-700 dark:text-primary-300">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
+              {tl('quest.quest_complete')}
+            </h1>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary-700 dark:text-primary-300 max-w-2xl">
               {tl(outcomeResult.outcome_title_key) || ''}
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
               {tl(outcomeResult.outcome_summary_key) || ''}
             </p>
           </div>
 
           {/* Final narrative state */}
-          <div className="my-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+          <div className="my-8 p-5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border-2 border-gray-200 dark:border-gray-700 shadow-sm">
+            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">{tl('quest.narrative_state')}</h3>
             <NarrativeBar state={outcomeResult.narrative_state} />
           </div>
 
-          <div className="flex justify-center gap-3">
-            <Button onClick={handleViewDebrief}>
-              <Lightbulb className="mr-2 h-4 w-4" />
+          <div className="flex justify-center gap-4">
+            <Button onClick={handleViewDebrief} size="lg" className="px-8 py-3 text-base shadow-md">
+              <Lightbulb className="mr-2 h-5 w-5" />
               {tl('quest.view_debrief')}
             </Button>
           </div>
@@ -811,33 +826,33 @@ export default function QuestPlayPage() {
     const narrativeStateData = outcomeResult.narrative_state;
 
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center leading-tight">
           {tl('quest.debrief_title')}
         </h1>
 
         {/* Outcome summary */}
-        <Card padding="lg" className="mb-6 border-primary-200">
-          <h2 className="text-lg font-bold text-primary-800 dark:text-primary-200 mb-2">
+        <Card padding="lg" className="mb-8 border-2 border-primary-200 shadow-md">
+          <h2 className="text-xl sm:text-2xl font-bold text-primary-800 dark:text-primary-200 mb-3 leading-tight">
             {tl(outcomeResult.outcome_title_key) || ''}
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
             {tl(outcomeResult.outcome_summary_key) || ''}
           </p>
         </Card>
 
         {/* Strengths */}
         {Array.isArray(debrief.strengths) && debrief.strengths.length > 0 && (
-          <div className="mb-6">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-green-800 dark:text-green-300">
-              <TrendingUp className="h-5 w-5" />
+          <div className="mb-8">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-green-800 dark:text-green-300">
+              <TrendingUp className="h-6 w-6" />
               {tl('quest.strengths')}
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {(debrief.strengths as string[]).map((s, i) => (
-                <li key={i} className="flex items-start gap-2 rounded-lg bg-green-50 dark:bg-green-900/20 p-3 text-sm text-green-700 dark:text-green-300">
-                  <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                  <span>{tl(s) || s}</span>
+                <li key={i} className="flex items-start gap-3 rounded-xl bg-green-50 dark:bg-green-900/20 p-4 border border-green-200 dark:border-green-800 shadow-sm">
+                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
+                  <span className="text-base sm:text-lg text-green-800 dark:text-green-200 font-medium leading-snug">{tl(s) || s}</span>
                 </li>
               ))}
             </ul>
@@ -846,16 +861,16 @@ export default function QuestPlayPage() {
 
         {/* Mistakes */}
         {Array.isArray(debrief.mistakes) && debrief.mistakes.length > 0 && (
-          <div className="mb-6">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-amber-800 dark:text-amber-300">
-              <Lightbulb className="h-5 w-5" />
+          <div className="mb-8">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-amber-800 dark:text-amber-300">
+              <Lightbulb className="h-6 w-6" />
               {tl('quest.mistakes')}
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {(debrief.mistakes as string[]).map((m, i) => (
-                <li key={i} className="flex items-start gap-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 p-3 text-sm text-amber-700 dark:text-amber-300">
-                  <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                  <span>{tl(m) || m}</span>
+                <li key={i} className="flex items-start gap-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 p-4 border border-amber-200 dark:border-amber-800 shadow-sm">
+                  <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600" />
+                  <span className="text-base sm:text-lg text-amber-800 dark:text-amber-200 font-medium leading-snug">{tl(m) || m}</span>
                 </li>
               ))}
             </ul>
@@ -864,16 +879,16 @@ export default function QuestPlayPage() {
 
         {/* Missed risks */}
         {Array.isArray(debrief.missed_risks) && debrief.missed_risks.length > 0 && (
-          <div className="mb-6">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-red-800 dark:text-red-300">
-              <XCircle className="h-5 w-5" />
+          <div className="mb-8">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-red-800 dark:text-red-300">
+              <XCircle className="h-6 w-6" />
               {tl('quest.missed_risks')}
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {(debrief.missed_risks as string[]).map((r, i) => (
-                <li key={i} className="flex items-start gap-2 rounded-lg bg-red-50 dark:bg-red-900/20 p-3 text-sm text-red-700 dark:text-red-300">
-                  <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                  <span>{tl(r) || r}</span>
+                <li key={i} className="flex items-start gap-3 rounded-xl bg-red-50 dark:bg-red-900/20 p-4 border border-red-200 dark:border-red-800 shadow-sm">
+                  <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-600" />
+                  <span className="text-base sm:text-lg text-red-800 dark:text-red-200 font-medium leading-snug">{tl(r) || r}</span>
                 </li>
               ))}
             </ul>
@@ -882,19 +897,19 @@ export default function QuestPlayPage() {
 
         {/* Skill profile */}
         {Array.isArray(debrief.skill_results) && debrief.skill_results.length > 0 && (
-          <div className="mb-6">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
-              <BarChart3 className="h-5 w-5" />
+          <div className="mb-8">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-800 dark:text-gray-200">
+              <BarChart3 className="h-6 w-6" />
               {tl('quest.skill_profile')}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {(debrief.skill_results as Array<{ skill_id: string; level: string }>).map((sk, i) => (
-                <div key={i} className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{sk.skill_id}</p>
-                  <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
+                <div key={i} className="p-4 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 shadow-sm">
+                  <p className="text-base font-semibold text-gray-900 dark:text-white mb-2">{sk.skill_id}</p>
+                  <span className={`inline-block text-sm font-semibold px-3 py-1 rounded-full ${
                     sk.level === 'practiced'
-                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
-                      : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
+                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700'
+                      : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600'
                   }`}>
                     {sk.level === 'practiced' ? tl('quest.skill_level_practiced') : tl('quest.skill_level_observed')}
                   </span>
@@ -905,19 +920,19 @@ export default function QuestPlayPage() {
         )}
 
         {/* Final narrative state */}
-        <Card padding="md" className="mb-6 bg-gray-50 dark:bg-gray-900/50">
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{tl('quest.narrative_state')}</h3>
+        <Card padding="lg" className="mb-8 bg-gray-50 dark:bg-gray-900/50 border-2 border-gray-200 shadow-sm">
+          <h3 className="text-base font-bold text-gray-700 dark:text-gray-300 mb-4">{tl('quest.narrative_state')}</h3>
           <NarrativeBar state={narrativeStateData} />
         </Card>
 
         {/* Action buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button variant="outline" onClick={handleReset}>
-            <RotateCcw className="mr-2 h-4 w-4" />
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button variant="outline" onClick={handleReset} size="lg" className="px-6 py-3 text-base">
+            <RotateCcw className="mr-2 h-5 w-5" />
             {tl('quest.try_again')}
           </Button>
-          <Button onClick={handleBackToTrainer}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
+          <Button onClick={handleBackToTrainer} size="lg" className="px-6 py-3 text-base shadow-md">
+            <ArrowLeft className="mr-2 h-5 w-5" />
             {tl('quest.back_to_catalog')}
           </Button>
         </div>
