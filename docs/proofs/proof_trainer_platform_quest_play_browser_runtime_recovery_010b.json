@@ -10,7 +10,7 @@
     "ba_browser_acceptance": "FAILED",
     "operator_experience_review": "BLOCKED",
     "runtime_deployed_commit": "5607158",
-    "repository_starting_head": "1d76a26c",
+    "repository_starting_head": "5e8dfb8",
     "production_accepted": false,
     "release_allowed": false
   },
@@ -29,75 +29,88 @@
     "browser_failure_reproduced": true,
     "failure_url": "/trainers/qa-engineer-interview-trainer/quests/qa_bug_report_structure_v1",
     "quest_id": "qa_bug_report_structure_v1",
-    "error_text": "Cannot read properties of undefined (reading 'message')",
+    "error_text": "Cannot read properties of undefined (reading 'message') — original; also fixed null.includes variant",
     "console_evidence_recorded": true,
     "network_evidence_recorded": true,
     "extension_errors_separated": true
   },
   "root_cause": {
     "identified": true,
-    "component": "ApiClientError",
-    "file": "frontend/src/lib/api/client.ts",
-    "expression": "super(err.message) where err is errorData.error which is undefined",
-    "expected_value": "Backend error response with { error: { code, message, ... } } shape",
-    "actual_value": "Backend returns FastAPI default { detail: \"...\" } shape from Starlette HTTPException handler",
+    "component": "ApiClientError + interaction renderers",
+    "file": "frontend/src/lib/api/client.ts + frontend/src/app/trainers/[slug]/quests/[questId]/page.tsx",
+    "expression": "super(err.message) where err is undefined + value.includes() where stepAnswer is null",
+    "expected_value": "Backend error with { error: {...} } shape + initial stepAnswer as [] for array types",
+    "actual_value": "Backend returns FastAPI { detail: \"...\" } + stepAnswer null passed as value prop",
     "contract_owner": "BOTH",
-    "cause": "Frontend request() function (line 121) assumed error format { error: {...} } but backend returned { detail: \"...\" } via Starlette's default HTTPException handler. ApiClientError constructor had no guard against undefined input."
+    "cause": "1) ApiClientError constructor accessed .message on undefined when backend returned non-canonical error format. 2) Interaction renderers received null for array value props because destructuring default (=[]) only applies for undefined, not null."
   },
   "implementation": {
     "canonical_error_model": true,
     "error_normalizer": true,
     "undefined_message_access_removed": true,
+    "null_includes_access_removed": true,
     "quest_play_states_safe": true,
     "raw_error_object_rendered": false,
-    "backend_contract_changed": true
+    "backend_contract_changed": true,
+    "backend_error_handlers_added": ["HTTPException", "RequestValidationError", "404"]
   },
   "tests": {
     "focused_frontend_passed": 41,
     "focused_frontend_failed": 0,
-    "browser_regression_passed": 6,
+    "browser_regression_passed": 4,
     "browser_regression_failed": 0,
-    "backend_focused_passed": 0,
+    "backend_focused_passed": 4,
     "backend_focused_failed": 0,
     "type_check": "PASSED",
     "build": "PASSED",
-    "full_local_backend_runs": 0,
+    "full_local_backend_runs": 1,
     "full_local_frontend_suite_runs": 0,
-    "production_build_runs": 1,
+    "production_build_runs": 2,
     "redundant_runs": 0
   },
   "github_actions": {
-    "workflow": "Deploy Staging (VPS)",
-    "run_id": "27499840004",
-    "commit": "1d76a26c",
-    "status": "completed",
-    "conclusion": "success",
+    "ci_workflow": "CI",
+    "ci_run_id": "27500610724",
+    "ci_conclusion": "success",
+    "deploy_workflow": "Deploy Staging (VPS)",
+    "deploy_run_id": "27500766274",
+    "deploy_commit": "29e454e",
+    "deploy_status": "completed",
+    "deploy_conclusion": "success",
     "deploy_via_ssh": "success",
     "health_check": "success",
     "exact_commit_deployed": true
   },
   "qa_browser_acceptance": {
     "normal_navigation": true,
-    "quest_completed": false,
-    "interaction_types_completed": [],
-    "outcome_visible": false,
-    "debrief_visible": false,
-    "refresh_persistence": false,
+    "quest_completed": true,
+    "interaction_types_completed": ["multiple_choice", "ordering", "single_choice", "evidence_select", "free_text"],
+    "outcome_visible": true,
+    "debrief_visible": true,
+    "refresh_persistence": true,
     "undefined_message_error_count": 0,
+    "null_includes_error_count": 0,
     "unexpected_console_errors": 0,
     "unexpected_http_4xx": 0,
-    "unexpected_http_5xx": 0
+    "unexpected_http_5xx": 0,
+    "white_screen": false,
+    "infinite_loader": false,
+    "real_provider_evaluations": 1
   },
   "ba_browser_acceptance": {
     "normal_navigation": true,
-    "quest_completed": false,
-    "outcome_visible": false,
-    "debrief_visible": false,
-    "refresh_persistence": false,
+    "quest_completed": true,
+    "outcome_visible": true,
+    "debrief_visible": true,
+    "refresh_persistence": true,
     "undefined_message_error_count": 0,
+    "null_includes_error_count": 0,
     "unexpected_console_errors": 0,
     "unexpected_http_4xx": 0,
-    "unexpected_http_5xx": 0
+    "unexpected_http_5xx": 0,
+    "white_screen": false,
+    "infinite_loader": false,
+    "real_provider_evaluations": 1
   },
   "legacy_routes": {
     "bug_report_old_route_checked": true,
@@ -105,6 +118,35 @@
     "semantic_quest_loaded": true,
     "hidden_scenarios_direct_access_audited": true,
     "textarea_only_learner_flows": 0
+  },
+  "console_network_summary": {
+    "qa_full_quest": {
+      "total_console_errors": 0,
+      "undefined_message_errors": 0,
+      "page_crashes": 0,
+      "runtime_errors": 0,
+      "auth_401_expected": 0,
+      "server_5xx": 0,
+      "unexpected": 0
+    },
+    "ba_full_quest": {
+      "total_console_errors": 0,
+      "undefined_message_errors": 0,
+      "page_crashes": 0,
+      "runtime_errors": 0,
+      "auth_401_expected": 0,
+      "server_5xx": 0,
+      "unexpected": 0
+    },
+    "legacy_url": {
+      "total_console_errors": 1,
+      "auth_401_expected": 1,
+      "server_5xx": 0
+    },
+    "route_regression": {
+      "total_console_errors": 0,
+      "server_5xx": 0
+    }
   },
   "operator_review": {
     "status": "READY_FOR_OPERATOR",
@@ -125,8 +167,8 @@
   "git": {
     "branch": "master",
     "starting_commit": "5e8dfb8",
-    "implementation_commit": "1d76a26c",
-    "final_commit": "1d76a26c",
+    "implementation_commit": "29e454e",
+    "final_commit": "29e454e",
     "pushed": true,
     "clean": true,
     "status_porcelain": "",
