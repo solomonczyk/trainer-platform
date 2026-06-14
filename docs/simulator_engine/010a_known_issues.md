@@ -1,5 +1,9 @@
 # 010a — Known Issues
 
+## Resolved
+
+1. **Quest Play browser runtime crash (`Cannot read properties of undefined`)**: Fixed in Layer 010B via canonical error normalization model, safe ApiClientError constructor, and backend HTTPException handler registration.
+
 ## Current
 
 1. **Hidden scenarios still accessible via direct URL**: Legacy scenarios marked as HIDE_TEMPORARILY can still be loaded via direct `/scenarios/{id}` URL. This is intentional — they remain in the repository for internal access and historical attempt compatibility. They are not visible in the learner catalog.

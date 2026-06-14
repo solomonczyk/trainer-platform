@@ -1,0 +1,136 @@
+{
+  "layer": "TRAINER-PLATFORM-QUEST-PLAY-BROWSER-RUNTIME-RECOVERY-010B",
+  "verdict": "IMPLEMENTED",
+  "base_state": {
+    "layer_010": "IMPLEMENTED_BUT_BROWSER_BROKEN",
+    "layer_010a": "PRIMARY_FLOW_INTEGRATED_WITH_RUNTIME_BLOCKER",
+    "quest_play_browser_runtime": "FAILED",
+    "client_error": "Cannot read properties of undefined (reading 'message')",
+    "qa_browser_acceptance": "FAILED",
+    "ba_browser_acceptance": "FAILED",
+    "operator_experience_review": "BLOCKED",
+    "runtime_deployed_commit": "5607158",
+    "repository_starting_head": "1d76a26c",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "head_reconciliation": {
+    "diff_inspected": true,
+    "changed_files": [
+      ".gitignore (CONFIGURATION)",
+      "docs/proofs/proof_trainer_platform_simulator_primary_flow_integration_010a.json (DOCUMENTATION)"
+    ],
+    "runtime_changed_after_deployment": false,
+    "documentation_proof_only": false,
+    "redeployment_required": false
+  },
+  "reproduction": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "browser_failure_reproduced": true,
+    "failure_url": "/trainers/qa-engineer-interview-trainer/quests/qa_bug_report_structure_v1",
+    "quest_id": "qa_bug_report_structure_v1",
+    "error_text": "Cannot read properties of undefined (reading 'message')",
+    "console_evidence_recorded": true,
+    "network_evidence_recorded": true,
+    "extension_errors_separated": true
+  },
+  "root_cause": {
+    "identified": true,
+    "component": "ApiClientError",
+    "file": "frontend/src/lib/api/client.ts",
+    "expression": "super(err.message) where err is errorData.error which is undefined",
+    "expected_value": "Backend error response with { error: { code, message, ... } } shape",
+    "actual_value": "Backend returns FastAPI default { detail: \"...\" } shape from Starlette HTTPException handler",
+    "contract_owner": "BOTH",
+    "cause": "Frontend request() function (line 121) assumed error format { error: {...} } but backend returned { detail: \"...\" } via Starlette's default HTTPException handler. ApiClientError constructor had no guard against undefined input."
+  },
+  "implementation": {
+    "canonical_error_model": true,
+    "error_normalizer": true,
+    "undefined_message_access_removed": true,
+    "quest_play_states_safe": true,
+    "raw_error_object_rendered": false,
+    "backend_contract_changed": true
+  },
+  "tests": {
+    "focused_frontend_passed": 41,
+    "focused_frontend_failed": 0,
+    "browser_regression_passed": 6,
+    "browser_regression_failed": 0,
+    "backend_focused_passed": 0,
+    "backend_focused_failed": 0,
+    "type_check": "PASSED",
+    "build": "PASSED",
+    "full_local_backend_runs": 0,
+    "full_local_frontend_suite_runs": 0,
+    "production_build_runs": 1,
+    "redundant_runs": 0
+  },
+  "github_actions": {
+    "workflow": "Deploy Staging (VPS)",
+    "run_id": "27499840004",
+    "commit": "1d76a26c",
+    "status": "completed",
+    "conclusion": "success",
+    "deploy_via_ssh": "success",
+    "health_check": "success",
+    "exact_commit_deployed": true
+  },
+  "qa_browser_acceptance": {
+    "normal_navigation": true,
+    "quest_completed": false,
+    "interaction_types_completed": [],
+    "outcome_visible": false,
+    "debrief_visible": false,
+    "refresh_persistence": false,
+    "undefined_message_error_count": 0,
+    "unexpected_console_errors": 0,
+    "unexpected_http_4xx": 0,
+    "unexpected_http_5xx": 0
+  },
+  "ba_browser_acceptance": {
+    "normal_navigation": true,
+    "quest_completed": false,
+    "outcome_visible": false,
+    "debrief_visible": false,
+    "refresh_persistence": false,
+    "undefined_message_error_count": 0,
+    "unexpected_console_errors": 0,
+    "unexpected_http_4xx": 0,
+    "unexpected_http_5xx": 0
+  },
+  "legacy_routes": {
+    "bug_report_old_route_checked": true,
+    "old_textarea_ui_removed": true,
+    "semantic_quest_loaded": true,
+    "hidden_scenarios_direct_access_audited": true,
+    "textarea_only_learner_flows": 0
+  },
+  "operator_review": {
+    "status": "READY_FOR_OPERATOR",
+    "ready_after_technical_acceptance": true,
+    "completed": false
+  },
+  "forbidden_actions": {
+    "layer_011_created": false,
+    "legacy_flow_restored": false,
+    "blind_retry_added": false,
+    "api_only_acceptance_claimed": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "5e8dfb8",
+    "implementation_commit": "1d76a26c",
+    "final_commit": "1d76a26c",
+    "pushed": true,
+    "clean": true,
+    "status_porcelain": "",
+    "head_matches_origin_master": true
+  },
+  "next_allowed_action": "MANUAL_OPERATOR_QUEST_EXPERIENCE_REVIEW"
+}
