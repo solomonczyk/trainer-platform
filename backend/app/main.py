@@ -6,6 +6,7 @@ import uuid
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -61,9 +62,43 @@ app.add_middleware(
 # Rate limiting (disabled by default in development)
 app.add_middleware(RateLimitMiddleware)
 
-# Global error handler — covers Exception and HTTPException
+# Global error handler — covers Exception, HTTPException, and RequestValidationError
 app.exception_handler(Exception)(global_error_handler)
 app.exception_handler(HTTPException)(global_error_handler)
+
+# RequestValidationError is not a subclass of HTTPException; register separately
+async def validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    request_id = getattr(request.state, "request_id", "")
+    return JSONResponse(
+        status_code=422,
+        content={
+            "error": {
+                "code": "VALIDATION_ERROR",
+                "message": "Request validation failed",
+                "details": {"errors": exc.errors()},
+                "request_id": request_id,
+            }
+        },
+    )
+
+app.exception_handler(RequestValidationError)(validation_error_handler)
+
+
+# Override Starlette's default 404 response (returned for unmatched routes)
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    request_id = getattr(request.state, "request_id", "")
+    return JSONResponse(
+        status_code=404,
+        content={
+            "error": {
+                "code": "NOT_FOUND",
+                "message": str(exc.detail) if exc.detail else "Not Found",
+                "details": {},
+                "request_id": request_id,
+            }
+        },
+    )
 
 
 # Middleware: request_id

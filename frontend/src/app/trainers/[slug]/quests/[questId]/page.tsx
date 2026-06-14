@@ -503,7 +503,7 @@ export default function QuestPlayPage() {
           return (
             <MultipleChoiceRenderer
               step={step}
-              value={stepAnswer as string[]}
+              value={(stepAnswer ?? []) as string[]}
               onChange={handleAnswerChange}
               disabled={isSubmitting}
             />
@@ -521,7 +521,7 @@ export default function QuestPlayPage() {
           return (
             <OrderingRenderer
               step={step}
-              value={stepAnswer as string[]}
+              value={(stepAnswer ?? []) as string[]}
               onChange={handleAnswerChange}
               disabled={isSubmitting}
             />
@@ -530,7 +530,7 @@ export default function QuestPlayPage() {
           return (
             <MatchingRenderer
               step={step}
-              value={stepAnswer as Record<string, string>}
+              value={(stepAnswer ?? {}) as Record<string, string>}
               onChange={handleAnswerChange}
               disabled={isSubmitting}
             />
@@ -539,7 +539,7 @@ export default function QuestPlayPage() {
           return (
             <EvidenceSelectRenderer
               step={step}
-              value={stepAnswer as string[]}
+              value={(stepAnswer ?? []) as string[]}
               onChange={handleAnswerChange}
               disabled={isSubmitting}
             />
