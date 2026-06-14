@@ -155,9 +155,10 @@
     }
   },
   "operator_review": {
-    "status": "READY_FOR_OPERATOR",
+    "status": "REJECTED_UX_UNREADABLE",
     "ready_after_technical_acceptance": true,
-    "completed": false
+    "completed": false,
+    "rejection_reason": "Quest Catalog and Quest Play UI not readable — fonts too small, contrast poor, options not clearly interactive, progress bar too bare, visual hierarchy missing"
   },
   "forbidden_actions": {
     "layer_011_created": false,
@@ -180,5 +181,5 @@
     "status_porcelain": "",
     "head_matches_origin_master": true
   },
-  "next_allowed_action": "MANUAL_OPERATOR_QUEST_EXPERIENCE_REVIEW"
+  "next_allowed_action": "TRAINER-PLATFORM-QUEST-UX-READABILITY-AND-IMMERSIVE-POLISH-010C"
 }

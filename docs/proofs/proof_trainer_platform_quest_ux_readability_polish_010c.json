@@ -1,0 +1,36 @@
+{
+  "layer": "TRAINER-PLATFORM-QUEST-UX-READABILITY-AND-IMMERSIVE-POLISH-010C",
+  "verdict": "TBD",
+  "base_state": {
+    "layer_010": "IMPLEMENTED",
+    "layer_010a": "IMPLEMENTED_WITH_KNOWN_CLIENT_ISSUE",
+    "layer_010b": "IMPLEMENTED_AND_TECHNICALLY_ACCEPTED",
+    "operator_experience_review": "REJECTED_UX_UNREADABLE",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "implementation": {
+    "quest_catalog_readable": false,
+    "quest_play_readable": false,
+    "text_contrast_acceptable": false,
+    "options_clearly_interactive": false,
+    "progress_readable": false
+  },
+  "tests": {
+    "focused_frontend_passed": 0,
+    "focused_frontend_failed": 0,
+    "browser_regression_passed": 0,
+    "browser_regression_failed": 0,
+    "type_check": "",
+    "build": ""
+  },
+  "github_actions": {
+    "ci_conclusion": "",
+    "deploy_conclusion": "",
+    "exact_commit_deployed": false
+  },
+  "operator_visual_review": "PENDING",
+  "production_accepted": false,
+  "release_allowed": false,
+  "next_allowed_action": "TBD"
+}
