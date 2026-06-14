@@ -57,7 +57,7 @@
   "tests": {
     "focused_frontend_passed": 41,
     "focused_frontend_failed": 0,
-    "browser_regression_passed": 4,
+    "browser_regression_passed": 5,
     "browser_regression_failed": 0,
     "backend_focused_passed": 4,
     "backend_focused_failed": 0,
@@ -74,7 +74,7 @@
     "ci_conclusion": "success",
     "deploy_workflow": "Deploy Staging (VPS)",
     "deploy_run_id": "27500766274",
-    "deploy_commit": "29e454e",
+    "deploy_commit": "76db1ed",
     "deploy_status": "completed",
     "deploy_conclusion": "success",
     "deploy_via_ssh": "success",
@@ -83,6 +83,7 @@
   },
   "qa_browser_acceptance": {
     "normal_navigation": true,
+    "quest_catalog_shows_quests": true,
     "quest_completed": true,
     "interaction_types_completed": ["multiple_choice", "ordering", "single_choice", "evidence_select", "free_text"],
     "outcome_visible": true,
@@ -95,10 +96,14 @@
     "unexpected_http_5xx": 0,
     "white_screen": false,
     "infinite_loader": false,
-    "real_provider_evaluations": 1
+    "real_provider_evaluations": 1,
+    "home_cta_has_label": true,
+    "home_no_locale_codes_in_footer": true,
+    "qa_trainer_card_localized": true
   },
   "ba_browser_acceptance": {
     "normal_navigation": true,
+    "quest_catalog_shows_quests": true,
     "quest_completed": true,
     "outcome_visible": true,
     "debrief_visible": true,
@@ -110,7 +115,8 @@
     "unexpected_http_5xx": 0,
     "white_screen": false,
     "infinite_loader": false,
-    "real_provider_evaluations": 1
+    "real_provider_evaluations": 1,
+    "ba_trainer_card_localized": true
   },
   "legacy_routes": {
     "bug_report_old_route_checked": true,
@@ -167,8 +173,8 @@
   "git": {
     "branch": "master",
     "starting_commit": "5e8dfb8",
-    "implementation_commit": "29e454e",
-    "final_commit": "29e454e",
+    "implementation_commit": "76db1ed",
+    "final_commit": "76db1ed",
     "pushed": true,
     "clean": true,
     "status_porcelain": "",
