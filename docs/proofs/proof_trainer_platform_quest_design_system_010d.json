@@ -1,6 +1,6 @@
 {
   "layer": "TRAINER-PLATFORM-QUEST-DESIGN-SYSTEM-AND-VISUAL-DIRECTION-010D",
-  "verdict": "IMPLEMENTED_READY_FOR_REVIEW",
+  "verdict": "IMPLEMENTED_READY_FOR_OPERATOR_REVIEW",
   "base_state": {
     "010b_technical_runtime": "ACCEPTED",
     "010c_readability": "PARTIAL",
@@ -35,32 +35,32 @@
     "outcome_debrief_unified": true
   },
   "screens": {
-    "home": "UPDATED",
-    "it_domain": "UPDATED",
-    "qa_trainer": "UPDATED",
-    "ba_trainer": "UPDATED",
-    "qa_catalog": "UPDATED",
-    "ba_catalog": "UPDATED",
-    "qa_step1": "UPDATED",
-    "qa_evidence_selection": "UPDATED",
-    "qa_selected_option": "UPDATED",
-    "qa_outcome_debrief": "UPDATED",
-    "ba_step1": "UPDATED",
-    "ba_outcome_debrief": "UPDATED"
+    "home": "CAPTURED",
+    "it_domain": "CAPTURED",
+    "qa_trainer": "CAPTURED",
+    "ba_trainer": "CAPTURED",
+    "qa_catalog": "CAPTURED",
+    "ba_catalog": "CAPTURED",
+    "qa_step1": "CAPTURED",
+    "qa_evidence_selection": "CAPTURED",
+    "qa_selected_option": "CAPTURED",
+    "qa_outcome_debrief": "CAPTURED",
+    "ba_step1": "CAPTURED",
+    "ba_outcome_debrief": "CAPTURED"
   },
   "responsive": {
-    "desktop_checked": false,
-    "tablet_checked": false,
-    "mobile_checked": false,
-    "mobile_readable": false,
-    "tablet_stable": false
+    "desktop_checked": true,
+    "tablet_checked": true,
+    "mobile_checked": true,
+    "mobile_readable": true,
+    "tablet_stable": true
   },
   "localization": {
-    "ru_RU_checked": false,
+    "ru_RU_checked": true,
     "en_US_checked": false,
     "raw_keys_visible": 0,
     "mixed_language_pages": false,
-    "long_ru_text_layout_safe": false
+    "long_ru_text_layout_safe": true
   },
   "motion": {
     "motion_added": true,
@@ -70,18 +70,15 @@
   },
   "browser_acceptance": {
     "staging_url": "https://trainer.152.53.227.37.nip.io",
-    "qa_flow_checked": false,
-    "ba_flow_checked": false,
+    "qa_flow_checked": true,
+    "ba_flow_checked": true,
     "runtime_errors": 0,
     "unexpected_console_errors": 0,
     "unexpected_http_5xx": 0,
-    "screenshots_captured_from_vps": false
+    "screenshots_captured_from_vps": true
   },
   "screenshots": {
-    "desktop": [],
-    "tablet": [],
-    "mobile": [],
-    "missing": [
+    "desktop": [
       "010d-home.png",
       "010d-it-domain.png",
       "010d-qa-trainer.png",
@@ -93,11 +90,16 @@
       "010d-qa-selected-option.png",
       "010d-qa-outcome-debrief.png",
       "010d-ba-quest-step1.png",
-      "010d-ba-outcome-debrief.png",
-      "010d-mobile-qa-catalog.png",
-      "010d-mobile-qa-step1.png",
+      "010d-ba-outcome-debrief.png"
+    ],
+    "tablet": [
       "010d-tablet-qa-catalog.png"
-    ]
+    ],
+    "mobile": [
+      "010d-mobile-qa-catalog.png",
+      "010d-mobile-qa-step1.png"
+    ],
+    "missing": []
   },
   "visual_self_review": {
     "one_product_feel": "PASS",
@@ -110,7 +112,7 @@
   "operator_review": {
     "status": "READY_FOR_OPERATOR",
     "accepted_by_operator": false,
-    "notes": ""
+    "notes": "Screenshots available in docs/simulator_engine/screenshots/. Set to READY_FOR_OPERATOR. Do not auto-accept."
   },
   "tests": {
     "frontend_typecheck": "PASS",
@@ -121,11 +123,11 @@
     "redundant_runs": 0
   },
   "github_actions": {
-    "workflow": "",
-    "run_id": "",
-    "commit": "",
-    "conclusion": "",
-    "exact_commit_deployed": false
+    "workflow": "CI (27504830244) + Deploy Staging (VPS) (27504999112)",
+    "run_id": "27504999112",
+    "commit": "c04df9212aa1c4dbe428139b5cb908c05343e7cb",
+    "conclusion": "success",
+    "exact_commit_deployed": true
   },
   "forbidden_actions": {
     "backend_logic_changed": false,
@@ -144,8 +146,8 @@
     "branch": "master",
     "starting_commit": "e53d9098053901f8d08c1596d139a11f40af882c",
     "implementation_commit": "50d630eeb8da77151612ad1145a394c1d8eee5da",
-    "final_commit": "50d630eeb8da77151612ad1145a394c1d8eee5da",
-    "pushed": false,
+    "final_commit": "c04df9212aa1c4dbe428139b5cb908c05343e7cb",
+    "pushed": true,
     "clean": true,
     "head_matches_origin_master": true
   },
