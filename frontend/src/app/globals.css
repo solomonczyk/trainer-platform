@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 96.1%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -24,6 +26,38 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+
+    /* Semantic background tokens */
+    --color-bg-app: 210 40% 96.1%;
+    --color-bg-page: 0 0% 100%;
+    --color-bg-surface: 0 0% 100%;
+    --color-bg-elevated: 0 0% 100%;
+    --color-bg-immersive: 222.2 47.4% 11.2%;
+    --color-bg-immersive-muted: 217.2 32.6% 17.5%;
+
+    /* Text hierarchy */
+    --color-text-primary: 222.2 84% 4.9%;
+    --color-text-secondary: 215.4 16.3% 46.9%;
+    --color-text-muted: 215.4 16.3% 46.9%;
+    --color-text-inverse: 210 40% 98%;
+    --color-text-danger: 0 84.2% 60.2%;
+    --color-text-success: 142.1 76.2% 36.3%;
+    --color-text-warning: 38 92% 50%;
+
+    /* Border tokens */
+    --color-border-default: 214.3 31.8% 91.4%;
+    --color-border-strong: 217.2 32.6% 17.5%;
+    --color-border-interactive: 221.2 83.2% 53.3%;
+    --color-border-selected: 221.2 83.2% 53.3%;
+    --color-border-danger: 0 84.2% 60.2%;
+
+    /* Quest surface tokens */
+    --color-quest-surface: 217.2 32.6% 17.5%;
+    --color-quest-surface-hover: 217.2 32.6% 22%;
+    --color-quest-selected: 221.2 83.2% 53.3%;
+    --color-quest-progress: 221.2 83.2% 53.3%;
+    --color-quest-story: 222.2 47.4% 11.2%;
+    --color-quest-option: 217.2 32.6% 17.5%;
   }
 
   .dark {
@@ -42,6 +76,34 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+
+    --color-bg-app: 222.2 84% 4.9%;
+    --color-bg-page: 222.2 84% 6%;
+    --color-bg-surface: 222.2 84% 8%;
+    --color-bg-elevated: 222.2 84% 12%;
+    --color-bg-immersive: 0 0% 0%;
+    --color-bg-immersive-muted: 222.2 84% 6%;
+
+    --color-text-primary: 210 40% 98%;
+    --color-text-secondary: 215 20.2% 65.1%;
+    --color-text-muted: 215 20.2% 65.1%;
+    --color-text-inverse: 222.2 84% 4.9%;
+    --color-text-danger: 0 84.2% 60.2%;
+    --color-text-success: 142.1 76.2% 46.3%;
+    --color-text-warning: 38 92% 50%;
+
+    --color-border-default: 217.2 32.6% 17.5%;
+    --color-border-strong: 215 20.2% 65.1%;
+    --color-border-interactive: 217.2 91.2% 59.8%;
+    --color-border-selected: 217.2 91.2% 59.8%;
+    --color-border-danger: 0 84.2% 60.2%;
+
+    --color-quest-surface: 222.2 84% 6%;
+    --color-quest-surface-hover: 222.2 84% 10%;
+    --color-quest-selected: 217.2 91.2% 59.8%;
+    --color-quest-progress: 217.2 91.2% 59.8%;
+    --color-quest-story: 0 0% 0%;
+    --color-quest-option: 222.2 84% 8%;
   }
 }
 
@@ -50,6 +112,18 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-app text-foreground font-sans antialiased;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

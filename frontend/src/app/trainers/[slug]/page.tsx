@@ -7,6 +7,9 @@ import { getTrainer, enrollTrainer, isAuthenticated } from "@/lib/api/client";
 import { t, ti } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import PageContainer from "@/components/ui/PageContainer";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
   AlertCircle,
   CheckCircle,
@@ -61,7 +64,7 @@ export default function TrainerDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent" />
+        <LoadingSpinner size="lg" label={t("common.loading")} />
       </div>
     );
   }
@@ -69,9 +72,9 @@ export default function TrainerDetailPage() {
   if (isError || !trainer) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <AlertCircle className="h-12 w-12 text-red-400" />
-        <p className="text-lg font-medium text-gray-900">{t("common.error")}</p>
-        <p className="text-sm text-gray-500">{(error as Error)?.message}</p>
+        <AlertCircle className="h-12 w-12 text-text-danger" />
+        <p className="text-h3 text-foreground">{t("common.error")}</p>
+        <p className="text-body-sm text-text-secondary">{(error as Error)?.message}</p>
         <Button variant="outline" onClick={() => refetch()}>
           {t("common.retry")}
         </Button>
@@ -88,22 +91,22 @@ export default function TrainerDetailPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageContainer>
       {/* Trainer Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600">
+            <div className="flex h-16 w-16 items-center justify-center rounded bg-primary-50 text-primary-600">
               <GraduationCap className="h-8 w-8" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-h2 text-foreground">
                 {t(`trainer.${trainer.trainer_product_id}`) !== `trainer.${trainer.trainer_product_id}`
                   ? t(`trainer.${trainer.trainer_product_id}`)
                   : trainer.name}
               </h1>
               {trainer.description && (
-                <p className="mt-1 text-gray-500">
+                <p className="mt-1 text-body-sm text-text-secondary">
                   {t(`trainer.${trainer.trainer_product_id}_desc`) !== `trainer.${trainer.trainer_product_id}_desc`
                     ? t(`trainer.${trainer.trainer_product_id}_desc`)
                     : trainer.description}
@@ -115,24 +118,24 @@ export default function TrainerDetailPage() {
       </div>
 
       {/* Enroll / Status Section */}
-      <Card padding="lg" className="mb-8">
+      <Card padding="lg" variant="default" className="mb-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             {trainer.is_enrolled ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+              <Badge variant="success" size="sm">
                 <CheckCircle className="h-4 w-4" />
                 {t("trainer.enrolled")}
-              </span>
+              </Badge>
             ) : (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600">
+              <Badge variant="default" size="sm">
                 {t("trainer.notEnrolled")}
-              </span>
+              </Badge>
             )}
-            <span className="flex items-center gap-1 text-sm text-gray-500">
+            <span className="flex items-center gap-1 text-body-sm text-text-secondary">
               <BookOpen className="h-4 w-4" />
               {trainer.scenario_count} {t("trainer.scenarios").toLowerCase()}
             </span>
-            <span className="flex items-center gap-1 text-sm text-primary-500">
+            <span className="flex items-center gap-1 text-body-sm text-primary-600">
               <Zap className="h-4 w-4" />
               {t("trainer.questsAvailable")}
             </span>
@@ -143,7 +146,7 @@ export default function TrainerDetailPage() {
               onClick={() => router.push(`/trainers/${slug}/quests`)}
             >
               {t("trainer.startQuest")}
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
             <Button
@@ -156,14 +159,14 @@ export default function TrainerDetailPage() {
         </div>
 
         {enrollMutation.isSuccess && (
-          <div className="mt-4 flex items-center gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-700">
+          <div className="mt-4 flex items-center gap-2 rounded bg-success-50 p-3 text-body-sm text-success-700">
             <CheckCircle className="h-4 w-4" />
             {t("trainer.enrolledMessage")}
           </div>
         )}
 
         {enrollMutation.isError && (
-          <div className="mt-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          <div className="mt-4 flex items-center gap-2 rounded bg-danger-50 p-3 text-body-sm text-danger-700">
             <AlertCircle className="h-4 w-4" />
             {enrollMutation.error?.message || t("common.error")}
           </div>
@@ -172,10 +175,10 @@ export default function TrainerDetailPage() {
 
       {/* BA Trainer Phase 1 Modules Section */}
       {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
-        <Card padding="lg" className="mb-8">
+        <Card padding="lg" variant="default" className="mb-8">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <ListChecks className="h-5 w-5 text-gray-400" />
+              <ListChecks className="h-5 w-5 text-text-muted" />
               <CardTitle>{t('ba_trainer.modules')}</CardTitle>
             </div>
             <CardDescription>
@@ -186,20 +189,20 @@ export default function TrainerDetailPage() {
             <div className="space-y-3">
               {BA_MODULES.map((mod) => (
                 <Link key={mod.module_id} href={`/trainers/${slug}/modules/${mod.module_id}`}>
-                  <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer">
+                  <div className="flex items-center justify-between p-3 rounded border border-default hover:border-interactive transition-colors cursor-pointer">
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-gray-100">
+                      <div className="font-medium text-foreground">
                         {t(`modules.${mod.module_id}.title`) !== `modules.${mod.module_id}.title`
                           ? t(`modules.${mod.module_id}.title`)
                           : mod.title}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-body-sm text-text-secondary">
                         {t(`modules.${mod.module_id}.description`) !== `modules.${mod.module_id}.description`
                           ? t(`modules.${mod.module_id}.description`)
                           : mod.description}
                       </div>
                     </div>
-                    <div className="text-sm text-gray-400 whitespace-nowrap ml-4">
+                    <div className="text-body-sm text-text-muted whitespace-nowrap ml-4">
                       {mod.activity_count} {t('ba_trainer.activity_label')}
                     </div>
                   </div>
@@ -212,7 +215,7 @@ export default function TrainerDetailPage() {
 
       {/* Quest Catalog Section — primary entry */}
       {trainer.is_enrolled && (
-        <Card padding="lg" className="mb-8 border-primary-200">
+        <Card padding="lg" variant="default" className="mb-8 border-interactive">
           <CardHeader>
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-primary-600" />
@@ -223,14 +226,14 @@ export default function TrainerDetailPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="rounded-lg bg-primary-50 p-4 mb-4 border border-primary-100">
+            <div className="rounded bg-primary-50 p-4 mb-4 border border-primary-200">
               <div className="flex items-start gap-3">
                 <Zap className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-primary-800">
+                  <p className="text-body-sm font-medium text-primary-800">
                     {t('trainer.immersiveExperience')}
                   </p>
-                  <p className="mt-1 text-sm text-primary-700">
+                  <p className="mt-1 text-body-sm text-primary-700">
                     {t('trainer.immersiveExperienceDesc')}
                   </p>
                 </div>
@@ -241,7 +244,7 @@ export default function TrainerDetailPage() {
               className="w-full sm:w-auto"
             >
               {t('trainer.startQuest')}
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </CardContent>
         </Card>
@@ -249,7 +252,7 @@ export default function TrainerDetailPage() {
 
       {/* BA Trainer Phase 2 Scenarios Section */}
       {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
-        <Card padding="lg" className="mb-8 border-primary-200">
+        <Card padding="lg" variant="default" className="mb-8 border-interactive">
           <CardHeader>
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-primary-600" />
@@ -260,14 +263,14 @@ export default function TrainerDetailPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="rounded-lg bg-primary-50 p-4 mb-4 border border-primary-100">
+            <div className="rounded bg-primary-50 p-4 mb-4 border border-primary-200">
               <div className="flex items-start gap-3">
                 <Zap className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-primary-800">
+                  <p className="text-body-sm font-medium text-primary-800">
                     {t('ba_phase2.how_it_works_title')}
                   </p>
-                  <p className="mt-1 text-sm text-primary-700">
+                  <p className="mt-1 text-body-sm text-primary-700">
                     {t('ba_phase2.how_it_works_desc')}
                   </p>
                 </div>
@@ -278,7 +281,7 @@ export default function TrainerDetailPage() {
               className="w-full sm:w-auto"
             >
               {t('ba_phase2.start')}
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </CardContent>
         </Card>
@@ -288,15 +291,15 @@ export default function TrainerDetailPage() {
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Target Audience */}
         {trainer.target_audience && trainer.target_audience.length > 0 && (
-          <Card padding="md">
+          <Card padding="md" variant="default">
             <CardHeader>
-              <Users className="h-5 w-5 text-gray-400" />
-              <CardTitle className="text-sm font-medium text-gray-700">
+              <Users className="h-5 w-5 text-text-muted" />
+              <CardTitle className="text-label text-text-secondary">
                 {t("trainer.targetAudience")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
+              <ul className="list-inside list-disc space-y-1 text-body-sm text-text-secondary">
                 {trainer.target_audience.map((item, idx) => (
                   <li key={idx}>
                     {t(`trainer.audience_${item}`) !== `trainer.audience_${item}`
@@ -311,29 +314,26 @@ export default function TrainerDetailPage() {
 
         {/* Supported Locales */}
         {trainer.supported_locales && trainer.supported_locales.length > 0 && (
-          <Card padding="md">
+          <Card padding="md" variant="default">
             <CardHeader>
-              <Globe className="h-5 w-5 text-gray-400" />
-              <CardTitle className="text-sm font-medium text-gray-700">
+              <Globe className="h-5 w-5 text-text-muted" />
+              <CardTitle className="text-label text-text-secondary">
                 {t("trainer.locale")}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {trainer.supported_locales.map((locale, idx) => (
-                  <span
+                  <Badge
                     key={idx}
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      locale === trainer.default_locale
-                        ? "bg-primary-100 text-primary-700"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
+                    variant={locale === trainer.default_locale ? "primary" : "default"}
+                    size="sm"
                   >
                     {locale}
                     {locale === trainer.default_locale && (
-                      <span className="ml-1 text-primary-500">(default)</span>
+                      <span className="ml-1 opacity-70">(default)</span>
                     )}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </CardContent>
@@ -341,21 +341,21 @@ export default function TrainerDetailPage() {
         )}
 
         {/* Duration Estimate */}
-        <Card padding="md">
+        <Card padding="md" variant="default">
           <CardHeader>
-            <Clock className="h-5 w-5 text-gray-400" />
-            <CardTitle className="text-sm font-medium text-gray-700">
+            <Clock className="h-5 w-5 text-text-muted" />
+            <CardTitle className="text-label text-text-secondary">
               {t("trainer.duration")}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-600">
+            <p className="text-body-sm text-text-secondary">
               {trainer.scenario_count} {t("trainer.scenarios").toLowerCase()}
             </p>
           </CardContent>
         </Card>
       </div>
 
-    </div>
+    </PageContainer>
   );
 }

@@ -7,6 +7,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   hover?: boolean;
   padding?: "none" | "sm" | "md" | "lg";
+  variant?: "default" | "elevated" | "immersive" | "outlined";
 }
 
 const paddingStyles = {
@@ -16,18 +17,27 @@ const paddingStyles = {
   lg: "p-7",
 };
 
+const variantStyles = {
+  default: "border border-default bg-surface shadow-card",
+  elevated: "border border-default bg-elevated shadow-elevated",
+  immersive: "border-0 bg-immersive text-text-inverse shadow-immersive",
+  outlined: "border-2 border-selected bg-surface shadow-sm",
+};
+
 export default function Card({
   children,
   hover = false,
   padding = "md",
+  variant = "default",
   className,
   ...props
 }: CardProps) {
   return (
     <div
       className={clsx(
-        "rounded-xl border border-gray-200 bg-white shadow-sm",
-        hover && "transition-shadow hover:shadow-md cursor-pointer",
+        "rounded transition-all duration-200",
+        hover && "hover:-translate-y-0.5 hover:shadow-elevated cursor-pointer",
+        variantStyles[variant],
         paddingStyles[padding],
         className
       )}
@@ -60,7 +70,7 @@ export function CardTitle({
   className?: string;
 }) {
   return (
-    <h3 className={clsx("text-lg font-semibold text-gray-900", className)}>
+    <h3 className={clsx("text-h4 font-semibold text-foreground", className)}>
       {children}
     </h3>
   );
@@ -74,7 +84,7 @@ export function CardDescription({
   className?: string;
 }) {
   return (
-    <p className={clsx("text-sm text-gray-500", className)}>{children}</p>
+    <p className={clsx("text-body-sm text-muted-foreground", className)}>{children}</p>
   );
 }
 
@@ -85,7 +95,7 @@ export function CardContent({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={clsx("text-sm text-gray-700", className)}>{children}</div>;
+  return <div className={clsx("text-body-sm text-secondary-foreground leading-relaxed", className)}>{children}</div>;
 }
 
 export function CardFooter({
@@ -96,7 +106,7 @@ export function CardFooter({
   className?: string;
 }) {
   return (
-    <div className={clsx("mt-4 flex items-center gap-2 pt-3 border-t border-gray-100", className)}>
+    <div className={clsx("mt-4 flex items-center gap-2 pt-3 border-t border-default", className)}>
       {children}
     </div>
   );

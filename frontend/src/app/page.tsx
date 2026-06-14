@@ -70,7 +70,7 @@ export default function LandingPage() {
                   className="bg-white text-primary-700 hover:bg-primary-50 focus:ring-white"
                 >
                   {ctaLabel}
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
             </div>
@@ -90,7 +90,7 @@ export default function LandingPage() {
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 text-primary-600">
                   <feature.icon className="h-7 w-7" />
                 </div>
-                <CardTitle className="mt-5 text-gray-900">{feature.title}</CardTitle>
+                <CardTitle className="mt-5">{feature.title}</CardTitle>
                 <CardDescription className="mt-2">{feature.description}</CardDescription>
               </Card>
             ))}

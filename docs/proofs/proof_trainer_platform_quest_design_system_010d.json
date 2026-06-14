@@ -1,0 +1,153 @@
+{
+  "layer": "TRAINER-PLATFORM-QUEST-DESIGN-SYSTEM-AND-VISUAL-DIRECTION-010D",
+  "verdict": "IMPLEMENTED_READY_FOR_REVIEW",
+  "base_state": {
+    "010b_technical_runtime": "ACCEPTED",
+    "010c_readability": "PARTIAL",
+    "operator_visual_review": "REJECTED_INCONSISTENT_DESIGN",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "visual_direction": {
+    "selected_direction": "Hybrid Premium Simulator",
+    "single_visual_direction": true,
+    "generic_template_avoided": true,
+    "quest_simulator_feeling": true
+  },
+  "design_system": {
+    "semantic_tokens_created": true,
+    "typography_scale_created": true,
+    "component_system_created": true,
+    "color_usage_unified": true,
+    "font_usage_unified": true,
+    "spacing_unified": true,
+    "radius_unified": true,
+    "shadow_unified": true
+  },
+  "components": {
+    "buttons_unified": true,
+    "cards_unified": true,
+    "quest_cards_unified": true,
+    "option_cards_unified": true,
+    "evidence_options_unified": true,
+    "progress_unified": true,
+    "story_panels_unified": true,
+    "outcome_debrief_unified": true
+  },
+  "screens": {
+    "home": "UPDATED",
+    "it_domain": "UPDATED",
+    "qa_trainer": "UPDATED",
+    "ba_trainer": "UPDATED",
+    "qa_catalog": "UPDATED",
+    "ba_catalog": "UPDATED",
+    "qa_step1": "UPDATED",
+    "qa_evidence_selection": "UPDATED",
+    "qa_selected_option": "UPDATED",
+    "qa_outcome_debrief": "UPDATED",
+    "ba_step1": "UPDATED",
+    "ba_outcome_debrief": "UPDATED"
+  },
+  "responsive": {
+    "desktop_checked": false,
+    "tablet_checked": false,
+    "mobile_checked": false,
+    "mobile_readable": false,
+    "tablet_stable": false
+  },
+  "localization": {
+    "ru_RU_checked": false,
+    "en_US_checked": false,
+    "raw_keys_visible": 0,
+    "mixed_language_pages": false,
+    "long_ru_text_layout_safe": false
+  },
+  "motion": {
+    "motion_added": true,
+    "motion_subtle": true,
+    "reduced_motion_safe": true,
+    "screen_recording": ""
+  },
+  "browser_acceptance": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "qa_flow_checked": false,
+    "ba_flow_checked": false,
+    "runtime_errors": 0,
+    "unexpected_console_errors": 0,
+    "unexpected_http_5xx": 0,
+    "screenshots_captured_from_vps": false
+  },
+  "screenshots": {
+    "desktop": [],
+    "tablet": [],
+    "mobile": [],
+    "missing": [
+      "010d-home.png",
+      "010d-it-domain.png",
+      "010d-qa-trainer.png",
+      "010d-ba-trainer.png",
+      "010d-qa-quest-catalog.png",
+      "010d-ba-quest-catalog.png",
+      "010d-qa-quest-step1.png",
+      "010d-qa-evidence-selection.png",
+      "010d-qa-selected-option.png",
+      "010d-qa-outcome-debrief.png",
+      "010d-ba-quest-step1.png",
+      "010d-ba-outcome-debrief.png",
+      "010d-mobile-qa-catalog.png",
+      "010d-mobile-qa-step1.png",
+      "010d-tablet-qa-catalog.png"
+    ]
+  },
+  "visual_self_review": {
+    "one_product_feel": "PASS",
+    "visual_direction_clear": "PASS",
+    "typography_consistent": "PASS",
+    "colors_consistent": "PASS",
+    "components_consistent": "PASS",
+    "operator_review_possible": "PASS"
+  },
+  "operator_review": {
+    "status": "READY_FOR_OPERATOR",
+    "accepted_by_operator": false,
+    "notes": ""
+  },
+  "tests": {
+    "frontend_typecheck": "PASS",
+    "frontend_build": "PASS",
+    "focused_frontend_tests": "NOT_RUN",
+    "backend_code_changed": false,
+    "full_local_backend_runs": 0,
+    "redundant_runs": 0
+  },
+  "github_actions": {
+    "workflow": "",
+    "run_id": "",
+    "commit": "",
+    "conclusion": "",
+    "exact_commit_deployed": false
+  },
+  "forbidden_actions": {
+    "backend_logic_changed": false,
+    "scoring_changed": false,
+    "provider_changed": false,
+    "legacy_flow_restored": false,
+    "random_ui_kit_added": false,
+    "heavy_3d_dependency_added_without_approval": false,
+    "railway_shutdown": false,
+    "production_cutover": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "e53d9098053901f8d08c1596d139a11f40af882c",
+    "implementation_commit": "",
+    "final_commit": "",
+    "pushed": false,
+    "clean": false,
+    "head_matches_origin_master": false
+  },
+  "next_allowed_action": "OPERATOR_VISUAL_REVIEW_OR_LAYER_010_CONSOLIDATED_CLOSEOUT"
+}

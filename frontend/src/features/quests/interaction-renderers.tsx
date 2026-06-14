@@ -5,6 +5,18 @@ import type { QuestStepDefinition } from '@/lib/api/client';
 import { tl } from '@/lib/i18n';
 
 // ---------------------------------------------------------------------------
+// Shared option button classes — unified across all interaction types
+// ---------------------------------------------------------------------------
+
+const OPTION_BASE = "w-full text-left p-4 sm:p-5 rounded border-2 transition-all duration-150";
+const OPTION_UNSELECTED = "border-default bg-surface hover:border-interactive hover:shadow-sm";
+const OPTION_SELECTED = "border-selected bg-primary-50 shadow-sm";
+const OPTION_SELECTED_AMBER = "border-amber-500 bg-amber-50 shadow-sm";
+const OPTION_SELECTED_PURPLE = "border-purple-500 bg-purple-50 shadow-sm";
+const OPTION_DISABLED = "opacity-60 cursor-not-allowed";
+const OPTION_ENABLED = "cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring active:scale-[0.99]";
+
+// ---------------------------------------------------------------------------
 // Single Choice
 // ---------------------------------------------------------------------------
 
@@ -30,19 +42,17 @@ export function SingleChoiceRenderer({ step, value, onChange, disabled }: Single
             role="radio"
             aria-checked={isSelected}
             tabIndex={0}
-            className={`w-full text-left p-5 rounded-xl border-2 transition-all duration-150 ${
-              isSelected
-                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-md'
-                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 dark:hover:border-primary-500'
-            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 active:scale-[0.99]'}`}
+            className={`${OPTION_BASE} ${
+              isSelected ? OPTION_SELECTED : OPTION_UNSELECTED
+            } ${disabled ? OPTION_DISABLED : OPTION_ENABLED}`}
           >
             <div className="flex items-center gap-4">
               <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800'
+                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 bg-surface'
               }`}>
                 {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
               </div>
-              <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white leading-snug">
+              <span className="text-body font-semibold text-foreground leading-snug">
                 {tl(option.text_key)}
               </span>
             </div>
@@ -88,15 +98,13 @@ export function MultipleChoiceRenderer({ step, value = [], onChange, disabled }:
             disabled={disabled}
             role="checkbox"
             aria-checked={isSelected}
-            className={`w-full text-left p-5 rounded-xl border-2 transition-all duration-150 ${
-              isSelected
-                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-md'
-                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 dark:hover:border-primary-500'
-            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 active:scale-[0.99]'}`}
+            className={`${OPTION_BASE} ${
+              isSelected ? OPTION_SELECTED : OPTION_UNSELECTED
+            } ${disabled ? OPTION_DISABLED : OPTION_ENABLED}`}
           >
             <div className="flex items-center gap-4">
               <div className={`w-6 h-6 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800'
+                isSelected ? 'border-primary-500 bg-primary-500' : 'border-gray-400 bg-surface'
               }`}>
                 {isSelected && (
                   <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -104,7 +112,7 @@ export function MultipleChoiceRenderer({ step, value = [], onChange, disabled }:
                   </svg>
                 )}
               </div>
-              <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white leading-snug">{tl(choice.text_key)}</span>
+              <span className="text-body font-semibold text-foreground leading-snug">{tl(choice.text_key)}</span>
             </div>
           </button>
         );
@@ -133,8 +141,8 @@ export function FreeTextRenderer({ step, value = '', onChange, disabled }: FreeT
   return (
     <div className="space-y-4">
       {guidance && (
-        <div className="rounded-xl bg-blue-50 dark:bg-blue-900/20 p-5 border border-blue-200 dark:border-blue-800">
-          <p className="text-base text-blue-800 dark:text-blue-200 leading-relaxed font-medium">{guidance}</p>
+        <div className="rounded bg-blue-50 p-5 border border-blue-200">
+          <p className="text-body text-blue-800 leading-relaxed font-medium">{guidance}</p>
         </div>
       )}
       <textarea
@@ -144,10 +152,10 @@ export function FreeTextRenderer({ step, value = '', onChange, disabled }: FreeT
         placeholder={placeholder}
         rows={8}
         maxLength={maxLength}
-        className="block w-full rounded-xl border-2 border-gray-300 dark:border-gray-600 px-5 py-4 text-base shadow-sm placeholder:text-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50 disabled:bg-gray-50 dark:disabled:bg-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 leading-relaxed"
+        className="block w-full rounded border-2 border-default px-5 py-4 text-body shadow-sm placeholder:text-text-muted focus:border-interactive focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:bg-muted bg-surface text-foreground leading-relaxed"
         aria-label="Free text answer"
       />
-      <div className="flex justify-between text-sm font-medium text-gray-600 dark:text-gray-400">
+      <div className="flex justify-between text-body-sm font-medium text-text-secondary">
         <span>{minLength > 0 ? `Minimum ${minLength} characters` : ''}</span>
         <span>{value.length > 0 ? `${maxLength - value.length} characters remaining` : ''}</span>
       </div>
@@ -187,32 +195,32 @@ export function OrderingRenderer({ step, value = [], onChange, disabled }: Order
           <div
             key={itemId}
             role="listitem"
-            className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+            className="flex items-center gap-3 p-3 rounded border border-default bg-surface"
           >
-            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-sm font-bold text-gray-600 dark:text-gray-400">
+            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-muted text-body-sm font-bold text-text-secondary">
               {index + 1}
             </span>
-            <span className="flex-1 text-sm text-gray-800 dark:text-gray-200">
+            <span className="flex-1 text-body text-foreground">
               {item ? tl(item.text_key) : itemId}
             </span>
             <div className="flex gap-1">
               <button
                 onClick={() => moveItem(index, -1)}
                 disabled={disabled || index === 0}
-                className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="p-1.5 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Move up"
                 tabIndex={0}
               >
-                <svg className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                <svg className="w-4 h-4 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
               </button>
               <button
                 onClick={() => moveItem(index, 1)}
                 disabled={disabled || index === orderedItems.length - 1}
-                className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="p-1.5 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Move down"
                 tabIndex={0}
               >
-                <svg className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                <svg className="w-4 h-4 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </button>
             </div>
           </div>
@@ -265,16 +273,16 @@ export function MatchingRenderer({ step, value = {}, onChange, disabled }: Match
         const availableOptions = mappedRight ? [...rightItems] : rightOptions;
 
         return (
-          <div key={left} className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-            <span className="flex-1 text-sm font-medium text-gray-800 dark:text-gray-200">{tl(left)}</span>
-            <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div key={left} className="flex items-center gap-3 p-3 rounded border border-default bg-surface">
+            <span className="flex-1 text-body-sm font-medium text-foreground">{tl(left)}</span>
+            <svg className="w-5 h-5 text-text-muted flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
             </svg>
             <select
               value={mappedRight}
               onChange={(e) => e.target.value && setMapping(left, e.target.value)}
               disabled={disabled}
-              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm bg-white dark:bg-gray-900 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="flex-1 rounded border border-default px-3 py-2 text-body-sm bg-surface disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-ring"
               aria-label={`Match for ${left}`}
             >
               <option value="">Select...</option>
@@ -286,7 +294,7 @@ export function MatchingRenderer({ step, value = {}, onChange, disabled }: Match
               <button
                 onClick={() => clearMapping(left)}
                 disabled={disabled}
-                className="p-1 text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
+                className="p-1 text-text-danger hover:text-danger-700 focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 aria-label="Clear mapping"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -333,7 +341,7 @@ export function EvidenceSelectRenderer({ step, value = [], onChange, disabled }:
     <div className="space-y-4" role="group" aria-label="Evidence selection">
       {Object.entries(grouped).map(([category, categoryItems]) => (
         <div key={category}>
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
+          <h4 className="text-caption font-semibold uppercase tracking-wider text-text-muted mb-2">
             {category}
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -344,11 +352,11 @@ export function EvidenceSelectRenderer({ step, value = [], onChange, disabled }:
                   key={item.id}
                   onClick={() => toggleItem(item.id)}
                   disabled={disabled}
-                  className={`p-3 rounded-lg border-2 text-left transition-all ${
+                  className={`p-3 rounded border-2 text-left transition-all ${
                     isSelected
-                      ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
-                  } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500'}`}
+                      ? 'border-selected bg-primary-50'
+                      : 'border-default bg-surface hover:border-interactive hover:bg-muted'
+                  } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring'}`}
                   aria-pressed={isSelected}
                 >
                   <div className="flex items-start gap-2">
@@ -361,7 +369,7 @@ export function EvidenceSelectRenderer({ step, value = [], onChange, disabled }:
                         </svg>
                       )}
                     </div>
-                    <span className="text-sm text-gray-800 dark:text-gray-200">{tl(item.text_key)}</span>
+                    <span className="text-body-sm text-foreground">{tl(item.text_key)}</span>
                   </div>
                 </button>
               );
@@ -398,11 +406,9 @@ export function DecisionRenderer({ step, value, onChange, disabled }: DecisionPr
             disabled={disabled}
             role="radio"
             aria-checked={isSelected}
-            className={`w-full text-left p-5 rounded-xl border-2 transition-all ${
-              isSelected
-                ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-md'
-                : 'border-gray-200 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-600'
-            } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500'}`}
+            className={`${OPTION_BASE} ${
+              isSelected ? OPTION_SELECTED_AMBER : OPTION_UNSELECTED
+            } ${disabled ? OPTION_DISABLED : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500'}`}
           >
             <div className="flex items-center gap-3">
               <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
@@ -411,7 +417,7 @@ export function DecisionRenderer({ step, value, onChange, disabled }: DecisionPr
                 {isSelected && <div className="w-3.5 h-3.5 rounded-full bg-amber-500" />}
               </div>
               <div>
-                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{tl(option.text_key)}</span>
+                <span className="text-body font-semibold text-foreground">{tl(option.text_key)}</span>
               </div>
             </div>
           </button>
@@ -445,15 +451,15 @@ export function DialogueRenderer({ step, value, onChange, disabled, userValue = 
     <div className="space-y-4">
       {/* Character says */}
       {characterSaysKey && (
-        <div className="rounded-xl bg-purple-50 dark:bg-purple-900/20 p-5 border border-purple-200 dark:border-purple-800">
-          <p className="text-sm italic text-purple-800 dark:text-purple-200">{tl(characterSaysKey)}</p>
+        <div className="rounded bg-purple-50 p-5 border border-purple-200">
+          <p className="text-body italic text-purple-800">{tl(characterSaysKey)}</p>
         </div>
       )}
 
       {/* Predefined responses */}
       {options.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Choose a response:</p>
+          <p className="text-caption font-semibold uppercase tracking-wider text-text-secondary">Choose a response:</p>
           {options.map((option) => {
             const isSelected = value === option.id;
             return (
@@ -461,13 +467,11 @@ export function DialogueRenderer({ step, value, onChange, disabled, userValue = 
                 key={option.id}
                 onClick={() => !disabled && onChange(option.id)}
                 disabled={disabled}
-                className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
-                  isSelected
-                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-purple-300'
-                } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500'}`}
+                className={`${OPTION_BASE} ${
+                  isSelected ? OPTION_SELECTED_PURPLE : OPTION_UNSELECTED
+                } ${disabled ? OPTION_DISABLED : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500'}`}
               >
-                <span className="text-sm text-gray-800 dark:text-gray-200">{tl(option.text_key)}</span>
+                <span className="text-body-sm text-foreground">{tl(option.text_key)}</span>
               </button>
             );
           })}
@@ -484,7 +488,7 @@ export function DialogueRenderer({ step, value, onChange, disabled, userValue = 
             placeholder={placeholder}
             rows={5}
             maxLength={maxLength}
-            className="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-3 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+            className="block w-full rounded border border-default px-4 py-3 text-body-sm focus:border-interactive focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 bg-surface text-foreground"
             aria-label="Dialogue response"
           />
         </div>
@@ -503,7 +507,7 @@ interface UnknownStepProps {
 
 export function UnknownStepRenderer({ step }: UnknownStepProps) {
   return (
-    <div className="p-4 text-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200">
+    <div className="p-4 text-warning-700 bg-warning-50 rounded border border-warning-200">
       Unknown step type: {step.step_type}
     </div>
   );

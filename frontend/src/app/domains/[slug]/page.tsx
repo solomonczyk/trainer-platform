@@ -6,7 +6,9 @@ import Link from "next/link";
 import { getDomain } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
-import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import Card, { CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import PageContainer from "@/components/ui/PageContainer";
 import { ArrowLeft, Users, AlertCircle, GraduationCap } from "lucide-react";
 
 export default function DomainDetailPage() {
@@ -28,7 +30,7 @@ export default function DomainDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent" />
+        <LoadingSpinner size="lg" label={t("common.loading")} />
       </div>
     );
   }
@@ -36,9 +38,9 @@ export default function DomainDetailPage() {
   if (isError || !domain) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <AlertCircle className="h-12 w-12 text-red-400" />
-        <p className="text-lg font-medium text-gray-900">{t("common.error")}</p>
-        <p className="text-sm text-gray-500">{(error as Error)?.message}</p>
+        <AlertCircle className="h-12 w-12 text-text-danger" />
+        <p className="text-h3 text-foreground">{t("common.error")}</p>
+        <p className="text-body-sm text-text-secondary">{(error as Error)?.message}</p>
         <Button variant="outline" onClick={() => refetch()}>
           {t("common.retry")}
         </Button>
@@ -47,11 +49,11 @@ export default function DomainDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageContainer>
       {/* Back Link */}
       <Link
         href="/domains"
-        className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
+        className="mb-6 inline-flex items-center gap-1.5 text-label text-text-secondary hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
         {t("domains.backToDomains")}
@@ -61,18 +63,18 @@ export default function DomainDetailPage() {
       <div className="mb-10">
         <div className="flex items-center gap-4">
           {domain.icon && (
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 text-primary-600 text-2xl">
+            <div className="flex h-14 w-14 items-center justify-center rounded bg-primary-50 text-primary-600 text-2xl">
               {domain.icon}
             </div>
           )}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-h2 text-foreground">
               {t(`domains.${domain.slug}`) !== `domains.${domain.slug}`
                 ? t(`domains.${domain.slug}`)
                 : domain.name}
             </h1>
             {domain.description && (
-              <p className="mt-2 text-lg text-gray-500">
+              <p className="mt-2 text-body-lg text-text-secondary">
                 {t(`domains.${domain.slug}Description`) !== `domains.${domain.slug}Description`
                   ? t(`domains.${domain.slug}Description`)
                   : domain.description}
@@ -83,7 +85,7 @@ export default function DomainDetailPage() {
       </div>
 
       {/* Trainers Section */}
-      <h2 className="mb-6 text-xl font-semibold text-gray-900">
+      <h2 className="mb-6 text-h3 text-foreground">
         {t("domains.trainersIn")}
       </h2>
 
@@ -93,11 +95,11 @@ export default function DomainDetailPage() {
             <Link key={trainer.id} href={`/trainers/${trainer.slug}`}>
               <Card hover padding="md" className="h-full">
                 <CardHeader>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 text-gray-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded bg-muted text-text-secondary">
                     <GraduationCap className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
-                    <CardTitle className="text-base">
+                    <CardTitle className="text-body font-semibold">
                       {t(`trainer.${trainer.slug.replace(/-/g, '_')}`) !== `trainer.${trainer.slug.replace(/-/g, '_')}`
                         ? t(`trainer.${trainer.slug.replace(/-/g, '_')}`)
                         : trainer.name}
@@ -117,10 +119,10 @@ export default function DomainDetailPage() {
         </div>
       ) : (
         <Card padding="lg" className="text-center">
-          <Users className="mx-auto h-12 w-12 text-gray-300" />
-          <p className="mt-3 text-gray-500">{t("common.comingSoon")}</p>
+          <Users className="mx-auto h-12 w-12 text-text-muted" />
+          <p className="mt-3 text-body text-text-secondary">{t("common.comingSoon")}</p>
         </Card>
       )}
-    </div>
+    </PageContainer>
   );
 }

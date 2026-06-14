@@ -51,5 +51,10 @@
   "operator_visual_review": "ACCEPTED",
   "production_accepted": false,
   "release_allowed": false,
-  "next_allowed_action": "TBD"
+  "next_allowed_action": "LAYER_010D_COMPLETED",
+  "downstream": {
+    "010d_design_system": "IMPLEMENTED",
+    "010d_proof": "docs/proofs/proof_trainer_platform_quest_design_system_010d.json",
+    "note": "Layer 010D resolved the visual inconsistency issues identified in 010C operator review"
+  }
 }

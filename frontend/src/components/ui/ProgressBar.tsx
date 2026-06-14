@@ -9,19 +9,22 @@ interface ProgressBarProps {
   size?: "sm" | "md" | "lg";
   className?: string;
   labelClassName?: string;
+  barClassName?: string;
+  color?: "auto" | "primary" | "success" | "warning" | "danger";
 }
 
 const sizeStyles = {
   sm: "h-1.5",
   md: "h-2.5",
-  lg: "h-4",
+  lg: "h-3",
 };
 
-function getColorClass(value: number, max: number): string {
+function getColorClass(value: number, max: number, color: string): string {
+  if (color !== "auto") return `bg-${color}`;
   const pct = max > 0 ? (value / max) * 100 : 0;
-  if (pct < 33) return "bg-red-500";
-  if (pct < 66) return "bg-amber-500";
-  return "bg-green-500";
+  if (pct < 33) return "bg-danger-500";
+  if (pct < 66) return "bg-warning-500";
+  return "bg-success-500";
 }
 
 export default function ProgressBar({
@@ -31,10 +34,12 @@ export default function ProgressBar({
   size = "md",
   className,
   labelClassName,
+  barClassName,
+  color = "auto",
 }: ProgressBarProps) {
   const clampedValue = Math.max(0, Math.min(value, max));
   const percentage = max > 0 ? Math.round((clampedValue / max) * 100) : 0;
-  const colorClass = getColorClass(clampedValue, max);
+  const colorClass = getColorClass(clampedValue, max, color);
 
   return (
     <div className={clsx("w-full", className)}>
@@ -45,10 +50,10 @@ export default function ProgressBar({
             labelClassName
           )}
         >
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-body-sm font-medium text-text-secondary">
             {clampedValue}/{max}
           </span>
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-body-sm font-medium text-text-secondary">
             {percentage}%
           </span>
         </div>
@@ -56,7 +61,7 @@ export default function ProgressBar({
 
       <div
         className={clsx(
-          "w-full bg-gray-200 rounded-full overflow-hidden",
+          "w-full bg-muted rounded-full overflow-hidden",
           sizeStyles[size]
         )}
         role="progressbar"
@@ -67,8 +72,8 @@ export default function ProgressBar({
       >
         <div
           className={clsx(
-            "h-full rounded-full transition-all duration-300 ease-in-out",
-            colorClass
+            "h-full rounded-full transition-all duration-500 ease-in-out",
+            barClassName || colorClass
           )}
           style={{ width: `${percentage}%` }}
         />
