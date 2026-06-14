@@ -356,18 +356,6 @@ export default function TrainerDetailPage() {
         </Card>
       </div>
 
-      {/* Quest Catalog CTA (if enrolled) — primary entry point */}
-      {trainer.is_enrolled && (
-        <div className="mt-8 text-center">
-          <Button
-            size="lg"
-            onClick={() => router.push(`/trainers/${slug}/quests`)}
-          >
-            {t("trainer.startQuest")}
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

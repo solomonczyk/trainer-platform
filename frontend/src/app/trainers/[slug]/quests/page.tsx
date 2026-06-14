@@ -27,8 +27,11 @@ export default function QuestCatalogPage() {
     queryFn: () => listQuests(),
   });
 
+  // Normalize slug comparison: URL uses hyphens (qa-engineer-...),
+  // quest data trainer_slug uses underscores (qa_engineer_...)
+  const normalizedSlug = slug.replace(/-/g, '_');
   const quests = data?.quests
-    ? Object.values(data.quests).filter((q: any) => q.trainer_slug === slug)
+    ? Object.values(data.quests).filter((q: any) => q.trainer_slug === slug || q.trainer_slug === normalizedSlug)
     : [];
 
   return (

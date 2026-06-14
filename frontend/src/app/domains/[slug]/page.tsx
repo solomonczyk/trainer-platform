@@ -97,10 +97,16 @@ export default function DomainDetailPage() {
                     <GraduationCap className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
-                    <CardTitle className="text-base">{trainer.name}</CardTitle>
+                    <CardTitle className="text-base">
+                      {t(`trainer.${trainer.slug.replace(/-/g, '_')}`) !== `trainer.${trainer.slug.replace(/-/g, '_')}`
+                        ? t(`trainer.${trainer.slug.replace(/-/g, '_')}`)
+                        : trainer.name}
+                    </CardTitle>
                     {trainer.description && (
                       <CardDescription className="line-clamp-2">
-                        {trainer.description}
+                        {t(`trainer.${trainer.slug.replace(/-/g, '_')}_desc`) !== `trainer.${trainer.slug.replace(/-/g, '_')}_desc`
+                          ? t(`trainer.${trainer.slug.replace(/-/g, '_')}_desc`)
+                          : trainer.description}
                       </CardDescription>
                     )}
                   </div>

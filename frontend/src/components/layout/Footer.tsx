@@ -94,9 +94,7 @@ export default function Footer({ className }: FooterProps) {
           <p className="text-sm text-gray-400">
             &copy; {year} {t("app.name")}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4 text-xs text-gray-400">
-            <span>{t("landing.languages")}</span>
-          </div>
+          {/* Locale labels — shown in locale switcher above */}
         </div>
       </div>
     </footer>

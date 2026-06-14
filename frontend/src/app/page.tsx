@@ -48,7 +48,7 @@ export default function LandingPage() {
   }
 
   const ctaHref = user ? "/domains" : "/register";
-  const ctaLabel = user ? t("nav.domains") : t("landing.startButton");
+  const ctaLabel = user ? (t("nav.domains") || "Домены") : (t("landing.startButton") || "Начать обучение");
 
   return (
     <div className="flex flex-col">
@@ -98,14 +98,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Language Note Section */}
-      <section className="border-t border-gray-200 bg-gray-50 py-12">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-sm text-gray-500">
-            {t("landing.languages")}
-          </p>
-        </div>
-      </section>
     </div>
   );
 }
