@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -61,8 +61,9 @@ app.add_middleware(
 # Rate limiting (disabled by default in development)
 app.add_middleware(RateLimitMiddleware)
 
-# Global error handler
+# Global error handler — covers Exception and HTTPException
 app.exception_handler(Exception)(global_error_handler)
+app.exception_handler(HTTPException)(global_error_handler)
 
 
 # Middleware: request_id

@@ -51,6 +51,20 @@ const API_BASE = getApiBaseUrl();
 // Export for testing
 export { getApiBaseUrl };
 
+// ---------------------------------------------------------------------------
+// Canonical Error Model
+// ---------------------------------------------------------------------------
+
+export interface AppError {
+  code: string;
+  message: string;
+  status?: number;
+  details?: Record<string, unknown>;
+  correlationId?: string;
+  retryable: boolean;
+  fieldErrors?: Record<string, string[]>;
+}
+
 export interface ApiError {
   error: {
     code: string;
@@ -60,17 +74,159 @@ export interface ApiError {
   };
 }
 
+/**
+ * Normalize an unknown backend error payload into a safe AppError.
+ *
+ * Supports all response shapes used by the application:
+ *   {"error": {"code":"...", "message":"...", ...}}
+ *   {"detail": "string message"}
+ *   {"detail": {"message":"...", "code":"..."}}
+ *   {"errors": [{"message":"..."}]}
+ *   NetworkError / non-JSON / empty response
+ */
+export function normalizeApiError(error: unknown): AppError {
+  // Already an ApiClientError — extract its fields
+  if (error instanceof ApiClientError) {
+    return {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      correlationId: error.requestId,
+      retryable: error.status ? error.status >= 500 : false,
+    };
+  }
+
+  // Plain Error (TypeError, network failure, etc.)
+  if (error instanceof Error) {
+    const isNetwork =
+      error.message?.includes('fetch') ||
+      error.message?.includes('network') ||
+      error.message?.includes('Failed to fetch') ||
+      error.message?.includes('NetworkError') ||
+      error.name === 'TypeError';
+    return {
+      code: isNetwork ? 'NETWORK_ERROR' : 'UNKNOWN_ERROR',
+      message: error.message || 'An unexpected error occurred',
+      retryable: isNetwork,
+      details: { name: error.name },
+    };
+  }
+
+  // Non-Error object — attempt to parse as JSON error response
+  if (error && typeof error === 'object') {
+    const obj = error as Record<string, unknown>;
+
+    // {"error": {"code":"...", "message":"...", ...}} — canonical backend format
+    const errObj = obj.error;
+    if (errObj && typeof errObj === 'object') {
+      const e = errObj as Record<string, unknown>;
+      return {
+        code: String(e.code ?? 'UNKNOWN'),
+        message: String(e.message ?? (e.detail as string) ?? 'Unknown error'),
+        details: (e.details as Record<string, unknown>) ?? {},
+        correlationId: String(e.request_id ?? ''),
+        retryable: false,
+      };
+    }
+
+    // {"detail": "string"} — FastAPI/Starlette HTTPException format
+    if (typeof obj.detail === 'string') {
+      return {
+        code: 'HTTP_ERROR',
+        message: obj.detail,
+        retryable: false,
+        details: {},
+      };
+    }
+
+    // {"detail": {"message":"...", "code":"..."}}
+    if (obj.detail && typeof obj.detail === 'object' && !Array.isArray(obj.detail)) {
+      const d = obj.detail as Record<string, unknown>;
+      return {
+        code: String(d.code ?? 'DETAIL_ERROR'),
+        message: String(d.message ?? d.detail ?? 'Unknown error'),
+        details: d,
+        retryable: false,
+      };
+    }
+
+    // {"errors": [{"message": "..."}]}
+    if (Array.isArray(obj.errors) && obj.errors.length > 0) {
+      const msgs = obj.errors.map((e: unknown) => {
+        if (e && typeof e === 'object') return String((e as Record<string, unknown>).message ?? '');
+        return String(e);
+      }).filter(Boolean);
+      return {
+        code: 'VALIDATION_ERROR',
+        message: msgs.join('; ') || 'Validation error',
+        fieldErrors: obj.errors.reduce((acc: Record<string, string[]>, e: unknown) => {
+          if (e && typeof e === 'object') {
+            const errItem = e as Record<string, unknown>;
+            let field = errItem.field;
+            if (!field && Array.isArray(errItem.loc)) {
+              const locParts = errItem.loc as unknown[];
+              field = locParts.length > 0 ? String(locParts[locParts.length - 1]) : undefined;
+            }
+            if (field && typeof field === 'string') {
+              acc[field] = acc[field] || [];
+              acc[field].push(String(errItem.message ?? 'Invalid'));
+            }
+          }
+          return acc;
+        }, {}),
+        retryable: false,
+      };
+    }
+
+    // Unknown object shape — attempt to extract anything useful
+    const maybeMsg = obj.message ?? obj.error_message ?? obj.msg;
+    if (maybeMsg) {
+      return {
+        code: typeof obj.code === 'string' ? obj.code : 'UNKNOWN_ERROR',
+        message: typeof maybeMsg === 'string' ? maybeMsg : String(maybeMsg),
+        status: typeof obj.status === 'number' ? obj.status : undefined,
+        details: typeof obj.details === 'object' && obj.details !== null
+          ? (obj.details as Record<string, unknown>)
+          : undefined,
+        retryable: typeof obj.retryable === 'boolean' ? obj.retryable : false,
+      };
+    }
+  }
+
+  // String or primitive error
+  if (typeof error === 'string') {
+    return {
+      code: 'UNKNOWN_ERROR',
+      message: error,
+      retryable: false,
+    };
+  }
+
+  // Fallback
+  return {
+    code: 'UNKNOWN',
+    message: 'An unexpected error occurred',
+    retryable: false,
+  };
+}
+
 export class ApiClientError extends Error {
   public code: string;
   public details: Record<string, unknown>;
   public requestId: string;
+  public status: number | undefined;
 
-  constructor(err: ApiError["error"]) {
-    super(err.message);
+  /**
+   * Safe constructor — never throws even if `err` is undefined/null/malformed.
+   */
+  constructor(err: unknown) {
+    const normalized = normalizeApiError(err);
+    super(normalized.message);
     this.name = "ApiClientError";
-    this.code = err.code;
-    this.details = err.details;
-    this.requestId = err.request_id;
+    this.code = normalized.code;
+    this.details = normalized.details ?? {};
+    this.requestId = normalized.correlationId ?? "";
+    this.status = normalized.status;
   }
 }
 
@@ -115,10 +271,12 @@ async function request<T>(
   });
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({
-      error: { code: "UNKNOWN", message: "Unknown error", details: {}, request_id: "" },
-    }));
-    throw new ApiClientError(errorData.error);
+    // Try to parse JSON body; fall back to status text
+    const rawError: unknown = await response.json().catch(() => null);
+    const normalized = normalizeApiError(rawError ?? response.statusText);
+    // Preserve HTTP status for retryability detection
+    normalized.status = response.status;
+    throw new ApiClientError(normalized);
   }
 
   return response.json();
