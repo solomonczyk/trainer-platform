@@ -299,6 +299,7 @@ export interface UserResponse {
   display_name?: string;
   preferred_locale: string;
   is_active: boolean;
+  email_verified: boolean;
 }
 
 export interface TokenResponse {
