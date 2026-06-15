@@ -38,7 +38,9 @@ router = APIRouter()
     summary="List all available quests",
     description="Returns metadata for all registered quests.",
 )
-async def list_quests():
+async def list_quests(
+    user_id: str = Depends(require_email_verified),
+):
     """List available quests with their metadata."""
     return {"quests": list_available_quests()}
 
