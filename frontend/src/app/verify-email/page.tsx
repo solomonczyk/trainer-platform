@@ -17,7 +17,7 @@ import { CheckCircle, AlertCircle, Mail, Loader2, LogOut, User } from "lucide-re
 type PageState =
   | { status: "loading" }
   | { status: "pending" }
-  | { status: "ready" } // token present, waiting for user to click "Verify"
+  | { status: "ready" }
   | { status: "verifying" }
   | { status: "success"; verifiedEmail?: string }
   | { status: "error"; message: string }
@@ -30,15 +30,15 @@ export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  // Canonical auth — same source as Header
-  const { user, loading: authLoading, refresh: refreshAuth, clearSession } = useAuth();
-
   const [state, setState] = useState<PageState>({ status: "loading" });
   const [resendEmail, setResendEmail] = useState("");
   const [resending, setResending] = useState(false);
   const [cooldownSec, setCooldownSec] = useState(0);
   const cooldownTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const COOLDOWN_DURATION = 60;
+
+  // Canonical auth — same source as Header
+  const { user, loading: authLoading, refresh: refreshAuth, clearSession } = useAuth();
 
   // Session identity bar — staging/debug only, disabled for production
   const showDebugBar = process.env.NEXT_PUBLIC_APP_ENV !== "production";
@@ -53,49 +53,49 @@ export default function VerifyEmailPage() {
     }
   }, [searchParams, user]);
 
-  // Token present but don't auto-verify (Gmail bot protection)
   useEffect(() => {
     if (!token) {
       setState({ status: "pending" });
       return;
     }
-    // Wait for user to click "Verify Email" button
+
+    // Don't auto-verify. Gmail bots consume tokens on page load.
     setState({ status: "ready" });
   }, [token, router]);
 
   const handleVerifyClick = useCallback(async () => {
     if (!token) return;
     setState({ status: "verifying" });
-    try {
-      const res = await verifyEmail(token);
-      if (res.access_token) {
-        setToken(res.access_token);
-      }
-      setState({ status: "success", verifiedEmail: res.email || undefined });
-      // setToken dispatches auth-changed → AuthContext refreshes → Header updates
-    } catch (err: unknown) {
-      const e = err as { code?: string; message?: string };
-      const code = e?.code || "";
-      if (code === "TOKEN_ALREADY_USED") {
-        setState({ status: "already_verified" });
-      } else if (code === "TOKEN_EXPIRED") {
-        setState({ status: "token_expired" });
-      } else {
-        setState({ status: "error", message: e?.message || "Verification failed" });
-      }
-    }
-  }, [token]);
+    verifyEmail(token)
+      .then((res) => {
+        if (res.access_token) {
+          setToken(res.access_token);
+        }
+        setState({ status: "success", verifiedEmail: res.email || undefined });
+        // setToken() dispatches auth-changed → AuthContext refreshes automatically
+      })
+      .catch((err) => {
+        const code = err?.code || "";
+        if (code === "TOKEN_ALREADY_USED") {
+          setState({ status: "already_verified" });
+        } else if (code === "TOKEN_EXPIRED") {
+          setState({ status: "token_expired" });
+        } else {
+          setState({ status: "error", message: err?.message || "Verification failed" });
+        }
+      });
+  }, [token, router]);
 
-  // Poll /me every 5s for cross-tab verification detection
+  // Poll /me every 5s while on pending/resent/success/ready screens
   useEffect(() => {
     if (state.status !== "pending" && state.status !== "resent" && state.status !== "success" && state.status !== "ready") return;
     const interval = setInterval(() => {
       refreshAuth();
     }, 5000);
     return () => clearInterval(interval);
-  }, [state.status, refreshAuth]);
+  }, [state.status]);
 
-  // Transition to success when auth context shows verified
+  // Transition to success when auth context detects verified email
   useEffect(() => {
     if (user?.email_verified && state.status !== "success") {
       setState({ status: "success", verifiedEmail: user.email });
@@ -108,6 +108,11 @@ export default function VerifyEmailPage() {
       if (cooldownTimer.current) clearInterval(cooldownTimer.current);
     };
   }, []);
+
+  const handleClearAndReset = useCallback(() => {
+    clearSession();
+    setState({ status: "pending" });
+  }, [clearSession]);
 
   const handleResend = useCallback(async () => {
     if (!resendEmail.trim() || cooldownSec > 0) return;
@@ -165,7 +170,7 @@ export default function VerifyEmailPage() {
             )}
           </div>
           <button
-            onClick={clearSession}
+            onClick={handleClearAndReset}
             className="flex items-center gap-1 rounded px-2 py-1 text-xs text-red-500 hover:bg-red-50 hover:text-red-700"
             title="Clear session and start fresh"
           >
@@ -254,7 +259,7 @@ export default function VerifyEmailPage() {
     );
   }
 
-  // ── Ready — token present, user must click to verify ────────
+  // ── Ready — token present, user must click ───────────────────
   if (state.status === "ready") {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
@@ -333,7 +338,7 @@ export default function VerifyEmailPage() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={clearSession}
+              onClick={handleClearAndReset}
             >
               Clear Session
             </Button>
@@ -454,7 +459,7 @@ export default function VerifyEmailPage() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
       <Card padding="lg" className="w-full max-w-md text-center">
-        {showDebugBar && <SessionBar />}
+        <SessionBar />
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
           <AlertCircle className="h-8 w-8 text-red-600" />
         </div>
@@ -468,6 +473,6 @@ export default function VerifyEmailPage() {
           </Link>
         </div>
       </Card>
-    );
-  }
+    </div>
+  );
 }
