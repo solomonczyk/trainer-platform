@@ -313,6 +313,7 @@ describe('LearningFeedbackPanel', () => {
       score: 0,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={baseStep} onContinue={onContinue} />);
@@ -344,6 +345,7 @@ describe('LearningFeedbackPanel', () => {
       score: 100,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={baseStep} onContinue={onContinue} />);
@@ -381,6 +383,7 @@ describe('LearningFeedbackPanel', () => {
       score: 60,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={partialStep} onContinue={onContinue} />);
@@ -406,6 +409,7 @@ describe('LearningFeedbackPanel', () => {
       score: 100,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={baseStep} onContinue={onContinue} />);
@@ -423,6 +427,7 @@ describe('LearningFeedbackPanel', () => {
       score: 100,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={baseStep} onContinue={spy} />);
@@ -440,6 +445,7 @@ describe('LearningFeedbackPanel', () => {
       score: 100,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={baseStep} onContinue={onContinue} />);
@@ -459,6 +465,7 @@ describe('LearningFeedbackPanel', () => {
       score: 100,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     const { container } = render(
@@ -478,6 +485,7 @@ describe('LearningFeedbackPanel', () => {
       score: 0,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={baseStep} onContinue={onContinue} />);
@@ -502,6 +510,7 @@ describe('LearningFeedbackPanel', () => {
       score: 60,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     render(<LearningFeedbackPanel evaluationResult={evaluationResult} step={partialStep} onContinue={onContinue} />);
@@ -518,6 +527,7 @@ describe('LearningFeedbackPanel', () => {
       score: 100,
       max_score: 100,
       narrative_state: {},
+      timed_out: false,
     };
 
     const { container } = render(
