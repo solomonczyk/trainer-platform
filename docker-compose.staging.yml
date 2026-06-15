@@ -128,7 +128,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+        NEXT_PUBLIC_APP_ENV: staging
     container_name: tp_staging_frontend
     restart: unless-stopped
     depends_on:
