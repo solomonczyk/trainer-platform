@@ -55,15 +55,17 @@
     "exact_commit_deployed": true,
     "server_current_commit": "7684da69939483525a8c1e78af1aa0d71300cf3b",
     "server_current_commit_short": "7684da6",
-    "repository_final_head": "7684da69939483525a8c1e78af1aa0d71300cf3b",
-    "repository_final_head_short": "7684da6",
+    "repository_final_head": "131c4b15b1cba4f5089459bdac596e2c7b68ad33",
+    "repository_final_head_short": "131c4b1",
     "runtime_deployed_commit": "dc7d4ca58b932f768bfddf9a6c658ab486b2ed85",
     "runtime_deployed_commit_short": "dc7d4ca",
-    "runtime_commit_deploy_timestamp": "2026-06-15T13:36:00Z",
-    "runtime_commit_deploy_method": "SSH direct to VPS",
-    "deploy_method": "GitHub Actions auto-deploy (workflow_run on CI success)",
-    "server_current_commit_matches_origin_master": true,
-    "diff_dc7d4ca_to_7684da6_classified_as": "docs/proof-only",
+    "container_images_built_from": "dc7d4ca (7684da6 build used cached images)",
+    "runtime_commit_deploy_timestamp": "2026-06-15T11:40:51Z",
+    "runtime_commit_deploy_method": "GitHub Actions auto-deploy (workflow_run run 27543731169)",
+    "deploy_method": "GitHub Actions auto-deploy (workflow_run on CI success run 27543731169)",
+    "server_current_commit_matches_origin_master": false,
+    "reason_server_not_matching_origin": "origin/master advanced to 131c4b1 (proof-only) after GA deploy at 7684da6. Runtime code unchanged. No redeploy needed.",
+    "diff_7684da6_to_131c4b1_classified_as": "docs/proof-only",
     "diff_reconciled": true,
     "runtime_redeploy_required": false,
     "health_check": "PASSED",
@@ -102,8 +104,8 @@
   "git": {
     "branch": "master",
     "starting_commit": "dd2323c1dc2e1ffa62e8cfe3723795376fa481e8",
-    "final_commit": "7684da69939483525a8c1e78af1aa0d71300cf3b",
-    "final_commit_short": "7684da6",
+    "final_commit": "131c4b15b1cba4f5089459bdac596e2c7b68ad33",
+    "final_commit_short": "131c4b1",
     "pushed": true,
     "clean": true,
     "head_matches_origin_master": true,
@@ -111,11 +113,12 @@
     "intermediate_commits": [
       "f69da95 fix(deploy): align staging compose frontend build args",
       "dc7d4ca docs(010): add consolidated closeout artifacts and update proof/index",
-      "7684da6 fix(proof): update consolidated closeout with verified deployment state"
+      "7684da6 fix(proof): update consolidated closeout with verified deployment state",
+      "131c4b1 fix(proof): finalize Layer 010 with GA run IDs, browser smoke, deployment truth"
     ],
-    "commits_after_last_runtime_change": 1,
+    "commits_after_last_runtime_change": 2,
     "last_runtime_commit": "dc7d4ca",
-    "diff_dc7d4ca..7684da6": "docs/proofs/proof_trainer_platform_immersive_simulator_layer_010_consolidated_closeout.json"
+    "diff_dc7d4ca..131c4b1": "docs/ only (3 proof JSON files)"
   },
   "final_state": {
     "layer_010": "ACCEPTED_WITH_ITERATIVE_PRODUCT_FIXES",
