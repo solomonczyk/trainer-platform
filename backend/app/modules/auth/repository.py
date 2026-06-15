@@ -46,12 +46,13 @@ async def get_user_by_verification_token(db: AsyncSession, token: str) -> User |
 
 
 async def verify_user_email(db: AsyncSession, user: User) -> None:
-    """Mark a user's email as verified.
+    """Mark a user's email as verified and consume the verification token.
 
-    Note: The verification token is kept so that reused-token detection
-    (TOKEN_ALREADY_USED) can still look up the user by token.
+    The token is cleared on success — subsequent reuse returns 404 (token not found)
+    rather than leaking whether the token was previously valid.
     """
     user.email_verified = True
+    user.email_verification_token = None
     user.email_verification_token_expires_at = None
     await db.flush()
 

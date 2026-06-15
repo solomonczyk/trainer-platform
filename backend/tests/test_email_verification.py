@@ -152,7 +152,7 @@ async def test_reused_token_rejected(
     client: AsyncClient,
     db: AsyncSession,
 ):
-    """A token that has already been used is rejected."""
+    """A token that has already been used is rejected (cleared on consumption)."""
     # Register a new user
     reg_resp = await client.post(
         "/api/v1/auth/register",
@@ -171,16 +171,17 @@ async def test_reused_token_rejected(
         "/api/v1/auth/verify-email",
         json={"token": token},
     )
-    assert verify1.status_code in (200,)
+    assert verify1.status_code == 200
 
-    # Second verification with same token — should fail
+    # Second verification with same token — should fail (token consumed/cleared)
     verify2 = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": token},
     )
-    assert verify2.status_code == 400
+    # Token is cleared on success; second lookup returns 404 NOT_FOUND
+    assert verify2.status_code == 404
     data = verify2.json()
-    assert "TOKEN_ALREADY_USED" in str(data) or "VERIFICATION" in str(data).upper()
+    assert "NOT_FOUND" in str(data) or "not found" in str(data).lower()
 
 
 @pytest.mark.asyncio
@@ -248,3 +249,63 @@ async def test_verify_email_unknown_token(client: AsyncClient):
         json={"token": "this-token-does-not-exist"},
     )
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_verification_token_consumed_after_success(
+    client: AsyncClient,
+    db: AsyncSession,
+):
+    """After successful verification, the token is cleared from the database."""
+    # Register
+    reg_resp = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "token_consumed@test.com", "password": "password123"},
+    )
+    assert reg_resp.status_code == 201
+
+    user = await get_user_by_email(db, "token_consumed@test.com")
+    assert user is not None
+    assert user.email_verification_token is not None
+    original_token = user.email_verification_token
+
+    # Verify
+    verify_resp = await client.post(
+        "/api/v1/auth/verify-email",
+        json={"token": original_token},
+    )
+    assert verify_resp.status_code == 200
+
+    # Reload user — token must be cleared
+    await db.refresh(user)
+    assert user.email_verified is True
+    assert user.email_verification_token is None
+    assert user.email_verification_token_expires_at is None
+
+
+@pytest.mark.asyncio
+async def test_verified_user_cannot_resend_verification(
+    client: AsyncClient,
+    db: AsyncSession,
+):
+    """A verified user cannot resend verification (ALREADY_VERIFIED)."""
+    # Register and verify
+    reg_resp = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "resend_blocked@test.com", "password": "password123"},
+    )
+    assert reg_resp.status_code == 201
+
+    user = await get_user_by_email(db, "resend_blocked@test.com")
+    token = user.email_verification_token
+
+    await client.post("/api/v1/auth/verify-email", json={"token": token})
+
+    # Try resend
+    resend_resp = await client.post(
+        "/api/v1/auth/resend-verification",
+        json={"email": "resend_blocked@test.com"},
+    )
+    assert resend_resp.status_code == 400
+    data = resend_resp.json()
+    assert "ALREADY_VERIFIED" in str(data)
