@@ -54,7 +54,11 @@ export default function ActivityRunnerPage() {
       setPageState('result');
     },
     onError: (error: Error) => {
-      setErrorMessage(error.message || t('ba_trainer.error_submitting'));
+      if (error.message?.toLowerCase().includes('not enrolled')) {
+        setErrorMessage(t('common.notEnrolled.title'));
+      } else {
+        setErrorMessage(error.message || t('ba_trainer.error_submitting'));
+      }
       setPageState('error');
     },
   });
@@ -77,7 +81,12 @@ export default function ActivityRunnerPage() {
       }
     }
     if (activityError) {
-      setErrorMessage(t('ba_trainer.error_loading'));
+      const errMsg = activityError instanceof Error ? activityError.message : '';
+      if (errMsg.toLowerCase().includes('not enrolled')) {
+        setErrorMessage(t('common.notEnrolled.title'));
+      } else {
+        setErrorMessage(t('ba_trainer.error_loading'));
+      }
       setPageState('error');
     }
   }, [isActivityLoading, activityData, activityError]);

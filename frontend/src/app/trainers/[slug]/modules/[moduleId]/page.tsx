@@ -1,13 +1,14 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { getTrainer, getModuleActivities } from "@/lib/api/client";
+import { getTrainer, enrollTrainer, getModuleActivities, isAuthenticated } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardContent } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
 const difficultyVariant = (
   difficulty: string,
@@ -60,10 +61,19 @@ export default function ModuleActivitiesPage() {
   const slug = params?.slug as string;
   const moduleId = params?.moduleId as string;
 
+  const queryClient = useQueryClient();
+
   const { data: trainer } = useQuery({
     queryKey: ["trainer", slug],
     queryFn: () => getTrainer(slug),
     enabled: !!slug,
+  });
+
+  const enrollMutation = useMutation({
+    mutationFn: () => enrollTrainer(slug),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trainer", slug] });
+    },
   });
 
   const {
@@ -89,10 +99,48 @@ export default function ModuleActivitiesPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6 text-center">
-            <p className="text-red-500 mb-4">{t("ba_trainer.error_loading")}</p>
+            <div className="text-red-500 text-4xl mb-4">!</div>
+            <p className="text-red-600 mb-4">{t("ba_trainer.error_loading")}</p>
             <Button variant="outline" onClick={() => router.back()}>
               {t("common.back")}
             </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Enrollment gate
+  if (trainer && !trainer.is_enrolled) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <Card className="max-w-md w-full border-amber-200 bg-amber-50">
+          <CardContent className="pt-6 text-center">
+            <AlertCircle className="mx-auto h-12 w-12 text-amber-500 mb-4" />
+            <h2 className="text-xl font-semibold text-amber-900 mb-2">
+              {t("common.notEnrolled.title")}
+            </h2>
+            <p className="text-sm text-amber-700 mb-4">
+              {t("common.notEnrolled.description")}
+            </p>
+            <Button
+              onClick={() => {
+                if (!isAuthenticated()) {
+                  router.push(`/login?redirect=/trainers/${slug}/modules/${moduleId}`);
+                  return;
+                }
+                enrollMutation.mutate();
+              }}
+              isLoading={enrollMutation.isPending}
+            >
+              {t("trainer.enroll")}
+            </Button>
+            {enrollMutation.isSuccess && (
+              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-green-700">
+                <CheckCircle className="h-4 w-4" />
+                {t("trainer.enrolledMessage")}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

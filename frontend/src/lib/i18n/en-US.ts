@@ -236,6 +236,11 @@ const en = {
     unauthorized: "Authentication Required",
     sessionExpired: "Session Expired",
     comingSoon: "Coming Soon",
+    notEnrolled: {
+      title: "Access Required",
+      description: "You need to enroll in this trainer before you can access this content.",
+      action: "Back to Trainer",
+    },
   },
 
   feature: {

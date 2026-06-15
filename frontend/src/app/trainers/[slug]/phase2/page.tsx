@@ -1,11 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { getTrainer, getTrainerScenarios, sendAnalyticsEvent } from "@/lib/api/client";
+import { getTrainer, enrollTrainer, getTrainerScenarios, sendAnalyticsEvent, isAuthenticated } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
   ArrowLeft,
   Clock,
@@ -16,6 +17,7 @@ import {
   Lightbulb,
   Target,
   Users,
+  CheckCircle,
 } from "lucide-react";
 
 const SCENARIO_IDS = [
@@ -39,12 +41,20 @@ const SCENARIO_META: Record<string, { icon: React.ReactNode; color: string }> = 
 export default function Phase2ScenarioListPage() {
   const params = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const slug = params?.slug as string;
 
   const { data: trainer } = useQuery({
     queryKey: ["trainer", slug],
     queryFn: () => getTrainer(slug),
     enabled: !!slug,
+  });
+
+  const enrollMutation = useMutation({
+    mutationFn: () => enrollTrainer(slug),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trainer", slug] });
+    },
   });
 
   const {
@@ -84,6 +94,52 @@ export default function Phase2ScenarioListPage() {
         <Button variant="outline" onClick={() => refetch()}>
           {t("common.retry")}
         </Button>
+      </div>
+    );
+  }
+
+  // Enrollment gate
+  if (trainer && !trainer.is_enrolled) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <button
+          onClick={() => router.push(`/trainers/${slug}`)}
+          className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t("trainer.backToTrainer")}
+        </button>
+        <Card padding="lg" className="text-center border-amber-200 bg-amber-50">
+          <div className="flex flex-col items-center gap-4 py-6">
+            <AlertCircle className="h-12 w-12 text-amber-500" />
+            <h2 className="text-xl font-semibold text-amber-900">
+              {t("common.notEnrolled.title")}
+            </h2>
+            <p className="text-sm text-amber-700 max-w-md">
+              {t("common.notEnrolled.description")}
+            </p>
+            <div className="flex gap-3 mt-4">
+              <Button
+                onClick={() => {
+                  if (!isAuthenticated()) {
+                    router.push(`/login?redirect=/trainers/${slug}/phase2`);
+                    return;
+                  }
+                  enrollMutation.mutate();
+                }}
+                isLoading={enrollMutation.isPending}
+              >
+                {t("trainer.enroll")}
+              </Button>
+            </div>
+            {enrollMutation.isSuccess && (
+              <div className="flex items-center gap-2 text-sm text-green-700">
+                <CheckCircle className="h-4 w-4" />
+                {t("trainer.enrolledMessage")}
+              </div>
+            )}
+          </div>
+        </Card>
       </div>
     );
   }

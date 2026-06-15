@@ -80,7 +80,11 @@ export default function ScenarioPage() {
       setState("ready");
     },
     onError: (err: Error) => {
-      setError(err.message || t("common.error"));
+      if (err.message?.toLowerCase().includes("not enrolled")) {
+        setError(t("common.notEnrolled.title"));
+      } else {
+        setError(err.message || t("common.error"));
+      }
     },
   });
 

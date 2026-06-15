@@ -14,6 +14,7 @@ import {
 } from "@/lib/api/client";
 import type { EvaluationResult, CriterionResult } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
+import { FormattedContent } from "@/lib/formatNumberedContent";
 import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import {
@@ -41,6 +42,7 @@ type PageState =
   | "evaluating"
   | "evaluated"
   | "error"
+  | "not_enrolled"
   | "retry_blocked"
   | "not_found";
 
@@ -94,8 +96,12 @@ export default function Phase2ScenarioPage() {
       });
     },
     onError: (err: Error) => {
-      setError(err.message || t("common.error"));
-      setState("error");
+      if (err.message?.toLowerCase().includes("not enrolled")) {
+        setState("not_enrolled");
+      } else {
+        setError(err.message || t("common.error"));
+        setState("error");
+      }
     },
   });
 
@@ -298,9 +304,10 @@ export default function Phase2ScenarioPage() {
             <h2 className="text-sm font-semibold text-gray-700 mb-2">
               {t("ba_phase2.business_context")}
             </h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              {t(scenario.goal_key)}
-            </p>
+            <FormattedContent
+              text={t(scenario.goal_key)}
+              className="text-sm text-gray-600 leading-relaxed"
+            />
           </div>
 
           {/* Task */}
@@ -308,9 +315,10 @@ export default function Phase2ScenarioPage() {
             <h2 className="text-sm font-semibold text-gray-700 mb-2">
               {t("ba_phase2.task")}
             </h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              {scenario.steps?.[0]?.prompt_key || scenario.goal_key}
-            </p>
+            <FormattedContent
+              text={scenario.steps?.[0]?.prompt_key || scenario.goal_key}
+              className="text-sm text-gray-600 leading-relaxed"
+            />
           </div>
 
           {/* Target Skills */}
@@ -736,6 +744,34 @@ export default function Phase2ScenarioPage() {
             {t("ba_phase2.back_to_scenarios")}
           </Button>
         </div>
+      </div>
+    );
+  }
+
+  // ============ NOT ENROLLED STATE ============
+  if (state === "not_enrolled") {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+        <Card padding="lg" className="text-center border-amber-200 bg-amber-50">
+          <div className="flex flex-col items-center gap-4 py-6">
+            <AlertCircle className="h-12 w-12 text-amber-500" />
+            <h2 className="text-xl font-semibold text-amber-900">
+              {t("common.notEnrolled.title")}
+            </h2>
+            <p className="text-sm text-amber-700 max-w-md">
+              {t("common.notEnrolled.description")}
+            </p>
+            <div className="flex gap-3 mt-4">
+              <Button
+                variant="outline"
+                onClick={() => router.push(`/trainers/${slug}`)}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {t("common.notEnrolled.action")}
+              </Button>
+            </div>
+          </div>
+        </Card>
       </div>
     );
   }

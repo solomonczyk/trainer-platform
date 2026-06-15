@@ -186,29 +186,43 @@ export default function TrainerDetailPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {BA_MODULES.map((mod) => (
-                <Link key={mod.module_id} href={`/trainers/${slug}/modules/${mod.module_id}`}>
-                  <div className="flex items-center justify-between p-3 rounded border border-default hover:border-interactive transition-colors cursor-pointer">
-                    <div>
-                      <div className="font-medium text-foreground">
-                        {t(`modules.${mod.module_id}.title`) !== `modules.${mod.module_id}.title`
-                          ? t(`modules.${mod.module_id}.title`)
-                          : mod.title}
+            {trainer.is_enrolled ? (
+              <div className="space-y-3">
+                {BA_MODULES.map((mod) => (
+                  <Link key={mod.module_id} href={`/trainers/${slug}/modules/${mod.module_id}`}>
+                    <div className="flex items-center justify-between p-3 rounded border border-default hover:border-interactive transition-colors cursor-pointer">
+                      <div>
+                        <div className="font-medium text-foreground">
+                          {t(`modules.${mod.module_id}.title`) !== `modules.${mod.module_id}.title`
+                            ? t(`modules.${mod.module_id}.title`)
+                            : mod.title}
+                        </div>
+                        <div className="text-body-sm text-text-secondary">
+                          {t(`modules.${mod.module_id}.description`) !== `modules.${mod.module_id}.description`
+                            ? t(`modules.${mod.module_id}.description`)
+                            : mod.description}
+                        </div>
                       </div>
-                      <div className="text-body-sm text-text-secondary">
-                        {t(`modules.${mod.module_id}.description`) !== `modules.${mod.module_id}.description`
-                          ? t(`modules.${mod.module_id}.description`)
-                          : mod.description}
+                      <div className="text-body-sm text-text-muted whitespace-nowrap ml-4">
+                        {mod.activity_count} {t('ba_trainer.activity_label')}
                       </div>
                     </div>
-                    <div className="text-body-sm text-text-muted whitespace-nowrap ml-4">
-                      {mod.activity_count} {t('ba_trainer.activity_label')}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-body-sm text-text-secondary mb-4">
+                  {t('trainer.notEnrolled')}
+                </p>
+                <Button
+                  onClick={handleEnroll}
+                  isLoading={enrollMutation.isPending}
+                >
+                  {t('trainer.enroll')}
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
@@ -263,26 +277,42 @@ export default function TrainerDetailPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="rounded bg-primary-50 p-4 mb-4 border border-primary-200">
-              <div className="flex items-start gap-3">
-                <Zap className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-body-sm font-medium text-primary-800">
-                    {t('ba_phase2.how_it_works_title')}
-                  </p>
-                  <p className="mt-1 text-body-sm text-primary-700">
-                    {t('ba_phase2.how_it_works_desc')}
-                  </p>
+            {trainer.is_enrolled ? (
+              <>
+                <div className="rounded bg-primary-50 p-4 mb-4 border border-primary-200">
+                  <div className="flex items-start gap-3">
+                    <Zap className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-body-sm font-medium text-primary-800">
+                        {t('ba_phase2.how_it_works_title')}
+                      </p>
+                      <p className="mt-1 text-body-sm text-primary-700">
+                        {t('ba_phase2.how_it_works_desc')}
+                      </p>
+                    </div>
+                  </div>
                 </div>
+                <Button
+                  onClick={() => router.push(`/trainers/${slug}/phase2`)}
+                  className="w-full sm:w-auto"
+                >
+                  {t('ba_phase2.start')}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-body-sm text-text-secondary mb-4">
+                  {t('trainer.notEnrolled')}
+                </p>
+                <Button
+                  onClick={handleEnroll}
+                  isLoading={enrollMutation.isPending}
+                >
+                  {t('trainer.enroll')}
+                </Button>
               </div>
-            </div>
-            <Button
-              onClick={() => router.push(`/trainers/${slug}/phase2`)}
-              className="w-full sm:w-auto"
-            >
-              {t('ba_phase2.start')}
-              <ArrowRight className="h-4 w-4" />
-            </Button>
+            )}
           </CardContent>
         </Card>
       )}

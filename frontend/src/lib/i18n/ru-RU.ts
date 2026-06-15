@@ -248,6 +248,11 @@ const ru = {
     unauthorized: "Требуется авторизация",
     sessionExpired: "Сессия истекла",
     comingSoon: "Скоро",
+    notEnrolled: {
+      title: "Требуется запись на курс",
+      description: "Для доступа к этому контенту необходимо записаться на тренажёр.",
+      action: "К тренажёру",
+    },
   },
 
   // Feature flags
