@@ -31,11 +31,17 @@
   },
   "deployment": {
     "github_actions_green": true,
-    "exact_commit_deployed": false,
-    "server_current_commit": "c04df92 (per proof); HEAD dd2323c not deployed",
-    "repository_final_head": "dd2323c",
-    "diff_reconciled": false,
-    "runtime_redeploy_required": true
+    "exact_commit_deployed": true,
+    "server_current_commit": "dc7d4ca58b932f768bfddf9a6c658ab486b2ed85",
+    "repository_final_head": "dc7d4ca58b932f768bfddf9a6c658ab486b2ed85",
+    "diff_reconciled": true,
+    "runtime_redeploy_required": false,
+    "deploy_method": "SSH direct to VPS (GitHub Actions API unavailable)",
+    "deploy_timestamp": "2026-06-15T13:36:00Z",
+    "health_check": "PASSED on first attempt",
+    "frontend_container_recreated": true,
+    "bundle_learning_feedback_panel_verified": true,
+    "bundle_old_advancing_flow_removed": true
   },
   "operator_review": {
     "status": "ACCEPTED_FOR_CURRENT_FLOW",
@@ -66,11 +72,15 @@
   },
   "git": {
     "branch": "master",
-    "starting_commit": "dd2323c",
-    "final_commit": "dd2323c",
+    "starting_commit": "dd2323c1dc2e1ffa62e8cfe3723795376fa481e8",
+    "final_commit": "dc7d4ca58b932f768bfddf9a6c658ab486b2ed85",
     "pushed": true,
-    "clean": false,
-    "head_matches_origin_master": true
+    "clean": true,
+    "head_matches_origin_master": true,
+    "intermediate_commits": [
+      "f69da95 fix(deploy): align staging compose frontend build args",
+      "dc7d4ca docs(010): add consolidated closeout artifacts and update proof/index"
+    ]
   },
   "final_state": {
     "layer_010": "ACCEPTED_WITH_ITERATIVE_PRODUCT_FIXES",
