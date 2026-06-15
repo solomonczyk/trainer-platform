@@ -360,7 +360,6 @@ export async function verifyEmail(token: string) {
     "POST",
     "/api/v1/auth/verify-email",
     { token },
-    { skipAuth: true }
   );
 }
 

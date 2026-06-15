@@ -75,15 +75,19 @@ async def logout(
 async def verify_email_endpoint(
     body: VerifyEmailRequest,
     db: AsyncSession = Depends(get_db),
+    user_id: str = Depends(get_current_user_id_required),
 ) -> VerifyEmailResponse:
     """Verify a user's email address using a verification token.
+
+    Requires authentication — only the user who owns the token can verify it.
+    This prevents email scanners/bots from consuming tokens.
 
     Returns a fresh access token so the frontend can immediately use the
     verified session without a stale pre-verification JWT.
     """
     from app.core.security import create_access_token
 
-    user = await verify_email(db, body.token)
+    user = await verify_email(db, body.token, user_id)
     fresh_token = create_access_token(user_id=user.id, role=user.role)
     return VerifyEmailResponse(access_token=fresh_token, email=user.email)
 

@@ -9,7 +9,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.errors import ConflictError, UnauthorizedError, AppError, NotFoundError
+from app.core.errors import ConflictError, UnauthorizedError, ForbiddenError, AppError, NotFoundError
 from app.core.security import hash_password, verify_password, create_access_token
 from app.core.email import send_email, build_verification_email
 from app.db.models import User, UserProfile
@@ -81,17 +81,24 @@ async def authenticate_user(
     return user, token
 
 
-async def verify_email(db: AsyncSession, token: str) -> User:
+async def verify_email(db: AsyncSession, token: str, owner_user_id: str) -> User:
     """Verify a user's email using a verification token.
+
+    The authenticated user (owner_user_id) must own the token.
+    This prevents email scanners/bots from consuming tokens.
 
     Raises:
         NotFoundError: if the token is invalid.
+        ForbiddenError: if the authenticated user does not own the token.
         AppError: if the token has expired.
         AppError: if the token has already been used.
     """
     user = await get_user_by_verification_token(db, token)
     if not user:
         raise NotFoundError("Verification token", token)
+
+    if user.id != owner_user_id:
+        raise ForbiddenError("This verification link belongs to a different account.")
 
     if user.email_verified:
         # Token already consumed
