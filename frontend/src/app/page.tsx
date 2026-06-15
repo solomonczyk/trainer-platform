@@ -47,9 +47,13 @@ export default function LandingPage() {
     );
   }
 
-  const ctaHref = user ? "/domains" : "/register";
-  const ctaLabel = user ? (t("nav.domains") || "Домены") : (t("landing.startButton") || "Начать обучение");
   const needsVerification = user && !user.email_verified;
+  const ctaHref = user ? (needsVerification ? "/verify-email" : "/domains") : "/register";
+  const ctaLabel = user
+    ? (needsVerification
+        ? (t("auth.verifyEmailCheckTitle") || "Проверьте почту")
+        : (t("nav.domains") || "Домены"))
+    : (t("landing.startButton") || "Начать обучение");
 
   return (
     <div className="flex flex-col">

@@ -42,7 +42,7 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       await register(email, password, displayName.trim() || undefined);
-      router.push("/verify-email");
+      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (err) {
       if (err instanceof ApiClientError) {
         switch (err.code) {

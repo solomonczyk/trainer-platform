@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError
-from app.core.security import get_current_user_id, get_current_user_id_required, require_email_verified
+from app.core.security import get_current_user_id_required, require_email_verified
 from app.db.session import get_db
 from app.modules.activities.schemas import (
     ActivityStartResponse,
@@ -28,7 +28,7 @@ async def list_module_activities(
     trainer_slug: str,
     module_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id),
+    user_id: str = Depends(require_email_verified),
 ) -> ModuleActivitiesResponse:
     """Return public activity list for a module. Correct answers are NOT included."""
     trainer = await get_by_slug(db, trainer_slug)
@@ -55,7 +55,7 @@ async def start_activity(
     trainer_slug: str,
     activity_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id),
+    user_id: str = Depends(require_email_verified),
 ) -> ActivityStartResponse:
     """Start a specific activity and receive its prompt (no correct answers)."""
     trainer = await get_by_slug(db, trainer_slug)

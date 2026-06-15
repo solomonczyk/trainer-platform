@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.errors import NotFoundError, ForbiddenError
-from app.core.security import get_current_user_id
+from app.core.errors import NotFoundError
+from app.core.security import require_email_verified
 from app.db.session import get_db
 from app.modules.trainers.schemas import TrainerDetailResponse, EnrollResponse
 from app.modules.trainers.service import get_trainer_by_slug, enroll_user
@@ -21,7 +21,7 @@ router = APIRouter()
 async def get_trainer(
     trainer_slug: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id),
+    user_id: str = Depends(require_email_verified),
 ) -> TrainerDetailResponse:
     """Return full trainer detail, scenario count, and enrollment status."""
     # Feature flag: hide QA interview trainer unless enabled
@@ -46,15 +46,12 @@ async def get_trainer(
 async def enroll_in_trainer(
     trainer_slug: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id),
+    user_id: str = Depends(require_email_verified),
 ) -> EnrollResponse:
     """Enroll the current user in a trainer. Idempotent."""
     trainer_data = await get_trainer_by_slug(db, trainer_slug)
     if not trainer_data:
         raise NotFoundError("Trainer", trainer_slug)
-
-    if user_id == "guest":
-        raise ForbiddenError("Authentication required to enroll")
 
     enrollment, created = await enroll_user(db, user_id, trainer_data["id"])
 

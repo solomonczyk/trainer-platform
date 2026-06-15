@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
 from app.core.errors import NotFoundError
+from app.core.security import require_email_verified
 from app.modules.domains.schemas import DomainResponse, DomainDetailResponse
 from app.modules.domains.service import get_all_domains, get_domain_with_trainers
 
@@ -15,6 +16,7 @@ router = APIRouter()
 @router.get("/domains", response_model=list[DomainResponse])
 async def list_domains(
     db: AsyncSession = Depends(get_db),
+    user_id: str = Depends(require_email_verified),
 ) -> list[DomainResponse]:
     """Return all active domains with their trainer counts."""
     domains_data = await get_all_domains(db)
@@ -28,6 +30,7 @@ async def list_domains(
 async def get_domain(
     domain_slug: str,
     db: AsyncSession = Depends(get_db),
+    user_id: str = Depends(require_email_verified),
 ) -> DomainDetailResponse:
     """Return a domain detail including its published trainers."""
     domain_data = await get_domain_with_trainers(db, domain_slug)

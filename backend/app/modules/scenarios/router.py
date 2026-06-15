@@ -9,6 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError
+from app.core.security import require_email_verified
 from app.db.models import Scenario, TrainerProduct
 from app.db.session import get_db
 from app.modules.scenarios import service as scenarios_service
@@ -30,6 +31,7 @@ router = APIRouter()
 async def list_scenarios_for_trainer(
     trainer_slug: str,
     db: AsyncSession = Depends(get_db),
+    user_id: str = Depends(require_email_verified),
     include_hidden: bool = False,
 ) -> list[ScenarioSummaryResponse]:
     """Return scenarios published under a trainer product.
@@ -108,6 +110,7 @@ async def get_scenario_mapping_endpoint(
 async def get_scenario_detail(
     scenario_id: str,
     db: AsyncSession = Depends(get_db),
+    user_id: str = Depends(require_email_verified),
 ) -> ScenarioDetailResponse:
     """Return full detail for a single scenario by its business scenario_id string."""
     scenario = await scenarios_service.get_scenario_by_scenario_id(db, scenario_id=scenario_id)
