@@ -8,6 +8,7 @@ import {
   resendVerification,
   getCurrentUser,
   isAuthenticated,
+  setToken,
   type UserResponse,
 } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
@@ -57,9 +58,13 @@ export default function VerifyEmailPage() {
 
     setState({ status: "verifying" });
     verifyEmail(token)
-      .then(() => {
+      .then((res) => {
+        // Store the fresh JWT returned by the backend
+        if (res.access_token) {
+          setToken(res.access_token);
+        }
         setState({ status: "success" });
-        setTimeout(() => router.push("/domains"), 3000);
+        // Do NOT auto-redirect — wait for /me confirmation
       })
       .catch((err) => {
         const code = err?.code || "";
@@ -73,9 +78,9 @@ export default function VerifyEmailPage() {
       });
   }, [token, router]);
 
-  // Auto-check: poll /me every 5s while user is on pending screen
+  // Auto-check: poll /me every 3s while on pending/resent/success screens
   useEffect(() => {
-    if (state.status !== "pending" && state.status !== "resent") return;
+    if (state.status !== "pending" && state.status !== "resent" && state.status !== "success") return;
     const interval = setInterval(async () => {
       try {
         const user = await getCurrentUser();
@@ -237,9 +242,19 @@ export default function VerifyEmailPage() {
           </div>
           <CardTitle className="text-2xl">{t("auth.verifyEmailSuccessTitle")}</CardTitle>
           <CardDescription className="mt-3">{t("auth.verifyEmailSuccessDesc")}</CardDescription>
-          <div className="mt-6">
-            <Link href="/domains">
-              <Button variant="primary" className="w-full">{t("common.continue")}</Button>
+          <p className="mt-2 text-xs text-text-tertiary">
+            {t("auth.verifyEmailCheckInbox")}
+          </p>
+          <div className="mt-6 space-y-3">
+            <Button
+              variant="primary"
+              className="w-full"
+              onClick={handleCheckStatus}
+            >
+              {t("auth.verifyEmailCheckStatus")}
+            </Button>
+            <Link href="/login">
+              <Button variant="outline" className="w-full">{t("auth.verifyEmailBackToLogin")}</Button>
             </Link>
           </div>
         </Card>

@@ -55,7 +55,8 @@ class ResendVerificationRequest(BaseModel):
 
 
 class VerifyEmailResponse(BaseModel):
-    """Response after successful email verification."""
+    """Response after successful email verification — includes fresh access token."""
 
     message: str = "Email verified successfully"
     email_verified: bool = True
+    access_token: str

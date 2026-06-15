@@ -76,9 +76,16 @@ async def verify_email_endpoint(
     body: VerifyEmailRequest,
     db: AsyncSession = Depends(get_db),
 ) -> VerifyEmailResponse:
-    """Verify a user's email address using a verification token."""
-    await verify_email(db, body.token)
-    return VerifyEmailResponse()
+    """Verify a user's email address using a verification token.
+
+    Returns a fresh access token so the frontend can immediately use the
+    verified session without a stale pre-verification JWT.
+    """
+    from app.core.security import create_access_token
+
+    user = await verify_email(db, body.token)
+    fresh_token = create_access_token(user_id=user.id, role=user.role)
+    return VerifyEmailResponse(access_token=fresh_token)
 
 
 @router.post("/resend-verification", response_model=dict)

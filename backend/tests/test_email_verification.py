@@ -104,6 +104,8 @@ async def test_token_verifies_user(
     assert verify_resp.status_code in (200,)
     verify_data = verify_resp.json()
     assert verify_data["email_verified"] is True
+    assert "access_token" in verify_data
+    assert len(verify_data["access_token"]) > 20
 
     # Verify the DB is updated
     await db.refresh(user)
