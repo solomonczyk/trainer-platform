@@ -131,7 +131,7 @@ export default function VerifyEmailPage() {
           <CardDescription className="mt-3">{t("auth.verifyEmailSuccessDesc")}</CardDescription>
           <div className="mt-6">
             <Link href="/domains">
-              <Button variant="primary" className="w-full">{t("common.continue", t("nav.domains"))}</Button>
+              <Button variant="primary" className="w-full">{t("common.continue")}</Button>
             </Link>
           </div>
         </Card>
