@@ -67,7 +67,7 @@ export default function LandingPage() {
               <Link href={ctaHref}>
                 <Button
                   size="lg"
-                  className="bg-white text-primary-700 hover:bg-primary-50 focus:ring-white"
+                  className="bg-white !text-primary-700 hover:bg-primary-50 focus:ring-primary-300"
                 >
                   {ctaLabel}
                   <ArrowRight className="h-5 w-5" />
