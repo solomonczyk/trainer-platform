@@ -60,3 +60,4 @@ class VerifyEmailResponse(BaseModel):
     message: str = "Email verified successfully"
     email_verified: bool = True
     access_token: str
+    email: str = ""

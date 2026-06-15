@@ -85,7 +85,7 @@ async def verify_email_endpoint(
 
     user = await verify_email(db, body.token)
     fresh_token = create_access_token(user_id=user.id, role=user.role)
-    return VerifyEmailResponse(access_token=fresh_token)
+    return VerifyEmailResponse(access_token=fresh_token, email=user.email)
 
 
 @router.post("/resend-verification", response_model=dict)

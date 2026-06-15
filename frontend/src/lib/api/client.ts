@@ -350,7 +350,7 @@ export async function updateProfile(data: { display_name?: string; preferred_loc
 // ---------------------------------------------------------------------------
 
 export async function verifyEmail(token: string) {
-  return request<{ message: string; email_verified: boolean; access_token: string }>(
+  return request<{ message: string; email_verified: boolean; access_token: string; email: string }>(
     "POST",
     "/api/v1/auth/verify-email",
     { token },
