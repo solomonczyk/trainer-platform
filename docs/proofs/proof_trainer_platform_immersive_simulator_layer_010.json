@@ -128,10 +128,15 @@
     "redundant_full_local_runs": 0
   },
   "github_actions": {
-    "ci_run": 147,
-    "deploy_run": 26,
+    "ci_run": 27543727183,
+    "ci_conclusion": "success",
+    "ci_commit": "7684da6",
+    "deploy_run": 27543731169,
+    "deploy_conclusion": "success",
+    "deploy_commit": "7684da6",
     "conclusion": "success",
-    "commit_deployed": "b1b8161b",
+    "commit_deployed": "7684da6",
+    "runtime_commit_deployed": "dc7d4ca",
     "health_check": true
   },
   "forbidden_actions": {
