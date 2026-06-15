@@ -550,12 +550,35 @@ const en = {
       opt_delay: "Delay release for deeper analysis and targeted fix",
     },
 
-    // Step 5: Free text — Bug report
-    step05: {
-      context: "The team accepts your decision. Now write a professional bug report for the payment defect so the developer can fix it.",
-      prompt: "Write a detailed bug report with all required fields, steps to reproduce, environment details, severity, and priority classification.",
-      placeholder: "Write your bug report here...",
-      guidance: "Include: title, description, environment, steps to reproduce, actual vs expected result, severity, priority.",
+    // Step 5a: Multiple choice — Select required bug report fields
+    step05a: {
+      context: "The team accepts your decision. Now assemble a professional bug report for the payment defect.",
+      prompt: "Select ALL the fields that a professional bug report MUST contain:",
+      opt_title: "Title",
+      opt_environment: "Environment (OS, browser, app version)",
+      opt_preconditions: "Preconditions",
+      opt_steps: "Steps to Reproduce",
+      opt_actual: "Actual Result",
+      opt_expected: "Expected Result",
+      opt_severity: "Severity & Priority classification",
+      opt_evidence: "Evidence / Attachments (logs, screenshots)",
+      opt_impact: "Impact assessment",
+      opt_assignee: "Assignee name",
+      opt_sprint: "Sprint name",
+    },
+    // Step 5b: Single choice — Classify severity and priority
+    step05b: {
+      context: "Based on your investigation, classify the payment defect correctly.",
+      prompt: "What is the correct classification for this payment defect?",
+      opt_critical_critical: "Severity = Critical — payment failures block core transactions; Priority = Critical — fix before next release",
+      opt_major_high: "Severity = Major — significant functionality broken; Priority = High — fix in next sprint",
+      opt_minor_low: "Severity = Minor — cosmetic or edge case; Priority = Low — fix when time permits",
+    },
+    // Step 5c: Short optional free text — Bug report title
+    step05c: {
+      context: "A professional bug report includes all selected fields with clear, concise information.",
+      prompt: "Write a short, clear bug report title (1-2 sentences):",
+      placeholder: "Optional: enter a concise bug report title...",
     },
 
     // Step 6: Dialogue
