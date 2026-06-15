@@ -53,6 +53,10 @@ const ru = {
     registerSuccess: "Регистрация успешна",
     errorInvalidCredentials: "Неверный email или пароль",
     errorEmailTaken: "Этот email уже зарегистрирован",
+    showPassword: "Показать пароль",
+    hidePassword: "Скрыть пароль",
+    passwordPlaceholder: "Минимум 6 символов",
+    confirmPasswordPlaceholder: "Повторите пароль",
   },
 
   // Domains

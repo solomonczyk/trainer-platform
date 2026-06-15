@@ -49,6 +49,10 @@ const en = {
     registerSuccess: "Registration successful",
     errorInvalidCredentials: "Invalid email or password",
     errorEmailTaken: "This email is already registered",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
+    passwordPlaceholder: "At least 6 characters",
+    confirmPasswordPlaceholder: "Repeat password",
   },
 
   domains: {

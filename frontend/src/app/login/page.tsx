@@ -8,6 +8,7 @@ import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardTitle, CardDescription } from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import { AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
@@ -77,10 +78,9 @@ export default function LoginPage() {
             autoComplete="email"
           />
 
-          <Input
+          <PasswordInput
             id="password"
             label={t("auth.password")}
-            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
