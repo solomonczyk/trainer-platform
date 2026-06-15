@@ -10,9 +10,9 @@
     "release_allowed": false
   },
   "final_state": {
-    "immersive_simulator_engine": "IMPLEMENTED",
-    "qa_first_quest": "IMPLEMENTED",
-    "ba_first_quest": "IMPLEMENTED",
+    "immersive_simulator_engine": "ACCEPTED",
+    "qa_first_quest": "ACCEPTED",
+    "ba_first_quest": "ACCEPTED",
     "typed_interactions": true,
     "narrative_engine": true,
     "consequence_engine": true,
@@ -23,12 +23,18 @@
     "blind_retry": false,
     "educational_debrief": true,
     "progress_persistence": true,
-    "vps_staging_browser_acceptance": "PASSED_OPERATOR_REVIEW_REQUIRED",
-    "operator_experience_review": "PENDING",
+    "vps_staging_browser_acceptance": "ACCEPTED",
+    "operator_experience_review": "ACCEPTED_FOR_CURRENT_FLOW",
+    "layer_010b_runtime_recovery": "ACCEPTED",
+    "layer_010c_readability": "ACCEPTED",
+    "layer_010d_design_system": "ACCEPTED_WITH_ITERATIVE_PRODUCT_FIXES",
+    "learning_feedback_panel": "ACCEPTED",
+    "staging_frontend_rebuild_recovery": "ACCEPTED",
     "github_actions": "GREEN",
     "railway": "KEPT_AS_FALLBACK",
     "production_accepted": false,
-    "release_allowed": false
+    "release_allowed": false,
+    "consolidated_closeout": "docs/proofs/proof_trainer_platform_immersive_simulator_layer_010_consolidated_closeout.json"
   },
   "requirements": {
     "source_path": "F:\\Dev\\Projects\\simulators\\MULTISIMULATORS_PLATFOM\\documents\\trainer_platform_simulator_docs_010",
@@ -149,10 +155,17 @@
     "clean": true,
     "head_matches_origin_master": true
   },
-  "next_allowed_action": "OPERATOR_VISUAL_REVIEW_OR_LAYER_010_CONSOLIDATED_CLOSEOUT",
+  "next_allowed_action": "DEFINE_NEXT_TRAINER_PLATFORM_FEATURE_LAYER",
   "downstream": {
-    "010d_design_system": "IMPLEMENTED",
+    "010d_design_system": "ACCEPTED_WITH_ITERATIVE_PRODUCT_FIXES",
     "010d_proof": "docs/proofs/proof_trainer_platform_quest_design_system_010d.json",
     "note": "Layer 010D resolved the visual inconsistency issues identified in 010 operator experience review"
+  },
+  "consolidated_closeout": {
+    "report": "docs/simulator_engine/010_layer_consolidated_closeout.md",
+    "evidence_inventory": "docs/simulator_engine/010_layer_consolidated_evidence_inventory.md",
+    "known_issues": "docs/simulator_engine/010_layer_consolidated_known_issues.md",
+    "proof": "docs/proofs/proof_trainer_platform_immersive_simulator_layer_010_consolidated_closeout.json",
+    "verdict": "ACCEPTED_WITH_ITERATIVE_PRODUCT_FIXES"
   }
 }
