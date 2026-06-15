@@ -320,6 +320,7 @@ interface EvidenceSelectProps {
 
 export function EvidenceSelectRenderer({ step, value = [], onChange, disabled }: EvidenceSelectProps) {
   const items = (step.interaction?.evidence_items as Array<{ id: string; text_key: string; category?: string }>) || [];
+  const evidencePanelKey = (step.interaction?.evidence_panel_key as string) || '';
 
   const toggleItem = (id: string) => {
     if (disabled) return;
@@ -337,8 +338,31 @@ export function EvidenceSelectRenderer({ step, value = [], onChange, disabled }:
     grouped[cat].push(item);
   }
 
+  const panelLines = evidencePanelKey ? tl(evidencePanelKey).split('\n') : [];
+
   return (
     <div className="space-y-4" role="group" aria-label="Evidence selection">
+      {/* Evidence panel — shown before options, e.g. bad bug report to inspect */}
+      {panelLines.length > 0 && (
+        <div className="rounded border-2 border-gray-300 bg-gray-50 overflow-hidden">
+          <div className="px-4 py-2 bg-gray-200 border-b border-gray-300">
+            <span className="text-caption font-semibold uppercase tracking-wider text-gray-600">
+              {tl('quest.qa.bug_report.step04.context').split(':')[0]}
+            </span>
+          </div>
+          <div className="p-4 font-mono text-sm leading-relaxed text-gray-800 whitespace-pre-wrap">
+            {panelLines.map((line, i) => {
+              // Bold section headers (lines ending with ':' or containing known headers)
+              const isHeader = /^(Title|Заголовок|Steps to Reproduce|Шаги воспроизведения|Actual Result|Фактический результат|Expected Result|Ожидаемый результат|Environment|Окружение|Severity|Priority|Attachments|Вложения):/.test(line.trim());
+              return isHeader ? (
+                <div key={i} className="font-semibold text-gray-900 mt-1 first:mt-0">{line}</div>
+              ) : (
+                <div key={i}>{line}</div>
+              );
+            })}
+          </div>
+        </div>
+      )}
       {Object.entries(grouped).map(([category, categoryItems]) => (
         <div key={category}>
           <h4 className="text-caption font-semibold uppercase tracking-wider text-text-muted mb-2">

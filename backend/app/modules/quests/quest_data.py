@@ -769,6 +769,7 @@ QA_BUG_REPORT_MINI_QUEST = QuestDefinition(
             "story_context_key": "quest.qa.bug_report.step04.context",
             "prompt_key": "quest.qa.bug_report.step04.prompt",
             "interaction": {
+                "evidence_panel_key": "quest.qa.bug_report.step04.panel",
                 "evidence_items": [
                     {"id": "missing_env", "text_key": "quest.qa.bug_report.step04.ev_missing_env", "is_relevant": True, "category": "defects"},
                     {"id": "vague_steps", "text_key": "quest.qa.bug_report.step04.ev_vague_steps", "is_relevant": True, "category": "defects"},

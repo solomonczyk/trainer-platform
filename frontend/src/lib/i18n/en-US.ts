@@ -797,6 +797,7 @@ const en = {
     step04: {
       context: "Here is a fragment of a poorly written bug report from an intern. Find all the defects:",
       prompt: "Select all issues you can identify in this bug report:",
+      panel: "Title: Place Order button not working\n\nSteps to Reproduce:\n1. Go to the website\n2. Try to place an order\n3. The button seems like it doesn't respond sometimes\n\nActual Result:\nThe button possibly does nothing when you click it. I tried a few times and sometimes it works.\n\nExpected Result:\n(not specified)\n\nEnvironment:\n(not specified)\n\nSeverity:\n(not specified)\n\nPriority:\n(not specified)\n\nAttachments:\n(none)",
       ev_missing_env: "Missing environment information",
       ev_vague_steps: "Steps to reproduce are too vague",
       ev_no_expected: "Expected result is missing",
