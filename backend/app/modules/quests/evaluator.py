@@ -61,6 +61,8 @@ def evaluate_deterministic(
         return _eval_evidence_select(answer, interaction)
     elif step_type == "decision":
         return _eval_decision(answer, interaction)
+    elif step_type == "branching":
+        return _eval_branching(answer, interaction)
     elif step_type == "dialogue":
         # Dialogue with allow_free_text=True requires AI rubric.
         # Dialogue with allow_free_text=False and predefined options
