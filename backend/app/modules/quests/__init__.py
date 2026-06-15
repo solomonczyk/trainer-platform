@@ -163,6 +163,27 @@ class StepInteraction(BaseModel):
     ai_rubric: Optional[AiRubric] = None
 
 
+class StepFeedback(BaseModel):
+    """Educational feedback metadata for a quest step.
+
+    Provides localized explanation keys that the frontend renders
+    in the learning feedback panel after a user submits an answer.
+
+    Fields:
+        incorrect_explanation_key: Why the user's answer was wrong (shown when incorrect)
+        correct_approach_key: The correct reasoning / what the right answer is (shown when incorrect or partial)
+        reinforcement_key: Why the correct answer demonstrates good practice (shown when correct)
+        partial_missing_key: What the user missed / should consider next (shown when partial)
+        takeaway_key: Optional general takeaway to remember (shown in all cases)
+    """
+
+    incorrect_explanation_key: str = ""
+    correct_approach_key: str = ""
+    reinforcement_key: str = ""
+    partial_missing_key: str = ""
+    takeaway_key: str = ""
+
+
 class QuestStep(BaseModel):
     """A single step in a quest."""
 
@@ -176,6 +197,7 @@ class QuestStep(BaseModel):
     next_step_rules: NextStepRule = NextStepRule()
     learning_objectives: list[str] = []
     skill_bindings: list[str] = []
+    feedback: Optional[StepFeedback] = None
 
 
 class OutcomeDefinition(BaseModel):

@@ -880,6 +880,13 @@ export interface QuestStepDefinition {
   next_step_rules: { default?: string; by_choice?: Record<string, string>; by_flag?: Record<string, string> };
   learning_objectives: string[];
   skill_bindings: string[];
+  feedback?: {
+    incorrect_explanation_key?: string;
+    correct_approach_key?: string;
+    reinforcement_key?: string;
+    partial_missing_key?: string;
+    takeaway_key?: string;
+  };
 }
 
 export interface QuestOutcomeDefinition {

@@ -103,6 +103,12 @@ QA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "qa_step_02_evidence"},
             "learning_objectives": ["quest.qa.payment_defect.lo.triage"],
             "skill_bindings": ["defect_triage", "critical_thinking"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.payment_defect.step01.feedback_incorrect",
+                "correct_approach_key": "quest.qa.payment_defect.step01.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step01.feedback_reinforcement",
+                "takeaway_key": "quest.qa.payment_defect.step01.feedback_takeaway",
+            },
         },
         # ---- Step 2: Multiple Choice Evidence Selection ----
         {
@@ -128,6 +134,13 @@ QA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "qa_step_03_ordering"},
             "learning_objectives": ["quest.qa.payment_defect.lo.evidence"],
             "skill_bindings": ["evidence_collection", "analytical_thinking"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.payment_defect.step02.feedback_incorrect",
+                "correct_approach_key": "quest.qa.payment_defect.step02.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step02.feedback_reinforcement",
+                "partial_missing_key": "quest.qa.payment_defect.step02.feedback_missing",
+                "takeaway_key": "quest.qa.payment_defect.step02.feedback_takeaway",
+            },
         },
         # ---- Step 3: Ordering Investigation Steps ----
         {
@@ -150,6 +163,12 @@ QA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "qa_step_04_decision"},
             "learning_objectives": ["quest.qa.payment_defect.lo.investigation"],
             "skill_bindings": ["investigation", "methodology"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.payment_defect.step03.feedback_incorrect",
+                "correct_approach_key": "quest.qa.payment_defect.step03.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step03.feedback_reinforcement",
+                "takeaway_key": "quest.qa.payment_defect.step03.feedback_takeaway",
+            },
         },
         # ---- Step 4: Branching Decision about Release Risk ----
         {
@@ -190,6 +209,12 @@ QA_QUEST = QuestDefinition(
             },
             "learning_objectives": ["quest.qa.payment_defect.lo.decision"],
             "skill_bindings": ["risk_assessment", "decision_making"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.payment_defect.step04.feedback_incorrect",
+                "correct_approach_key": "quest.qa.payment_defect.step04.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step04.feedback_reinforcement",
+                "takeaway_key": "quest.qa.payment_defect.step04.feedback_takeaway",
+            },
         },
         # ---- Step 5a: Multiple Choice — Select Required Bug Report Fields ----
         {
@@ -219,6 +244,12 @@ QA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "qa_step_05b_severity"},
             "learning_objectives": ["quest.qa.payment_defect.lo.bug_report"],
             "skill_bindings": ["bug_reporting", "technical_accuracy"],
+            "feedback": {
+                "correct_approach_key": "quest.qa.payment_defect.step05a.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step05a.feedback_reinforcement",
+                "partial_missing_key": "quest.qa.payment_defect.step05a.feedback_missing",
+                "takeaway_key": "quest.qa.payment_defect.step05a.feedback_takeaway",
+            },
         },
         # ---- Step 5b: Single Choice — Classify Severity & Priority ----
         {
@@ -253,6 +284,12 @@ QA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "qa_step_05c_title"},
             "learning_objectives": ["quest.qa.payment_defect.lo.bug_report"],
             "skill_bindings": ["bug_reporting", "defect_triage"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.payment_defect.step05b.feedback_incorrect",
+                "correct_approach_key": "quest.qa.payment_defect.step05b.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step05b.feedback_reinforcement",
+                "takeaway_key": "quest.qa.payment_defect.step05b.feedback_takeaway",
+            },
         },
         # ---- Step 5c: Short Free Text — Bug Report Title (optional) ----
         {
@@ -316,6 +353,12 @@ QA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "__terminal__"},
             "learning_objectives": ["quest.qa.payment_defect.lo.communication"],
             "skill_bindings": ["communication", "stakeholder_management"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.payment_defect.step06.feedback_incorrect",
+                "correct_approach_key": "quest.qa.payment_defect.step06.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.payment_defect.step06.feedback_reinforcement",
+                "takeaway_key": "quest.qa.payment_defect.step06.feedback_takeaway",
+            },
         },
     ],
     outcomes=[
@@ -437,6 +480,12 @@ BA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "ba_step_02_matching"},
             "learning_objectives": ["quest.ba.payment_conflict.lo.stakeholders"],
             "skill_bindings": ["stakeholder_identification", "business_context"],
+            "feedback": {
+                "correct_approach_key": "quest.ba.payment_conflict.step01.feedback_correct_approach",
+                "reinforcement_key": "quest.ba.payment_conflict.step01.feedback_reinforcement",
+                "partial_missing_key": "quest.ba.payment_conflict.step01.feedback_missing",
+                "takeaway_key": "quest.ba.payment_conflict.step01.feedback_takeaway",
+            },
         },
         # ---- Step 2: Match Stakeholders to Interests ----
         {
@@ -469,6 +518,12 @@ BA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "ba_step_03_ordering"},
             "learning_objectives": ["quest.ba.payment_conflict.lo.stakeholder_interests"],
             "skill_bindings": ["stakeholder_analysis", "requirements_elicitation"],
+            "feedback": {
+                "correct_approach_key": "quest.ba.payment_conflict.step02.feedback_correct_approach",
+                "reinforcement_key": "quest.ba.payment_conflict.step02.feedback_reinforcement",
+                "partial_missing_key": "quest.ba.payment_conflict.step02.feedback_missing",
+                "takeaway_key": "quest.ba.payment_conflict.step02.feedback_takeaway",
+            },
         },
         # ---- Step 3: Order Requirement-Analysis Steps ----
         {
@@ -492,6 +547,12 @@ BA_QUEST = QuestDefinition(
             "next_step_rules": {"default": "ba_step_04_decision"},
             "learning_objectives": ["quest.ba.payment_conflict.lo.analysis_process"],
             "skill_bindings": ["process_analysis", "methodology"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.ba.payment_conflict.step03.feedback_incorrect",
+                "correct_approach_key": "quest.ba.payment_conflict.step03.feedback_correct_approach",
+                "reinforcement_key": "quest.ba.payment_conflict.step03.feedback_reinforcement",
+                "takeaway_key": "quest.ba.payment_conflict.step03.feedback_takeaway",
+            },
         },
         # ---- Step 4: Decision - Resolve Stakeholder Conflict ----
         {
@@ -532,6 +593,12 @@ BA_QUEST = QuestDefinition(
             },
             "learning_objectives": ["quest.ba.payment_conflict.lo.conflict_resolution"],
             "skill_bindings": ["conflict_resolution", "facilitation"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.ba.payment_conflict.step04.feedback_incorrect",
+                "correct_approach_key": "quest.ba.payment_conflict.step04.feedback_correct_approach",
+                "reinforcement_key": "quest.ba.payment_conflict.step04.feedback_reinforcement",
+                "takeaway_key": "quest.ba.payment_conflict.step04.feedback_takeaway",
+            },
         },
         # ---- Step 5: Free-Text - Write Acceptance Criterion ----
         {
@@ -703,6 +770,12 @@ QA_BUG_REPORT_MINI_QUEST = QuestDefinition(
             "next_step_rules": {"default": "br_step_02_ordering"},
             "learning_objectives": ["quest.qa.bug_report.lo.fields"],
             "skill_bindings": ["bug_reporting", "technical_accuracy"],
+            "feedback": {
+                "correct_approach_key": "quest.qa.bug_report.step01.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.bug_report.step01.feedback_reinforcement",
+                "partial_missing_key": "quest.qa.bug_report.step01.feedback_missing",
+                "takeaway_key": "quest.qa.bug_report.step01.feedback_takeaway",
+            },
         },
         # ---- Step 2: Ordering — Arrange Bug Report Fields ----
         {
@@ -727,6 +800,12 @@ QA_BUG_REPORT_MINI_QUEST = QuestDefinition(
             "next_step_rules": {"default": "br_step_03_severity_priority"},
             "learning_objectives": ["quest.qa.bug_report.lo.structure"],
             "skill_bindings": ["bug_reporting", "technical_writing"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.bug_report.step02.feedback_incorrect",
+                "correct_approach_key": "quest.qa.bug_report.step02.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.bug_report.step02.feedback_reinforcement",
+                "takeaway_key": "quest.qa.bug_report.step02.feedback_takeaway",
+            },
         },
         # ---- Step 3: Single Choice — Severity vs Priority ----
         {
@@ -761,6 +840,12 @@ QA_BUG_REPORT_MINI_QUEST = QuestDefinition(
             "next_step_rules": {"default": "br_step_04_evidence_select"},
             "learning_objectives": ["quest.qa.bug_report.lo.severity_priority"],
             "skill_bindings": ["bug_reporting", "technical_accuracy"],
+            "feedback": {
+                "incorrect_explanation_key": "quest.qa.bug_report.step03.feedback_incorrect",
+                "correct_approach_key": "quest.qa.bug_report.step03.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.bug_report.step03.feedback_reinforcement",
+                "takeaway_key": "quest.qa.bug_report.step03.feedback_takeaway",
+            },
         },
         # ---- Step 4: Evidence Select — Find Defects in Bad Report ----
         {
@@ -787,6 +872,12 @@ QA_BUG_REPORT_MINI_QUEST = QuestDefinition(
             "next_step_rules": {"default": "br_step_05_free_text"},
             "learning_objectives": ["quest.qa.bug_report.lo.evidence"],
             "skill_bindings": ["bug_reporting", "analytical_thinking"],
+            "feedback": {
+                "correct_approach_key": "quest.qa.bug_report.step04.feedback_correct_approach",
+                "reinforcement_key": "quest.qa.bug_report.step04.feedback_reinforcement",
+                "partial_missing_key": "quest.qa.bug_report.step04.feedback_missing",
+                "takeaway_key": "quest.qa.bug_report.step04.feedback_takeaway",
+            },
         },
         # ---- Step 5: Free Text — Professional Bug Report ----
         {

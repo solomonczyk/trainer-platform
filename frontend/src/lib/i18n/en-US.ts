@@ -448,6 +448,11 @@ const en = {
     recommended_next: "Recommended Next Quest",
 
     // Actions
+    feedback_why: "Why?",
+    feedback_correct_approach: "Correct approach",
+    feedback_takeaway: "Takeaway",
+    feedback_continue: "Continue",
+
     next_step: "Next Step",
     complete_quest: "Complete Quest",
     back_to_catalog: "Back to Quest Catalog",
@@ -515,6 +520,10 @@ const en = {
       opt_call_meeting: "Call an emergency meeting with the full team",
       opt_ask_repro: "Ask support for detailed reproduction steps",
       opt_escalate: "Escalate immediately to the engineering director",
+      feedback_incorrect: "Logs are the first data source when troubleshooting failures. Meetings or escalation without data only waste time and increase panic.",
+      feedback_correct_approach: "First, check the payment gateway logs — this reveals whether there's a systematic error, its frequency, and likely root cause. Only after collecting data should you call the team.",
+      feedback_reinforcement: "A professional QA engineer starts with data, not meetings. Gateway logs are the primary source of truth for payment failures.",
+      feedback_takeaway: "When you receive a defect report, first check available data (logs, metrics), then gather the team.",
     },
 
     // Step 2: Evidence selection
@@ -528,6 +537,10 @@ const en = {
       ev_uptime: "Server uptime report from DevOps",
       ev_error_reports: "Customer error report summaries",
       ev_wifi: "Office WiFi connection logs",
+      feedback_missing: "Not all selected items are relevant, or you missed important sources. Browser logs, uptime reports, and WiFi logs won't help find a payment defect.",
+      feedback_correct_approach: "Relevant sources: payment gateway logs, deployment notes, transaction database, and customer error reports. They are directly related to the payment process.",
+      feedback_reinforcement: "You correctly identified the relevant sources. A good QA engineer focuses on data directly tied to the problem, ignoring noise.",
+      feedback_takeaway: "When investigating a defect, choose sources directly connected to the affected system. Operational and infrastructure data rarely help find a logic error.",
     },
 
     // Step 3: Ordering
@@ -539,6 +552,10 @@ const en = {
       item_identify: "Identify affected transaction types and user segments",
       item_severity: "Determine severity and business impact",
       item_communicate: "Communicate findings to the team",
+      feedback_incorrect: "Order matters in an investigation. You can't determine severity before reproducing, and you communicate only after full analysis.",
+      feedback_correct_approach: "Correct order: reproduce → check logs → identify affected segments → assess severity → communicate. Each step builds on the previous one's findings.",
+      feedback_reinforcement: "A structured investigation approach is a key QA skill. You built a logical sequence from reproduction through to communication.",
+      feedback_takeaway: "Any investigation follows this principle: first reproduce, collect data, analyze impact, then communicate the result.",
     },
 
     // Step 4: Decision
@@ -548,6 +565,10 @@ const en = {
       opt_block: "Block the release — defect is critical for payments",
       opt_monitor: "Release with monitoring — rollback if errors increase",
       opt_delay: "Delay release for deeper analysis and targeted fix",
+      feedback_incorrect: "A payment defect affecting 15% of transactions is a critical risk. Monitoring won't prevent financial losses and customer trust damage.",
+      feedback_correct_approach: "A race condition in payments is a Critical severity defect. Blocking the release is the only professional decision that protects customers and the business.",
+      feedback_reinforcement: "Correct decision. Blocking the release on a critical payment defect demonstrates QA maturity and understanding of business risk.",
+      feedback_takeaway: "Critical defects in payment functionality require release blocking. Payment reliability is not a compromise.",
     },
 
     // Step 5a: Multiple choice — Select required bug report fields
@@ -565,6 +586,10 @@ const en = {
       opt_impact: "Impact assessment",
       opt_assignee: "Assignee name",
       opt_sprint: "Sprint name",
+      feedback_missing: "You didn't select all required fields or selected extra ones. Assignee name and sprint name are JIRA task fields, not bug report fields.",
+      feedback_correct_approach: "Required fields: title, environment, preconditions, steps, actual result, expected result, severity/priority, evidence, impact assessment. Everything needed to understand and reproduce the bug.",
+      feedback_reinforcement: "Excellent! You selected all key fields of a professional bug report. A good bug report contains everything needed to reproduce and prioritize the defect.",
+      feedback_takeaway: "A bug report should answer: what, where, under what conditions, how to reproduce, what was expected, and how serious it is.",
     },
     // Step 5b: Single choice — Classify severity and priority
     step05b: {
@@ -573,6 +598,10 @@ const en = {
       opt_critical_critical: "Severity = Critical — payment failures block core transactions; Priority = Critical — fix before next release",
       opt_major_high: "Severity = Major — significant functionality broken; Priority = High — fix in next sprint",
       opt_minor_low: "Severity = Minor — cosmetic or edge case; Priority = Low — fix when time permits",
+      feedback_incorrect: "A payment defect causing 15% transaction failures is Critical, not Major or Minor. It blocks core business operations.",
+      feedback_correct_approach: "Race condition in the payment handler with 15% transaction loss — Severity Critical (data/money loss) and Priority Critical (fix before next release).",
+      feedback_reinforcement: "Correct! Severity Critical — because the defect causes transaction loss (financial impact). Priority Critical — because it affects a core business function.",
+      feedback_takeaway: "Severity = system impact (how bad). Priority = business urgency (how soon). Payments are always critical.",
     },
     // Step 5c: Short optional free text — Bug report title
     step05c: {
@@ -589,6 +618,10 @@ const en = {
       opt_explain_risk: "Explain the race condition clearly with data — show why it's critical",
       opt_compromise: "Suggest a compromise: release with the fix delayed but with feature flag",
       opt_stand_firm: "Stand firm — explain that payment reliability is non-negotiable",
+      feedback_incorrect: "Communicating with a PM requires more than firmness — it needs data-backed arguments. Explain the business impact so the PM can convey the risk to the VP.",
+      feedback_correct_approach: "The best response is to explain the race condition in business terms: what percentage of transactions are affected, how much money is at risk, and why this isn't a compromise.",
+      feedback_reinforcement: "Great communication! You explained a technical problem through business risks. That's how QA engineers talk to management.",
+      feedback_takeaway: "Speak to management in business language: losses, risks, customer impact. Technical details come after you've shown the big picture.",
     },
 
     // Rubric
@@ -659,6 +692,10 @@ const en = {
       opt_intern: "Intern Designer",
       opt_cfo: "CFO",
       opt_marketing: "Marketing Social Media Manager",
+      feedback_missing: "You incorrectly identified the stakeholders. Office manager, intern, and marketing are not involved in payment feature requirements.",
+      feedback_correct_approach: "Key stakeholders: Product Owner, Compliance, Technical Lead, Customer Representative, and CFO. Each has a stake in the payment feature.",
+      feedback_reinforcement: "Great! You correctly identified all stakeholders involved in payment feature requirements.",
+      feedback_takeaway: "Stakeholders are those with an interest or influence over the outcome. Not every project participant is a stakeholder for requirements.",
     },
 
     step02: {
@@ -672,6 +709,10 @@ const en = {
       right_security: "Regulatory compliance",
       right_scalability: "System architecture",
       right_usability: "User experience",
+      feedback_missing: "Some pairs are matched incorrectly. Each stakeholder has a primary area of responsibility that determines their project interest.",
+      feedback_correct_approach: "Product Owner → Time to market. Compliance → Regulatory compliance. Tech Lead → System architecture. Customer Rep → User experience.",
+      feedback_reinforcement: "Correct! You matched stakeholders to their primary concerns well. Understanding each stakeholder's motivation is key to resolving conflicts.",
+      feedback_takeaway: "Each stakeholder has their own priorities. The BA's job is to understand them and find balance, not pick sides.",
     },
 
     step03: {
@@ -683,6 +724,10 @@ const en = {
       item_solution: "Propose compromise solution",
       item_validate: "Validate solution with stakeholders",
       item_document: "Document final requirements",
+      feedback_incorrect: "The requirements analysis order is wrong. You can't propose a solution before gathering data, and you shouldn't document before validation.",
+      feedback_correct_approach: "Correct sequence: gather → identify conflicts → analyze impact → propose solution → validate → document. Each step builds on the previous one.",
+      feedback_reinforcement: "Excellent! You know the correct requirements analysis process. Documentation is the last step, after validation.",
+      feedback_takeaway: "Requirements analysis is an iterative process: first understand the problem, find solutions, validate, and only then formalize.",
     },
 
     step04: {
@@ -691,6 +736,10 @@ const en = {
       opt_workshop: "Facilitate a structured workshop to find a balanced approach",
       opt_prioritize_po: "Prioritize the Product Owner — deliver fast, add compliance later",
       opt_escalate: "Escalate to project sponsor for a top-down decision",
+      feedback_incorrect: "Picking one side in a stakeholder conflict or escalating is not the best BA strategy. The analyst's role is to find a balanced solution.",
+      feedback_correct_approach: "The best approach is a structured workshop where each stakeholder voices priorities and the group finds a compromise. The BA acts as facilitator.",
+      feedback_reinforcement: "Correct! A structured workshop is a professional BA tool for resolving conflicts. You facilitate dialogue rather than pick sides.",
+      feedback_takeaway: "A BA should not choose between stakeholders. The goal is to create space for dialogue and find a solution that addresses key concerns of all parties.",
     },
 
     step05: {
@@ -775,6 +824,10 @@ const en = {
       opt_assignee: "Assignee Name",
       opt_sprint: "Sprint Name",
       opt_estimate: "Developer Estimate in hours",
+      feedback_missing: "You didn't select all required fields or added extra ones. Assignee name, sprint, and estimate are task-tracking fields, not bug report fields.",
+      feedback_correct_approach: "Required fields: title, description, environment, steps to reproduce, actual result, expected result, severity, priority.",
+      feedback_reinforcement: "Excellent! You know all required fields of a professional bug report. A good bug report contains everything needed to reproduce and prioritize.",
+      feedback_takeaway: "A bug report should let a developer reproduce the issue and understand its severity. Administrative fields are not needed for that.",
     },
     step02: {
       context: "Great! Now arrange the bug report fields in the correct logical sequence.",
@@ -786,6 +839,10 @@ const en = {
       item_actual: "Actual Result",
       item_expected: "Expected Result",
       item_attach: "Attachments (screenshots, logs)",
+      feedback_incorrect: "The logical sequence is wrong. Start with context (environment, preconditions), then steps, results, and finally attachments.",
+      feedback_correct_approach: "Correct order: title → environment → preconditions → steps → actual result → expected result → attachments. The reader goes from general to specific.",
+      feedback_reinforcement: "Correct! The bug report is structured from context through reproduction to results — following the logic of an investigation.",
+      feedback_takeaway: "A good bug report guides the reader from context through reproduction to results. The sequence helps quickly understand the issue.",
     },
     step03: {
       context: "The QA Lead asks: 'How do you differentiate Severity from Priority?'",
@@ -793,6 +850,10 @@ const en = {
       opt_severity: "Severity is system impact (how bad), Priority is business urgency (how soon to fix)",
       opt_urgency: "Severity is urgency to fix, Priority is system impact",
       opt_same: "Severity and Priority are the same thing",
+      feedback_incorrect: "Severity and Priority are different metrics. Severity = system impact; Priority = business urgency. Do not confuse them.",
+      feedback_correct_approach: "Severity measures technical impact (how bad), Priority measures business urgency (how soon to fix). A Critical bug can have Low priority if it's in a rarely-used feature.",
+      feedback_reinforcement: "Correct! Severity = technical impact, Priority = business urgency. Understanding the difference is a fundamental QA skill.",
+      feedback_takeaway: "Severity (impact) and Priority (urgency) are independent metrics. A bug can be Minor severity but High priority, or vice versa.",
     },
     step04: {
       context: "Here is a fragment of a poorly written bug report from an intern. Find all the defects:",
@@ -805,6 +866,10 @@ const en = {
       ev_missing_severity: "Severity is not specified",
       ev_good_title: "Title is well written (not an issue)",
       ev_correct_format: "Format follows standards (not an issue)",
+      feedback_missing: "You missed some issues or marked things that aren't defects. Carefully check each bug report field.",
+      feedback_correct_approach: "Issues: missing environment, vague steps, subjective language, no expected result, no severity/priority. The title and format are fine.",
+      feedback_reinforcement: "Great! You identified all the problems correctly. Noticing subjective language is especially important — it makes a bug report unreproducible.",
+      feedback_takeaway: "A good bug report is objective and precise. Avoid words like 'seems', 'possibly', 'sometimes'. If unsure, verify again.",
     },
     step05: {
       context: "Apply your knowledge from previous steps and write a professional bug report:",

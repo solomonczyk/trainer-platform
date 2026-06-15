@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import {
@@ -18,7 +18,7 @@ import type {
   QuestAnswerResponse,
   QuestOutcomeResponse,
 } from '@/lib/api/client';
-import { tl } from '@/lib/i18n';
+import { tl, t } from '@/lib/i18n';
 
 import {
   SingleChoiceRenderer,
@@ -33,6 +33,7 @@ import {
 } from '@/features/quests/interaction-renderers';
 
 import StatusMeter from '@/features/quests/status-meter';
+import LearningFeedbackPanel from '@/features/quests/learning-feedback-panel';
 
 import {
   AlertCircle,
@@ -91,7 +92,7 @@ export default function QuestPlayPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const [consequenceMessage, setConsequenceMessage] = useState('');
   const [stepIndex, setStepIndex] = useState(1);
-  const evaluationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isTerminalStep, setIsTerminalStep] = useState(false);
 
   // Try to resume session from localStorage
   const savedSessionId = typeof window !== 'undefined' ? localStorage.getItem(`quest_session_${questId}`) : null;
@@ -151,13 +152,6 @@ export default function QuestPlayPage() {
     init();
   }, [questId, slug, savedSessionId]);
 
-  // Clear evaluation timer on unmount
-  useEffect(() => {
-    return () => {
-      if (evaluationTimerRef.current) clearTimeout(evaluationTimerRef.current);
-    };
-  }, []);
-
   const handleStart = () => {
     setPageState('ready');
   };
@@ -214,34 +208,13 @@ export default function QuestPlayPage() {
         setStepIndex((prev) => prev + 1);
 
         if (data.next_step_id === '__terminal__') {
-          // All steps done, go to outcome
-          setPageState('feedback');
-          evaluationTimerRef.current = setTimeout(async () => {
-            try {
-              if (!sessionId) return;
-              const outcome = await completeQuest(sessionId);
-              setOutcomeResult(outcome);
-              setPageState('outcome');
-              sendAnalyticsEvent('quest_completed', {
-                trainer_slug: slug, scenario_id: questId,
-                properties: { outcome_id: outcome.outcome_id },
-              });
-            } catch {
-              setErrorMessage('Could not complete quest');
-              setPageState('error');
-            }
-          }, 2000);
+          // All steps done — show feedback, user clicks Continue to complete
+          setIsTerminalStep(true);
         } else if (data.next_step) {
-          // Show evaluation briefly then advance
-          setPageState('feedback');
-          evaluationTimerRef.current = setTimeout(() => {
-            setCurrentStep(data.next_step!);
-            setStepAnswer(null);
-            setStepUserText('');
-            setEvaluationResult(null);
-            setPageState('ready');
-          }, 2000);
+          // Show feedback panel — user clicks Continue to advance
+          setIsTerminalStep(false);
         }
+        setPageState('feedback');
       } else if (data.status === 'timed_out') {
         setPageState('timed_out');
       } else {
@@ -288,18 +261,13 @@ export default function QuestPlayPage() {
       if (data.timed_out) {
         setPageState('timed_out');
       } else {
+        // Show feedback panel — user clicks Continue
+        if (data.next_step_id === '__terminal__') {
+          setIsTerminalStep(true);
+        } else {
+          setIsTerminalStep(false);
+        }
         setPageState('feedback');
-        evaluationTimerRef.current = setTimeout(() => {
-          if (data.next_step) {
-            setCurrentStep(data.next_step);
-            setStepAnswer(null);
-            setStepUserText('');
-            setEvaluationResult(null);
-            setPageState('ready');
-          } else {
-            setPageState('outcome');
-          }
-        }, 2000);
       }
     },
     onError: () => {
@@ -336,6 +304,33 @@ export default function QuestPlayPage() {
   const handleViewDebrief = () => {
     setPageState('debrief');
   };
+
+  const handleContinue = useCallback(async () => {
+    if (isTerminalStep) {
+      // Complete quest
+      try {
+        if (!sessionId) return;
+        const outcome = await completeQuest(sessionId);
+        setOutcomeResult(outcome);
+        setPageState('outcome');
+        sendAnalyticsEvent('quest_completed', {
+          trainer_slug: slug, scenario_id: questId,
+          properties: { outcome_id: outcome.outcome_id },
+        });
+      } catch {
+        setErrorMessage('Could not complete quest');
+        setPageState('error');
+      }
+    } else if (evaluationResult?.next_step) {
+      // Advance to next step
+      setCurrentStep(evaluationResult.next_step);
+      setStepAnswer(null);
+      setStepUserText('');
+      setEvaluationResult(null);
+      setIsTerminalStep(false);
+      setPageState('ready');
+    }
+  }, [isTerminalStep, sessionId, evaluationResult, slug, questId]);
 
   // ===================== RENDER =====================
 
@@ -663,43 +658,30 @@ export default function QuestPlayPage() {
     );
   }
 
-  // FEEDBACK (briefly shown before advancing)
-  if (pageState === 'feedback' && evaluationResult) {
+  // FEEDBACK — Learning feedback panel (user clicks Continue to advance)
+  if (pageState === 'feedback' && evaluationResult && currentStep) {
     return (
       <PageContainer width="narrow">
-        <Card padding="lg" variant="default" className="text-center">
-          <div className="flex flex-col items-center gap-4 py-6">
-            {evaluationResult.correct ? (
-              <CheckCircle className="h-12 w-12 text-success-600" />
-            ) : evaluationResult.timed_out ? (
-              <Clock className="h-12 w-12 text-warning-600" />
-            ) : (
-              <XCircle className="h-12 w-12 text-danger-400" />
-            )}
+        {/* Step progress indicator */}
+        <div className="mb-6 flex items-center gap-2 text-label text-text-secondary">
+          <Map className="h-5 w-5 text-primary-600" />
+          <span>{t('quest.step_of').replace('{current}', String(stepIndex - 1)).replace('{total}', String(quest?.steps.length || 0))}</span>
+        </div>
 
-            <h2 className="text-h3 text-foreground">
-              {evaluationResult.feedback_key ? tl(evaluationResult.feedback_key) : ''}
-            </h2>
-
-            {evaluationResult.score !== undefined && (
-              <div className="flex items-center gap-2 text-body-lg font-bold">
-                <span className={evaluationResult.correct ? 'text-success-600' : 'text-danger-500'}>
-                  {evaluationResult.score}/{evaluationResult.max_score || 100}
-                </span>
-              </div>
-            )}
-
-            {consequenceMessage && (
-              <div className="p-3 rounded bg-warning-50 border border-warning-200">
-                <p className="text-body-sm text-warning-700">{tl('quest.consequence_applied')}</p>
-                <p className="text-caption text-warning-600 mt-1">{consequenceMessage}</p>
-              </div>
-            )}
-
-            <Loader2 className="h-5 w-5 animate-spin text-text-muted" />
-            <p className="text-caption text-text-muted">Advancing...</p>
+        {/* Consequence message */}
+        {consequenceMessage && (
+          <div className="mb-5 p-4 rounded-xl bg-warning-50 border border-warning-200">
+            <p className="text-body-sm text-warning-700">{t('quest.consequence_applied')}</p>
+            <p className="text-caption text-warning-600 mt-1">{consequenceMessage}</p>
           </div>
-        </Card>
+        )}
+
+        {/* Learning Feedback */}
+        <LearningFeedbackPanel
+          evaluationResult={evaluationResult}
+          step={currentStep}
+          onContinue={handleContinue}
+        />
       </PageContainer>
     );
   }
