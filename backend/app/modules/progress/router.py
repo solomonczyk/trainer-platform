@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError
-from app.core.security import get_current_user_id_required
+from app.core.security import get_current_user_id_required, require_email_verified
 from app.db.session import get_db
 from app.modules.progress.schemas import (
     AllProgressResponse,
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/me", tags=["Progress"])
 
 @router.get("/progress", response_model=AllProgressResponse)
 async def list_progress(
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
     db: AsyncSession = Depends(get_db),
 ) -> AllProgressResponse:
     """List progress summaries for all trainers the current user has attempted."""
@@ -30,7 +30,7 @@ async def list_progress(
 @router.get("/progress/{trainer_slug}", response_model=ProgressSummaryResponse)
 async def get_progress_for_trainer(
     trainer_slug: str,
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
     db: AsyncSession = Depends(get_db),
 ) -> ProgressSummaryResponse:
     """Return progress for a single trainer identified by its slug."""

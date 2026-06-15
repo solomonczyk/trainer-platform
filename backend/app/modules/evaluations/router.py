@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.errors import ForbiddenError
 from app.core.logging import get_logger
-from app.core.security import get_current_user_id_required
+from app.core.security import get_current_user_id_required, require_email_verified
 from app.db.session import get_db
 from app.modules.evaluations.schemas import (
     EvaluationErrorResponse,
@@ -90,7 +90,7 @@ async def trigger_evaluation(
 )
 async def get_evaluation(
     attempt_id: str,
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
     db: AsyncSession = Depends(get_db),
 ) -> EvaluationResponse:
     """Retrieve the evaluation result for an attempt."""

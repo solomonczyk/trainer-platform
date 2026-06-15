@@ -53,6 +53,22 @@ const en = {
     hidePassword: "Hide password",
     passwordPlaceholder: "At least 6 characters",
     confirmPasswordPlaceholder: "Repeat password",
+    // Email verification
+    verifyEmailCheckTitle: "Check Your Email",
+    verifyEmailCheckDesc: "We sent a verification link to your email address. Please click the link to verify your account and access the simulator.",
+    verifyEmailVerifying: "Verifying your email...",
+    verifyEmailSuccessTitle: "Email Verified!",
+    verifyEmailSuccessDesc: "Your email has been verified. Redirecting to the simulator...",
+    verifyEmailAlreadyTitle: "Already Verified",
+    verifyEmailAlreadyDesc: "This email has already been verified. Please log in.",
+    verifyEmailExpiredTitle: "Link Expired",
+    verifyEmailExpiredDesc: "This verification link has expired. Enter your email below to receive a new one.",
+    verifyEmailGoToDomains: "Go to Domains",
+    verificationRequiredTitle: "Email Verification Required",
+    verificationRequiredDesc: "Please verify your email address before accessing the simulator. Check your inbox for the verification link.",
+    resendVerificationButton: "Resend Verification Email",
+    verificationResent: "Verification email sent. Please check your inbox.",
+    backToLogin: "Back to Login",
   },
 
   domains: {

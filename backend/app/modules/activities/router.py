@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError
-from app.core.security import get_current_user_id, get_current_user_id_required
+from app.core.security import get_current_user_id, get_current_user_id_required, require_email_verified
 from app.db.session import get_db
 from app.modules.activities.schemas import (
     ActivityStartResponse,
@@ -74,7 +74,7 @@ async def submit_activity(
     trainer_slug: str,
     body: ActivitySubmitRequest,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> ActivitySubmitResponse:
     """Submit an answer for deterministic validation.
 

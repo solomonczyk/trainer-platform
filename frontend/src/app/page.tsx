@@ -6,7 +6,7 @@ import { isAuthenticated, getCurrentUser, type UserResponse } from "@/lib/api/cl
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardDescription, CardTitle } from "@/components/ui/Card";
-import { GraduationCap, Brain, TrendingUp, ArrowRight } from "lucide-react";
+import { GraduationCap, Brain, TrendingUp, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function LandingPage() {
   const [user, setUser] = useState<UserResponse | null>(null);
@@ -49,6 +49,7 @@ export default function LandingPage() {
 
   const ctaHref = user ? "/domains" : "/register";
   const ctaLabel = user ? (t("nav.domains") || "Домены") : (t("landing.startButton") || "Начать обучение");
+  const needsVerification = user && !user.email_verified;
 
   return (
     <div className="flex flex-col">
@@ -56,6 +57,15 @@ export default function LandingPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 py-24 sm:py-32">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-20" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {needsVerification && (
+            <div className="mx-auto mb-6 max-w-xl rounded-lg bg-amber-500/20 p-3 text-center text-sm text-amber-100 backdrop-blur">
+              <AlertCircle className="mr-2 inline-block h-4 w-4" />
+              {t("auth.verificationRequiredDesc")}
+              <Link href="/verify-email" className="ml-2 font-medium underline hover:text-white">
+                {t("auth.verifyEmailCheckTitle")}
+              </Link>
+            </div>
+          )}
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
               {t("landing.heroTitle")}

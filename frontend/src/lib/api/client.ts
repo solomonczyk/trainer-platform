@@ -345,6 +345,28 @@ export async function updateProfile(data: { display_name?: string; preferred_loc
 }
 
 // ---------------------------------------------------------------------------
+// Email Verification
+// ---------------------------------------------------------------------------
+
+export async function verifyEmail(token: string) {
+  return request<{ message: string; email_verified: boolean }>(
+    "POST",
+    "/api/v1/auth/verify-email",
+    { token },
+    { skipAuth: true }
+  );
+}
+
+export async function resendVerification(email: string) {
+  return request<{ message: string }>(
+    "POST",
+    "/api/v1/auth/resend-verification",
+    { email },
+    { skipAuth: true }
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Domains
 // ---------------------------------------------------------------------------
 

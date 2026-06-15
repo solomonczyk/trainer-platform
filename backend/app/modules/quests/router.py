@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import NotFoundError, ValidationError, ConflictError
 from app.core.logging import get_logger
-from app.core.security import get_current_user_id_required
+from app.core.security import get_current_user_id_required, require_email_verified
 from app.db.session import get_db
 from app.modules.quests import (
     QuestAnswerRequest,
@@ -52,7 +52,7 @@ async def start_quest_endpoint(
     quest_id: str,
     body: QuestStartRequest = QuestStartRequest(),
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> QuestStartResponse:
     """Start or resume an immersive quest session."""
     try:
@@ -70,7 +70,7 @@ async def start_quest_endpoint(
 async def get_current_step_endpoint(
     session_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> QuestStepResponse:
     """Get the current step with narrative state."""
     try:
@@ -89,7 +89,7 @@ async def submit_answer_endpoint(
     session_id: str,
     body: QuestAnswerRequest,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> QuestAnswerResponse:
     """Submit an answer for the current step. Evaluates deterministically or via AI rubric."""
     try:
@@ -116,7 +116,7 @@ async def retry_evaluation_endpoint(
     session_id: str,
     body: QuestAnswerRequest,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> QuestAnswerResponse:
     """Explicitly retry AI evaluation for a failed or timed-out step."""
     try:
@@ -141,7 +141,7 @@ async def retry_evaluation_endpoint(
 async def complete_quest_endpoint(
     session_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> QuestOutcomeResponse:
     """Complete the quest and receive outcome and educational debrief."""
     try:
@@ -159,7 +159,7 @@ async def complete_quest_endpoint(
 async def get_quest_progress_endpoint(
     session_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> QuestProgressResponse:
     """Get progress for an existing quest session (supports refresh resume)."""
     result = await get_quest_progress(db, session_id, user_id)

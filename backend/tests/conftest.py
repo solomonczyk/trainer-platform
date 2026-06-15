@@ -135,6 +135,7 @@ async def test_user(db: AsyncSession) -> User:
         password_hash=hash_password("testpass123"),
         role="registered_user",
         is_active=True,
+        email_verified=True,
     )
     db.add(user)
     await db.flush()
@@ -142,6 +143,29 @@ async def test_user(db: AsyncSession) -> User:
     db.add(profile)
     await db.commit()
     return user
+
+
+@pytest_asyncio.fixture
+async def unverified_user(db: AsyncSession) -> User:
+    user = User(
+        email="unverified@example.com",
+        password_hash=hash_password("testpass123"),
+        role="registered_user",
+        is_active=True,
+        email_verified=False,
+    )
+    db.add(user)
+    await db.flush()
+    profile = UserProfile(user_id=user.id, display_name="Unverified User", preferred_locale="ru-RU")
+    db.add(profile)
+    await db.commit()
+    return user
+
+
+@pytest_asyncio.fixture
+async def unverified_headers(unverified_user: User) -> dict:
+    token = create_access_token(user_id=unverified_user.id, role=unverified_user.role)
+    return {"Authorization": f"Bearer {token}"}
 
 
 @pytest_asyncio.fixture

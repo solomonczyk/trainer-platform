@@ -29,8 +29,13 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      await login(email, password);
-      router.push("/domains");
+      const result = await login(email, password);
+      // If email is not verified, redirect to verification prompt
+      if (!result.user.email_verified) {
+        router.push("/verify-email");
+      } else {
+        router.push("/domains");
+      }
     } catch (err) {
       if (err instanceof ApiClientError) {
         switch (err.code) {

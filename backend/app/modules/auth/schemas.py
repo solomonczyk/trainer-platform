@@ -29,6 +29,7 @@ class UserResponse(BaseModel):
     email: str
     role: str
     is_active: bool
+    email_verified: bool = False
 
     model_config = {"from_attributes": True}
 
@@ -39,3 +40,22 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+class VerifyEmailRequest(BaseModel):
+    """Request body for email verification."""
+
+    token: str = Field(..., description="Email verification token")
+
+
+class ResendVerificationRequest(BaseModel):
+    """Request body for resending verification email."""
+
+    email: EmailStr = Field(..., description="User email address")
+
+
+class VerifyEmailResponse(BaseModel):
+    """Response after successful email verification."""
+
+    message: str = "Email verified successfully"
+    email_verified: bool = True

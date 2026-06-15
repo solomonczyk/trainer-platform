@@ -72,6 +72,17 @@ class Settings(BaseSettings):
     frontend_url: str = "http://localhost:3000"
     cors_allowed_origins: str = ""  # comma-separated list, merged with frontend_url
 
+    # Email / SMTP
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    smtp_from_email: str = "noreply@trainerplatform.com"
+    smtp_from_name: str = "Trainer Platform"
+    smtp_use_tls: bool = True
+    email_verification_token_expire_hours: int = 24
+    email_verification_enabled: bool = True  # set False to skip sending (dev mode)
+
     # Admin
     admin_api_key: str = "change-me-admin-key"
 

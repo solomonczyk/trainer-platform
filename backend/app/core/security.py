@@ -1,4 +1,4 @@
-"""Security utilities — JWT, password hashing, role checks."""
+"""Security utilities — JWT, password hashing, role checks, email verification gate."""
 
 from __future__ import annotations
 
@@ -9,9 +9,11 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.errors import UnauthorizedError, ForbiddenError
+from app.core.errors import UnauthorizedError, ForbiddenError, AppError
+from app.db.session import get_db
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -90,3 +92,25 @@ async def require_admin(
     if payload.get("role") != "admin":
         raise ForbiddenError("Admin access required")
     return payload.get("sub", "")
+
+
+async def require_email_verified(
+    user_id: str = Depends(get_current_user_id_required),
+    db: AsyncSession = Depends(get_db),
+) -> str:
+    """Require the current user's email to be verified.
+
+    Raises 403 EMAIL_NOT_VERIFIED if the user's email has not been verified.
+    """
+    from app.modules.auth.repository import get_user_by_id  # noqa: late import to avoid cycles
+
+    user = await get_user_by_id(db, user_id)
+    if not user:
+        raise UnauthorizedError("User not found")
+    if not user.email_verified:
+        raise AppError(
+            code="EMAIL_NOT_VERIFIED",
+            message="Email verification required. Please verify your email before accessing this resource.",
+            status_code=403,
+        )
+    return user_id

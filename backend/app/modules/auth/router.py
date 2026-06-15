@@ -1,4 +1,4 @@
-"""Auth API routes — register, login, logout."""
+"""Auth API routes — register, login, logout, email verification."""
 
 from __future__ import annotations
 
@@ -13,8 +13,16 @@ from app.modules.auth.schemas import (
     LoginRequest,
     TokenResponse,
     UserResponse,
+    VerifyEmailRequest,
+    ResendVerificationRequest,
+    VerifyEmailResponse,
 )
-from app.modules.auth.service import register_user, authenticate_user
+from app.modules.auth.service import (
+    register_user,
+    authenticate_user,
+    verify_email,
+    resend_verification,
+)
 
 router = APIRouter()
 
@@ -24,7 +32,11 @@ async def register(
     body: RegisterRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
-    """Register a new user account and return a JWT token."""
+    """Register a new user account and return a JWT token.
+
+    Note: The user's email is NOT verified at this point.
+    A verification email is sent automatically.
+    """
     user, token = await register_user(db, body.email, body.password, body.display_name)
     return TokenResponse(
         access_token=token,
@@ -38,7 +50,11 @@ async def login(
     body: LoginRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
-    """Authenticate with email/password and return a JWT token."""
+    """Authenticate with email/password and return a JWT token.
+
+    Even if the email is not verified, the user receives a token.
+    Access to simulator resources is gated by require_email_verified.
+    """
     user, token = await authenticate_user(db, body.email, body.password)
     return TokenResponse(
         access_token=token,
@@ -53,3 +69,23 @@ async def logout(
 ) -> dict:
     """Logout placeholder — invalidates the current session."""
     return {"message": "Logged out successfully"}
+
+
+@router.post("/verify-email", response_model=VerifyEmailResponse)
+async def verify_email_endpoint(
+    body: VerifyEmailRequest,
+    db: AsyncSession = Depends(get_db),
+) -> VerifyEmailResponse:
+    """Verify a user's email address using a verification token."""
+    await verify_email(db, body.token)
+    return VerifyEmailResponse()
+
+
+@router.post("/resend-verification", response_model=dict)
+async def resend_verification_endpoint(
+    body: ResendVerificationRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Resend the email verification email to the given address."""
+    await resend_verification(db, body.email)
+    return {"message": "Verification email sent successfully"}

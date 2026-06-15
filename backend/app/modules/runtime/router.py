@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.errors import ConflictError, ForbiddenError, NotFoundError, ValidationError
-from app.core.security import get_current_user_id_required
+from app.core.security import get_current_user_id_required, require_email_verified
 from app.db.models import Scenario, TrainerProduct, UserTrainerEnrollment
 from app.db.session import get_db
 from app.modules.runtime import service as runtime_service
@@ -30,7 +30,7 @@ router = APIRouter()
 async def start_scenario(
     scenario_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> StartScenarioResponse:
     """Start a scenario by its business scenario_id string.
 
@@ -97,7 +97,7 @@ async def submit_message(
     session_id: str,
     body: SubmitMessageRequest,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> SubmitMessageResponse:
     """Save a user answer message for the given session.
 
@@ -129,7 +129,7 @@ async def submit_message(
 async def complete_session(
     session_id: str,
     db: AsyncSession = Depends(get_db),
-    user_id: str = Depends(get_current_user_id_required),
+    user_id: str = Depends(require_email_verified),
 ) -> CompleteSessionResponse:
     """Mark an attempt as completed.
 

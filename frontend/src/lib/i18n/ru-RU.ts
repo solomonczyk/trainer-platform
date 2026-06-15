@@ -57,6 +57,22 @@ const ru = {
     hidePassword: "Скрыть пароль",
     passwordPlaceholder: "Минимум 6 символов",
     confirmPasswordPlaceholder: "Повторите пароль",
+    // Email verification
+    verifyEmailCheckTitle: "Проверьте почту",
+    verifyEmailCheckDesc: "Мы отправили ссылку для подтверждения на ваш email. Пожалуйста, перейдите по ссылке, чтобы подтвердить аккаунт и получить доступ к тренажёрам.",
+    verifyEmailVerifying: "Подтверждение email...",
+    verifyEmailSuccessTitle: "Email подтверждён!",
+    verifyEmailSuccessDesc: "Ваш email подтверждён. Перенаправляем в тренажёры...",
+    verifyEmailAlreadyTitle: "Уже подтверждён",
+    verifyEmailAlreadyDesc: "Этот email уже подтверждён. Пожалуйста, войдите в аккаунт.",
+    verifyEmailExpiredTitle: "Ссылка устарела",
+    verifyEmailExpiredDesc: "Срок действия ссылки истёк. Введите ваш email ниже, чтобы получить новую.",
+    verifyEmailGoToDomains: "Перейти к доменам",
+    verificationRequiredTitle: "Требуется подтверждение email",
+    verificationRequiredDesc: "Пожалуйста, подтвердите ваш email перед доступом к тренажёрам. Проверьте почту — мы отправили ссылку.",
+    resendVerificationButton: "Отправить повторно",
+    verificationResent: "Письмо отправлено. Проверьте вашу почту.",
+    backToLogin: "Назад к входу",
   },
 
   // Domains
