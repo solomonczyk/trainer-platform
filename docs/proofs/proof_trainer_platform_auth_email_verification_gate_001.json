@@ -1,0 +1,106 @@
+{
+  "task": "TRAINER-PLATFORM-SMTP-VPS-EMAIL-DELIVERY-AND-AUTH-GATE-ACCEPTANCE",
+  "task_closeout": "TRAINER-PLATFORM-SMTP-AUTH-GATE-MICRO-CLOSEOUT",
+  "description": "Complete acceptance of the email verification gate by configuring SMTP on VPS staging and verifying the real end-to-end email confirmation flow.",
+  "acceptance": {
+    "smtp_configured_on_vps": true,
+    "migration_009_applied": true,
+    "real_email_received": true,
+    "verification_link_works": true,
+    "unverified_user_blocked": true,
+    "verified_user_can_access_simulator": true,
+    "resend_verification_works": true,
+    "secrets_not_committed": true,
+    "tokens_not_logged": true,
+    "git_clean": true,
+    "real_email_inbox_delivery_confirmed": true,
+    "verification_token_not_exposed": true,
+    "smtp_secret_not_exposed": true,
+    "old_exposed_app_password_revoked": true,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "evidence": {
+    "smtp": {
+      "host": "smtp.gmail.com",
+      "port": 587,
+      "from_email": "taras.andrii.work@gmail.com",
+      "configured_in": "/opt/trainer-platform/env/backend.env",
+      "password_never_committed": true,
+      "password_only_in_backend_env": true,
+      "old_exposed_app_password_revoked": true
+    },
+    "migration": {
+      "applied": "009_add_email_verification_fields",
+      "alembic_head": "009",
+      "columns_added": [
+        "email_verified (boolean, NOT NULL)",
+        "email_verification_token (varchar, nullable)",
+        "email_verification_token_expires_at (timestamptz, nullable)"
+      ],
+      "index_created": "ix_users_email_verification_token"
+    },
+    "registration_test": {
+      "email": "taras.andrii.work+test9@gmail.com",
+      "user_id": "db28d664-ae67-461a-a406-89dea2166223",
+      "email_verified_on_creation": false,
+      "verification_email_sent": true
+    },
+    "real_email_delivery": {
+      "operator_confirmed": true,
+      "recipient": "taras.andrii.work+test9@gmail.com",
+      "subject": "Verify your email — Trainer Platform",
+      "arrived_in_inbox": true,
+      "timestamp_utc": "2026-06-15 14:16:45",
+      "verification_token_not_exposed_in_proof": true
+    },
+    "unverified_blocked": {
+      "quest_start": "403 EMAIL_NOT_VERIFIED",
+      "my_progress": "403 EMAIL_NOT_VERIFIED",
+      "scenario_start": "403 EMAIL_NOT_VERIFIED"
+    },
+    "verification": {
+      "endpoint": "POST /api/v1/auth/verify-email",
+      "status": "200 OK",
+      "email_verified_after": true,
+      "token_reuse": "400 TOKEN_ALREADY_USED",
+      "token_value_not_logged_or_committed": true
+    },
+    "verified_access": {
+      "domains_list": "200 OK",
+      "quests_list": "200 OK",
+      "profile": "200 OK",
+      "qa_quest_started": "200 OK — session 752a8671 created"
+    },
+    "resend_verification": {
+      "unverified_user": "200 Verification email sent successfully",
+      "already_verified_user": "400 ALREADY_VERIFIED"
+    },
+    "secrets_safety": {
+      "smtp_password_not_in_logs": true,
+      "smtp_password_only_in_backend_env": true,
+      "tokens_not_leaked_in_logs": true,
+      "smtp_password_not_committed": true,
+      "old_exposed_app_password_revoked": true
+    }
+  },
+  "backend_tests": {
+    "run": 20,
+    "passed": 20
+  },
+  "frontend_build": "successful",
+  "vps_deployment": {
+    "host": "152.53.227.37",
+    "url": "https://trainer.152.53.227.37.nip.io",
+    "backend_container": "tp_backend",
+    "frontend_container": "tp_frontend",
+    "database_container": "tp_postgres",
+    "commit": "e7685c6",
+    "proof_file_path": "docs/proofs/proof_trainer_platform_auth_email_verification_gate_001.json"
+  },
+  "remaining_for_production": [
+    "Set production_accepted = true and release_allowed = true after confirming verified user can complete full QA quest",
+    "Replace Gmail SMTP with production SMTP/transactional email service",
+    "Run full test suite against production database"
+  ]
+}
