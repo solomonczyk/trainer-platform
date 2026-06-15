@@ -146,6 +146,7 @@ class StepInteraction(BaseModel):
     evidence_items: list[EvidenceItem] = []
     min_select: int = 1
     max_select: int = 0
+    evidence_panel_key: str = ""  # Optional i18n key for a panel rendered above options
 
     # For free_text
     max_length: int = 3000
