@@ -237,10 +237,16 @@ function getToken(): string | null {
 
 export function setToken(token: string): void {
   localStorage.setItem("access_token", token);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("auth-changed"));
+  }
 }
 
 export function clearToken(): void {
   localStorage.removeItem("access_token");
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("auth-changed"));
+  }
 }
 
 export function isAuthenticated(): boolean {

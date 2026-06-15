@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import clsx from "clsx";
-import { isAuthenticated, getCurrentUser, logout, type UserResponse } from "@/lib/api/client";
+import { logout } from "@/lib/api/client";
+import { useAuth } from "@/lib/auth/AuthContext";
 import { t, getCurrentLocale, setLocale, localeOptions } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
@@ -16,21 +17,11 @@ interface HeaderProps {
 
 export default function Header({ className }: HeaderProps) {
   const router = useRouter();
-  const [user, setUser] = useState<UserResponse | null>(null);
+  const { user, clearSession } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [localeSwitcherOpen, setLocaleSwitcherOpen] = useState(false);
   const [currentLocale, setCurrentLocale] = useState<Locale>("ru-RU");
-
-  const refreshAuth = useCallback(() => {
-    if (isAuthenticated()) {
-      getCurrentUser()
-        .then(setUser)
-        .catch(() => setUser(null));
-    } else {
-      setUser(null);
-    }
-  }, []);
 
   const refreshLocale = useCallback(() => {
     setCurrentLocale(getCurrentLocale());
@@ -38,21 +29,17 @@ export default function Header({ className }: HeaderProps) {
 
   useEffect(() => {
     setMounted(true);
-    refreshAuth();
     refreshLocale();
 
-    window.addEventListener("auth-changed", refreshAuth);
     window.addEventListener("locale-changed", refreshLocale);
     return () => {
-      window.removeEventListener("auth-changed", refreshAuth);
       window.removeEventListener("locale-changed", refreshLocale);
     };
-  }, [refreshAuth, refreshLocale]);
+  }, [refreshLocale]);
 
   const handleLogout = () => {
     logout();
-    setUser(null);
-    window.dispatchEvent(new CustomEvent("auth-changed"));
+    clearSession();
     router.push("/login");
   };
 

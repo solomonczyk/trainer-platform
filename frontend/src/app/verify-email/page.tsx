@@ -6,12 +6,9 @@ import Link from "next/link";
 import {
   verifyEmail,
   resendVerification,
-  getCurrentUser,
-  isAuthenticated,
   setToken,
-  clearToken,
-  type UserResponse,
 } from "@/lib/api/client";
+import { useAuth } from "@/lib/auth/AuthContext";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardTitle, CardDescription } from "@/components/ui/Card";
@@ -20,6 +17,7 @@ import { CheckCircle, AlertCircle, Mail, Loader2, LogOut, User } from "lucide-re
 type PageState =
   | { status: "loading" }
   | { status: "pending" }
+  | { status: "ready" } // token present, waiting for user to click "Verify"
   | { status: "verifying" }
   | { status: "success"; verifiedEmail?: string }
   | { status: "error"; message: string }
@@ -32,6 +30,9 @@ export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
+  // Canonical auth — same source as Header
+  const { user, loading: authLoading, refresh: refreshAuth, clearSession } = useAuth();
+
   const [state, setState] = useState<PageState>({ status: "loading" });
   const [resendEmail, setResendEmail] = useState("");
   const [resending, setResending] = useState(false);
@@ -42,95 +43,70 @@ export default function VerifyEmailPage() {
   // Session identity bar — staging/debug only, disabled for production
   const showDebugBar = process.env.NEXT_PUBLIC_APP_ENV !== "production";
 
-  // Session identity — shows who is currently logged in
-  const [sessionUser, setSessionUser] = useState<UserResponse | null>(null);
-  const [sessionLoading, setSessionLoading] = useState(true);
-
-  // Detect current session on mount
-  useEffect(() => {
-    if (isAuthenticated()) {
-      getCurrentUser()
-        .then((u) => setSessionUser(u))
-        .catch(() => setSessionUser(null))
-        .finally(() => setSessionLoading(false));
-    } else {
-      setSessionLoading(false);
-    }
-  }, []);
-
-  // On mount, pre-fill email from query param or check auth
+  // Pre-fill email from query param or auth
   useEffect(() => {
     const emailParam = searchParams.get("email");
     if (emailParam) {
       setResendEmail(emailParam);
-    } else if (isAuthenticated()) {
-      getCurrentUser()
-        .then((u) => setResendEmail(u.email))
-        .catch(() => {});
+    } else if (user?.email) {
+      setResendEmail(user.email);
     }
-  }, [searchParams]);
+  }, [searchParams, user]);
 
+  // Token present but don't auto-verify (Gmail bot protection)
   useEffect(() => {
     if (!token) {
       setState({ status: "pending" });
       return;
     }
-
-    setState({ status: "verifying" });
-    verifyEmail(token)
-      .then((res) => {
-        if (res.access_token) {
-          setToken(res.access_token);
-        }
-        // Show verified email so operator can confirm identity
-        setState({ status: "success", verifiedEmail: res.email || undefined });
-        // Refresh session identity with new token
-        getCurrentUser()
-          .then((u) => setSessionUser(u))
-          .catch(() => {});
-      })
-      .catch((err) => {
-        const code = err?.code || "";
-        if (code === "TOKEN_ALREADY_USED") {
-          setState({ status: "already_verified" });
-        } else if (code === "TOKEN_EXPIRED") {
-          setState({ status: "token_expired" });
-        } else {
-          setState({ status: "error", message: err?.message || "Verification failed" });
-        }
-      });
+    // Wait for user to click "Verify Email" button
+    setState({ status: "ready" });
   }, [token, router]);
 
-  // Poll /me every 5s while on pending/resent/success screens
-  useEffect(() => {
-    if (state.status !== "pending" && state.status !== "resent" && state.status !== "success") return;
-    const interval = setInterval(async () => {
-      try {
-        const user = await getCurrentUser();
-        setSessionUser(user);
-        if (user.email_verified) {
-          setState((prev) =>
-            prev.status === "success" ? prev : { status: "success", verifiedEmail: user.email }
-          );
-        }
-      } catch {
-        // Not authenticated — stay on current state
+  const handleVerifyClick = useCallback(async () => {
+    if (!token) return;
+    setState({ status: "verifying" });
+    try {
+      const res = await verifyEmail(token);
+      if (res.access_token) {
+        setToken(res.access_token);
       }
+      setState({ status: "success", verifiedEmail: res.email || undefined });
+      // setToken dispatches auth-changed → AuthContext refreshes → Header updates
+    } catch (err: unknown) {
+      const e = err as { code?: string; message?: string };
+      const code = e?.code || "";
+      if (code === "TOKEN_ALREADY_USED") {
+        setState({ status: "already_verified" });
+      } else if (code === "TOKEN_EXPIRED") {
+        setState({ status: "token_expired" });
+      } else {
+        setState({ status: "error", message: e?.message || "Verification failed" });
+      }
+    }
+  }, [token]);
+
+  // Poll /me every 5s for cross-tab verification detection
+  useEffect(() => {
+    if (state.status !== "pending" && state.status !== "resent" && state.status !== "success" && state.status !== "ready") return;
+    const interval = setInterval(() => {
+      refreshAuth();
     }, 5000);
     return () => clearInterval(interval);
-  }, [state.status]);
+  }, [state.status, refreshAuth]);
+
+  // Transition to success when auth context shows verified
+  useEffect(() => {
+    if (user?.email_verified && state.status !== "success") {
+      setState({ status: "success", verifiedEmail: user.email });
+    }
+  }, [user?.email_verified, user?.email, state.status]);
 
   // Cleanup cooldown timer
   useEffect(() => {
     return () => {
       if (cooldownTimer.current) clearInterval(cooldownTimer.current);
     };
-  }, []);
-
-  const handleClearSession = useCallback(() => {
-    clearToken();
-    setSessionUser(null);
-    setState({ status: "pending" });
   }, []);
 
   const handleResend = useCallback(async () => {
@@ -158,46 +134,38 @@ export default function VerifyEmailPage() {
   }, [resendEmail, cooldownSec]);
 
   const handleCheckStatus = useCallback(async () => {
-    try {
-      const user = await getCurrentUser();
-      setSessionUser(user);
-      if (user.email_verified) {
-        router.push("/domains");
-      } else {
-        setState({
-          status: "error",
-          message: "Email not yet verified. Please check your inbox and click the verification link.",
-        });
-      }
-    } catch {
+    await refreshAuth();
+    if (user?.email_verified) {
+      router.push("/domains");
+    } else {
       setState({
         status: "error",
-        message: "Unable to check status. Please ensure you are logged in.",
+        message: "Email not yet verified. Please check your inbox and click the verification link.",
       });
     }
-  }, [router]);
+  }, [refreshAuth, user?.email_verified, router]);
 
   // ── Session identity bar ────────────────────────────────────
   const SessionBar = ({ extra }: { extra?: React.ReactNode }) => (
     <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
-      {sessionLoading ? (
+      {authLoading ? (
         <div className="flex items-center gap-2 text-sm text-text-tertiary">
           <Loader2 className="h-3 w-3 animate-spin" />
           Checking session...
         </div>
-      ) : sessionUser ? (
+      ) : user ? (
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-sm">
             <User className="h-4 w-4 text-primary-600" />
-            <span className="font-medium text-text-primary">{sessionUser.email}</span>
-            {sessionUser.email_verified ? (
+            <span className="font-medium text-text-primary">{user.email}</span>
+            {user.email_verified ? (
               <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Verified</span>
             ) : (
               <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Unverified</span>
             )}
           </div>
           <button
-            onClick={handleClearSession}
+            onClick={clearSession}
             className="flex items-center gap-1 rounded px-2 py-1 text-xs text-red-500 hover:bg-red-50 hover:text-red-700"
             title="Clear session and start fresh"
           >
@@ -286,6 +254,36 @@ export default function VerifyEmailPage() {
     );
   }
 
+  // ── Ready — token present, user must click to verify ────────
+  if (state.status === "ready") {
+    return (
+      <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
+        <Card padding="lg" className="w-full max-w-md text-center">
+          {showDebugBar && <SessionBar />}
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
+            <Mail className="h-8 w-8 text-primary-600" />
+          </div>
+          <CardTitle className="text-2xl">Verify Your Email</CardTitle>
+          <CardDescription className="mt-3">
+            Click the button below to confirm your email address.
+          </CardDescription>
+          <p className="mt-2 text-xs text-text-tertiary">
+            This verification link was sent to your email. Do not share it.
+          </p>
+          <div className="mt-6">
+            <Button
+              variant="primary"
+              className="w-full"
+              onClick={handleVerifyClick}
+            >
+              Verify Email
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   // ── Verifying ──────────────────────────────────────────────
   if (state.status === "verifying") {
     return (
@@ -335,7 +333,7 @@ export default function VerifyEmailPage() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={handleClearSession}
+              onClick={clearSession}
             >
               Clear Session
             </Button>
@@ -456,7 +454,7 @@ export default function VerifyEmailPage() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
       <Card padding="lg" className="w-full max-w-md text-center">
-        <SessionBar />
+        {showDebugBar && <SessionBar />}
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
           <AlertCircle className="h-8 w-8 text-red-600" />
         </div>
@@ -470,6 +468,6 @@ export default function VerifyEmailPage() {
           </Link>
         </div>
       </Card>
-    </div>
-  );
+    );
+  }
 }
