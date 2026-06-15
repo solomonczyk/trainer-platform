@@ -39,6 +39,9 @@ export default function VerifyEmailPage() {
   const cooldownTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const COOLDOWN_DURATION = 60;
 
+  // Session identity bar — staging/debug only, disabled for production
+  const showDebugBar = process.env.NEXT_PUBLIC_APP_ENV !== "production";
+
   // Session identity — shows who is currently logged in
   const [sessionUser, setSessionUser] = useState<UserResponse | null>(null);
   const [sessionLoading, setSessionLoading] = useState(true);
@@ -226,7 +229,7 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          <SessionBar />
+          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
             <Mail className="h-8 w-8 text-primary-600" />
           </div>
@@ -300,7 +303,7 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          <SessionBar
+          {showDebugBar && <SessionBar
             extra={
               state.verifiedEmail ? (
                 <p className="mt-1 text-xs text-green-600">
@@ -308,7 +311,7 @@ export default function VerifyEmailPage() {
                 </p>
               ) : null
             }
-          />
+          />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
@@ -347,7 +350,7 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          <SessionBar />
+          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
             <CheckCircle className="h-8 w-8 text-blue-600" />
           </div>
@@ -368,7 +371,7 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          <SessionBar />
+          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
             <AlertCircle className="h-8 w-8 text-amber-600" />
           </div>
@@ -404,7 +407,7 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          <SessionBar />
+          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
