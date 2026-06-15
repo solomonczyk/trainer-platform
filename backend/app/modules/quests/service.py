@@ -427,7 +427,7 @@ async def submit_and_evaluate_step(
         step_consequence = step.consequences.model_dump() if hasattr(step.consequences, "model_dump") else dict(step.consequences)
 
         # Apply choice-specific consequences
-        if step.step_type in ("single_choice", "decision", "branching"):
+        if step.step_type in ("single_choice", "decision", "branching", "dialogue"):
             choice_id = raw_answer if raw_answer is not None else str(raw_answer)
             choice_consequence = get_default_consequence(
                 step.interaction.model_dump() if hasattr(step.interaction, "model_dump") else dict(step.interaction),

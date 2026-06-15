@@ -61,9 +61,15 @@ def evaluate_deterministic(
         return _eval_evidence_select(answer, interaction)
     elif step_type == "decision":
         return _eval_decision(answer, interaction)
-    elif step_type == "branching":
-        return _eval_branching(answer, interaction)
-    elif step_type in ("free_text", "dialogue"):
+    elif step_type == "dialogue":
+        # Dialogue with allow_free_text=True requires AI rubric.
+        # Dialogue with allow_free_text=False and predefined options
+        # can be evaluated deterministically like a decision step.
+        allow_free_text = interaction.get("allow_free_text", False)
+        if allow_free_text:
+            raise ValueError(f"Dialogue with free text requires AI rubric evaluation, not deterministic")
+        return _eval_dialogue_deterministic(answer, interaction)
+    elif step_type == "free_text":
         raise ValueError(f"Step type {step_type} requires AI rubric evaluation, not deterministic")
     else:
         raise ValueError(f"Unknown step type: {step_type}")
@@ -345,6 +351,34 @@ def _eval_decision(answer: Any, interaction: dict[str, Any]) -> dict[str, Any]:
     return {
         "correct": selected in correct_ids if correct_ids else True,
         "score": 100 if (selected in correct_ids or not correct_ids) else 0,
+        "max_score": 100,
+        "feedback_key": "quest.result_decision_made",
+        "evaluation_mode": "deterministic",
+        "provider_call_executed": False,
+    }
+
+
+def _eval_dialogue_deterministic(answer: Any, interaction: dict[str, Any]) -> dict[str, Any]:
+    """Evaluate dialogue with predefined options (no free text) deterministically."""
+    options = interaction.get("options", [])
+    selected = str(answer) if answer else ""
+    correct_ids = {o["id"] for o in options if o.get("is_correct")}
+
+    if correct_ids:
+        is_correct = selected in correct_ids
+        return {
+            "correct": is_correct,
+            "score": 100 if is_correct else 0,
+            "max_score": 100,
+            "feedback_key": "quest.result_correct" if is_correct else "quest.result_incorrect",
+            "evaluation_mode": "deterministic",
+            "provider_call_executed": False,
+        }
+
+    # No correct markers — always pass (consequences tracked separately)
+    return {
+        "correct": True,
+        "score": 100,
         "max_score": 100,
         "feedback_key": "quest.result_decision_made",
         "evaluation_mode": "deterministic",
