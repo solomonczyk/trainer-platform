@@ -23,6 +23,15 @@ node_modules/
 # Railway
 .railway/
 
+# Security — leaked/exported credentials must NEVER be committed
+*_token.txt
+*.jwt
+*.jwt.*
+auth-dump*
+credentials*
+*.pem
+*.key
+
 # Environment
 .env
 .env.local
