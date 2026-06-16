@@ -16,6 +16,7 @@ class UserProfileResponse(BaseModel):
     display_name: Optional[str] = None
     preferred_locale: str = "ru-RU"
     is_active: bool
+    email_verified: bool = False
 
     model_config = {"from_attributes": True}
 
