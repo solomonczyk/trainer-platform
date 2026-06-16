@@ -350,6 +350,7 @@ export default function ModuleQuizEngine({
             answer={answer}
             onAnswer={setAnswer}
             disabled={phase === 'submitting'}
+            activityId={currentStartData.activity_id}
           />
 
           {errorMessage && (

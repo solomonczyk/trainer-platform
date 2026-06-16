@@ -240,6 +240,7 @@ export default function ActivityRunnerPage() {
             answer={answer}
             onAnswer={setAnswer}
             disabled={pageState === 'submitting'}
+            activityId={activityData.activity_id}
           />
 
           {errorMessage && (

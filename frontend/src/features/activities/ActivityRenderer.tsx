@@ -15,9 +15,11 @@ interface ActivityRendererProps {
   answer: unknown;
   onAnswer: (answer: unknown) => void;
   disabled: boolean;
+  /** Optional activity ID for localized option text lookup */
+  activityId?: string;
 }
 
-export function ActivityRenderer({ activityType, prompt, answer, onAnswer, disabled }: ActivityRendererProps) {
+export function ActivityRenderer({ activityType, prompt, answer, onAnswer, disabled, activityId }: ActivityRendererProps) {
   switch (activityType) {
     case 'single_choice':
       return (
@@ -26,6 +28,7 @@ export function ActivityRenderer({ activityType, prompt, answer, onAnswer, disab
           selectedAnswer={answer as string | null}
           onAnswer={(val) => onAnswer(val)}
           disabled={disabled}
+          activityId={activityId}
         />
       );
 
@@ -36,6 +39,7 @@ export function ActivityRenderer({ activityType, prompt, answer, onAnswer, disab
           selectedAnswers={answer as string[] || []}
           onAnswer={(val) => onAnswer(val)}
           disabled={disabled}
+          activityId={activityId}
         />
       );
 

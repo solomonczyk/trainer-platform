@@ -1,15 +1,26 @@
 'use client';
 
 import React from 'react';
+import { t } from '@/lib/i18n';
 
 interface MultipleChoiceActivityProps {
   options: string[];
   selectedAnswers: string[];
   onAnswer: (answers: string[]) => void;
   disabled: boolean;
+  /** Activity ID for localized option lookup (e.g. "ba_hr_q1_multi") */
+  activityId?: string;
 }
 
-export function MultipleChoiceActivity({ options, selectedAnswers, onAnswer, disabled }: MultipleChoiceActivityProps) {
+export function MultipleChoiceActivity({ options, selectedAnswers, onAnswer, disabled, activityId }: MultipleChoiceActivityProps) {
+  const getOptionLabel = (option: string, index: number): string => {
+    if (!activityId) return option;
+    const baseId = activityId.replace(/_single$|_multi$/, '');
+    const key = `${baseId}_opt_${index + 1}`;
+    const localized = t(key);
+    return localized !== key ? localized : option;
+  };
+
   const toggleOption = (option: string) => {
     if (disabled) return;
     const newSelected = selectedAnswers.includes(option)
@@ -45,7 +56,7 @@ export function MultipleChoiceActivity({ options, selectedAnswers, onAnswer, dis
                   </svg>
                 )}
               </div>
-              <span className="text-gray-800 dark:text-gray-200">{option}</span>
+              <span className="text-gray-800 dark:text-gray-200">{getOptionLabel(option, index)}</span>
             </div>
           </button>
         );
