@@ -40,10 +40,10 @@
     "redundant_full_local_runs": 0
   },
   "deployment": {
-    "workflow": "",
-    "run_id": "",
-    "commit": "",
-    "conclusion": "",
+    "workflow": "deploy-staging.yml",
+    "run_id": "CI_TRIGGERED_BY_PUSH",
+    "commit": "798c22dede1ec5a8a58e3810604ec2dd7b621a29",
+    "conclusion": "pending",
     "exact_commit_deployed": false,
     "server_current_commit": "",
     "health_check": ""
@@ -90,17 +90,17 @@
   },
   "git": {
     "branch": "master",
-    "starting_commit": "24bbc9238231cf500d6c3fb3a726513bf80116b1",
-    "implementation_commit": "",
-    "final_commit": "",
-    "pushed": false,
-    "clean": false,
-    "head_matches_origin_master": false
+    "starting_commit": "1a073c3b46d81f81ef24da1f74792bab7679b49f",
+    "implementation_commit": "798c22dede1ec5a8a58e3810604ec2dd7b621a29",
+    "final_commit": "798c22dede1ec5a8a58e3810604ec2dd7b621a29",
+    "pushed": true,
+    "clean": true,
+    "head_matches_origin_master": true
   },
   "final_state": {
     "first_quest_activation": "TBD",
     "production_accepted": false,
     "release_allowed": false,
-    "next_allowed_action": "OPERATOR_VISUAL_REVIEW_REQUIRED"
+    "next_allowed_action": "OPERATOR_VISUAL_REVIEW_REQUIRED_AND_DEPLOYMENT_CI_QUEUED"
   }
 }
