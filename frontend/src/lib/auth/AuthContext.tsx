@@ -12,6 +12,7 @@ import {
   isAuthenticated,
   getCurrentUser,
   clearToken,
+  ApiClientError,
   type UserResponse,
 } from "@/lib/api/client";
 
@@ -52,8 +53,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const u = await getCurrentUser();
       setUser(u);
-    } catch {
+    } catch (err) {
       setUser(null);
+      // Zombie token guard: if /me returns 401 (expired/invalid token),
+      // clear the stale token from localStorage so isAuthenticated()
+      // returns false on subsequent checks.
+      if (err instanceof ApiClientError && (err.status === 401 || err.code === 'UNAUTHORIZED')) {
+        clearToken();
+      }
     }
   }, []);
 
