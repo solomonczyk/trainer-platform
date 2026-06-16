@@ -182,10 +182,10 @@ export default function QuestPlayPage() {
   // Try to resume session from localStorage
   const savedSessionId = typeof window !== 'undefined' ? localStorage.getItem(`quest_session_${questId}`) : null;
 
-  // Determine recommended quest IDs
+  // Determine recommended quest IDs (match backend quest IDs)
   const isQA = slug.includes('qa') || (slug || '').replace(/-/g, '_').includes('qa');
-  const recommendedQuestId = isQA ? 'qa.bug_report' : 'ba.payment_conflict';
-  const secondQuestId = isQA ? 'qa.payment_defect' : 'qa.bug_report';
+  const recommendedQuestId = isQA ? 'qa_bug_report_structure_v1' : 'ba_payment_requirements_conflict';
+  const secondQuestId = isQA ? 'qa_payment_defect_release' : 'qa_bug_report_structure_v1';
 
   // Get quest skills
   const questSkills = QUEST_SKILLS[questId] || { skills: ['Professional skills'], minutes: 15 };

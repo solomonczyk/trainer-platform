@@ -238,7 +238,7 @@ export default function TrainerDetailPage() {
           {/* Determine recommended quest based on trainer type */}
           {(() => {
             const isQA = slug.includes('qa') || trainer.trainer_product_id?.includes('qa');
-            const questId = isQA ? 'qa.bug_report' : 'ba.payment_conflict';
+            const questId = isQA ? 'qa_bug_report_structure_v1' : 'ba_payment_requirements_conflict';
             const titleKey = isQA ? 'recommended_quest.for_qa' : 'recommended_quest.for_ba';
             const reasonKey = isQA ? 'recommended_quest.for_qa_reason' : 'recommended_quest.for_ba_reason';
             const skillsKey = isQA ? 'recommended_quest.for_qa_skills' : 'recommended_quest.for_ba_skills';

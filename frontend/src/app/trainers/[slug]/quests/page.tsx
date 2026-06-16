@@ -42,9 +42,9 @@ export default function QuestCatalogPage() {
     ? Object.values(data.quests).filter((q: any) => q.trainer_slug === slug || q.trainer_slug === normalizedSlug)
     : [];
 
-  // Determine recommended quest
+  // Determine recommended quest (match backend quest IDs)
   const isQA = slug.includes('qa') || normalizedSlug.includes('qa');
-  const recommendedQuestId = isQA ? 'qa.bug_report' : 'ba.payment_conflict';
+  const recommendedQuestId = isQA ? 'qa_bug_report_structure_v1' : 'ba_payment_requirements_conflict';
   const recommendedTitleKey = isQA ? 'quest.qa.bug_report' : 'quest.ba.payment_conflict';
 
   const recommendedQuest = useMemo(() => {
