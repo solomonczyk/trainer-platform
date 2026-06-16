@@ -7,7 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "security:scan": "bash scripts/security/scan-for-secrets.sh --all",
+    "security:scan:staged": "bash scripts/security/scan-for-secrets.sh"
   },
   "repository": {
     "type": "git",

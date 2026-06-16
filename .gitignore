@@ -25,12 +25,18 @@ node_modules/
 
 # Security — leaked/exported credentials must NEVER be committed
 *_token.txt
+*token*.txt
 *.jwt
 *.jwt.*
 auth-dump*
+localStorage*.json
+session*.json
 credentials*
 *.pem
 *.key
+.auth/
+.secrets/
+.tmp-auth/
 
 # Environment
 .env
