@@ -333,11 +333,11 @@ export default function QuestPlayPage() {
       if (data.consequence_updates) {
         const updates = data.consequence_updates;
         const parts: string[] = [];
-        if (updates.risk) parts.push(`Risk ${updates.risk > 0 ? '+' : ''}${updates.risk}`);
-        if (updates.team_trust) parts.push(`Team ${updates.team_trust > 0 ? '+' : ''}${updates.team_trust}`);
-        if (updates.client_trust) parts.push(`Client ${updates.client_trust > 0 ? '+' : ''}${updates.client_trust}`);
-        if (updates.decision_quality) parts.push(`Decision ${updates.decision_quality > 0 ? '+' : ''}${updates.decision_quality}`);
-        if (updates.evidence_quality) parts.push(`Evidence ${updates.evidence_quality > 0 ? '+' : ''}${updates.evidence_quality}`);
+        if (updates.risk) parts.push(`${t('quest.risk')} ${updates.risk > 0 ? '+' : ''}${updates.risk}`);
+        if (updates.team_trust) parts.push(`${t('quest.team_trust')} ${updates.team_trust > 0 ? '+' : ''}${updates.team_trust}`);
+        if (updates.client_trust) parts.push(`${t('quest.client_trust')} ${updates.client_trust > 0 ? '+' : ''}${updates.client_trust}`);
+        if (updates.decision_quality) parts.push(`${t('quest.decision_quality')} ${updates.decision_quality > 0 ? '+' : ''}${updates.decision_quality}`);
+        if (updates.evidence_quality) parts.push(`${t('quest.evidence_quality')} ${updates.evidence_quality > 0 ? '+' : ''}${updates.evidence_quality}`);
         if (parts.length > 0) {
           setConsequenceMessage(parts.join(' | '));
         }
@@ -1080,7 +1080,7 @@ export default function QuestPlayPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {(debrief.skill_results as Array<{ skill_id: string; level: string }>).map((sk, i) => (
                 <div key={i} className="p-4 rounded bg-surface border-2 border-default shadow-sm">
-                  <p className="text-body font-semibold text-foreground mb-2">{sk.skill_id}</p>
+                  <p className="text-body font-semibold text-foreground mb-2">{tl(sk.skill_id)}</p>
                   <span className={`inline-block text-label font-semibold px-3 py-1 rounded-full border ${
                     sk.level === 'practiced'
                       ? 'bg-success-50 text-success-700 border-success-200'
@@ -1421,7 +1421,7 @@ export default function QuestPlayPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-h3 text-foreground mb-1">
-                  {t('next_action.continue_path').replace('{trainer}', isQA ? 'QA' : 'BA')}
+                  {t('next_action.continue_path').replace('{trainer}', isQA ? t('trainer.short_qa') : t('trainer.short_ba'))}
                 </h3>
                 <p className="text-body-sm text-text-secondary leading-relaxed">
                   {t('next_action.continue_path_desc')}

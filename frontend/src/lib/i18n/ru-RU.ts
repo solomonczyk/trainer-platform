@@ -300,6 +300,9 @@ const ru = {
     domain: "IT",
     module_label: "Модуль",
     activity_label: "Вопрос",
+    activity_label_one: "вопрос",
+    activity_label_few: "вопроса",
+    activity_label_many: "вопросов",
     start: "Начать тренировку",
     continue: "Продолжить",
     submit: "Отправить ответ",
@@ -332,7 +335,50 @@ const ru = {
     modules: "Модули",
     phase_1_badge: "Фаза 1",
     status_staging: "Staging",
+
+    // Short trainer abbreviations
+    short_qa: "QA",
+    short_ba: "BA",
+
+    // Collapsible module list
+    show_less_modules: "Свернуть модули",
+    show_n_modules: "Показать все {n} модулей",
+
+    // Interaction type badges
+    activity_type_single_choice: "Один вариант",
+    activity_type_multiple_choice: "Несколько вариантов",
+    activity_type_matching: "Сопоставление",
+    activity_type_ordering: "Упорядочивание",
+    activity_type_evidence_select: "Выбор доказательств",
+    activity_type_free_text: "Свободный ответ",
+    activity_type_fill_blanks: "Заполнение пропусков",
+    activity_type_numeric: "Числовой ответ",
   },
+
+  // BA HR screening question titles (top-level keys, used directly as t(key))
+  ba_hr_q1_title: "Какие основные разделы должны быть в резюме бизнес-аналитика?",
+
+  // Module title/description translations (root-level dotted keys, resolved via t())
+  "modules.ba_hr_screening.title": "HR-скрининг и самопрезентация",
+  "modules.ba_hr_screening.description": "HR-вопросы, самопрезентация, мотивация, ожидания по зарплате",
+  "modules.ba_basics_stakeholders.title": "Основы BA и стейкхолдеры",
+  "modules.ba_basics_stakeholders.description": "Роль BA, BABOK, типы стейкхолдеров, матрица RACI",
+  "modules.ba_requirements_elicitation.title": "Сбор и анализ требований",
+  "modules.ba_requirements_elicitation.description": "Техники сбора, анализ требований, валидация",
+  "modules.ba_documentation_artifacts.title": "Документация и артефакты",
+  "modules.ba_documentation_artifacts.description": "User stories, Use cases, BRD, SRS, критерии приёмки",
+  "modules.ba_process_data_modeling.title": "Моделирование процессов и данных",
+  "modules.ba_process_data_modeling.description": "BPMN, UML, ERD, диаграммы потоков данных, Event Storming",
+  "modules.ba_methodologies.title": "Методологии",
+  "modules.ba_methodologies.description": "Scrum, Kanban, SAFe, Waterfall, сравнение методологий",
+  "modules.ba_metrics_prioritization.title": "Метрики, оценка и приоритизация",
+  "modules.ba_metrics_prioritization.description": "MoSCoW, Kano, WSJF, Story Points, ROI, NPV",
+  "modules.ba_communication_conflict.title": "Коммуникация и конфликты",
+  "modules.ba_communication_conflict.description": "Фасилитация, переговоры, управление ожиданиями, разрешение конфликтов",
+  "modules.ba_technical_aspects.title": "Технические аспекты (SQL, API, прототипы)",
+  "modules.ba_technical_aspects.description": "SQL-запросы, REST API, JSON, прототипирование, архитектура",
+  "modules.ba_real_cases.title": "Реальные кейсы",
+  "modules.ba_real_cases.description": "Комплексные сценарии с полным циклом анализа",
 
   // Phase 2 scenario title translations
   ba_phase2_stakeholder_requirements_title: "Сбор требований от стейкхолдеров в финтех-проекте",
@@ -406,12 +452,12 @@ const ru = {
     trust_gained: "Доверие повысилось",
     trust_lost: "Доверие понизилось",
 
-    step_single_choice: "Выберите один вариант",
-    step_multiple_choice: "Выберите все подходящие",
-    step_free_text: "Напишите ответ",
-    step_ordering: "Расположите в правильном порядке",
-    step_matching: "Сопоставьте пары",
-    step_evidence_select: "Выберите релевантные доказательства",
+    step_single_choice: "Один вариант",
+    step_multiple_choice: "Несколько вариантов",
+    step_free_text: "Свободный ответ",
+    step_ordering: "Упорядочивание",
+    step_matching: "Сопоставление",
+    step_evidence_select: "Выбор доказательств",
     step_decision: "Примите решение",
     step_dialogue: "Ответьте персонажу",
     step_branching: "Выберите путь",

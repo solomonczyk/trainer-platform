@@ -55,6 +55,29 @@ const activityTypeIcon = (type: string) => {
   }
 };
 
+const activityTypeLabel = (type: string) => {
+  switch (type) {
+    case "single_choice":
+      return t("ba_trainer.activity_type_single_choice");
+    case "multiple_choice":
+      return t("ba_trainer.activity_type_multiple_choice");
+    case "matching":
+      return t("ba_trainer.activity_type_matching");
+    case "ordering":
+      return t("ba_trainer.activity_type_ordering");
+    case "evidence_select":
+      return t("ba_trainer.activity_type_evidence_select");
+    case "free_text":
+      return t("ba_trainer.activity_type_free_text");
+    case "fill_blanks":
+      return t("ba_trainer.activity_type_fill_blanks");
+    case "numeric":
+      return t("ba_trainer.activity_type_numeric");
+    default:
+      return type.replace(/_/g, " ");
+  }
+};
+
 export default function ModuleActivitiesPage() {
   const params = useParams();
   const router = useRouter();
@@ -147,10 +170,23 @@ export default function ModuleActivitiesPage() {
     );
   }
 
+  // Module title with readable fallback (never show raw moduleId)
+  const MODULE_FALLBACK_TITLES: Record<string, string> = {
+    ba_hr_screening: 'HR Screening & Self-Presentation',
+    ba_basics_stakeholders: 'BA Basics & Stakeholders',
+    ba_requirements_elicitation: 'Requirements Elicitation & Analysis',
+    ba_documentation_artifacts: 'Documentation & Artifacts',
+    ba_process_data_modeling: 'Process & Data Modeling',
+    ba_methodologies: 'Methodologies',
+    ba_metrics_prioritization: 'Metrics, Estimation & Prioritization',
+    ba_communication_conflict: 'Communication & Conflict',
+    ba_technical_aspects: 'Technical Aspects (SQL, API, Prototypes)',
+    ba_real_cases: 'Real-World Case Studies',
+  };
   const moduleTitle =
     t(`modules.${moduleId}.title`) !== `modules.${moduleId}.title`
       ? t(`modules.${moduleId}.title`)
-      : moduleId;
+      : (MODULE_FALLBACK_TITLES[moduleId] || moduleId.replace(/_/g, ' '));
   const moduleDesc = t(`modules.${moduleId}.description`);
 
   return (
@@ -212,7 +248,7 @@ export default function ModuleActivitiesPage() {
                         <span className="font-mono">
                           {activityTypeIcon(activity.activity_type)}
                         </span>
-                        {activity.activity_type.replace(/_/g, " ")}
+                        {activityTypeLabel(activity.activity_type)}
                       </span>
                     </div>
                   </div>

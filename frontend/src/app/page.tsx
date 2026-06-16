@@ -51,9 +51,9 @@ export default function LandingPage() {
   const ctaHref = user ? (needsVerification ? "/verify-email" : "/domains") : "/register";
   const ctaLabel = user
     ? (needsVerification
-        ? (t("auth.verifyEmailCheckTitle") || "Проверьте почту")
-        : (t("nav.domains") || "Домены"))
-    : (t("landing.startButton") || "Начать обучение");
+        ? t("auth.verifyEmailCheckTitle")
+        : t("nav.domains"))
+    : t("landing.startButton");
 
   return (
     <div className="flex flex-col">

@@ -222,7 +222,9 @@ export default function ActivityRunnerPage() {
         <CardHeader>
           <div className="flex items-center justify-between mb-2">
             <Badge variant={difficultyVariant as any}>{difficultyLabel}</Badge>
-            <Badge>{activityData.activity_type.replace('_', ' ')}</Badge>
+            <Badge>{t(`ba_trainer.activity_type_${activityData.activity_type}`) !== `ba_trainer.activity_type_${activityData.activity_type}`
+              ? t(`ba_trainer.activity_type_${activityData.activity_type}`)
+              : activityData.activity_type.replace(/_/g, ' ')}</Badge>
           </div>
           <CardTitle>{t(activityData.title_key)}</CardTitle>
           {activityData.description_key && (

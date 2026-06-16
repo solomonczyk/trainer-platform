@@ -122,7 +122,7 @@ export default function QuestCatalogPage() {
                   <div className="flex flex-wrap items-center gap-4 mb-3">
                     <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-text-secondary">
                       <Clock className="h-4 w-4 text-text-muted" />
-                      {(recommendedQuest as any).estimated_minutes || 15} min
+                      {t('recommended_quest.estimated_time_label').replace('{minutes}', String((recommendedQuest as any).estimated_minutes || 15))}
                     </span>
                     <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-text-secondary">
                       <Layers className="h-4 w-4 text-text-muted" />
@@ -142,8 +142,8 @@ export default function QuestCatalogPage() {
                       <Lightbulb className="h-4 w-4 text-primary-600 flex-shrink-0 mt-0.5" />
                       <p className="text-body-sm text-primary-800">
                         {isQA
-                          ? 'Covers bug report structure, severity vs priority, and professional writing — the essential foundation for QA.'
-                          : 'Covers stakeholder analysis, conflict resolution, acceptance criteria — the essential foundation for BA.'}
+                          ? t('recommended_quest.for_qa_why')
+                          : t('recommended_quest.for_ba_why')}
                       </p>
                     </div>
                   </div>
@@ -199,7 +199,7 @@ export default function QuestCatalogPage() {
                       <div className="flex flex-wrap items-center gap-4 mb-3">
                         <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-text-secondary">
                           <Clock className="h-4 w-4 text-text-muted" />
-                          {q.estimated_minutes} min
+                          {t('recommended_quest.estimated_time_label').replace('{minutes}', String(q.estimated_minutes))}
                         </span>
                         <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-text-secondary">
                           <Layers className="h-4 w-4 text-text-muted" />

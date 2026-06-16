@@ -376,12 +376,13 @@ export function EvidenceSelectRenderer({ step, value = [], onChange, disabled }:
                   key={item.id}
                   onClick={() => toggleItem(item.id)}
                   disabled={disabled}
+                  role="checkbox"
+                  aria-checked={isSelected}
                   className={`p-3 rounded border-2 text-left transition-all ${
                     isSelected
                       ? 'border-selected bg-primary-50'
                       : 'border-default bg-surface hover:border-interactive hover:bg-muted'
                   } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring'}`}
-                  aria-pressed={isSelected}
                 >
                   <div className="flex items-start gap-2">
                     <div className={`mt-0.5 w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 ${

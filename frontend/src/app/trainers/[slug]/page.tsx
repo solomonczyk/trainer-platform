@@ -3,8 +3,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 import { getTrainer, enrollTrainer, isAuthenticated } from "@/lib/api/client";
-import { t, ti } from "@/lib/i18n";
+import { t, ti, pluralize } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -15,7 +16,6 @@ import {
   CheckCircle,
   Clock,
   BookOpen,
-  Globe,
   Users,
   ArrowRight,
   GraduationCap,
@@ -46,6 +46,7 @@ export default function TrainerDetailPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const slug = params?.slug as string;
+  const [showAllModules, setShowAllModules] = useState(false);
 
   const {
     data: trainer,
@@ -178,64 +179,9 @@ export default function TrainerDetailPage() {
         )}
       </Card>
 
-      {/* BA Trainer Phase 1 Modules Section */}
-      {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
-        <Card padding="lg" variant="default" className="mb-8">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <ListChecks className="h-5 w-5 text-text-muted" />
-              <CardTitle>{t('ba_trainer.modules')}</CardTitle>
-            </div>
-            <CardDescription>
-              {t('ba_trainer.module_activities')} — {t('ba_trainer.phase_1_badge')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {trainer.is_enrolled ? (
-              <div className="space-y-3">
-                {BA_MODULES.map((mod) => (
-                  <Link key={mod.module_id} href={`/trainers/${slug}/modules/${mod.module_id}`}>
-                    <div className="flex items-center justify-between p-3 rounded border border-default hover:border-interactive transition-colors cursor-pointer">
-                      <div>
-                        <div className="font-medium text-foreground">
-                          {t(`modules.${mod.module_id}.title`) !== `modules.${mod.module_id}.title`
-                            ? t(`modules.${mod.module_id}.title`)
-                            : mod.title}
-                        </div>
-                        <div className="text-body-sm text-text-secondary">
-                          {t(`modules.${mod.module_id}.description`) !== `modules.${mod.module_id}.description`
-                            ? t(`modules.${mod.module_id}.description`)
-                            : mod.description}
-                        </div>
-                      </div>
-                      <div className="text-body-sm text-text-muted whitespace-nowrap ml-4">
-                        {mod.activity_count} {t('ba_trainer.activity_label')}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <p className="text-body-sm text-text-secondary mb-4">
-                  {t('trainer.notEnrolled')}
-                </p>
-                <Button
-                  onClick={handleEnroll}
-                  isLoading={enrollMutation.isPending}
-                >
-                  {t('trainer.enroll')}
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Recommended First Quest — shown when enrolled */}
+      {/* Recommended First Quest — shown when enrolled (PRIMARY ACTION) */}
       {trainer.is_enrolled && (
         <>
-          {/* Determine recommended quest based on trainer type */}
           {(() => {
             const isQA = slug.includes('qa') || trainer.trainer_product_id?.includes('qa');
             const questId = isQA ? 'qa_bug_report_structure_v1' : 'ba_payment_requirements_conflict';
@@ -323,6 +269,85 @@ export default function TrainerDetailPage() {
             );
           })()}
         </>
+      )}
+
+      {/* BA Trainer Phase 1 Modules Section — collapsed by default, shows first 4 */}
+      {trainer.trainer_product_id === 'business_analyst_interview_trainer' && (
+        <Card padding="lg" variant="default" className="mb-8">
+          <CardHeader>
+            <button
+              type="button"
+              onClick={() => setShowAllModules(!showAllModules)}
+              className="w-full flex items-center justify-between gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring rounded"
+            >
+              <div className="flex items-center gap-2">
+                <ListChecks className="h-5 w-5 text-text-muted" />
+                <CardTitle>{t('ba_trainer.modules')}</CardTitle>
+              </div>
+              <div className="flex items-center gap-2">
+                <CardDescription>
+                  {t('ba_trainer.module_activities')} — {t('ba_trainer.phase_1_badge')}
+                </CardDescription>
+                <svg
+                  className={`w-5 h-5 text-text-muted transition-transform duration-200 ${showAllModules ? 'rotate-180' : ''}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </button>
+          </CardHeader>
+          <CardContent>
+            {trainer.is_enrolled ? (
+              <div className="space-y-3">
+                {(showAllModules ? BA_MODULES : BA_MODULES.slice(0, 4)).map((mod) => (
+                  <Link key={mod.module_id} href={`/trainers/${slug}/modules/${mod.module_id}`}>
+                    <div className="flex items-center justify-between p-3 rounded border border-default hover:border-interactive transition-colors cursor-pointer">
+                      <div>
+                        <div className="font-medium text-foreground">
+                          {t(`modules.${mod.module_id}.title`) !== `modules.${mod.module_id}.title`
+                            ? t(`modules.${mod.module_id}.title`)
+                            : mod.title}
+                        </div>
+                        <div className="text-body-sm text-text-secondary">
+                          {t(`modules.${mod.module_id}.description`) !== `modules.${mod.module_id}.description`
+                            ? t(`modules.${mod.module_id}.description`)
+                            : mod.description}
+                        </div>
+                      </div>
+                      <div className="text-body-sm text-text-muted whitespace-nowrap ml-4">
+                        {pluralize(mod.activity_count, t('ba_trainer.activity_label_one'), t('ba_trainer.activity_label_few'), t('ba_trainer.activity_label_many'))}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+                {BA_MODULES.length > 4 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllModules(!showAllModules)}
+                    className="w-full text-center py-2 text-body-sm font-medium text-primary-600 hover:text-primary-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  >
+                    {showAllModules
+                      ? t('ba_trainer.show_less_modules')
+                      : ti('ba_trainer.show_n_modules', { n: String(BA_MODULES.length) })}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-body-sm text-text-secondary mb-4">
+                  {t('trainer.notEnrolled')}
+                </p>
+                <Button
+                  onClick={handleEnroll}
+                  isLoading={enrollMutation.isPending}
+                >
+                  {t('trainer.enroll')}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
 
       {/* Quest Catalog Section — secondary entry */}
@@ -429,34 +454,6 @@ export default function TrainerDetailPage() {
                   </li>
                 ))}
               </ul>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Supported Locales */}
-        {trainer.supported_locales && trainer.supported_locales.length > 0 && (
-          <Card padding="md" variant="default">
-            <CardHeader>
-              <Globe className="h-5 w-5 text-text-muted" />
-              <CardTitle className="text-label text-text-secondary">
-                {t("trainer.locale")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {trainer.supported_locales.map((locale, idx) => (
-                  <Badge
-                    key={idx}
-                    variant={locale === trainer.default_locale ? "primary" : "default"}
-                    size="sm"
-                  >
-                    {locale}
-                    {locale === trainer.default_locale && (
-                      <span className="ml-1 opacity-70">(default)</span>
-                    )}
-                  </Badge>
-                ))}
-              </div>
             </CardContent>
           </Card>
         )}

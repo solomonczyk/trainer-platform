@@ -2,6 +2,12 @@
 
 import ru from "./ru-RU";
 import en from "./en-US";
+import ruActivityTitles from "./generated_activity_titles_ru.json";
+import enActivityTitles from "./generated_activity_titles_en.json";
+
+// Merge generated activity title translations into locale data
+Object.assign(ru, ruActivityTitles);
+Object.assign(en, enActivityTitles);
 
 export type Locale = "ru-RU" | "en-US";
 export type LocaleStrings = typeof ru;
@@ -122,6 +128,16 @@ export function ti(key: string, params: Record<string, string | number>): string
     text = text.replace(`{${k}}`, String(v));
   }
   return text;
+}
+
+/**
+ * Simple pluralization for Russian noun forms.
+ * Usage: pluralize(count, 'вопрос', 'вопроса', 'вопросов') => "1 вопрос", "2 вопроса", "5 вопросов"
+ */
+export function pluralize(n: number, one: string, few: string, many: string): string {
+  if (n % 10 === 1 && n % 100 !== 11) return `${n} ${one}`;
+  if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return `${n} ${few}`;
+  return `${n} ${many}`;
 }
 
 export function localeOptions(): { value: Locale; label: string }[] {

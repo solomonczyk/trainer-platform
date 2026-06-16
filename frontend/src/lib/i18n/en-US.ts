@@ -286,6 +286,9 @@ const en = {
     domain: "IT",
     module_label: "Module",
     activity_label: "Question",
+    activity_label_one: "question",
+    activity_label_few: "questions",
+    activity_label_many: "questions",
     start: "Start Training",
     continue: "Continue",
     submit: "Submit Answer",
@@ -318,7 +321,50 @@ const en = {
     modules: "Modules",
     phase_1_badge: "Phase 1",
     status_staging: "Staging",
+
+    // Short trainer abbreviations
+    short_qa: "QA",
+    short_ba: "BA",
+
+    // Collapsible module list
+    show_less_modules: "Show fewer modules",
+    show_n_modules: "Show all {n} modules",
+
+    // Interaction type badges
+    activity_type_single_choice: "Single Choice",
+    activity_type_multiple_choice: "Multiple Choice",
+    activity_type_matching: "Matching",
+    activity_type_ordering: "Ordering",
+    activity_type_evidence_select: "Evidence Select",
+    activity_type_free_text: "Free Text",
+    activity_type_fill_blanks: "Fill Blanks",
+    activity_type_numeric: "Numeric",
   },
+
+  // BA HR screening question titles (top-level keys, used directly as t(key))
+  ba_hr_q1_title: "What sections should a BA resume include?",
+
+  // Module title/description translations (root-level dotted keys, resolved via t())
+  "modules.ba_hr_screening.title": "HR Screening & Self-Presentation",
+  "modules.ba_hr_screening.description": "HR questions, self-presentation, motivation, salary expectations",
+  "modules.ba_basics_stakeholders.title": "BA Basics & Stakeholders",
+  "modules.ba_basics_stakeholders.description": "Role of BA, BABOK, stakeholder types, RACI matrix",
+  "modules.ba_requirements_elicitation.title": "Requirements Elicitation & Analysis",
+  "modules.ba_requirements_elicitation.description": "Elicitation techniques, requirements analysis, validation",
+  "modules.ba_documentation_artifacts.title": "Documentation & Artifacts",
+  "modules.ba_documentation_artifacts.description": "User stories, Use cases, BRD, SRS, Acceptance criteria",
+  "modules.ba_process_data_modeling.title": "Process & Data Modeling",
+  "modules.ba_process_data_modeling.description": "BPMN, UML, ERD, Data Flow Diagrams, Event Storming",
+  "modules.ba_methodologies.title": "Methodologies",
+  "modules.ba_methodologies.description": "Scrum, Kanban, SAFe, Waterfall, methodology comparison",
+  "modules.ba_metrics_prioritization.title": "Metrics, Estimation & Prioritization",
+  "modules.ba_metrics_prioritization.description": "MoSCoW, Kano, WSJF, Story Points, ROI, NPV",
+  "modules.ba_communication_conflict.title": "Communication & Conflict",
+  "modules.ba_communication_conflict.description": "Facilitation, negotiation, expectation management, conflict resolution",
+  "modules.ba_technical_aspects.title": "Technical Aspects (SQL, API, Prototypes)",
+  "modules.ba_technical_aspects.description": "SQL queries, REST API, JSON, prototyping, architecture",
+  "modules.ba_real_cases.title": "Real-World Case Studies",
+  "modules.ba_real_cases.description": "Complex scenarios with full analysis cycle",
 
   // Phase 2 scenario title translations
   ba_phase2_stakeholder_requirements_title: "Stakeholder Requirements Elicitation in Fintech",
@@ -397,12 +443,12 @@ const en = {
     trust_lost: "Trust lost",
 
     // Step types
-    step_single_choice: "Choose one option",
-    step_multiple_choice: "Select all that apply",
-    step_free_text: "Write your response",
-    step_ordering: "Arrange in correct order",
-    step_matching: "Match the pairs",
-    step_evidence_select: "Select relevant evidence",
+    step_single_choice: "Single Choice",
+    step_multiple_choice: "Multiple Choice",
+    step_free_text: "Free Text",
+    step_ordering: "Ordering",
+    step_matching: "Matching",
+    step_evidence_select: "Evidence Select",
     step_decision: "Make a decision",
     step_dialogue: "Respond to character",
     step_branching: "Choose your path",
