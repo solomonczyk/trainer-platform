@@ -123,4 +123,73 @@ describe('Localization - Preferred Quest and Mission Intro (011)', () => {
     const result = ti('mission_intro.estimated_time_short', { minutes: '15' });
     expect(result).toBe('15 min');
   });
+
+  // ---- 011 focused tests: ru-RU recommendation text ----
+
+  it('ru-RU recommended_quest.for_qa_why is Russian', () => {
+    setLocale('ru-RU');
+    const result = t('recommended_quest.for_qa_why');
+    expect(result).toContain('QA');
+    expect(result).toContain('баг-репорта');
+    expect(result).toContain('severity');
+    setLocale('en-US');
+  });
+
+  it('ru-RU recommended_quest.for_ba_why is Russian', () => {
+    setLocale('ru-RU');
+    const result = t('recommended_quest.for_ba_why');
+    expect(result).toContain('BA');
+    expect(result).toContain('стейкхолдер');
+    expect(result).toContain('критери');
+    setLocale('en-US');
+  });
+
+  it('ru-RU quest.ai_evaluated is Russian', () => {
+    setLocale('ru-RU');
+    const result = t('quest.ai_evaluated');
+    expect(result).toBe('AI оценка');
+    setLocale('en-US');
+  });
+
+  it('ru-RU quest.previous_step is Russian', () => {
+    setLocale('ru-RU');
+    expect(t('quest.previous_step')).toBe('Предыдущий шаг');
+    expect(t('quest.next_step_button')).toBe('Следующий шаг');
+    setLocale('en-US');
+  });
+
+  it('ru-RU quest.min_characters and quest.characters_remaining are Russian', () => {
+    setLocale('ru-RU');
+    expect(t('quest.min_characters')).toContain('Минимум');
+    expect(t('quest.characters_remaining')).toContain('Осталось');
+    expect(t('quest.choose_response')).toBe('Выберите ответ:');
+    setLocale('en-US');
+  });
+
+  // ---- 011 focused tests: no raw i18n keys for new strings ----
+
+  it('no raw i18n keys returned from t() for new 011 localization strings', () => {
+    const keys = [
+      'recommended_quest.for_qa_why',
+      'recommended_quest.for_ba_why',
+      'quest.ai_evaluated',
+      'quest.previous_step',
+      'quest.next_step_button',
+      'quest.min_characters',
+      'quest.characters_remaining',
+      'quest.choose_response',
+    ];
+    setLocale('ru-RU');
+    keys.forEach((key) => {
+      const result = t(key);
+      expect(result).not.toBe(key);
+      expect(result.length).toBeGreaterThan(0);
+    });
+    setLocale('en-US');
+    keys.forEach((key) => {
+      const result = t(key);
+      expect(result).not.toBe(key);
+      expect(result.length).toBeGreaterThan(0);
+    });
+  });
 });

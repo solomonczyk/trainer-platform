@@ -486,6 +486,20 @@ const en = {
     back_to_catalog: "Back to Quest Catalog",
     try_again: "Try Again",
 
+    // Navigation within quest
+    previous_step: "Previous Step",
+    next_step_button: "Next Step",
+
+    // Character prompts
+    choose_response: "Choose a response:",
+
+    // Text input hints
+    min_characters: "Minimum {n} characters",
+    characters_remaining: "{n} characters remaining",
+
+    // Badges
+    ai_evaluated: "AI Evaluated",
+
     // Errors
     error_starting: "Could not start quest",
     error_submitting: "Could not submit answer",
@@ -944,9 +958,11 @@ const en = {
     for_qa: "Bug Report Structure",
     for_qa_reason: "You will learn how to identify missing bug report fields, prioritize severity, and write a professional report.",
     for_qa_skills: "Bug report structure, severity vs priority, professional writing",
+    for_qa_why: "This quest covers the fundamentals every QA engineer needs: understanding bug report structure, severity vs priority classification, and writing professional reports. It uses multiple question types (multiple choice, ordering, free text) to reinforce learning.",
     for_ba: "Conflicting Requirements for a Payment Feature",
     for_ba_reason: "You will learn how to identify stakeholders, resolve requirements conflicts, and write balanced acceptance criteria.",
     for_ba_skills: "Stakeholder analysis, conflict resolution, acceptance criteria",
+    for_ba_why: "This quest introduces core BA skills: stakeholder identification, conflict resolution, requirements prioritization, and writing acceptance criteria. It uses varied interaction types to build practical competence.",
     start_recommended: "Start Recommended Quest",
     browse_all: "Browse All Quests",
     why_this_title: "Why this quest?",

@@ -292,8 +292,8 @@ export default function TrainerDetailPage() {
                             </p>
                             <p className="text-body-sm text-primary-800">
                               {isQA
-                                ? 'This quest covers the fundamentals every QA engineer needs: understanding bug report structure, severity vs priority classification, and writing professional reports. It uses multiple question types (multiple choice, ordering, free text) to reinforce learning.'
-                                : 'This quest introduces core BA skills: stakeholder identification, conflict resolution, requirements prioritization, and writing acceptance criteria. It uses varied interaction types to build practical competence.'}
+                                ? t('recommended_quest.for_qa_why')
+                                : t('recommended_quest.for_ba_why')}
                             </p>
                           </div>
                         </div>
@@ -351,13 +351,6 @@ export default function TrainerDetailPage() {
                 </div>
               </div>
             </div>
-            <Button
-              onClick={() => router.push(`/trainers/${slug}/quests`)}
-              className="w-full sm:w-auto"
-            >
-              {t('trainer.startQuest')}
-              <ArrowRight className="h-4 w-4" />
-            </Button>
           </CardContent>
         </Card>
       )}

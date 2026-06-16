@@ -34,8 +34,19 @@ class AppError(HTTPException):
 
 class NotFoundError(AppError):
     def __init__(self, entity: str = "Resource", entity_id: str = ""):
-        msg = f"{entity} not found" + (f": {entity_id}" if entity_id else "")
-        super().__init__(code=f"{entity.upper().replace(' ', '_')}_NOT_FOUND", message=msg, status_code=404)
+        # Avoid double "not found" when entity already ends with it
+        suffix = " not found"
+        if entity.lower().rstrip(".").endswith(suffix):
+            msg = entity + (f": {entity_id}" if entity_id else "")
+            code_entity = entity[: -len(suffix)] or "Resource"
+        else:
+            msg = f"{entity}{suffix}" + (f": {entity_id}" if entity_id else "")
+            code_entity = entity
+        super().__init__(
+            code=f"{code_entity.upper().replace(' ', '_')}_NOT_FOUND",
+            message=msg,
+            status_code=404,
+        )
 
 
 class ForbiddenError(AppError):

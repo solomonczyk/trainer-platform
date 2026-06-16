@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { QuestStepDefinition } from '@/lib/api/client';
-import { tl } from '@/lib/i18n';
+import { tl, ti } from '@/lib/i18n';
 
 // ---------------------------------------------------------------------------
 // Shared option button classes — unified across all interaction types
@@ -156,8 +156,8 @@ export function FreeTextRenderer({ step, value = '', onChange, disabled }: FreeT
         aria-label="Free text answer"
       />
       <div className="flex justify-between text-body-sm font-medium text-text-secondary">
-        <span>{minLength > 0 ? `Minimum ${minLength} characters` : ''}</span>
-        <span>{value.length > 0 ? `${maxLength - value.length} characters remaining` : ''}</span>
+        <span>{minLength > 0 ? ti('quest.min_characters', { n: String(minLength) }) : ''}</span>
+        <span>{value.length > 0 ? ti('quest.characters_remaining', { n: String(maxLength - value.length) }) : ''}</span>
       </div>
     </div>
   );
@@ -483,7 +483,7 @@ export function DialogueRenderer({ step, value, onChange, disabled, userValue = 
       {/* Predefined responses */}
       {options.length > 0 && (
         <div className="space-y-2">
-          <p className="text-caption font-semibold uppercase tracking-wider text-text-secondary">Choose a response:</p>
+          <p className="text-caption font-semibold uppercase tracking-wider text-text-secondary">{ti('quest.choose_response', {})}</p>
           {options.map((option) => {
             const isSelected = value === option.id;
             return (

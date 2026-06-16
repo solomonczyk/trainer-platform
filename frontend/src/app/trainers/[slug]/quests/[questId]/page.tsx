@@ -199,35 +199,42 @@ export default function QuestPlayPage() {
     async function init() {
       try {
         if (savedSessionId) {
-          // Try to resume
-          const progress = await getQuestProgress(savedSessionId);
-          if (progress.session_found && progress.quest) {
-            setSessionId(progress.session_id!);
-            setQuest(progress.quest);
-            setNarrativeState(progress.narrative_state || {});
-            setCompletedStepIds(progress.completed_step_ids || []);
-            setStepIndex((progress.completed_step_ids?.length || 0) + 1);
-            setStepResults((progress as any).step_results || {});
+          try {
+            // Try to resume
+            const progress = await getQuestProgress(savedSessionId);
+            if (progress.session_found && progress.quest) {
+              setSessionId(progress.session_id!);
+              setQuest(progress.quest);
+              setNarrativeState(progress.narrative_state || {});
+              setCompletedStepIds(progress.completed_step_ids || []);
+              setStepIndex((progress.completed_step_ids?.length || 0) + 1);
+              setStepResults((progress as any).step_results || {});
 
-            if (progress.status === 'completed') {
-              setOutcomeResult({
-                session_id: progress.session_id!,
-                outcome_id: progress.outcome?.outcome_id || '',
-                outcome_title_key: progress.outcome?.title_key || '',
-                outcome_summary_key: progress.outcome?.summary_key || '',
-                narrative_state: progress.narrative_state || {},
-                debrief: progress.debrief || {},
-                status: 'completed',
-              });
-              setPageState('outcome');
-              return;
-            }
+              if (progress.status === 'completed') {
+                setOutcomeResult({
+                  session_id: progress.session_id!,
+                  outcome_id: progress.outcome?.outcome_id || '',
+                  outcome_title_key: progress.outcome?.title_key || '',
+                  outcome_summary_key: progress.outcome?.summary_key || '',
+                  narrative_state: progress.narrative_state || {},
+                  debrief: progress.debrief || {},
+                  status: 'completed',
+                });
+                setPageState('outcome');
+                return;
+              }
 
-            if (progress.current_step) {
-              setCurrentStep(progress.current_step);
-              setPageState('ready');
-              return;
+              if (progress.current_step) {
+                setCurrentStep(progress.current_step);
+                setPageState('ready');
+                return;
+              }
             }
+          } catch (resumeErr) {
+            // Stale/missing session: clear localStorage and fall through to start fresh.
+            // Handles 404 (session not found on backend), TypeError (mock in tests),
+            // or any other resume failure gracefully.
+            localStorage.removeItem(`quest_session_${questId}`);
           }
         }
 
@@ -734,7 +741,7 @@ export default function QuestPlayPage() {
             </div>
             {currentStep.evaluation_mode === 'ai_rubric' && (
               <Badge variant="primary" size="sm">
-                <Award className="h-4 w-4" /> AI Evaluated
+                <Award className="h-4 w-4" /> {t('quest.ai_evaluated')}
               </Badge>
             )}
           </div>
@@ -1270,14 +1277,14 @@ export default function QuestPlayPage() {
                 disabled={reviewStepIndex === 0}
                 onClick={() => setReviewStepIndex(Math.max(0, reviewStepIndex - 1))}
               >
-                Previous Step
+                {t('quest.previous_step')}
               </Button>
               <Button
                 variant="outline"
                 disabled={reviewStepIndex >= totalMistakeSteps - 1}
                 onClick={() => setReviewStepIndex(Math.min(totalMistakeSteps - 1, reviewStepIndex + 1))}
               >
-                Next Step
+                {t('quest.next_step_button')}
               </Button>
             </div>
           </div>
