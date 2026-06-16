@@ -339,6 +339,24 @@ const en = {
     activity_type_free_text: "Free Text",
     activity_type_fill_blanks: "Fill Blanks",
     activity_type_numeric: "Numeric",
+
+    // Quiz / sequential module flow
+    start_module: "Start Test",
+    finish_module: "Finish Module",
+    quiz_progress: "Question {current} of {total}",
+    module_completed: "Module Completed!",
+    total_score: "Total Score",
+    questions_correct: "Correct Answers",
+    questions_incorrect: "Incorrect Answers",
+    questions_partial: "Partially Correct",
+    difficulty_breakdown: "Results by Level",
+    weak_topics: "Weak Topics",
+    weak_topic_item: "{topic} — needs review",
+    recommendation: "It is recommended to review the material on these topics before the next test.",
+    repeat_module: "Repeat Module",
+    bank_mode: "Question Bank",
+    bank_mode_desc: "Browse all module questions as a list for individual practice",
+    review_title: "Answer Review",
   },
 
   // BA HR screening question titles (top-level keys, used directly as t(key))

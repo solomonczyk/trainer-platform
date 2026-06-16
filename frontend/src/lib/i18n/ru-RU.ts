@@ -353,6 +353,24 @@ const ru = {
     activity_type_free_text: "Свободный ответ",
     activity_type_fill_blanks: "Заполнение пропусков",
     activity_type_numeric: "Числовой ответ",
+
+    // Quiz / sequential module flow
+    start_module: "Начать тестирование",
+    finish_module: "Завершить модуль",
+    quiz_progress: "Вопрос {current} из {total}",
+    module_completed: "Модуль пройден!",
+    total_score: "Общий результат",
+    questions_correct: "Верных ответов",
+    questions_incorrect: "Неверных ответов",
+    questions_partial: "Частично верных",
+    difficulty_breakdown: "Результаты по уровням",
+    weak_topics: "Слабые темы",
+    weak_topic_item: "{topic} — требуется повторение",
+    recommendation: "Рекомендуется повторить материал по этим темам перед следующим тестированием.",
+    repeat_module: "Повторить модуль",
+    bank_mode: "Банк вопросов",
+    bank_mode_desc: "Просмотр всех вопросов модуля в виде списка для самостоятельной практики",
+    review_title: "Разбор ответов",
   },
 
   // BA HR screening question titles (top-level keys, used directly as t(key))
