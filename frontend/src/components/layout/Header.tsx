@@ -21,6 +21,7 @@ export default function Header({ className }: HeaderProps) {
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [localeSwitcherOpen, setLocaleSwitcherOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [currentLocale, setCurrentLocale] = useState<Locale>("ru-RU");
 
   const refreshLocale = useCallback(() => {
@@ -145,15 +146,56 @@ export default function Header({ className }: HeaderProps) {
 
           {user ? (
             <>
-              <Link
-                href="/profile"
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                {user.display_name || user.email}
-              </Link>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                {t("nav.logout")}
-              </Button>
+              {/* Account dropdown */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setAccountMenuOpen((prev) => !prev)}
+                  className="flex items-center gap-1 px-2 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                  aria-haspopup="true"
+                  aria-expanded={accountMenuOpen ? "true" : "false"}
+                  aria-label="Account menu"
+                >
+                  {user.display_name || user.email}
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </button>
+                {accountMenuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setAccountMenuOpen(false)}
+                      aria-hidden="true"
+                    />
+                    <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20 py-1">
+                      <Link
+                        href="/profile"
+                        onClick={() => setAccountMenuOpen(false)}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        {t("nav.profile")}
+                      </Link>
+                      <Link
+                        href="/me/dashboard"
+                        onClick={() => setAccountMenuOpen(false)}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        {t("nav.myProgress")}
+                      </Link>
+                      <hr className="my-1 border-gray-200" />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAccountMenuOpen(false);
+                          handleLogout();
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        {t("nav.logout")}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </>
           ) : (
             <>
