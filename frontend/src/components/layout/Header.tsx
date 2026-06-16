@@ -112,7 +112,7 @@ export default function Header({ className }: HeaderProps) {
               aria-expanded={localeSwitcherOpen ? "true" : "false"}
               aria-label={t("profile.language")}
             >
-              {currentLocale}
+              {currentLocaleLabel}
               <ChevronDown className="h-3.5 w-3.5" />
             </button>
 

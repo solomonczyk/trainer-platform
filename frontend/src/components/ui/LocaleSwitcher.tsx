@@ -36,6 +36,7 @@ export default function LocaleSwitcher({
   };
 
   const locales = localeOptions();
+  const currentLocaleLabel = locales.find((l) => l.value === currentLocale)?.label ?? currentLocale;
 
   if (variant === "buttons") {
     return (
@@ -70,7 +71,7 @@ export default function LocaleSwitcher({
         aria-expanded={open ? "true" : "false"}
         aria-label="Switch language"
       >
-        {currentLocale}
+        {currentLocaleLabel}
         <ChevronDown className="h-3.5 w-3.5" />
       </button>
 

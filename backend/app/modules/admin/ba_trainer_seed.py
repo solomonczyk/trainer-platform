@@ -115,7 +115,7 @@ async def seed_ba_trainer(db: AsyncSession, inline: object = None) -> dict:
         await db.flush()
         results["version"] = 1
 
-    # 5. Create localization
+    # 5. Create/update localization
     locale_code = "ru-RU"
     result = await db.execute(
         select(TrainerLocalization).where(
@@ -124,7 +124,11 @@ async def seed_ba_trainer(db: AsyncSession, inline: object = None) -> dict:
         )
     )
     existing_locale = result.scalar_one_or_none()
-    if not existing_locale and locale_data:
+    if existing_locale and locale_data:
+        # Update locale strings if data changed (e.g. new/edited titles, explanations)
+        existing_locale.strings = locale_data
+        results["localization"] = 1
+    elif not existing_locale and locale_data:
         localization = TrainerLocalization(
             trainer_product_id=trainer.id,
             locale=locale_code,
@@ -179,50 +183,66 @@ async def seed_ba_trainer(db: AsyncSession, inline: object = None) -> dict:
         await db.flush()
         results["module"] = created_modules
 
-    # 8. Create Activities from activities.json
+    # 8. Upsert Activities from activities.json
+    upserted_activities = 0
     created_activities = 0
-    existing_activities = 0
+    updated_activities = 0
+    activity_ids_in_source = set()
     for act_data in activities_data:
         aid = act_data["activity_id"]
+        activity_ids_in_source.add(aid)
         result = await db.execute(
             select(Activity).where(Activity.activity_id == aid)
         )
         existing = result.scalar_one_or_none()
         if existing:
-            existing_activities += 1
-            continue
+            # Update existing activity — this is the critical fix for content changes
+            existing.module_id = act_data["module_id"]
+            existing.activity_type = act_data["activity_type"]
+            existing.evaluation_mode = act_data.get("evaluation_mode", "deterministic")
+            existing.difficulty = act_data.get("difficulty", "junior")
+            existing.title_key = act_data["title_key"]
+            existing.description_key = act_data.get("description_key")
+            existing.payload = act_data["payload"]
+            existing.explanation_key = act_data["explanation_key"]
+            existing.order = act_data.get("order", 0)
+            existing.version = act_data.get("version", "0.1.0")
+            existing.migration_metadata = act_data.get("migration_metadata")
+            updated_activities += 1
+        else:
+            activity = Activity(
+                activity_id=aid,
+                trainer_product_id=trainer.id,
+                module_id=act_data["module_id"],
+                activity_type=act_data["activity_type"],
+                evaluation_mode=act_data.get("evaluation_mode", "deterministic"),
+                difficulty=act_data.get("difficulty", "junior"),
+                title_key=act_data["title_key"],
+                description_key=act_data.get("description_key"),
+                payload=act_data["payload"],
+                explanation_key=act_data["explanation_key"],
+                order=act_data.get("order", 0),
+                version=act_data.get("version", "0.1.0"),
+                migration_metadata=act_data.get("migration_metadata"),
+            )
+            db.add(activity)
+            created_activities += 1
 
-        activity = Activity(
-            activity_id=aid,
-            trainer_product_id=trainer.id,
-            module_id=act_data["module_id"],
-            activity_type=act_data["activity_type"],
-            evaluation_mode=act_data.get("evaluation_mode", "deterministic"),
-            difficulty=act_data.get("difficulty", "junior"),
-            title_key=act_data["title_key"],
-            description_key=act_data.get("description_key"),
-            payload=act_data["payload"],
-            explanation_key=act_data["explanation_key"],
-            order=act_data.get("order", 0),
-            version=act_data.get("version", "0.1.0"),
-            migration_metadata=act_data.get("migration_metadata"),
-        )
-        db.add(activity)
-        created_activities += 1
-
+        upserted_activities += 1
         # Flush in batches
-        if created_activities % 50 == 0:
+        if upserted_activities % 50 == 0:
             await db.flush()
 
-    if created_activities > 0:
+    if upserted_activities > 0:
         await db.flush()
-    results["activities"] = created_activities
-    results["activities_existing"] = existing_activities
+    results["activities_created"] = created_activities
+    results["activities_updated"] = updated_activities
+    results["activities_total"] = upserted_activities
 
     # Count totals
     result = await db.execute(select(Activity).where(Activity.trainer_product_id == trainer.id))
     all_acts = result.scalars().all()
-    results["total_activities"] = len(all_acts)
+    results["total_activities_after"] = len(all_acts)
 
     return results
 

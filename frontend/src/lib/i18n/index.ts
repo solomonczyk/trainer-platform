@@ -157,7 +157,7 @@ export function te(key: string): string {
 
 export function localeOptions(): { value: Locale; label: string }[] {
   return [
-    { value: "ru-RU", label: "Русский" },
-    { value: "en-US", label: "English" },
+    { value: "ru-RU", label: "RU" },
+    { value: "en-US", label: "US" },
   ];
 }

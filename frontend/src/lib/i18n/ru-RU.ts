@@ -32,7 +32,7 @@ const ru = {
     feature2Desc: "Структурированная оценка с критериями, evidence и рекомендациями",
     feature3Title: "Отслеживание прогресса",
     feature3Desc: "Детальный прогресс по навыкам и темам",
-    languages: "ru-RU / en-US",
+    languages: "RU / US",
   },
 
   // Auth

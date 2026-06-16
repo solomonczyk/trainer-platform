@@ -29,7 +29,7 @@ const en = {
     feature2Desc: "Structured evaluation with criteria, evidence, and recommendations",
     feature3Title: "Progress Tracking",
     feature3Desc: "Detailed skill and topic progress tracking",
-    languages: "ru-RU / en-US",
+    languages: "RU / US",
   },
 
   auth: {

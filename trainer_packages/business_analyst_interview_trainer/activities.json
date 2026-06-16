@@ -1706,19 +1706,29 @@
   {
     "activity_id": "ba_hr_q1_single",
     "module_id": "ba_hr_screening",
-    "activity_type": "single_choice",
+    "activity_type": "multiple_choice",
     "evaluation_mode": "deterministic",
     "difficulty": "junior",
     "title_key": "ba_hr_q1_title",
     "description_key": null,
     "payload": {
       "options": [
+        "Контактная информация и краткое описание профиля (Summary)",
         "Опыт работы с указанием проектов и достижений",
+        "Ключевые навыки (BPMN, SQL, UML, работа с требованиями)",
+        "Образование и сертификации (ECBA, CCBA, CBAP)",
+        "Языки и профессиональные курсы",
         "Хобби и личные интересы",
         "Рекомендации с предыдущих мест работы",
         "Фотография и семейное положение"
       ],
-      "correct": "Опыт работы с указанием проектов и достижений"
+      "correct": [
+        "Контактная информация и краткое описание профиля (Summary)",
+        "Опыт работы с указанием проектов и достижений",
+        "Ключевые навыки (BPMN, SQL, UML, работа с требованиями)",
+        "Образование и сертификации (ECBA, CCBA, CBAP)",
+        "Языки и профессиональные курсы"
+      ]
     },
     "explanation_key": "ba_hr_q1_explanation",
     "order": 1,
