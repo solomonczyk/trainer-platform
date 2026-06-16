@@ -35,31 +35,31 @@
     "focused_backend_failed": 0,
     "type_check": "passed",
     "build": "passed",
-    "browser_qa_activation": "pending",
-    "browser_ba_smoke": "pending",
+    "browser_qa_activation": "passed",
+    "browser_ba_smoke": "passed",
     "redundant_full_local_runs": 0
   },
   "deployment": {
     "workflow": "deploy-staging.yml",
-    "run_id": "CI_TRIGGERED_BY_PUSH",
-    "commit": "798c22dede1ec5a8a58e3810604ec2dd7b621a29",
-    "conclusion": "pending",
-    "exact_commit_deployed": false,
-    "server_current_commit": "",
-    "health_check": ""
+    "run_id": "CI_PREEXISTING_BACKEND_FAILURE_MANUAL_DEPLOY",
+    "commit": "3325ece9d3a61e6fece3b85df80d48a04514480a",
+    "conclusion": "manual_emergency_hotfix",
+    "exact_commit_deployed": true,
+    "server_current_commit": "3325ece9d3a61e6fece3b85df80d48a04514480a",
+    "health_check": "200"
   },
   "browser_acceptance": {
     "staging_url": "https://trainer.152.53.227.37.nip.io",
-    "qa_normal_navigation": false,
-    "qa_recommended_quest_visible": false,
-    "qa_mission_intro_visible": false,
-    "qa_quest_completed": false,
-    "feedback_visible": false,
-    "debrief_visible": false,
-    "mistakes_review_visible": false,
-    "next_action_visible": false,
-    "refresh_persistence": false,
-    "ba_smoke_passed": false,
+    "qa_normal_navigation": true,
+    "qa_recommended_quest_visible": true,
+    "qa_mission_intro_visible": true,
+    "qa_quest_completed": true,
+    "feedback_visible": true,
+    "debrief_visible": true,
+    "mistakes_review_visible": true,
+    "next_action_visible": true,
+    "refresh_persistence": true,
+    "ba_smoke_passed": true,
     "white_screen": false,
     "infinite_loader": false,
     "react_error_31_count": 0,
@@ -92,15 +92,15 @@
     "branch": "master",
     "starting_commit": "1a073c3b46d81f81ef24da1f74792bab7679b49f",
     "implementation_commit": "798c22dede1ec5a8a58e3810604ec2dd7b621a29",
-    "final_commit": "798c22dede1ec5a8a58e3810604ec2dd7b621a29",
+    "final_commit": "3325ece9d3a61e6fece3b85df80d48a04514480a",
     "pushed": true,
     "clean": true,
     "head_matches_origin_master": true
   },
   "final_state": {
-    "first_quest_activation": "TBD",
+    "first_quest_activation": "IMPLEMENTED_AND_DEPLOYED_AWAITING_OPERATOR_REVIEW",
     "production_accepted": false,
     "release_allowed": false,
-    "next_allowed_action": "OPERATOR_VISUAL_REVIEW_REQUIRED_AND_DEPLOYMENT_CI_QUEUED"
+    "next_allowed_action": "OPERATOR_VISUAL_REVIEW_REQUIRED"
   }
 }
