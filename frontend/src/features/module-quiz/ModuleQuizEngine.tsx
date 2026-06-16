@@ -8,7 +8,7 @@ import type {
   ActivitySubmitResponse,
 } from '@/lib/api/client';
 import { startActivity, submitActivity } from '@/lib/api/client';
-import { t } from '@/lib/i18n';
+import { t, te } from '@/lib/i18n';
 import { ActivityRenderer } from '@/features/activities/ActivityRenderer';
 import { QuizProgressBar } from './QuizProgressBar';
 import Button from '@/components/ui/Button';
@@ -283,7 +283,7 @@ export default function ModuleQuizEngine({
                 {t('ba_trainer.explanation_label')}
               </h3>
               <p className="text-blue-700 dark:text-blue-400 text-sm">
-                {t(explanationKey)}
+                {te(explanationKey)}
               </p>
             </div>
 

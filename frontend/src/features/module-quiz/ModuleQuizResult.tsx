@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { t, ti } from '@/lib/i18n';
+import { t, ti, te } from '@/lib/i18n';
 import type { QuizResultItem } from './ModuleQuizEngine';
 import Button from '@/components/ui/Button';
 import Card, { CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
@@ -343,7 +343,7 @@ export default function ModuleQuizResult({
                         {t('ba_trainer.explanation_label')}
                       </span>
                       <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">
-                        {t(explanationKey as string)}
+                        {te(explanationKey as string)}
                       </p>
                     </div>
                   </div>

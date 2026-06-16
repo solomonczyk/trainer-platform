@@ -357,6 +357,7 @@ const en = {
     bank_mode: "Question Bank",
     bank_mode_desc: "Browse all module questions as a list for individual practice",
     review_title: "Answer Review",
+    explanation_fallback: "Explanation is temporarily unavailable. Please refer to the module materials for detailed study.",
   },
 
   // BA HR screening question titles (top-level keys, used directly as t(key))

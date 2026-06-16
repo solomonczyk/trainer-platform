@@ -140,6 +140,21 @@ export function pluralize(n: number, one: string, few: string, many: string): st
   return `${n} ${many}`;
 }
 
+/**
+ * Safe explanation text: translates the key, and if the result matches
+ * the key (no translation found), returns a localized fallback message
+ * instead of showing the raw key.
+ */
+export function te(key: string): string {
+  if (!key) return '';
+  const result = t(key);
+  if (result === key) {
+    // Key not found in any locale — return safe fallback
+    return t('ba_trainer.explanation_fallback');
+  }
+  return result;
+}
+
 export function localeOptions(): { value: Locale; label: string }[] {
   return [
     { value: "ru-RU", label: "Русский" },

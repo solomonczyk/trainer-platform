@@ -9,7 +9,7 @@ import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Badge from "@/components/ui/Badge";
-import { t } from "@/lib/i18n";
+import { t, te } from "@/lib/i18n";
 
 type PageState = 'loading' | 'prompt' | 'submitting' | 'result' | 'error';
 
@@ -184,7 +184,7 @@ export default function ActivityRunnerPage() {
                 {t('ba_trainer.explanation_label')}
               </h3>
               <p className="text-blue-700 dark:text-blue-400">
-                {t(explanationKey)}
+                {te(explanationKey)}
               </p>
             </div>
 

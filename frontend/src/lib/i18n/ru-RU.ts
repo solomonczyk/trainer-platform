@@ -371,6 +371,7 @@ const ru = {
     bank_mode: "Банк вопросов",
     bank_mode_desc: "Просмотр всех вопросов модуля в виде списка для самостоятельной практики",
     review_title: "Разбор ответов",
+    explanation_fallback: "Пояснение к ответу временно отсутствует. Обратитесь к материалам модуля для подробного изучения.",
   },
 
   // BA HR screening question titles (top-level keys, used directly as t(key))
