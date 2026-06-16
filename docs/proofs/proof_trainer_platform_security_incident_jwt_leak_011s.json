@@ -1,0 +1,125 @@
+{
+  "layer": "TRAINER-PLATFORM-SECURITY-INCIDENT-JWT-TOKEN-LEAK-011S",
+  "verdict": "SECURITY_INCIDENT_CONTAINED",
+  "incident": {
+    "detected_by": "GitHub Secret Scanning",
+    "alert_type": "JWT token committed to repository history",
+    "affected_file": "frontend/ba_quiz_token.txt",
+    "original_commit": "08e235235c2d7ee2cdb4011ec04ba6160fb9b06b",
+    "rewritten_commit": "3d857ef6a24043864bc5fe715b44f6a12d6c3951",
+    "containment_commit": "3ea98f4994c245d0b69bbe2b666bf256be80c738",
+    "detected_at": "2026-06-16T17:30:00Z",
+    "contained_at": "2026-06-16T17:44:40Z"
+  },
+  "actions": {
+    "file_removed_from_repo": {
+      "status": "completed",
+      "detail": "frontend/ba_quiz_token.txt deleted from working tree and git index",
+      "commit": "3ea98f4"
+    },
+    "gitignore_guard_added": {
+      "status": "completed",
+      "patterns_added": [
+        "*_token.txt",
+        "*.jwt",
+        "*.jwt.*",
+        "auth-dump*",
+        "credentials*",
+        "*.pem",
+        "*.key"
+      ],
+      "file": ".gitignore"
+    },
+    "repo_wide_secret_scan": {
+      "status": "completed",
+      "result": "No additional JWT tokens or secrets found in tracked source files",
+      "methods": [
+        "JWT pattern scan (eyJ... base64 triple-dot pattern) in all source files",
+        "GitHub token pattern scan (ghp_/gho_/ghu_/ghs_/ghr_)",
+        "API key pattern scan (sk-)",
+        "AWS key pattern scan (AKIA)",
+        "Bearer/access_token literal scan",
+        "Git history audit for all token/secret file names",
+        "Commit ancestry analysis of the leaked commit"
+      ],
+      "findings": [
+        "frontend/ba-quiz-acceptance.mjs — references token file path as fallback (benign, now gitignored)",
+        "frontend/ba-locale-acceptance.mjs — references token file path as fallback (benign, now gitignored)"
+      ],
+      "no_real_tokens_found_elsewhere": true
+    },
+    "git_history_rewritten": {
+      "status": "completed",
+      "tool": "git-filter-repo",
+      "command": "git filter-repo --path frontend/ba_quiz_token.txt --invert-paths",
+      "original_commit_count": 233,
+      "rewritten_commit_count": 233,
+      "backup_repo": "MULTISIMULATORS_PLATFOM.bak.security",
+      "file_purged_from_all_commits": true,
+      "legitimate_changes_preserved": true,
+      "original_commit_08e2352_legitimate_files": 38
+    },
+    "jwt_secret_rotation": {
+      "status": "pending_manual_action",
+      "reason": "HS256 symmetric signing — rotating SECRET_KEY is the only way to invalidate the leaked token",
+      "impact": "All existing JWT tokens will be invalidated; all users must re-authenticate",
+      "instructions": [
+        "1. SSH into VPS (152.53.227.37) as trainer user",
+        "2. Edit /opt/trainer-platform/env/backend.env",
+        "3. Replace SECRET_KEY with the new generated key",
+        "4. Run: docker compose -f /opt/trainer-platform/deploy/docker-compose.staging.yml up -d backend",
+        "5. Verify: curl -s https://trainer.152.53.227.37.nip.io/health",
+        "6. Verify old token rejection by trying to use the leaked token against /me endpoint"
+      ],
+      "new_secret_generated": true,
+      "new_secret_value_not_logged": true
+    },
+    "force_push_coordination": {
+      "status": "pending_manual_action",
+      "caution": "History rewrite changes all commit SHAs after the root — force-push required",
+      "instructions": [
+        "1. Confirm no other collaborators have unpushed work on master",
+        "2. Run: git push --force-with-lease origin master",
+        "3. Verify deploy-staging workflow triggers correctly",
+        "4. Verify CI passes on rewritten history",
+        "5. Notify any other developers to re-clone"
+      ]
+    },
+    "github_secret_alert": {
+      "status": "pending_resolution_after_force_push",
+      "note": "Alert will auto-resolve once the token is no longer present in any commit reachable from default branch. Force-push the rewritten history to trigger re-scan."
+    },
+    "staging_redeploy": {
+      "status": "pending_after_secret_rotation",
+      "steps": [
+        "1. After force-push, verify deploy-staging workflow deploys new commit",
+        "2. After SECRET_KEY rotation on VPS, restart backend",
+        "3. Run smoke tests against staging"
+      ]
+    }
+  },
+  "verification": {
+    "leaked_token_file_removed": true,
+    "jwt_secret_rotated_if_needed": false,
+    "old_token_invalidated": false,
+    "repo_scanned_for_additional_tokens": true,
+    "git_history_cleaned_or_exception_documented": true,
+    "github_secret_alert_resolved_after_mitigation": false,
+    "staging_redeployed": false,
+    "no_real_tokens_in_repo": true,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "lessons_learned": {
+    "root_cause": "A JWT token used for acceptance testing was stored in a plaintext file (frontend/ba_quiz_token.txt) and accidentally committed along with legitimate changes",
+    "preventive_measures": [
+      ".gitignore now blocks *_token.txt, *.jwt, and similar credential file patterns",
+      "QA/acceptance scripts should read tokens exclusively from environment variables, not from committed files (already implemented — TOKEN env var is primary source)",
+      "Consider adding a pre-commit hook to scan for credential patterns"
+    ],
+    "files_updated": [
+      ".gitignore — added security credential patterns",
+      "docs/proofs/proof_trainer_platform_security_incident_jwt_leak_011s.json — incident response record"
+    ]
+  }
+}
