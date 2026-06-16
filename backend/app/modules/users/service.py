@@ -28,7 +28,7 @@ async def get_user_profile(db: AsyncSession, user_id: str) -> dict:
         "is_active": user.is_active,
         "display_name": profile.display_name if profile else None,
         "preferred_locale": profile.preferred_locale if profile else "ru-RU",
-        "email_verified": user.email_verified if hasattr(user, 'email_verified') else False,
+        "email_verified": user.email_verified,
     }
 
 
