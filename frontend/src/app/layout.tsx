@@ -4,6 +4,7 @@ import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { loadSavedLocale } from "@/lib/i18n";
+import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -40,12 +41,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru">
       <body className="min-h-screen flex flex-col bg-app">
         <QueryClientProvider client={queryClient}>
+          <LocaleProvider>
           <AuthProvider>
             <Favicon />
             <Header />
             <main className="flex-1">{mounted ? children : <div className="p-8 text-center text-gray-400">Loading...</div>}</main>
             <Footer />
           </AuthProvider>
+          </LocaleProvider>
         </QueryClientProvider>
       </body>
     </html>
