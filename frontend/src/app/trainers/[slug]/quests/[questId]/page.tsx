@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import {
@@ -11,14 +11,16 @@ import {
   completeQuest,
   getQuestProgress,
   sendAnalyticsEvent,
+  listQuests,
 } from '@/lib/api/client';
 import type {
   QuestDefinition,
   QuestStepDefinition,
   QuestAnswerResponse,
   QuestOutcomeResponse,
+  QuestProgressResponse,
 } from '@/lib/api/client';
-import { tl, t } from '@/lib/i18n';
+import { tl, t, ti } from '@/lib/i18n';
 
 import {
   SingleChoiceRenderer,
@@ -52,9 +54,16 @@ import {
   Award,
   BarChart3,
   ArrowLeft,
+  Play,
+  ListChecks,
+  Users,
+  Layers,
+  Eye,
+  FileText,
+  Zap,
 } from 'lucide-react';
 import Button from '@/components/ui/Button';
-import Card, { CardTitle, CardContent } from '@/components/ui/Card';
+import Card, { CardTitle, CardContent, CardHeader, CardDescription } from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import PageContainer from '@/components/ui/PageContainer';
 import ProgressBar from '@/components/ui/ProgressBar';
@@ -71,7 +80,74 @@ type QuestPageState =
   | 'failed'
   | 'outcome'
   | 'debrief'
+  | 'mistakes_review'
+  | 'next_action'
   | 'error';
+
+// Professional sample content for educational debrief
+const PROFESSIONAL_SAMPLES: Record<string, { title: string; content: string[] }> = {
+  'qa.bug_report': {
+    title: 'Professional Bug Report Example',
+    content: [
+      'Title: Place Order button unresponsive after upgrade to v2.5.1 on Chrome 120',
+      'Environment: Windows 11, Chrome 120, App v2.5.1 (upgraded from v2.5.0)',
+      'Preconditions: User is logged in, has items in cart, payment method saved',
+      'Steps to Reproduce: 1. Navigate to /checkout 2. Click "Place Order" button 3. Observe no response from UI 4. Check browser console — no JS errors',
+      'Actual Result: "Place Order" button does not respond to click events. No error in console. Other browsers (Firefox, Edge) work correctly.',
+      'Expected Result: Clicking "Place Order" submits the order and redirects to confirmation page.',
+      'Severity: Critical — blocks core purchase flow for Chrome 120 users',
+      'Priority: Critical — affects all Chrome 120 users (estimated 40% of traffic)',
+      'Attachments: Console screenshot, HAR export, screen recording of behavior',
+    ],
+  },
+  'qa.payment_defect': {
+    title: 'Professional Bug Report Example (Payment Defect)',
+    content: [
+      'Title: Intermittent payment callback failure due to race condition in payment handler v3.1',
+      'Environment: Production — all browsers. Payment gateway: Stripe API v2023-10. App version: 4.2.1',
+      'Steps to Reproduce: 1. Initiate payment with any card type 2. Complete 3DS authentication 3. Observe ~15% of callbacks fail to reach confirmation handler',
+      'Actual Result: Race condition in PaymentCallbackHandler.process() — concurrent callbacks from Stripe webhook and client-side redirect collide, causing double-processing error and transaction rollback.',
+      'Expected Result: Payment completes reliably for 100% of legitimate transactions. Callback handler must be idempotent and thread-safe.',
+      'Severity: Critical — causes financial loss (15% transaction failure), data inconsistency, customer trust damage',
+      'Priority: Critical — block release, fix before next deployment',
+      'Impact: ~15% of all payments fail. Estimated monthly loss: $45,000 at current volume. Customer support tickets increased 3x.',
+    ],
+  },
+  'ba.payment_conflict': {
+    title: 'Professional Acceptance Criterion Example',
+    content: [
+      'Given the user has selected items for purchase and is on the checkout page',
+      'When the user submits payment with a valid card',
+      'Then the payment is processed through PCI-DSS compliant gateway',
+      'And the user sees a clear confirmation with order number within 3 seconds',
+      'And if the payment fails due to a transient error, the system retries automatically up to 2 times with 5-second intervals',
+      'And the user is informed of the retry status with a progress indicator',
+      'And if all retries fail, the user sees a clear error message with alternative payment options',
+      'And a support ticket is automatically created for failed payments',
+      'Acceptance Criteria Notes:',
+      '- PCI-DSS compliance checks (encryption, tokenization) run before any transaction',
+      '- Transaction log records every attempt with status, timestamp, and error code',
+      '- Failed payment recovery path guides user to retry or use alternative method',
+      '- All user-facing messages are non-technical and include next steps',
+    ],
+  },
+};
+
+// Skills per quest for mission intro and debrief
+const QUEST_SKILLS: Record<string, { skills: string[]; minutes: number }> = {
+  'qa.bug_report': {
+    skills: ['Bug report structure', 'Severity vs Priority', 'Professional writing', 'Evidence analysis'],
+    minutes: 15,
+  },
+  'qa.payment_defect': {
+    skills: ['Incident triage', 'Evidence selection', 'Release decision', 'Stakeholder communication'],
+    minutes: 20,
+  },
+  'ba.payment_conflict': {
+    skills: ['Stakeholder analysis', 'Conflict resolution', 'Acceptance criteria', 'Requirements documentation'],
+    minutes: 20,
+  },
+};
 
 export default function QuestPlayPage() {
   const params = useParams();
@@ -93,9 +169,30 @@ export default function QuestPlayPage() {
   const [consequenceMessage, setConsequenceMessage] = useState('');
   const [stepIndex, setStepIndex] = useState(1);
   const [isTerminalStep, setIsTerminalStep] = useState(false);
+  const [stepResults, setStepResults] = useState<Record<string, QuestAnswerResponse>>({});
+  const [reviewStepIndex, setReviewStepIndex] = useState(0);
+
+  // All quests for cross-referencing
+  const { data: allQuestsData } = useQuery({
+    queryKey: ['quests'],
+    queryFn: () => listQuests(),
+    enabled: pageState === 'debrief' || pageState === 'outcome' || pageState === 'next_action',
+  });
 
   // Try to resume session from localStorage
   const savedSessionId = typeof window !== 'undefined' ? localStorage.getItem(`quest_session_${questId}`) : null;
+
+  // Determine recommended quest IDs
+  const isQA = slug.includes('qa') || (slug || '').replace(/-/g, '_').includes('qa');
+  const recommendedQuestId = isQA ? 'qa.bug_report' : 'ba.payment_conflict';
+  const secondQuestId = isQA ? 'qa.payment_defect' : 'qa.bug_report';
+
+  // Get quest skills
+  const questSkills = QUEST_SKILLS[questId] || { skills: ['Professional skills'], minutes: 15 };
+  const isRecommendedQuest = questId === recommendedQuestId;
+
+  // Professional sample for current quest
+  const professionalSample = PROFESSIONAL_SAMPLES[questId];
 
   // Load or resume quest
   useEffect(() => {
@@ -110,6 +207,7 @@ export default function QuestPlayPage() {
             setNarrativeState(progress.narrative_state || {});
             setCompletedStepIds(progress.completed_step_ids || []);
             setStepIndex((progress.completed_step_ids?.length || 0) + 1);
+            setStepResults((progress as any).step_results || {});
 
             if (progress.status === 'completed') {
               setOutcomeResult({
@@ -195,6 +293,9 @@ export default function QuestPlayPage() {
       setNarrativeState(data.narrative_state);
       setEvaluationResult(data);
 
+      // Store step results for mistakes review
+      setStepResults((prev) => ({ ...prev, [data.step_id]: data }));
+
       if (data.timed_out) {
         setPageState('timed_out');
         sendAnalyticsEvent('quest_evaluation_timed_out', {
@@ -258,10 +359,10 @@ export default function QuestPlayPage() {
     onSuccess: (data) => {
       setNarrativeState(data.narrative_state);
       setEvaluationResult(data);
+      setStepResults((prev) => ({ ...prev, [data.step_id]: data }));
       if (data.timed_out) {
         setPageState('timed_out');
       } else {
-        // Show feedback panel — user clicks Continue
         if (data.next_step_id === '__terminal__') {
           setIsTerminalStep(true);
         } else {
@@ -276,7 +377,6 @@ export default function QuestPlayPage() {
   });
 
   const handleSubmit = () => {
-    // Validate answer
     if (!currentStep) return;
     setErrorMessage('');
     setConsequenceMessage('');
@@ -301,8 +401,21 @@ export default function QuestPlayPage() {
     router.push(`/trainers/${slug}`);
   };
 
+  const handleBackToCatalog = () => {
+    localStorage.removeItem(`quest_session_${questId}`);
+    router.push(`/trainers/${slug}/quests`);
+  };
+
   const handleViewDebrief = () => {
     setPageState('debrief');
+  };
+
+  const handleViewMistakesReview = () => {
+    setPageState('mistakes_review');
+  };
+
+  const handleShowNextAction = () => {
+    setPageState('next_action');
   };
 
   const handleContinue = useCallback(async () => {
@@ -362,9 +475,12 @@ export default function QuestPlayPage() {
     );
   }
 
-  // INTRO
+  // INTRO — IMPROVED MISSION INTRO
   if (pageState === 'intro' && quest && currentStep) {
     const totalSteps = quest.steps.length;
+    const interactionTypes = quest.steps.map(s => s.step_type);
+    const uniqueTypes = [...new Set(interactionTypes)];
+
     return (
       <PageContainer>
         {/* Step indicator */}
@@ -384,6 +500,28 @@ export default function QuestPlayPage() {
             <p className="text-body-lg text-text-secondary leading-relaxed max-w-2xl mx-auto">
               {tl(quest.summary_key)}
             </p>
+          </div>
+
+          {/* Quick info bar — estimated time, steps, interaction types */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-200">
+              <Clock className="h-4 w-4 text-primary-600" />
+              <span className="text-body-sm font-medium text-primary-700">
+                {ti('mission_intro.estimated_time_short', { minutes: String(questSkills.minutes) })}
+              </span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-200">
+              <Layers className="h-4 w-4 text-purple-600" />
+              <span className="text-body-sm font-medium text-purple-700">
+                {tl('quest.steps_count').replace('{count}', String(totalSteps))}
+              </span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-default">
+              <ListChecks className="h-4 w-4 text-text-muted" />
+              <span className="text-body-sm font-medium text-text-secondary">
+                {uniqueTypes.length} {tl('mission_intro.interaction_types_label')}
+              </span>
+            </div>
           </div>
 
           {/* Role, Mission, Setting */}
@@ -428,6 +566,34 @@ export default function QuestPlayPage() {
             )}
           </div>
 
+          {/* Skills trained */}
+          <div className="mb-6 p-5 rounded bg-muted border border-default">
+            <h3 className="text-caption font-bold uppercase tracking-wider text-text-secondary mb-3">
+              <Award className="h-4 w-4 inline mr-1" />
+              {tl('mission_intro.skills_trained')}
+            </h3>
+            <p className="text-body-sm text-text-secondary mb-2">{tl('mission_intro.skills_list')}:</p>
+            <div className="flex flex-wrap gap-2">
+              {questSkills.skills.map((skill, idx) => (
+                <Badge key={idx} variant="primary" size="sm">
+                  <CheckCircle className="h-3 w-3 mr-1" />
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {/* How feedback works */}
+          <div className="mb-6 p-5 rounded bg-success-50 border border-success-200">
+            <h3 className="text-caption font-bold uppercase tracking-wider text-success-700 mb-2">
+              <Lightbulb className="h-4 w-4 inline mr-1" />
+              {tl('mission_intro.how_feedback_works')}
+            </h3>
+            <p className="text-body-sm text-success-700 leading-relaxed">
+              {tl('mission_intro.how_feedback_desc')}
+            </p>
+          </div>
+
           {/* Narrative bars */}
           <div className="mb-8">
             <h3 className="text-label text-text-secondary mb-3">{tl('quest.narrative_state')}</h3>
@@ -436,7 +602,7 @@ export default function QuestPlayPage() {
 
           <div className="flex justify-center">
             <Button size="lg" onClick={handleStart} className="w-full sm:w-auto px-8 py-3 text-body shadow-md">
-              {tl('quest.start_quest')}
+              {tl('mission_intro.start_mission')}
               <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
@@ -755,7 +921,7 @@ export default function QuestPlayPage() {
             <StatusMeter state={outcomeResult.narrative_state} />
           </div>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Button onClick={handleViewDebrief} size="lg" className="px-8 py-3 text-body shadow-md">
               <Lightbulb className="h-5 w-5" />
               {tl('quest.view_debrief')}
@@ -766,7 +932,7 @@ export default function QuestPlayPage() {
     );
   }
 
-  // DEBRIEF
+  // DEBRIEF — IMPROVED
   if (pageState === 'debrief' && outcomeResult) {
     const debrief = outcomeResult.debrief as Record<string, unknown> || {};
     const narrativeStateData = outcomeResult.narrative_state;
@@ -785,6 +951,24 @@ export default function QuestPlayPage() {
           <p className="text-body-lg text-text-secondary leading-relaxed">
             {tl(outcomeResult.outcome_summary_key) || ''}
           </p>
+        </Card>
+
+        {/* Final Score */}
+        <Card padding="md" variant="default" className="mb-8 bg-surface border-2 border-default shadow-sm">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="h-8 w-8 text-primary-600" />
+            <div>
+              <h3 className="text-label font-bold text-text-secondary">{t('debrief_enhanced.final_score')}</h3>
+              <p className="text-h2 text-primary-700">
+                {(() => {
+                  const scores = Object.values(stepResults).filter(r => typeof r.score === 'number');
+                  if (scores.length === 0) return '—';
+                  const avg = Math.round(scores.reduce((a: number, r: any) => a + r.score, 0) / scores.length);
+                  return `${avg}%`;
+                })()}
+              </p>
+            </div>
+          </div>
         </Card>
 
         {/* Strengths */}
@@ -841,7 +1025,45 @@ export default function QuestPlayPage() {
           </div>
         )}
 
-        {/* Skill profile */}
+        {/* Professional Sample — NEW */}
+        {professionalSample && (
+          <div className="mb-8">
+            <h2 className="mb-4 flex items-center gap-2 text-h3 text-primary-700">
+              <FileText className="h-6 w-6" />
+              {t('debrief_enhanced.professional_sample')}
+            </h2>
+            <Card padding="lg" variant="elevated" className="border-2 border-primary-200 bg-primary-50/30">
+              <p className="text-body-sm text-text-secondary mb-3 leading-relaxed">
+                {t('debrief_enhanced.professional_sample_desc')}
+              </p>
+              <div className="space-y-2">
+                {professionalSample.content.map((line, idx) => (
+                  <p key={idx} className="text-body-sm text-foreground leading-relaxed font-mono bg-white/60 p-2 rounded border border-primary-100">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            </Card>
+          </div>
+        )}
+
+        {/* Skills trained */}
+        <div className="mb-8">
+          <h2 className="mb-4 flex items-center gap-2 text-h3 text-foreground">
+            <Award className="h-6 w-6" />
+            {t('debrief_enhanced.quest_skills')}
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {questSkills.skills.map((skill, idx) => (
+              <Badge key={idx} variant="primary" size="md">
+                <CheckCircle className="h-3 w-3 mr-1" />
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        {/* Skill profile from backend */}
         {Array.isArray(debrief.skill_results) && debrief.skill_results.length > 0 && (
           <div className="mb-8">
             <h2 className="mb-4 flex items-center gap-2 text-h3 text-foreground">
@@ -871,16 +1093,336 @@ export default function QuestPlayPage() {
           <StatusMeter state={narrativeStateData} />
         </Card>
 
-        {/* Action buttons */}
+        {/* Action buttons — improved */}
         <div className="flex flex-wrap items-center justify-center gap-4">
+          {Object.keys(stepResults).length > 0 && (
+            <Button variant="secondary" onClick={handleViewMistakesReview} size="lg" className="px-6 py-3 text-body shadow-sm">
+              <Eye className="h-5 w-5" />
+              {t('debrief_enhanced.view_mistakes_review')}
+            </Button>
+          )}
           <Button variant="outline" onClick={handleReset} size="lg" className="px-6 py-3 text-body">
             <RotateCcw className="h-5 w-5" />
             {tl('quest.try_again')}
           </Button>
-          <Button onClick={handleBackToTrainer} size="lg" className="px-6 py-3 text-body shadow-md">
+          <Button onClick={handleShowNextAction} size="lg" className="px-6 py-3 text-body shadow-md">
             <ArrowLeft className="h-5 w-5" />
-            {tl('quest.back_to_catalog')}
+            {t('debrief_enhanced.complete_debrief')}
           </Button>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  // MISTAKES REVIEW — NEW
+  if (pageState === 'mistakes_review') {
+    const stepIds = Object.keys(stepResults);
+    const totalMistakeSteps = stepIds.length;
+    const currentReviewStepId = stepIds[reviewStepIndex] || '';
+    const currentReviewResult = stepResults[currentReviewStepId];
+
+    const questStep = quest?.steps.find(s => s.step_id === currentReviewStepId);
+    const score = currentReviewResult?.score ?? 0;
+    const isStepCorrect = score === 100;
+    const isStepPartial = score > 0 && score < 100;
+
+    return (
+      <PageContainer>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-display text-foreground">
+            {t('mistakes_review.title')}
+          </h1>
+          <Button variant="outline" onClick={() => setPageState('debrief')} size="md">
+            <ArrowLeft className="h-4 w-4" />
+            {t('mistakes_review.back_to_debrief')}
+          </Button>
+        </div>
+
+        <p className="text-body text-text-secondary mb-8 leading-relaxed">
+          {t('mistakes_review.subtitle')}
+        </p>
+
+        {totalMistakeSteps === 0 && (
+          <Card padding="lg" variant="elevated" className="text-center border-success-200 bg-success-50">
+            <div className="flex flex-col items-center gap-4 py-6">
+              <CheckCircle className="h-16 w-16 text-success-600" />
+              <h2 className="text-h2 text-success-800">{t('mistakes_review.no_mistakes')}</h2>
+            </div>
+          </Card>
+        )}
+
+        {totalMistakeSteps > 0 && currentReviewResult && questStep && (
+          <div className="space-y-6">
+            {/* Step navigation */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-label text-text-secondary">
+                <Map className="h-4 w-4" />
+                <span>{t('mistakes_review.of_total')
+                  .replace('{current}', String(reviewStepIndex + 1))
+                  .replace('{total}', String(totalMistakeSteps))}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`inline-block px-3 py-1 rounded-full text-label font-semibold border ${
+                  isStepCorrect
+                    ? 'bg-success-50 text-success-700 border-success-200'
+                    : isStepPartial
+                      ? 'bg-warning-50 text-warning-700 border-warning-200'
+                      : 'bg-danger-50 text-danger-700 border-danger-200'
+                }`}>
+                  {t('mistakes_review.score').replace('{score}', String(score))}
+                </span>
+                <span className={`inline-block px-3 py-1 rounded-full text-label font-semibold border ${
+                  isStepCorrect
+                    ? 'bg-success-50 text-success-700 border-success-200'
+                    : isStepPartial
+                      ? 'bg-warning-50 text-warning-700 border-warning-200'
+                      : 'bg-danger-50 text-danger-700 border-danger-200'
+                }`}>
+                  {isStepCorrect
+                    ? t('mistakes_review.result_correct')
+                    : isStepPartial
+                      ? t('mistakes_review.result_partial')
+                      : t('mistakes_review.result_incorrect')}
+                </span>
+              </div>
+            </div>
+
+            {/* Step content */}
+            <Card padding="lg" variant="default" className="border-2 shadow-md">
+              {/* Prompt */}
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-caption font-bold uppercase tracking-wider text-text-secondary">
+                    {t('mistakes_review.step_label').replace('{number}', String(reviewStepIndex + 1))}
+                  </span>
+                  <Badge variant="primary" size="sm">
+                    {tl(`quest.step_${questStep.step_type}`)}
+                  </Badge>
+                </div>
+                {questStep.story_context_key && (
+                  <div className="mb-3 p-3 rounded bg-muted border border-default">
+                    <p className="text-body-sm text-text-secondary leading-relaxed">
+                      {tl(questStep.story_context_key)}
+                    </p>
+                  </div>
+                )}
+                <h3 className="text-h3 text-foreground leading-tight">
+                  {tl(questStep.prompt_key)}
+                </h3>
+              </div>
+
+              {/* Their answer display */}
+              {currentReviewResult.feedback_data && (
+                <div className="mb-4 p-4 rounded bg-surface border border-default">
+                  <h4 className="text-caption font-bold uppercase tracking-wider text-text-secondary mb-2">
+                    {t('mistakes_review.your_answer')}
+                  </h4>
+                  <p className="text-body text-foreground leading-relaxed">
+                    {typeof currentReviewResult.feedback_data === 'object'
+                      ? JSON.stringify(currentReviewResult.feedback_data)
+                      : String(currentReviewResult.feedback_data)}
+                  </p>
+                </div>
+              )}
+
+              {/* What was missed / why */}
+              {!isStepCorrect && questStep.feedback?.incorrect_explanation_key && (
+                <div className="mb-4 p-4 rounded bg-warning-50 border border-warning-200">
+                  <h4 className="text-caption font-bold uppercase tracking-wider text-warning-700 mb-2">
+                    {t('mistakes_review.explanation')}
+                  </h4>
+                  <p className="text-body text-warning-800 leading-relaxed">
+                    {tl(questStep.feedback.incorrect_explanation_key)}
+                  </p>
+                </div>
+              )}
+
+              {/* Correct approach */}
+              {!isStepCorrect && questStep.feedback?.correct_approach_key && (
+                <div className="mb-4 p-4 rounded bg-success-50 border border-success-200">
+                  <h4 className="text-caption font-bold uppercase tracking-wider text-success-700 mb-2">
+                    {t('mistakes_review.correct_answer')}
+                  </h4>
+                  <p className="text-body text-success-800 leading-relaxed">
+                    {tl(questStep.feedback.correct_approach_key)}
+                  </p>
+                </div>
+              )}
+
+              {/* Takeaway */}
+              {questStep.feedback?.takeaway_key && (
+                <div className="p-4 rounded bg-primary-50 border border-primary-200">
+                  <h4 className="text-caption font-bold uppercase tracking-wider text-primary-700 mb-2">
+                    {t('mistakes_review.takeaway')}
+                  </h4>
+                  <p className="text-body text-primary-800 leading-relaxed">
+                    {tl(questStep.feedback.takeaway_key)}
+                  </p>
+                </div>
+              )}
+            </Card>
+
+            {/* Navigation arrows */}
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                disabled={reviewStepIndex === 0}
+                onClick={() => setReviewStepIndex(Math.max(0, reviewStepIndex - 1))}
+              >
+                Previous Step
+              </Button>
+              <Button
+                variant="outline"
+                disabled={reviewStepIndex >= totalMistakeSteps - 1}
+                onClick={() => setReviewStepIndex(Math.min(totalMistakeSteps - 1, reviewStepIndex + 1))}
+              >
+                Next Step
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {totalMistakeSteps > 0 && !questStep && (
+          <Card padding="lg" variant="default" className="text-center">
+            <p className="text-body text-text-secondary">{tl('quest.session_not_found')}</p>
+          </Card>
+        )}
+      </PageContainer>
+    );
+  }
+
+  // NEXT ACTION — NEW
+  if (pageState === 'next_action') {
+    const allQuests = allQuestsData?.quests ? Object.values(allQuestsData.quests) as any[] : [];
+    const normalizedSlug = (slug || '').replace(/-/g, '_');
+    const availableQuests = allQuests.filter((q: any) =>
+      q.trainer_slug === slug || q.trainer_slug === normalizedSlug
+    );
+
+    // Determine next recommended quest
+    let nextQuest = null;
+    if (isRecommendedQuest) {
+      // Completed recommended — suggest second quest or payment_defect
+      const secondId = isQA ? 'qa.payment_defect' : 'qa.bug_report';
+      nextQuest = availableQuests.find((q: any) => q.quest_id === secondId) || null;
+    } else {
+      // Otherwise suggest the recommended one
+      nextQuest = availableQuests.find((q: any) => q.quest_id === recommendedQuestId) || null;
+    }
+
+    return (
+      <PageContainer width="narrow">
+        <Card padding="lg" variant="elevated" className="text-center border-selected shadow-elevated mb-8">
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-50 shadow-inner">
+              <TrendingUp className="h-10 w-10 text-primary-600" />
+            </div>
+            <h1 className="text-h1 text-foreground leading-tight">
+              {t('next_action.title')}
+            </h1>
+          </div>
+        </Card>
+
+        <div className="space-y-4">
+          {/* Repeat this quest */}
+          <Card
+            padding="lg"
+            hover
+            variant="default"
+            className="border-2 hover:border-interactive cursor-pointer"
+            onClick={handleReset}
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                <RotateCcw className="h-5 w-5 text-primary-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-h3 text-foreground mb-1">{t('next_action.repeat_weak_topic')}</h3>
+                <p className="text-body-sm text-text-secondary leading-relaxed">
+                  {t('next_action.repeat_weak_topic_desc')}
+                </p>
+              </div>
+              <ChevronRight className="h-5 w-5 text-text-muted flex-shrink-0" />
+            </div>
+          </Card>
+
+          {/* Start next quest */}
+          {nextQuest && (
+            <Card
+              padding="lg"
+              hover
+              variant="default"
+              className="border-2 border-selected hover:border-interactive cursor-pointer bg-gradient-to-br from-primary-50 to-purple-50"
+              onClick={() => {
+                const nextQid = nextQuest.quest_id;
+                localStorage.removeItem(`quest_session_${questId}`);
+                router.push(`/trainers/${slug}/quests/${nextQid}`);
+              }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
+                  <Play className="h-5 w-5 text-purple-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-h3 text-foreground mb-1">{t('next_action.start_next_quest')}</h3>
+                  <p className="text-body-sm font-medium text-primary-700 mb-1">
+                    {nextQuest.title_key ? tl(nextQuest.title_key) : nextQuest.quest_id}
+                  </p>
+                  <p className="text-body-sm text-text-secondary leading-relaxed">
+                    {t('next_action.start_next_quest_desc')}
+                  </p>
+                </div>
+                <ChevronRight className="h-5 w-5 text-text-muted flex-shrink-0" />
+              </div>
+            </Card>
+          )}
+
+          {/* Return to catalog */}
+          <Card
+            padding="lg"
+            hover
+            variant="default"
+            className="border-2 hover:border-interactive cursor-pointer"
+            onClick={handleBackToCatalog}
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-text-muted" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-h3 text-foreground mb-1">{t('next_action.return_to_catalog')}</h3>
+                <p className="text-body-sm text-text-secondary leading-relaxed">
+                  {t('next_action.return_to_catalog_desc')}
+                </p>
+              </div>
+              <ChevronRight className="h-5 w-5 text-text-muted flex-shrink-0" />
+            </div>
+          </Card>
+
+          {/* Continue trainer path */}
+          <Card
+            padding="lg"
+            hover
+            variant="default"
+            className="border-2 hover:border-interactive cursor-pointer"
+            onClick={handleBackToTrainer}
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                <Zap className="h-5 w-5 text-text-muted" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-h3 text-foreground mb-1">
+                  {t('next_action.continue_path').replace('{trainer}', isQA ? 'QA' : 'BA')}
+                </h3>
+                <p className="text-body-sm text-text-secondary leading-relaxed">
+                  {t('next_action.continue_path_desc')}
+                </p>
+              </div>
+              <ChevronRight className="h-5 w-5 text-text-muted flex-shrink-0" />
+            </div>
+          </Card>
         </div>
       </PageContainer>
     );

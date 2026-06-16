@@ -15,6 +15,15 @@ vi.mock('next/navigation', () => ({
 vi.mock('@/lib/i18n', () => ({
   tl: (key: string) => key || '',
   t: (key: string) => key || '',
+  ti: (key: string, params?: Record<string, string | number>) => {
+    let text = key || '';
+    if (params) {
+      for (const [k, v] of Object.entries(params)) {
+        text = text.replace(`{${k}}`, String(v));
+      }
+    }
+    return text;
+  },
 }));
 
 // --- Mock the API client ---
@@ -59,6 +68,14 @@ vi.mock('lucide-react', () => ({
   BarChart3: () => <div data-testid="icon-chart" />,
   ArrowLeft: () => <div data-testid="icon-back" />,
   ArrowRight: () => <div data-testid="icon-arrow-right" />,
+  Play: () => <div data-testid="icon-play" />,
+  Layers: () => <div data-testid="icon-layers" />,
+  ListChecks: () => <div data-testid="icon-list-checks" />,
+  Eye: () => <div data-testid="icon-eye" />,
+  FileText: () => <div data-testid="icon-file-text" />,
+  Zap: () => <div data-testid="icon-zap" />,
+  Users: () => <div data-testid="icon-users" />,
+  GraduationCap: () => <div data-testid="icon-grad" />,
 }));
 
 // --- Mock Button ---
@@ -136,7 +153,7 @@ describe('QuestPlayPage — error state safety', () => {
     await waitFor(() => {
       expect(screen.getByText('quest.qa_bug_report.title')).toBeDefined();
     });
-    expect(screen.getByText('quest.start_quest')).toBeDefined();
+    expect(screen.getByText('mission_intro.start_mission')).toBeDefined();
   });
 
   it('shows error state on {"detail": "..."} without crashing', async () => {

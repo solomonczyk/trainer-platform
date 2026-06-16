@@ -937,6 +937,107 @@ const en = {
   },
 
   // ---------------------------------------------------------------------------
+  // First quest recommendation
+  // ---------------------------------------------------------------------------
+  recommended_quest: {
+    title: "Recommended First Quest",
+    for_qa: "Bug Report Structure",
+    for_qa_reason: "You will learn how to identify missing bug report fields, prioritize severity, and write a professional report.",
+    for_qa_skills: "Bug report structure, severity vs priority, professional writing",
+    for_ba: "Conflicting Requirements for a Payment Feature",
+    for_ba_reason: "You will learn how to identify stakeholders, resolve requirements conflicts, and write balanced acceptance criteria.",
+    for_ba_skills: "Stakeholder analysis, conflict resolution, acceptance criteria",
+    start_recommended: "Start Recommended Quest",
+    browse_all: "Browse All Quests",
+    why_this_title: "Why this quest?",
+    estimated_time_label: "~{minutes} min",
+    steps_label: "{count} steps",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Mission intro enhancements
+  // ---------------------------------------------------------------------------
+  mission_intro: {
+    skills_trained: "Skills Trained",
+    estimated_time: "Estimated Time",
+    how_feedback_works: "How Feedback Works",
+    how_feedback_desc: "After each answer, you will see whether it is correct or needs improvement, with a detailed explanation and practical takeaway. Review all your results in the final educational debrief.",
+    expected_artifact: "Expected Artifact",
+    start_mission: "Start Mission",
+    skills_list: "Skills you will practice in this quest",
+    interaction_types_label: "Interaction Types",
+    estimated_time_short: "{minutes} min",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Feedback enhancements
+  // ---------------------------------------------------------------------------
+  feedback_details: {
+    your_answer: "Your Answer",
+    correct_answer: "Correct Answer",
+    what_was_missed: "What Was Missed",
+    why_explanation: "Why",
+    correct_approach: "Correct Approach",
+    practical_takeaway: "Practical Takeaway",
+    step_result: "Result",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Mistakes review
+  // ---------------------------------------------------------------------------
+  mistakes_review: {
+    title: "Mistakes Review",
+    subtitle: "Review each step to understand what you did well and what can be improved",
+    step_label: "Step {number}",
+    your_answer: "Your Answer",
+    correct_answer: "Correct Answer",
+    explanation: "Explanation",
+    takeaway: "Takeaway",
+    step_n_show: "Show Step {number}",
+    step_n_hide: "Hide Step {number}",
+    of_total: "Step {current} of {total}",
+    score: "Score: {score}%",
+    result_correct: "Correct",
+    result_partial: "Partially Correct",
+    result_incorrect: "Incorrect",
+    no_mistakes: "No mistakes to review — great job!",
+    back_to_debrief: "Back to Debrief",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Debrief enhancements
+  // ---------------------------------------------------------------------------
+  debrief_enhanced: {
+    professional_sample: "Professional Example",
+    professional_sample_desc: "Here is how a professional would approach this task:",
+    skills_summary: "Skills Summary",
+    what_to_repeat: "What to Repeat",
+    what_to_repeat_desc: "Practice these areas to strengthen your skills:",
+    next_quest: "Next Recommended Quest",
+    next_quest_reason: "Ready for more? Try this quest next:",
+    view_mistakes_review: "View Mistakes Review",
+    complete_debrief: "Complete Review",
+    final_score: "Final Score",
+    quest_skills: "Skills Trained in This Quest",
+    no_professional_sample: "Review your results above for guidance on improvement areas.",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Next action
+  // ---------------------------------------------------------------------------
+  next_action: {
+    title: "What's Next?",
+    repeat_weak_topic: "Repeat This Quest",
+    repeat_weak_topic_desc: "Review the areas you missed and try again",
+    start_next_quest: "Start Next Quest",
+    start_next_quest_desc: "Build on your knowledge with a new challenge",
+    return_to_catalog: "Return to Catalog",
+    return_to_catalog_desc: "Browse all available quests and choose your own path",
+    continue_path: "Continue {trainer} Path",
+    continue_path_desc: "Continue your training journey with more quests and scenarios",
+  },
+
+  // ---------------------------------------------------------------------------
   // Quest debrief strings
   // ---------------------------------------------------------------------------
   "quest.debrief": {

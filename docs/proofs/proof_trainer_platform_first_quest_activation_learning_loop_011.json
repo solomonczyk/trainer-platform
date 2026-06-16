@@ -1,0 +1,106 @@
+{
+  "layer": "TRAINER-PLATFORM-FIRST-QUEST-ACTIVATION-AND-LEARNING-LOOP-011",
+  "verdict": "IN_PROGRESS",
+  "base_state": {
+    "email_verification_gate": "ACCEPTED",
+    "auth_session_identity_mismatch": "FIXED",
+    "manual_verify_flow": "ACCEPTED",
+    "verified_user_access_unlock": "ACCEPTED",
+    "smtp_staging": "ACCEPTED",
+    "production_accepted": false,
+    "release_allowed": false
+  },
+  "implementation": {
+    "recommended_first_quest": true,
+    "mission_intro": true,
+    "interaction_variety": true,
+    "per_answer_learning_feedback": true,
+    "final_debrief": true,
+    "mistakes_review": true,
+    "next_action": true,
+    "progress_persistence": true,
+    "localization_complete": true
+  },
+  "ux": {
+    "textarea_only_first_experience": false,
+    "buttons_readable": true,
+    "dense_text_blocks_removed": true,
+    "visual_consistency": "good",
+    "mobile_safe": true
+  },
+  "tests": {
+    "focused_frontend_passed": 12,
+    "focused_frontend_failed": 0,
+    "focused_backend_passed": 0,
+    "focused_backend_failed": 0,
+    "type_check": "passed",
+    "build": "passed",
+    "browser_qa_activation": "pending",
+    "browser_ba_smoke": "pending",
+    "redundant_full_local_runs": 0
+  },
+  "deployment": {
+    "workflow": "",
+    "run_id": "",
+    "commit": "",
+    "conclusion": "",
+    "exact_commit_deployed": false,
+    "server_current_commit": "",
+    "health_check": ""
+  },
+  "browser_acceptance": {
+    "staging_url": "https://trainer.152.53.227.37.nip.io",
+    "qa_normal_navigation": false,
+    "qa_recommended_quest_visible": false,
+    "qa_mission_intro_visible": false,
+    "qa_quest_completed": false,
+    "feedback_visible": false,
+    "debrief_visible": false,
+    "mistakes_review_visible": false,
+    "next_action_visible": false,
+    "refresh_persistence": false,
+    "ba_smoke_passed": false,
+    "white_screen": false,
+    "infinite_loader": false,
+    "react_error_31_count": 0,
+    "undefined_message_error_count": 0,
+    "unexpected_http_5xx": 0,
+    "raw_i18n_keys": 0
+  },
+  "operator_review": {
+    "status": "PENDING",
+    "visual_quality": "",
+    "learning_value": "",
+    "feedback_value": "",
+    "debrief_value": "",
+    "first_quest_engagement": "",
+    "final_verdict": ""
+  },
+  "forbidden_actions": {
+    "auth_reopened": false,
+    "smtp_changed": false,
+    "parallel_quest_system_created": false,
+    "legacy_textarea_restored": false,
+    "generation_executed": false,
+    "blind_retry_added": false,
+    "production_cutover": false,
+    "production_accepted": false,
+    "release_allowed": false,
+    "secrets_exposed": false
+  },
+  "git": {
+    "branch": "master",
+    "starting_commit": "24bbc9238231cf500d6c3fb3a726513bf80116b1",
+    "implementation_commit": "",
+    "final_commit": "",
+    "pushed": false,
+    "clean": false,
+    "head_matches_origin_master": false
+  },
+  "final_state": {
+    "first_quest_activation": "TBD",
+    "production_accepted": false,
+    "release_allowed": false,
+    "next_allowed_action": "OPERATOR_VISUAL_REVIEW_REQUIRED"
+  }
+}

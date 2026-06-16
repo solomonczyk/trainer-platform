@@ -21,6 +21,11 @@ import {
   GraduationCap,
   Zap,
   ListChecks,
+  Star,
+  Play,
+  Award,
+  Lightbulb,
+  Layers,
 } from "lucide-react";
 
 const BA_MODULES = [
@@ -227,7 +232,100 @@ export default function TrainerDetailPage() {
         </Card>
       )}
 
-      {/* Quest Catalog Section — primary entry */}
+      {/* Recommended First Quest — shown when enrolled */}
+      {trainer.is_enrolled && (
+        <>
+          {/* Determine recommended quest based on trainer type */}
+          {(() => {
+            const isQA = slug.includes('qa') || trainer.trainer_product_id?.includes('qa');
+            const questId = isQA ? 'qa.bug_report' : 'ba.payment_conflict';
+            const titleKey = isQA ? 'recommended_quest.for_qa' : 'recommended_quest.for_ba';
+            const reasonKey = isQA ? 'recommended_quest.for_qa_reason' : 'recommended_quest.for_ba_reason';
+            const skillsKey = isQA ? 'recommended_quest.for_qa_skills' : 'recommended_quest.for_ba_skills';
+            const questSteps = isQA ? 5 : 6;
+            const questMinutes = isQA ? 15 : 20;
+
+            return (
+              <Card padding="lg" variant="elevated" className="mb-8 border-2 border-selected shadow-elevated bg-gradient-to-br from-primary-50 to-purple-50">
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 text-primary-700">
+                      <Star className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-h3 text-primary-900">
+                        {t('recommended_quest.title')}
+                      </CardTitle>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col lg:flex-row lg:items-center gap-5">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-h2 text-foreground mb-3 leading-tight">
+                        {t(titleKey)}
+                      </h3>
+                      <p className="text-body text-text-secondary mb-4 leading-relaxed">
+                        {t(reasonKey)}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-4 mb-4">
+                        <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-text-secondary">
+                          <Clock className="h-4 w-4 text-text-muted" />
+                          {t('recommended_quest.estimated_time_label').replace('{minutes}', String(questMinutes))}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-text-secondary">
+                          <Layers className="h-4 w-4 text-text-muted" />
+                          {t('recommended_quest.steps_label').replace('{count}', String(questSteps))}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 text-body-sm font-medium text-primary-700">
+                          <Award className="h-4 w-4" />
+                          {t(skillsKey)}
+                        </span>
+                      </div>
+                      {/* Why this quest */}
+                      <div className="rounded bg-white/60 p-4 border border-primary-200 mb-3">
+                        <div className="flex items-start gap-2">
+                          <Lightbulb className="h-5 w-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-caption font-bold uppercase tracking-wider text-primary-700 mb-1">
+                              {t('recommended_quest.why_this_title')}
+                            </p>
+                            <p className="text-body-sm text-primary-800">
+                              {isQA
+                                ? 'This quest covers the fundamentals every QA engineer needs: understanding bug report structure, severity vs priority classification, and writing professional reports. It uses multiple question types (multiple choice, ordering, free text) to reinforce learning.'
+                                : 'This quest introduces core BA skills: stakeholder identification, conflict resolution, requirements prioritization, and writing acceptance criteria. It uses varied interaction types to build practical competence.'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        <Button
+                          onClick={() => router.push(`/trainers/${slug}/quests/${questId}`)}
+                          size="lg"
+                          className="shadow-md px-6"
+                        >
+                          <Play className="h-5 w-5" />
+                          {t('recommended_quest.start_recommended')}
+                          <ArrowRight className="h-5 w-5" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => router.push(`/trainers/${slug}/quests`)}
+                          size="md"
+                        >
+                          {t('recommended_quest.browse_all')}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })()}
+        </>
+      )}
+
+      {/* Quest Catalog Section — secondary entry */}
       {trainer.is_enrolled && (
         <Card padding="lg" variant="default" className="mb-8 border-interactive">
           <CardHeader>
