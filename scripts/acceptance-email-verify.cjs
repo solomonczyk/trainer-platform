@@ -112,8 +112,8 @@ async function main() {
   const dom1 = await browserFetch(`${BASE}/api/v1/domains`);
   log('/domains status', dom1.status, dom1.status === 403 ? PASS : FAIL);
 
-  const q1 = await browserFetch(`${BASE}/api/v1/trainers/qa-engineer-interview-trainer/quests`);
-  log('/quests status', q1.status, q1.status === 403 ? PASS : FAIL);
+  const q1 = await browserFetch(`${BASE}/api/v1/me/progress`);
+  log('/me/progress status (quest gate)', q1.status, q1.status === 403 ? PASS : FAIL);
 
   console.log('  ✓ Pre-verification checks all passed');
 
@@ -179,13 +179,14 @@ async function main() {
   const dom2 = await browserFetch(`${BASE}/api/v1/domains`);
   log('/domains status', dom2.status, dom2.status === 200 ? PASS : FAIL);
 
-  const q2 = await browserFetch(`${BASE}/api/v1/trainers/qa-engineer-interview-trainer/quests`);
-  log('/quests status', q2.status, q2.status === 200 ? PASS : FAIL);
+  const q2 = await browserFetch(`${BASE}/api/v1/me/progress`);
+  log('/me/progress status (quest gate)', q2.status, q2.status === 200 ? PASS : FAIL);
 
-  // Enroll + start scenario
-  await browserFetch(`${BASE}/api/v1/trainers/qa-engineer-interview-trainer/enroll`, { method: 'POST' });
+  // Enroll + start scenario (= quest_start)
+  const enroll = await browserFetch(`${BASE}/api/v1/trainers/qa-engineer-interview-trainer/enroll`, { method: 'POST' });
+  log('/enroll status', enroll.status, (enroll.status === 200 || enroll.status === 201) ? PASS : FAIL);
   const ss = await browserFetch(`${BASE}/api/v1/scenarios/qa_bug_report_structure_v1/start`, { method: 'POST' });
-  log('/scenario/start status', ss.status, ss.status === 200 ? PASS : FAIL);
+  log('/scenario/start status (quest_start)', ss.status, ss.status === 200 ? PASS : FAIL);
 
   // ── Token reuse check ─────────────────────────────────
   console.log('\n11. Checking token consumption...');
