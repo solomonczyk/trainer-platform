@@ -15,6 +15,11 @@ from app.modules.auth.repository import set_verification_token, get_user_by_emai
 from app.core.config import settings
 
 
+def _auth(token: str) -> dict:
+    """Build an Authorization header dict from a bearer token."""
+    return {"Authorization": f"Bearer {token}"}
+
+
 @pytest.mark.asyncio
 async def test_registration_creates_unverified_user(client: AsyncClient):
     """On registration, user is created with email_verified=False and a token is set."""
@@ -78,17 +83,29 @@ async def test_unverified_user_blocked_from_quest(
 
 
 @pytest.mark.asyncio
+async def test_unauthenticated_verify_blocked(client: AsyncClient):
+    """Verify-email requires authentication; unauthenticated requests get 401."""
+    response = await client.post(
+        "/api/v1/auth/verify-email",
+        json={"token": "some-token"},
+    )
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
 async def test_token_verifies_user(
     client: AsyncClient,
     db: AsyncSession,
 ):
-    """A valid verification token marks the user's email as verified."""
+    """A valid verification token marks the user's email as verified.
+    Requires authenticated request from the token owner."""
     # Register a new user
     reg_resp = await client.post(
         "/api/v1/auth/register",
         json={"email": "verify_me@test.com", "password": "password123"},
     )
     assert reg_resp.status_code == 201
+    auth = _auth(reg_resp.json()["access_token"])
 
     # Fetch the user's token from DB
     user = await get_user_by_email(db, "verify_me@test.com")
@@ -96,10 +113,11 @@ async def test_token_verifies_user(
     assert user.email_verification_token is not None
     assert user.email_verified is False
 
-    # Verify the email via the API
+    # Verify the email via the API (authenticated as the token owner)
     verify_resp = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": user.email_verification_token},
+        headers=auth,
     )
     assert verify_resp.status_code in (200,)
     verify_data = verify_resp.json()
@@ -117,13 +135,14 @@ async def test_expired_token_rejected(
     client: AsyncClient,
     db: AsyncSession,
 ):
-    """An expired verification token is rejected."""
+    """An expired verification token is rejected (authenticated)."""
     # Register a new user
     reg_resp = await client.post(
         "/api/v1/auth/register",
         json={"email": "expired_token@test.com", "password": "password123"},
     )
     assert reg_resp.status_code == 201
+    auth = _auth(reg_resp.json()["access_token"])
 
     user = await get_user_by_email(db, "expired_token@test.com")
     assert user is not None
@@ -143,6 +162,7 @@ async def test_expired_token_rejected(
     verify_resp = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": expired_token},
+        headers=auth,
     )
     assert verify_resp.status_code == 400
     data = verify_resp.json()
@@ -161,6 +181,7 @@ async def test_reused_token_rejected(
         json={"email": "reuse_token@test.com", "password": "password123"},
     )
     assert reg_resp.status_code == 201
+    auth = _auth(reg_resp.json()["access_token"])
 
     user = await get_user_by_email(db, "reuse_token@test.com")
     assert user is not None
@@ -172,6 +193,7 @@ async def test_reused_token_rejected(
     verify1 = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": token},
+        headers=auth,
     )
     assert verify1.status_code == 200
 
@@ -179,6 +201,7 @@ async def test_reused_token_rejected(
     verify2 = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": token},
+        headers=auth,
     )
     # Token is cleared on success; second lookup returns 404 NOT_FOUND
     assert verify2.status_code == 404
@@ -244,13 +267,53 @@ async def test_resend_verification_creates_new_token(
 
 
 @pytest.mark.asyncio
-async def test_verify_email_unknown_token(client: AsyncClient):
-    """A non-existent token returns 404."""
+async def test_verify_email_unknown_token(
+    client: AsyncClient,
+    auth_headers: dict,
+):
+    """A non-existent token returns 404 (auth required but token not in DB)."""
     response = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": "this-token-does-not-exist"},
+        headers=auth_headers,
     )
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_wrong_user_verify_blocked(
+    client: AsyncClient,
+    db: AsyncSession,
+):
+    """A user cannot verify another user's token."""
+    # Register user A
+    reg_a = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "user_a@test.com", "password": "password123"},
+    )
+    assert reg_a.status_code == 201
+    user_a = await get_user_by_email(db, "user_a@test.com")
+    assert user_a is not None
+    assert user_a.email_verification_token is not None
+    token_a = user_a.email_verification_token
+
+    # Register user B and use B's auth to verify A's token
+    reg_b = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "user_b@test.com", "password": "password123"},
+    )
+    assert reg_b.status_code == 201
+    auth_b = _auth(reg_b.json()["access_token"])
+
+    # User B tries to verify user A's token — should be blocked
+    verify_resp = await client.post(
+        "/api/v1/auth/verify-email",
+        json={"token": token_a},
+        headers=auth_b,
+    )
+    assert verify_resp.status_code == 403
+    data = verify_resp.json()
+    assert "FORBIDDEN" in str(data)
 
 
 @pytest.mark.asyncio
@@ -265,6 +328,7 @@ async def test_verification_token_consumed_after_success(
         json={"email": "token_consumed@test.com", "password": "password123"},
     )
     assert reg_resp.status_code == 201
+    auth = _auth(reg_resp.json()["access_token"])
 
     user = await get_user_by_email(db, "token_consumed@test.com")
     assert user is not None
@@ -275,6 +339,7 @@ async def test_verification_token_consumed_after_success(
     verify_resp = await client.post(
         "/api/v1/auth/verify-email",
         json={"token": original_token},
+        headers=auth,
     )
     assert verify_resp.status_code == 200
 
@@ -297,11 +362,12 @@ async def test_verified_user_cannot_resend_verification(
         json={"email": "resend_blocked@test.com", "password": "password123"},
     )
     assert reg_resp.status_code == 201
+    auth = _auth(reg_resp.json()["access_token"])
 
     user = await get_user_by_email(db, "resend_blocked@test.com")
     token = user.email_verification_token
 
-    await client.post("/api/v1/auth/verify-email", json={"token": token})
+    await client.post("/api/v1/auth/verify-email", json={"token": token}, headers=auth)
 
     # Try resend
     resend_resp = await client.post(
