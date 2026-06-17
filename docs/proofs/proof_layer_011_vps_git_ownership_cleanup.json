@@ -1,0 +1,67 @@
+{
+  "report_title": "Layer 011 — VPS Git Ownership Cleanup",
+  "report_date": "2026-06-17",
+  "affected_path_only": "/opt/trainer-platform/repo",
+
+  "ownership_before": {
+    "repo_root_owner": "trainer:trainer",
+    "root_owned_object_dirs": 28,
+    "root_owned_files_total": 90
+  },
+
+  "ownership_after": {
+    "repo_root_owner": "trainer:trainer",
+    "root_owned_object_dirs": 0,
+    "root_owned_files_total": 0
+  },
+
+  "repair_command": "ssh root@localhost \"chown -R trainer:trainer /opt/trainer-platform/repo\"",
+  "repair_method": "SSH root@localhost using trainer SSH key (sudo not available without TTY/password)",
+  "env_secrets_not_touched": true,
+  "docker_volumes_not_touched": true,
+
+  "git_verification_as_trainer": {
+    "git_status": "clean",
+    "git_fetch": "success (83a4641..d44b4e4 origin/master fetched)",
+    "git_pull": "success (fast-forward 83a4641 → d44b4e4, 3 files changed)",
+    "head": "d44b4e431357df94076ac4fde11526ee47b14543",
+    "origin_master": "d44b4e431357df94076ac4fde11526ee47b14543",
+    "git_status_after_pull": "clean"
+  },
+
+  "runtime_verification": {
+    "current_commit": "d44b4e431357df94076ac4fde11526ee47b14543",
+    "health": 200,
+    "ready": 200,
+    "frontend_build_id": "B959F46fmJPd5UAvHEEup",
+    "frontend_image_created": "2026-06-17T19:48:32.483576756+02:00",
+    "backend_image_created": "2026-06-17T18:33:11.320062717+02:00",
+    "containers_healthy": ["tp_frontend", "tp_backend", "tp_caddy", "tp_postgres"],
+    "q1_activity_type": "multiple_choice",
+    "q1_options_correct": "8/5",
+    "screenshots_intact": 6,
+    "runtime_changed": false
+  },
+
+  "acceptance": {
+    "repo_owner": "trainer:trainer",
+    "git_pull_as_trainer_works": true,
+    "vps_git_status_clean": true,
+    "vps_head": "d44b4e431357df94076ac4fde11526ee47b14543",
+    "origin_master": "d44b4e431357df94076ac4fde11526ee47b14543",
+    "current_commit": "d44b4e431357df94076ac4fde11526ee47b14543",
+    "health": 200,
+    "ready": 200,
+    "runtime_changed": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+
+  "forbidden_actions_not_taken": {
+    "env_secrets_not_exposed": true,
+    "layer_012_not_started": true,
+    "production_accepted_not_set_true": true,
+    "release_allowed_not_set_true": true,
+    "root_not_used_for_normal_operations": true
+  }
+}
