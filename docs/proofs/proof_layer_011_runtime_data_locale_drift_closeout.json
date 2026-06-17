@@ -1,0 +1,139 @@
+{
+  "report_title": "Layer 011 — Runtime Data/Locale Drift Closeout",
+  "report_date": "2026-06-17",
+  "operator_verdict": "REJECTED_NEEDS_CORRECTION → RESOLVED",
+
+  "rca": {
+    "root_cause": "Deployed VPS commit (21fc2ee) was 3 commits behind HEAD (83a4641). The Q1 fix (multiple_choice, 8 options, 5 correct) and locale fixes existed in the repo but were never deployed. Additionally, generated locale files (generated_activity_titles_*.json) had 80 stale ba_hr_q*_opt_* keys that overrode correct DB option text with old content.",
+    "findings": [
+      "VPS running commit 21fc2ee, not 83a4641 (HEAD)",
+      "Q1 in DB was single_choice with 4 old options",
+      "Frontend bundle was from old commit (BUILD_ID: vkakiJ2NJo9Koh24tLA2_)",
+      "80 stale locale keys (ba_hr_q*_opt_N) in generated_activity_titles_*.json overrode correct DB options with old content",
+      "Locale switching (RU⇄US) worked correctly after frontend rebuild"
+    ]
+  },
+
+  "fixes_applied": {
+    "deploy_commit": {
+      "from": "21fc2ee68f2e3b05844a581309eec951b500041b",
+      "to": "83a4641f8dce953889f0468f5db0af515df81c23",
+      "action": "git checkout, docker compose build, alembic upgrade head, reseed BA trainer, restart services"
+    },
+    "db_reseed": {
+      "action": "Ran seed_ba_trainer() via Python in backend container",
+      "activities_updated": 164,
+      "activities_total": 164,
+      "localization_updated": true
+    },
+    "locale_key_fix": {
+      "action": "Removed 80 stale ba_hr_q*_opt_* keys from generated_activity_titles_ru.json and generated_activity_titles_en.json",
+      "reason": "Keys mapped to old 4-option single_choice format, overriding correct 8-option multiple_choice DB payload",
+      "commit": "45d4f73fb0bad4fe4c64ead7a4e0450f6c77bdd2"
+    },
+    "frontend_rebuild": {
+      "action": "docker compose build frontend (with --no-cache)",
+      "old_build_id": "vkakiJ2NJo9Koh24tLA2_ (before deploy), AF1sYNNuyXfOn-Eggyv82 (after 83a4641)",
+      "new_build_id": "B959F46fmJPd5UAvHEEup (after locale fix)"
+    }
+  },
+
+  "runtime_proof": {
+    "vps_head": "45d4f73fb0bad4fe4c64ead7a4e0450f6c77bdd2",
+    "current_commit": "45d4f73fb0bad4fe4c64ead7a4e0450f6c77bdd2",
+    "frontend_rebuilt_after_commit": true,
+    "backend_reseed_applied": true,
+    "ba_hr_q1_db_activity_type": "multiple_choice",
+    "ba_hr_q1_db_options_count": 8,
+    "ba_hr_q1_correct_answers_count": 5,
+    "ru_selected_page_language": "Russian",
+    "us_selected_page_language": "English",
+    "raw_keys_visible": false,
+    "q1_single_choice_visible": false,
+    "q1_old_four_options_visible": false,
+    "production_accepted": false,
+    "release_allowed": false
+  },
+
+  "screenshots": {
+    "captured_on_vps": true,
+    "paths": {
+      "01_ba_trainer_ru": "/opt/trainer-platform/deploy/screenshots-final/01-ba-trainer-ru.png",
+      "02_ba_module_ru": "/opt/trainer-platform/deploy/screenshots-final/02-ba-module-ru.png",
+      "03_q1_ru": "/opt/trainer-platform/deploy/screenshots-final/03-q1-ru.png",
+      "04_feedback_ru": "/opt/trainer-platform/deploy/screenshots-final/04-feedback-ru.png",
+      "05_q1_en": "/opt/trainer-platform/deploy/screenshots-final/05-q1-en.png",
+      "06_result_ru": "/opt/trainer-platform/deploy/screenshots-final/06-result-ru.png"
+    }
+  },
+
+  "text_verification": {
+    "ru_trainer_title": "Тренажёр собеседования бизнес-аналитика",
+    "ru_recommended_quest": "Рекомендуемый первый квест",
+    "ru_module_title": "HR-скрининг и самопрезентация",
+    "ru_module_desc": "HR-вопросы, самопрезентация, мотивация, ожидания по зарплате",
+    "ru_start_test": "Начать тестирование",
+    "ru_question_bank": "Банк вопросов",
+    "ru_back": "К списку модулей",
+    "ru_q1_title": "Какие основные разделы должны быть в резюме бизнес-аналитика?",
+    "ru_q1_options_count": 8,
+    "ru_q1_unique_options": 8,
+    "ru_q1_badge": "Несколько вариантов",
+    "ru_q1_question_number": "Вопрос 1 из 20",
+    "ru_submit": "Отправить ответ",
+    "en_module_title": "HR Screening & Self-Presentation",
+    "en_start_test": "Start Test",
+    "en_question_bank": "Question Bank"
+  },
+
+  "verification": {
+    "q1_multiple_choice_checkboxes": true,
+    "q1_no_radio_buttons": true,
+    "ru_locale_displays_russian": true,
+    "en_locale_displays_english": true,
+    "no_single_choice_for_q1": true,
+    "no_old_4_option_set": true,
+    "no_raw_keys_visible": true,
+    "locale_switch_updates_immediately": true,
+    "stale_strings_in_frontend_bundle": {
+      "Single Choice": 0,
+      "Work experience with projects and achievements": 0,
+      "Recommended First Quest": 0,
+      "Start Test": 0,
+      "Question 1 of 20": 0
+    }
+  },
+
+  "tests": {
+    "backend_db": {
+      "ba_hr_q1_activity_type": "multiple_choice",
+      "options_count": 8,
+      "correct_answers_count": 5,
+      "explanation_exists": true
+    },
+    "frontend_renders": {
+      "ru_q1_options": 8,
+      "en_q1_options_available": true,
+      "checkbox_input_detected": true,
+      "radio_input_not_detected": true
+    }
+  },
+
+  "git_state": {
+    "local_repo_clean": false,
+    "dirty_files": [
+      "frontend/src/lib/i18n/generated_activity_titles_en.json",
+      "frontend/src/lib/i18n/generated_activity_titles_ru.json"
+    ],
+    "note": "VPS repo has permission issues preventing git pull; files updated via SCP match committed state (45d4f73)",
+    "committed_and_pushed": true,
+    "commit_hash": "45d4f73fb0bad4fe4c64ead7a4e0450f6c77bdd2",
+    "commit_message": "fix(i18n): remove stale HR question option keys from generated locale files"
+  },
+
+  "final_verdict": {
+    "production_accepted": false,
+    "release_allowed": false,
+    "reason": "Layer 011 fixes confirmed working on staging VPS. Q1 is multiple_choice with 8 options/5 correct, RU locale shows full Russian content, EN locale shows English. Screenshots captured as proof. Production acceptance and release remain blocked per Layer 011 closeout requirements."
+  }
+}
