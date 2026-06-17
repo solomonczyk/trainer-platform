@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.core.config import settings
 from app.core.rate_limiter import reset_store
+from app.core.email import set_email_sender, InMemoryEmailSender
 from app.db.base import Base
 from app.db.session import get_db
 import app.main as main_app_module
@@ -40,6 +41,37 @@ def _reset_rate_limiter():
     """Disable rate limiter and clear its state before every test."""
     settings.rate_limit_enabled = False
     reset_store()
+
+
+@pytest.fixture(autouse=True)
+def _use_fake_email_sender():
+    """Replace real SMTP sender with in-memory fake for all tests.
+
+    This prevents tests from sending real emails and provides
+    sent_count / sent_emails for assertions.
+    """
+    from app.core.email import InMemoryEmailSender
+    sender = InMemoryEmailSender()
+    set_email_sender(sender)
+    return sender
+
+
+@pytest_asyncio.fixture
+async def fake_email_sender() -> InMemoryEmailSender:
+    """Return the active InMemoryEmailSender for test assertions.
+
+    Usage:
+        async def test_something(fake_email_sender):
+            assert fake_email_sender.sent_count == 0
+            # ... do something that sends email ...
+            assert fake_email_sender.sent_count == 1
+    """
+    from app.core.email import get_email_sender
+    sender = get_email_sender()
+    assert isinstance(sender, InMemoryEmailSender), (
+        f"Expected InMemoryEmailSender but got {type(sender).__name__}"
+    )
+    return sender
 
 
 @pytest.fixture(scope="session")

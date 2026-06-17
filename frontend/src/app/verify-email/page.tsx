@@ -7,12 +7,13 @@ import {
   verifyEmail,
   resendVerification,
   setToken,
+  getCurrentUser,
 } from "@/lib/api/client";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardTitle, CardDescription } from "@/components/ui/Card";
-import { CheckCircle, AlertCircle, Mail, Loader2, LogOut, User } from "lucide-react";
+import { CheckCircle, AlertCircle, Mail, Loader2, User } from "lucide-react";
 
 type PageState =
   | { status: "loading" }
@@ -23,7 +24,8 @@ type PageState =
   | { status: "error"; message: string }
   | { status: "already_verified" }
   | { status: "token_expired" }
-  | { status: "resent" };
+  | { status: "resent" }
+  | { status: "checking_pending"; message: string };
 
 export default function VerifyEmailPage() {
   const router = useRouter();
@@ -40,9 +42,6 @@ export default function VerifyEmailPage() {
   // Canonical auth — same source as Header
   const { user, loading: authLoading, refresh: refreshAuth, clearSession } = useAuth();
 
-  // Session identity bar — staging/debug only, disabled for production
-  const showDebugBar = process.env.NEXT_PUBLIC_APP_ENV !== "production";
-
   // Pre-fill email from query param or auth
   useEffect(() => {
     const emailParam = searchParams.get("email");
@@ -52,6 +51,13 @@ export default function VerifyEmailPage() {
       setResendEmail(user.email);
     }
   }, [searchParams, user]);
+
+  // If user is already verified, redirect away
+  useEffect(() => {
+    if (!authLoading && user?.email_verified === true && state.status === "loading") {
+      router.push("/domains");
+    }
+  }, [authLoading, user, state.status, router]);
 
   useEffect(() => {
     if (!token) {
@@ -109,17 +115,26 @@ export default function VerifyEmailPage() {
     };
   }, []);
 
-  const handleClearAndReset = useCallback(() => {
-    clearSession();
-    setState({ status: "pending" });
-  }, [clearSession]);
-
   const handleResend = useCallback(async () => {
     if (!resendEmail.trim() || cooldownSec > 0) return;
     setResending(true);
     try {
-      await resendVerification(resendEmail);
-      setState({ status: "resent" });
+      const result = await resendVerification(resendEmail);
+      if (result.sent === false) {
+        // Handle rate-limited or already-verified case
+        if (result.message_code === "already_verified") {
+          setState({ status: "already_verified" });
+        } else if (result.message_code === "rate_limited_or_recently_sent") {
+          setState({
+            status: "error",
+            message: t("auth.verifyEmailResendCooldown").replace("{seconds}", String(COOLDOWN_DURATION)),
+          });
+        } else {
+          setState({ status: "resent" });
+        }
+      } else {
+        setState({ status: "resent" });
+      }
       setCooldownSec(COOLDOWN_DURATION);
       cooldownTimer.current = setInterval(() => {
         setCooldownSec((prev) => {
@@ -140,53 +155,23 @@ export default function VerifyEmailPage() {
 
   const handleCheckStatus = useCallback(async () => {
     await refreshAuth();
-    if (user?.email_verified) {
+    // Call getCurrentUser() directly to get the fresh value — the `user`
+    // captured in this closure may still be stale because React hasn't
+    // re-rendered after refreshAuth() resolved.
+    const freshUser = await getCurrentUser().catch(() => null);
+    if (freshUser?.email_verified) {
       router.push("/domains");
     } else {
       setState({
-        status: "error",
-        message: "Email not yet verified. Please check your inbox and click the verification link.",
+        status: "checking_pending",
+        message: t("auth.verifyEmailCheckDesc"),
       });
     }
-  }, [refreshAuth, user?.email_verified, router]);
+  }, [refreshAuth, router]);
 
-  // ── Session identity bar ────────────────────────────────────
-  const SessionBar = ({ extra }: { extra?: React.ReactNode }) => (
-    <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
-      {authLoading ? (
-        <div className="flex items-center gap-2 text-sm text-text-tertiary">
-          <Loader2 className="h-3 w-3 animate-spin" />
-          Checking session...
-        </div>
-      ) : user ? (
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-sm">
-            <User className="h-4 w-4 text-primary-600" />
-            <span className="font-medium text-text-primary">{user.email}</span>
-            {user.email_verified ? (
-              <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Verified</span>
-            ) : (
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Unverified</span>
-            )}
-          </div>
-          <button
-            onClick={handleClearAndReset}
-            className="flex items-center gap-1 rounded px-2 py-1 text-xs text-red-500 hover:bg-red-50 hover:text-red-700"
-            title="Clear session and start fresh"
-          >
-            <LogOut className="h-3 w-3" />
-            Clear
-          </button>
-        </div>
-      ) : (
-        <div className="flex items-center gap-2 text-sm text-text-tertiary">
-          <User className="h-4 w-4" />
-          No active session
-        </div>
-      )}
-      {extra}
-    </div>
-  );
+  // ── Debug session info ────────────────────────────────────
+  // Only shown in non-production environments for troubleshooting
+  const showDebugBar = process.env.NEXT_PUBLIC_APP_ENV !== "production";
 
   // ── Loading ─────────────────────────────────────────────────
   if (state.status === "loading") {
@@ -202,7 +187,11 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          {showDebugBar && <SessionBar />}
+          {showDebugBar && user && (
+            <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-text-tertiary">
+              {user.email}
+            </div>
+          )}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
             <Mail className="h-8 w-8 text-primary-600" />
           </div>
@@ -264,16 +253,20 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          {showDebugBar && <SessionBar />}
+          {showDebugBar && user && (
+            <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-text-tertiary">
+              {user.email}
+            </div>
+          )}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
             <Mail className="h-8 w-8 text-primary-600" />
           </div>
-          <CardTitle className="text-2xl">Verify Your Email</CardTitle>
+          <CardTitle className="text-2xl">{t("auth.verifyEmailCheckTitle")}</CardTitle>
           <CardDescription className="mt-3">
-            Click the button below to confirm your email address.
+            {t("auth.verifyEmailCheckInbox")}
           </CardDescription>
           <p className="mt-2 text-xs text-text-tertiary">
-            This verification link was sent to your email. Do not share it.
+            {t("auth.verifyEmailSpamHint")}
           </p>
           <div className="mt-6">
             <Button
@@ -281,7 +274,7 @@ export default function VerifyEmailPage() {
               className="w-full"
               onClick={handleVerifyClick}
             >
-              Verify Email
+              {t("auth.verifyEmailResendButton")}
             </Button>
           </div>
         </Card>
@@ -306,15 +299,6 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          {showDebugBar && <SessionBar
-            extra={
-              state.verifiedEmail ? (
-                <p className="mt-1 text-xs text-green-600">
-                  Just verified: {state.verifiedEmail}
-                </p>
-              ) : null
-            }
-          />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
@@ -327,20 +311,13 @@ export default function VerifyEmailPage() {
             </p>
           )}
 
-          <div className="mt-6 space-y-3">
+          <div className="mt-6">
             <Button
               variant="primary"
               className="w-full"
               onClick={handleCheckStatus}
             >
               {t("auth.verifyEmailCheckStatus")}
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleClearAndReset}
-            >
-              Clear Session
             </Button>
           </div>
         </Card>
@@ -353,7 +330,6 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
             <CheckCircle className="h-8 w-8 text-blue-600" />
           </div>
@@ -374,7 +350,6 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
             <AlertCircle className="h-8 w-8 text-amber-600" />
           </div>
@@ -410,7 +385,6 @@ export default function VerifyEmailPage() {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
         <Card padding="lg" className="w-full max-w-md text-center">
-          {showDebugBar && <SessionBar />}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
@@ -455,11 +429,37 @@ export default function VerifyEmailPage() {
     );
   }
 
+  // ── Checking pending — not yet verified, but no error ──────
+  if (state.status === "checking_pending") {
+    return (
+      <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
+        <Card padding="lg" className="w-full max-w-md text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
+            <Mail className="h-8 w-8 text-primary-600" />
+          </div>
+          <CardTitle className="text-2xl">{t("auth.verifyEmailCheckTitle")}</CardTitle>
+          <CardDescription className="mt-3">{state.message}</CardDescription>
+          <p className="mt-2 text-xs text-text-tertiary">
+            {t("auth.verifyEmailSpamHint")}
+          </p>
+          <div className="mt-6 space-y-3">
+            <Button
+              variant="primary"
+              className="w-full"
+              onClick={handleCheckStatus}
+            >
+              {t("auth.verifyEmailCheckStatus")}
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   // ── Error ─────────────────────────────────────────────────
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
       <Card padding="lg" className="w-full max-w-md text-center">
-        <SessionBar />
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
           <AlertCircle className="h-8 w-8 text-red-600" />
         </div>

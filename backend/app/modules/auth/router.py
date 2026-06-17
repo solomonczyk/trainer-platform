@@ -16,6 +16,7 @@ from app.modules.auth.schemas import (
     VerifyEmailRequest,
     ResendVerificationRequest,
     VerifyEmailResponse,
+    ResendVerificationResponse,
 )
 from app.modules.auth.service import (
     register_user,
@@ -35,9 +36,11 @@ async def register(
     """Register a new user account and return a JWT token.
 
     Note: The user's email is NOT verified at this point.
-    A verification email is sent automatically.
+    A verification email is sent automatically only for truly new accounts.
     """
-    user, token = await register_user(db, body.email, body.password, body.display_name)
+    user, token = await register_user(
+        db, body.email, body.password, body.display_name, locale=body.locale or "ru-RU"
+    )
     return TokenResponse(
         access_token=token,
         token_type="bearer",
@@ -52,6 +55,8 @@ async def login(
 ) -> TokenResponse:
     """Authenticate with email/password and return a JWT token.
 
+    Login never sends a verification email.
+    Login never resets email_verified.
     Even if the email is not verified, the user receives a token.
     Access to simulator resources is gated by require_email_verified.
     """
@@ -92,11 +97,18 @@ async def verify_email_endpoint(
     return VerifyEmailResponse(access_token=fresh_token, email=user.email)
 
 
-@router.post("/resend-verification", response_model=dict)
+@router.post("/resend-verification", response_model=ResendVerificationResponse)
 async def resend_verification_endpoint(
     body: ResendVerificationRequest,
     db: AsyncSession = Depends(get_db),
-) -> dict:
-    """Resend the email verification email to the given address."""
-    await resend_verification(db, body.email)
-    return {"message": "Verification email sent successfully"}
+) -> ResendVerificationResponse:
+    """Resend the email verification email to the given address.
+
+    This endpoint is rate-limited and safe against email enumeration.
+    Returns a structured response with sent status and message_code.
+    """
+    result = await resend_verification(db, body.email, locale=body.locale or "ru-RU")
+    return ResendVerificationResponse(
+        sent=result["sent"],
+        message_code=result["message_code"],
+    )

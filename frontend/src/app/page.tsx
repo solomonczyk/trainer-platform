@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { isAuthenticated, getCurrentUser, type UserResponse } from "@/lib/api/client";
+import { isAuthenticated, getCurrentUser, clearToken, type UserResponse } from "@/lib/api/client";
 import { t } from "@/lib/i18n";
 import Button from "@/components/ui/Button";
 import Card, { CardDescription, CardTitle } from "@/components/ui/Card";
@@ -17,7 +17,10 @@ export default function LandingPage() {
     if (isAuthenticated()) {
       getCurrentUser()
         .then(setUser)
-        .catch(() => setUser(null));
+        .catch(() => {
+          setUser(null);
+          clearToken();
+        });
     }
   }, []);
 

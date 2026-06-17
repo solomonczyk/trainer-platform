@@ -41,11 +41,12 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await register(email, password, displayName.trim() || undefined);
-      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
+      await register(email.toLowerCase().trim(), password, displayName.trim() || undefined);
+      router.push(`/verify-email?email=${encodeURIComponent(email.toLowerCase().trim())}`);
     } catch (err) {
       if (err instanceof ApiClientError) {
         switch (err.code) {
+          case "CONFLICT":
           case "EMAIL_TAKEN":
             setError(t("auth.errorEmailTaken"));
             break;

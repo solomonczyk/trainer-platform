@@ -13,6 +13,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr = Field(..., description="User email address")
     password: str = Field(..., min_length=8, description="User password (min 8 chars)")
     display_name: Optional[str] = Field(None, max_length=255, description="Display name")
+    locale: Optional[str] = Field(None, description="Preferred locale for verification email (e.g. ru-RU, en-US)")
 
 
 class LoginRequest(BaseModel):
@@ -52,6 +53,7 @@ class ResendVerificationRequest(BaseModel):
     """Request body for resending verification email."""
 
     email: EmailStr = Field(..., description="User email address")
+    locale: Optional[str] = Field(None, description="Preferred locale for verification email (e.g. ru-RU, en-US)")
 
 
 class VerifyEmailResponse(BaseModel):
@@ -61,3 +63,13 @@ class VerifyEmailResponse(BaseModel):
     email_verified: bool = True
     access_token: str
     email: str = ""
+
+
+class ResendVerificationResponse(BaseModel):
+    """Response for resend verification endpoint.
+
+    Always returns a safe response to avoid email enumeration.
+    """
+
+    sent: bool = False
+    message_code: str = ""

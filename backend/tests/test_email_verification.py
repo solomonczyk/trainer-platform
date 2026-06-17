@@ -10,6 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import create_access_token
+from app.core.email import InMemoryEmailSender
 from app.db.models import User
 from app.modules.auth.repository import set_verification_token, get_user_by_email
 from app.core.config import settings
@@ -21,8 +22,13 @@ def _auth(token: str) -> dict:
 
 
 @pytest.mark.asyncio
-async def test_registration_creates_unverified_user(client: AsyncClient):
-    """On registration, user is created with email_verified=False and a token is set."""
+async def test_registration_creates_unverified_user(
+    client: AsyncClient,
+    fake_email_sender: InMemoryEmailSender,
+):
+    """On registration, user is created with email_verified=False and a token is set.
+    Exactly one verification email is sent.
+    """
     response = await client.post(
         "/api/v1/auth/register",
         json={"email": "newunverified@test.com", "password": "password123"},
@@ -38,6 +44,9 @@ async def test_registration_creates_unverified_user(client: AsyncClient):
         headers={"Authorization": f"Bearer {data['access_token']}"},
     )
     assert user_response.status_code in (200,)
+
+    # Exactly one verification email sent
+    assert fake_email_sender.sent_count == 1
 
 
 @pytest.mark.asyncio
@@ -239,8 +248,9 @@ async def test_verified_user_can_access_scenario(
 async def test_resend_verification_creates_new_token(
     client: AsyncClient,
     db: AsyncSession,
+    fake_email_sender: InMemoryEmailSender,
 ):
-    """Resend verification generates a new token and invalidates the old one."""
+    """Resend verification generates a new token and sends one email."""
     # Register a new user
     reg_resp = await client.post(
         "/api/v1/auth/register",
@@ -248,10 +258,23 @@ async def test_resend_verification_creates_new_token(
     )
     assert reg_resp.status_code == 201
 
+    # Wait for cooldown to expire (the resend service checks _recently_sent)
     user = await get_user_by_email(db, "resend_test@test.com")
     assert user is not None
     old_token = user.email_verification_token
     assert old_token is not None
+
+    # Manually set token expiry to long ago so resend is allowed
+    far_past = datetime.now(timezone.utc) - timedelta(hours=48)
+    await set_verification_token(
+        db,
+        user,
+        old_token,
+        far_past + timedelta(hours=settings.email_verification_token_expire_hours),
+    )
+    await db.commit()
+
+    fake_email_sender.reset()
 
     # Resend verification
     resend_resp = await client.post(
@@ -259,11 +282,16 @@ async def test_resend_verification_creates_new_token(
         json={"email": "resend_test@test.com"},
     )
     assert resend_resp.status_code in (200,)
+    data = resend_resp.json()
+    assert data["sent"] is True
 
     # Verify token has changed
     await db.refresh(user)
     assert user.email_verification_token is not None
     assert user.email_verification_token != old_token
+
+    # Exactly one email sent for the resend
+    assert fake_email_sender.sent_count == 1
 
 
 @pytest.mark.asyncio
@@ -354,8 +382,9 @@ async def test_verification_token_consumed_after_success(
 async def test_verified_user_cannot_resend_verification(
     client: AsyncClient,
     db: AsyncSession,
+    fake_email_sender: InMemoryEmailSender,
 ):
-    """A verified user cannot resend verification (ALREADY_VERIFIED)."""
+    """A verified user cannot resend verification (returns sent=False)."""
     # Register and verify
     reg_resp = await client.post(
         "/api/v1/auth/register",
@@ -369,11 +398,248 @@ async def test_verified_user_cannot_resend_verification(
 
     await client.post("/api/v1/auth/verify-email", json={"token": token}, headers=auth)
 
+    fake_email_sender.reset()
+
     # Try resend
     resend_resp = await client.post(
         "/api/v1/auth/resend-verification",
         json={"email": "resend_blocked@test.com"},
     )
-    assert resend_resp.status_code == 400
+    assert resend_resp.status_code == 200  # Safe response
     data = resend_resp.json()
-    assert "ALREADY_VERIFIED" in str(data)
+    assert data["sent"] is False
+    assert data["message_code"] == "already_verified"
+    # No email sent
+    assert fake_email_sender.sent_count == 0
+
+
+@pytest.mark.asyncio
+async def test_login_verified_user_does_not_send_verification_email(
+    client: AsyncClient,
+    db: AsyncSession,
+    fake_email_sender: InMemoryEmailSender,
+):
+    """Login with a verified user does not reset email_verified or send email."""
+    # Register and verify a user
+    reg = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "login_verified@test.com", "password": "password123"},
+    )
+    assert reg.status_code == 201
+
+    # Manually verify in DB
+    user = await get_user_by_email(db, "login_verified@test.com")
+    assert user is not None
+    user.email_verified = True
+    user.email_verification_token = None
+    user.email_verification_token_expires_at = None
+    await db.commit()
+
+    fake_email_sender.reset()
+
+    # Login — response must show email_verified=true
+    login_resp = await client.post(
+        "/api/v1/auth/login",
+        json={"email": "login_verified@test.com", "password": "password123"},
+    )
+    assert login_resp.status_code == 200
+    data = login_resp.json()
+    assert data["user"]["email_verified"] is True
+
+    # /me must also return email_verified=true
+    token = data["access_token"]
+    me_resp = await client.get(
+        "/api/v1/me",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert me_resp.status_code == 200
+    me_data = me_resp.json()
+    assert me_data["email_verified"] is True
+
+    # No email sent during login
+    assert fake_email_sender.sent_count == 0
+
+
+@pytest.mark.asyncio
+async def test_duplicate_registration_no_verification_email(
+    client: AsyncClient,
+    db: AsyncSession,
+    fake_email_sender: InMemoryEmailSender,
+):
+    """Registering with an already verified email does NOT create a new user or send email."""
+    root = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "dup_no_email@test.com", "password": "password123"},
+    )
+    assert root.status_code == 201
+
+    # Verify in DB
+    user = await get_user_by_email(db, "dup_no_email@test.com")
+    assert user is not None
+    user.email_verified = True
+    user.email_verification_token = None
+    user.email_verification_token_expires_at = None
+    await db.commit()
+
+    fake_email_sender.reset()
+
+    # Try registering again — should be rejected
+    dup = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "dup_no_email@test.com", "password": "password123"},
+    )
+    assert dup.status_code == 409
+
+    # Verify only ONE user exists for this email
+    result = await db.execute(
+        select(User).where(User.email == "dup_no_email@test.com")
+    )
+    users = result.scalars().all()
+    assert len(users) == 1
+
+    # Original user still verified
+    assert users[0].email_verified is True
+
+    # No email sent for duplicate registration
+    assert fake_email_sender.sent_count == 0
+
+
+@pytest.mark.asyncio
+async def test_me_returns_db_email_verified_true(
+    client: AsyncClient,
+    db: AsyncSession,
+):
+    """/me returns email_verified=true for a verified user (reads from DB)."""
+    reg = await client.post(
+        "/api/v1/auth/register",
+        json={"email": "me_verified@test.com", "password": "password123"},
+    )
+    assert reg.status_code == 201
+    token = reg.json()["access_token"]
+
+    # /me should reflect DB state (unverified initially)
+    me1 = await client.get(
+        "/api/v1/me",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert me1.status_code == 200
+    assert me1.json()["email_verified"] is False
+
+    # Verify in DB
+    user = await get_user_by_email(db, "me_verified@test.com")
+    user.email_verified = True
+    user.email_verification_token = None
+    user.email_verification_token_expires_at = None
+    await db.commit()
+
+    # /me must now return email_verified=true — reading fresh DB state
+    me2 = await client.get(
+        "/api/v1/me",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert me2.status_code == 200
+    assert me2.json()["email_verified"] is True
+
+
+# ============================================================================
+# New tests for resend throttling and behavior
+# ============================================================================
+
+@pytest.mark.asyncio
+async def test_resend_verification_explicit_and_throttled(
+    client: AsyncClient,
+    db: AsyncSession,
+    fake_email_sender: InMemoryEmailSender,
+):
+    """Explicit resend sends one email and subsequent attempts are throttled."""
+    # Create an unverified user
+    from app.core.security import hash_password
+    user = User(
+        email="resend_throttle@example.com",
+        password_hash=hash_password("testpass123"),
+        email_verified=False,
+    )
+    db.add(user)
+    await db.commit()
+
+    fake_email_sender.reset()
+
+    # First resend should work (need to also set a token that's old enough)
+    user = await get_user_by_email(db, "resend_throttle@example.com")
+    assert user is not None
+
+    # Set a very old token to bypass cooldown check
+    far_past = datetime.now(timezone.utc) - timedelta(hours=48)
+    await set_verification_token(
+        db,
+        user,
+        "old-test-token",
+        far_past + timedelta(hours=settings.email_verification_token_expire_hours),
+    )
+    await db.commit()
+
+    # First resend — should succeed
+    r1 = await client.post(
+        "/api/v1/auth/resend-verification",
+        json={"email": "resend_throttle@example.com"},
+    )
+    assert r1.status_code == 200
+    assert r1.json()["sent"] is True
+    assert fake_email_sender.sent_count == 1
+
+    # Second resend immediately — should be rate-limited
+    r2 = await client.post(
+        "/api/v1/auth/resend-verification",
+        json={"email": "resend_throttle@example.com"},
+    )
+    assert r2.status_code == 200  # Safe response
+    assert r2.json()["sent"] is False
+    assert r2.json()["message_code"] == "rate_limited_or_recently_sent"
+    # No additional email
+    assert fake_email_sender.sent_count == 1
+
+
+@pytest.mark.asyncio
+async def test_resend_unknown_email(
+    client: AsyncClient,
+    fake_email_sender: InMemoryEmailSender,
+):
+    """Resend for unknown email returns safe response (no enumeration)."""
+    response = await client.post(
+        "/api/v1/auth/resend-verification",
+        json={"email": "nonexistent@example.com"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["sent"] is False
+    assert data["message_code"] == "if_account_exists_email_sent"
+    assert fake_email_sender.sent_count == 0
+
+
+@pytest.mark.asyncio
+async def test_resend_already_verified(
+    client: AsyncClient,
+    db: AsyncSession,
+    fake_email_sender: InMemoryEmailSender,
+):
+    """Resend for an already verified account returns sent=False."""
+    from app.core.security import hash_password
+    user = User(
+        email="already_verified_resend@example.com",
+        password_hash=hash_password("testpass123"),
+        email_verified=True,
+    )
+    db.add(user)
+    await db.commit()
+
+    fake_email_sender.reset()
+
+    response = await client.post(
+        "/api/v1/auth/resend-verification",
+        json={"email": "already_verified_resend@example.com"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["sent"] is False
+    assert data["message_code"] == "already_verified"
+    assert fake_email_sender.sent_count == 0

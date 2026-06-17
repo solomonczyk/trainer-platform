@@ -364,7 +364,7 @@ export async function verifyEmail(token: string) {
 }
 
 export async function resendVerification(email: string) {
-  return request<{ message: string }>(
+  return request<{ sent: boolean; message_code: string }>(
     "POST",
     "/api/v1/auth/resend-verification",
     { email },

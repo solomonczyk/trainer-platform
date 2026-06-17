@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.base import generate_uuid
@@ -26,8 +26,10 @@ async def create_user(db: AsyncSession, email: str, password_hash: str) -> User:
 
 
 async def get_user_by_email(db: AsyncSession, email: str) -> User | None:
-    """Look up a user by their email address."""
-    result = await db.execute(select(User).where(User.email == email))
+    """Look up a user by their email address (case-insensitive)."""
+    result = await db.execute(
+        select(User).where(func.lower(User.email) == func.lower(email))
+    )
     return result.scalar_one_or_none()
 
 

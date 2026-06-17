@@ -29,7 +29,7 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const result = await login(email, password);
+      const result = await login(email.toLowerCase().trim(), password);
       // If email is not verified, redirect to verification prompt
       if (!result.user.email_verified) {
         router.push("/verify-email");
