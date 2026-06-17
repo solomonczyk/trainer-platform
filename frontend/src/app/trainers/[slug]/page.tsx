@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { getTrainer, enrollTrainer, isAuthenticated } from "@/lib/api/client";
 import { t, ti, pluralize } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth/AuthContext";
 import Button from "@/components/ui/Button";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -45,6 +46,7 @@ export default function TrainerDetailPage() {
   const params = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { user, loading: authLoading } = useAuth();
   const slug = params?.slug as string;
   const [showAllModules, setShowAllModules] = useState(false);
 
@@ -57,7 +59,8 @@ export default function TrainerDetailPage() {
   } = useQuery({
     queryKey: ["trainer", slug],
     queryFn: () => getTrainer(slug),
-    enabled: !!slug,
+    // Only fetch trainer data when user is authenticated — prevents 401 spam
+    enabled: !!slug && !!user,
   });
 
   const enrollMutation = useMutation({
@@ -66,6 +69,38 @@ export default function TrainerDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["trainer", slug] });
     },
   });
+
+  // Auth guard: wait until auth bootstrap is complete.
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <LoadingSpinner size="lg" label={t("common.loading")} />
+      </div>
+    );
+  }
+
+  // Not authenticated — show localized auth gate instead of generic error.
+  // Do NOT call protected APIs or render trainer detail.
+  if (!user) {
+    return (
+      <PageContainer>
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-text-muted">
+            <AlertCircle className="h-8 w-8" />
+          </div>
+          <p className="text-h3 text-foreground text-center">
+            {t("auth.signInRequired")}
+          </p>
+          <Button
+            onClick={() => router.push(`/login?redirect=/trainers/${slug}`)}
+            size="lg"
+          >
+            {t("auth.loginButton")}
+          </Button>
+        </div>
+      </PageContainer>
+    );
+  }
 
   if (isLoading) {
     return (

@@ -77,6 +77,7 @@ const en = {
     resendVerificationButton: "Resend Verification Email",
     verificationResent: "Verification email sent. Please check your inbox.",
     backToLogin: "Back to Login",
+    signInRequired: "Sign in to continue",
   },
 
   domains: {

@@ -81,6 +81,7 @@ const ru = {
     resendVerificationButton: "Отправить повторно",
     verificationResent: "Письмо отправлено. Проверьте вашу почту.",
     backToLogin: "Назад к входу",
+    signInRequired: "Войдите в аккаунт, чтобы продолжить",
   },
 
   // Domains

@@ -54,7 +54,12 @@ export default function Header({ className }: HeaderProps) {
   const closeMobile = () => setMobileOpen(false);
 
   const locales = localeOptions();
-  const currentLocaleLabel = locales.find((l) => l.value === currentLocale)?.label ?? currentLocale;
+  // Derive display label from localeOptions. Fallback: extract the language
+  // part ("ru" → "RU", "en" → "US") so raw locale codes are never shown.
+  const currentLocaleLabel = locales.find((l) => l.value === currentLocale)?.label
+    ?? (currentLocale.includes('-')
+      ? currentLocale.split('-')[0]!.toUpperCase()
+      : currentLocale);
 
   if (!mounted) {
     return (

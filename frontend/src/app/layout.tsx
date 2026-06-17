@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { loadSavedLocale } from "@/lib/i18n";
 import { LocaleProvider, useLocale } from "@/lib/i18n/LocaleProvider";
 import { AuthProvider } from "@/lib/auth/AuthContext";
+import { ApiClientError } from "@/lib/api/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -23,7 +24,11 @@ function Favicon() {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
+      retry: (failureCount, error) => {
+        // Never retry 401 — token won't magically become valid
+        if (error instanceof ApiClientError && error.status === 401) return false;
+        return failureCount < 1;
+      },
       staleTime: 30000,
     },
   },
