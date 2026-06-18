@@ -214,6 +214,31 @@ describe('Layer 011 — Protected Route Auth Guard', () => {
     expect(mockGetTrainer).not.toHaveBeenCalled();
   });
 
+  // ── HARD FAIL: unauthenticated → 0 calls to getTrainer() ─────────────────
+  // This test fails if the enabled condition does not include auth checks.
+  // If someone regresses enabled: !!slug (without isAuthenticatedState && isVerified),
+  // this test catches it because the mock calls queryFn when enabled is true.
+  it('HARD FAIL: getTrainer() called 0 times when unauthenticated', async () => {
+    mockUseQuery.mockImplementation((opts: any) => {
+      if (opts.enabled) {
+        opts.queryFn();
+      }
+      return {
+        data: undefined,
+        isLoading: false,
+        isError: false,
+        error: null,
+        refetch: vi.fn(),
+      };
+    });
+
+    const { default: TrainerDetailPage } = await import('@/app/trainers/[slug]/page');
+    renderWithClient(<TrainerDetailPage />);
+
+    // Zero calls — the enabled condition MUST be false for unauthenticated
+    expect(mockGetTrainer).toHaveBeenCalledTimes(0);
+  });
+
   // ── Test 2: unauthenticated → AuthRequiredGate visible ─────────────────────
   it('unauthenticated trainer page shows AuthRequiredGate', async () => {
     const { default: TrainerDetailPage } = await import('@/app/trainers/[slug]/page');
