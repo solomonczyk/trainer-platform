@@ -16,7 +16,7 @@ export function QuizProgressBar({ current, total }: QuizProgressBarProps) {
       {/* Label */}
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium text-gray-700 dark:text-gray-300">
-          {ti('ba_trainer.quiz_progress', {
+          {ti('quiz.question_progress', {
             current: String(current),
             total: String(total),
           })}

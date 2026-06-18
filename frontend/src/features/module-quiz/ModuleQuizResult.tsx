@@ -112,7 +112,7 @@ export default function ModuleQuizResult({
         <div className="flex gap-3 justify-center mt-6">
           <Button onClick={onRepeat}>{t('ba_trainer.repeat_module')}</Button>
           <Button variant="outline" onClick={onBack}>
-            {t('ba_trainer.back_to_modules')}
+            {t('quiz.back_to_modules')}
           </Button>
         </div>
       </div>
@@ -358,10 +358,10 @@ export default function ModuleQuizResult({
       <div className="flex flex-wrap gap-3 justify-center pt-4 pb-8">
         <Button onClick={onRepeat}>{t('ba_trainer.repeat_module')}</Button>
         <Button variant="outline" onClick={onBank}>
-          {t('ba_trainer.bank_mode')}
+          {t('quiz.question_bank')}
         </Button>
         <Button variant="ghost" onClick={onBack}>
-          {t('ba_trainer.back_to_modules')}
+          {t('quiz.back_to_modules')}
         </Button>
       </div>
     </div>

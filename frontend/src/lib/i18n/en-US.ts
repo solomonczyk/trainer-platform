@@ -78,6 +78,9 @@ const en = {
     verificationResent: "Verification email sent. Please check your inbox.",
     backToLogin: "Back to Login",
     signInRequired: "Sign in to continue",
+    sign_in_required: "Sign in to continue",
+    sign_in_required_description: "Please sign in to access this content.",
+    sign_in: "Sign In",
   },
 
   domains: {
@@ -361,11 +364,41 @@ const en = {
     explanation_fallback: "Explanation is temporarily unavailable. Please refer to the module materials for detailed study.",
   },
 
+  // Quiz shell localization
+  quiz: {
+    back_to_modules: "Back to Modules",
+    question_progress: "Question {current} of {total}",
+    submit_answer: "Submit Answer",
+    start_test: "Start Test",
+    question_bank: "Question Bank",
+  },
+
+  // Activity type badges for quiz shell
+  activity_type: {
+    single_choice: "Single Choice",
+    multiple_choice: "Multiple Choice",
+    matching: "Matching",
+    ordering: "Ordering",
+    evidence_select: "Evidence Select",
+    free_text: "Free Text",
+    fill_blanks: "Fill Blanks",
+    numeric: "Numeric",
+  },
+
+  // Footer localization
+  footer: {
+    domains: "Domains",
+    interface_language: "Interface Language",
+    platform_description: "Professional Training Platform",
+    my_progress: "My Progress",
+  },
+
   // BA HR screening question titles (top-level keys, used directly as t(key))
   ba_hr_q1_title: "What sections should a BA resume include?",
 
   // Module title/description translations (root-level dotted keys, resolved via t())
   "modules.ba_hr_screening.title": "HR Screening & Self-Presentation",
+  "modules.ba_hr_screening.question_title": "HR Screening: Question {number}",
   "modules.ba_hr_screening.description": "HR questions, self-presentation, motivation, salary expectations",
   "modules.ba_basics_stakeholders.title": "BA Basics & Stakeholders",
   "modules.ba_basics_stakeholders.description": "Role of BA, BABOK, stakeholder types, RACI matrix",

@@ -41,13 +41,13 @@ export default function Footer({ className }: FooterProps) {
             <Link href="/" className="text-lg font-bold text-gray-900 hover:text-primary-600 transition-colors">
               {t("app.name")}
             </Link>
-            <p className="mt-2 text-sm text-gray-500">{t("app.tagline")}</p>
+            <p className="mt-2 text-sm text-gray-500">{t("footer.platform_description")}</p>
           </div>
 
           {/* Links */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-              {t("nav.domains")}
+              {t("footer.domains")}
             </h3>
             <ul className="mt-3 space-y-2">
               <li>
@@ -66,7 +66,7 @@ export default function Footer({ className }: FooterProps) {
           {/* Locale Switcher */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-              {t("profile.language")}
+              {t("footer.interface_language")}
             </h3>
             <div className="mt-3 flex gap-2">
               {locales.map((loc) => (

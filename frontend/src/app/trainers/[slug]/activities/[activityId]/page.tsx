@@ -222,8 +222,8 @@ export default function ActivityRunnerPage() {
         <CardHeader>
           <div className="flex items-center justify-between mb-2">
             <Badge variant={difficultyVariant as any}>{difficultyLabel}</Badge>
-            <Badge>{t(`ba_trainer.activity_type_${activityData.activity_type}`) !== `ba_trainer.activity_type_${activityData.activity_type}`
-              ? t(`ba_trainer.activity_type_${activityData.activity_type}`)
+            <Badge>{t(`activity_type.${activityData.activity_type}`) !== `activity_type.${activityData.activity_type}`
+              ? t(`activity_type.${activityData.activity_type}`)
               : activityData.activity_type.replace(/_/g, ' ')}</Badge>
           </div>
           <CardTitle>{t(activityData.title_key)}</CardTitle>
@@ -254,14 +254,14 @@ export default function ActivityRunnerPage() {
               variant="outline"
               onClick={() => router.push(`/trainers/${slug}/modules/${activityData.module_id}`)}
             >
-              {t('ba_trainer.back_to_modules')}
+              {t('quiz.back_to_modules')}
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={pageState === 'submitting'}
               isLoading={pageState === 'submitting'}
             >
-              {t('ba_trainer.submit')}
+              {t('quiz.submit_answer')}
             </Button>
           </div>
         </CardContent>

@@ -225,7 +225,7 @@ export default function ModuleQuizEngine({
         <div className="text-red-500 text-4xl mb-4">!</div>
         <p className="text-red-600 mb-4">{errorMessage}</p>
         <Button variant="outline" onClick={onExit}>
-          {t('ba_trainer.back_to_modules')}
+          {t('quiz.back_to_modules')}
         </Button>
       </div>
     );
@@ -290,7 +290,7 @@ export default function ModuleQuizEngine({
             {/* Next / Finish buttons */}
             <div className="flex justify-between pt-2">
               <Button variant="outline" onClick={onExit}>
-                {t('ba_trainer.back_to_modules')}
+                {t('quiz.back_to_modules')}
               </Button>
 
               {isLast ? (
@@ -324,9 +324,9 @@ export default function ModuleQuizEngine({
           {difficultyLabelText(currentStartData.difficulty)}
         </Badge>
         <Badge variant="default">
-          {t(`ba_trainer.activity_type_${aty}`) !==
-          `ba_trainer.activity_type_${aty}`
-            ? t(`ba_trainer.activity_type_${aty}`)
+          {t(`activity_type.${aty}`) !==
+          `activity_type.${aty}`
+            ? t(`activity_type.${aty}`)
             : aty.replace(/_/g, ' ')}
         </Badge>
       </div>
@@ -361,14 +361,14 @@ export default function ModuleQuizEngine({
 
           <div className="flex justify-between pt-4">
             <Button variant="outline" onClick={onExit}>
-              {t('ba_trainer.back_to_modules')}
+              {t('quiz.back_to_modules')}
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={phase === 'submitting'}
               isLoading={phase === 'submitting'}
             >
-              {t('ba_trainer.submit')}
+              {t('quiz.submit_answer')}
             </Button>
           </div>
         </CardContent>

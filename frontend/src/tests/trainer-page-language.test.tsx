@@ -63,6 +63,41 @@ vi.mock('@/lib/api/client', () => ({
   getTrainer: vi.fn(),
   enrollTrainer: vi.fn(),
   isAuthenticated: () => false,
+  ApiClientError: class ApiClientError extends Error {
+    status: number | undefined;
+    code: string;
+    details: Record<string, unknown>;
+    requestId: string;
+    constructor(err: any) {
+      super(err?.message || 'API Error');
+      this.name = 'ApiClientError';
+      this.status = err?.status;
+      this.code = err?.code || 'ERROR';
+      this.details = {};
+      this.requestId = '';
+    }
+  },
+}));
+
+// --- Mock auth context: default to authenticated + verified for these tests ---
+vi.mock('@/lib/auth/AuthContext', () => ({
+  useAuth: () => ({
+    user: { id: '1', email: 'test@test.com', email_verified: true, role: 'user' },
+    status: 'authenticated' as const,
+    loading: false,
+    refresh: async () => {},
+    clearSession: () => {},
+  }),
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
+// --- Mock auth gate components ---
+vi.mock('@/components/auth/AuthRequiredGate', () => ({
+  AuthRequiredGate: () => <div data-testid="auth-required-gate" />,
+}));
+
+vi.mock('@/components/auth/EmailVerificationRequiredGate', () => ({
+  EmailVerificationRequiredGate: () => <div data-testid="email-verification-gate" />,
 }));
 
 // --- Mock lucide icons ---

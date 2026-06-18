@@ -82,6 +82,9 @@ const ru = {
     verificationResent: "Письмо отправлено. Проверьте вашу почту.",
     backToLogin: "Назад к входу",
     signInRequired: "Войдите в аккаунт, чтобы продолжить",
+    sign_in_required: "Войдите в аккаунт, чтобы продолжить",
+    sign_in_required_description: "Пожалуйста, войдите в аккаунт для доступа к этому контенту.",
+    sign_in: "Войти",
   },
 
   // Domains
@@ -375,11 +378,41 @@ const ru = {
     explanation_fallback: "Пояснение к ответу временно отсутствует. Обратитесь к материалам модуля для подробного изучения.",
   },
 
+  // Quiz shell localization
+  quiz: {
+    back_to_modules: "Назад к модулям",
+    question_progress: "Вопрос {current} из {total}",
+    submit_answer: "Отправить ответ",
+    start_test: "Начать тестирование",
+    question_bank: "Банк вопросов",
+  },
+
+  // Activity type badges for quiz shell
+  activity_type: {
+    single_choice: "Один вариант",
+    multiple_choice: "Несколько вариантов",
+    matching: "Сопоставление",
+    ordering: "Упорядочивание",
+    evidence_select: "Выбор доказательств",
+    free_text: "Свободный ответ",
+    fill_blanks: "Заполнение пропусков",
+    numeric: "Числовой ответ",
+  },
+
+  // Footer localization
+  footer: {
+    domains: "Домены",
+    interface_language: "Язык интерфейса",
+    platform_description: "Платформа профессиональных тренажёров",
+    my_progress: "Мой прогресс",
+  },
+
   // BA HR screening question titles (top-level keys, used directly as t(key))
   ba_hr_q1_title: "Какие основные разделы должны быть в резюме бизнес-аналитика?",
 
   // Module title/description translations (root-level dotted keys, resolved via t())
   "modules.ba_hr_screening.title": "HR-скрининг и самопрезентация",
+  "modules.ba_hr_screening.question_title": "HR-скрининг: вопрос {number}",
   "modules.ba_hr_screening.description": "HR-вопросы, самопрезентация, мотивация, ожидания по зарплате",
   "modules.ba_basics_stakeholders.title": "Основы BA и стейкхолдеры",
   "modules.ba_basics_stakeholders.description": "Роль BA, BABOK, типы стейкхолдеров, матрица RACI",

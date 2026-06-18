@@ -76,21 +76,21 @@ const activityTypeIcon = (type: string) => {
 const activityTypeLabel = (type: string) => {
   switch (type) {
     case "single_choice":
-      return t("ba_trainer.activity_type_single_choice");
+      return t("activity_type.single_choice");
     case "multiple_choice":
-      return t("ba_trainer.activity_type_multiple_choice");
+      return t("activity_type.multiple_choice");
     case "matching":
-      return t("ba_trainer.activity_type_matching");
+      return t("activity_type.matching");
     case "ordering":
-      return t("ba_trainer.activity_type_ordering");
+      return t("activity_type.ordering");
     case "evidence_select":
-      return t("ba_trainer.activity_type_evidence_select");
+      return t("activity_type.evidence_select");
     case "free_text":
-      return t("ba_trainer.activity_type_free_text");
+      return t("activity_type.free_text");
     case "fill_blanks":
-      return t("ba_trainer.activity_type_fill_blanks");
+      return t("activity_type.fill_blanks");
     case "numeric":
-      return t("ba_trainer.activity_type_numeric");
+      return t("activity_type.numeric");
     default:
       return type.replace(/_/g, " ");
   }
@@ -263,7 +263,7 @@ export default function ModuleActivitiesPage() {
             className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            {t("ba_trainer.back_to_modules")}
+            {t("quiz.back_to_modules")}
           </button>
           <Card padding="md" className="text-center">
             <p className="text-gray-500">{t("ba_trainer.no_activities")}</p>
@@ -279,7 +279,7 @@ export default function ModuleActivitiesPage() {
           className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          {t("ba_trainer.back_to_modules")}
+          {t("quiz.back_to_modules")}
         </button>
 
         {/* Quiz engine - manages sequential question flow */}
@@ -319,7 +319,7 @@ export default function ModuleActivitiesPage() {
           className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          {t("ba_trainer.back_to_modules")}
+          {t("quiz.back_to_modules")}
         </button>
 
         {/* Header */}
@@ -398,7 +398,7 @@ export default function ModuleActivitiesPage() {
         <div className="mt-8 text-center">
           <Button onClick={() => setMode("start_screen")}>
             <Play className="h-4 w-4" />
-            {t("ba_trainer.start_module")}
+            {t("quiz.start_test")}
           </Button>
         </div>
       </div>
@@ -414,7 +414,7 @@ export default function ModuleActivitiesPage() {
         className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        {t("ba_trainer.back_to_modules")}
+        {t("quiz.back_to_modules")}
       </button>
 
       {/* Module Info Card */}
@@ -454,7 +454,7 @@ export default function ModuleActivitiesPage() {
               disabled={moduleData.activities.length === 0}
             >
               <Play className="h-5 w-5" />
-              {t("ba_trainer.start_module")}
+              {t("quiz.start_test")}
             </Button>
           </div>
 
@@ -466,7 +466,7 @@ export default function ModuleActivitiesPage() {
                 className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors"
               >
                 <ListChecks className="h-4 w-4" />
-                {t("ba_trainer.bank_mode")}
+                {t("quiz.question_bank")}
               </button>
             </div>
           )}
